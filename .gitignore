@@ -19,3 +19,7 @@ Thumbs.db
 .DS_Store
 
 xcuserdata/
+
+# Local agent notes
+CLAUDE.local.md
+/.notes/
