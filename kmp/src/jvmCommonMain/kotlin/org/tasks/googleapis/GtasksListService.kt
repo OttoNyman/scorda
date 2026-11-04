@@ -12,7 +12,11 @@ class GtasksListService(
     private val taskDeleter: TaskDeleter,
     private val refreshBroadcaster: RefreshBroadcaster,
 ) {
-    suspend fun updateLists(account: CaldavAccount, remoteLists: List<TaskList>) {
+    suspend fun updateLists(
+        account: CaldavAccount,
+        remoteLists: List<TaskList>,
+        protectedRemoteId: String? = null,
+    ) {
         val lists = caldavDao.getCalendarsByAccount(account.uuid!!)
         val previousLists: MutableSet<Long> = HashSet()
         for (list in lists) {
@@ -39,8 +43,12 @@ class GtasksListService(
             previousLists.remove(local.id)
         }
 
+        val kept = remoteLists.mapNotNull { it.id }.toSet()
         for (listId in previousLists) {
-            taskDeleter.delete(caldavDao.getCalendarById(listId)!!)
+            val calendar = caldavDao.getCalendarById(listId) ?: continue
+            if (shouldDeleteLocalList(calendar.uuid, kept, protectedRemoteId)) {
+                taskDeleter.delete(calendar)
+            }
         }
         refreshBroadcaster.broadcastRefresh()
     }

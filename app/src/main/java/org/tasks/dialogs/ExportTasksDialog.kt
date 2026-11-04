@@ -28,8 +28,12 @@ class ExportTasksDialog : DialogFragment() {
         progressDialog.show()
         isCancelable = false
         lifecycleScope.launch(NonCancellable) {
-            tasksJsonExporter.exportTasks(
-                    activity, TasksJsonExporter.ExportType.EXPORT_TYPE_MANUAL, progressDialog)
+            val type = if (requireArguments().getBoolean(ARG_DRIVE)) {
+                TasksJsonExporter.ExportType.EXPORT_TYPE_DRIVE_NOW
+            } else {
+                TasksJsonExporter.ExportType.EXPORT_TYPE_MANUAL
+            }
+            tasksJsonExporter.exportTasks(activity, type, progressDialog)
         }
 
         return progressDialog
@@ -44,6 +48,10 @@ class ExportTasksDialog : DialogFragment() {
     companion object {
         const val REQUEST_KEY = "export_tasks_result"
 
-        fun newExportTasksDialog() = ExportTasksDialog()
+        private const val ARG_DRIVE = "drive"
+
+        fun newExportTasksDialog(uploadToDrive: Boolean = false) = ExportTasksDialog().apply {
+            arguments = Bundle().apply { putBoolean(ARG_DRIVE, uploadToDrive) }
+        }
     }
 }

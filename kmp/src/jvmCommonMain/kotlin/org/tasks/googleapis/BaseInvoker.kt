@@ -10,7 +10,7 @@ import org.tasks.TasksBuildConfig
 import java.io.IOException
 
 abstract class BaseInvoker(
-    private val credentialsAdapter: CredentialsAdapter,
+    protected val credentialsAdapter: CredentialsAdapter,
 ) {
     @Throws(IOException::class)
     protected suspend fun <T> execute(request: AbstractGoogleJsonClientRequest<T>): T? =

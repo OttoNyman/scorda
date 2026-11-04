@@ -18,6 +18,15 @@ class BackupConstantsTest {
     }
 
     @Test
+    fun purgeKeepsSevenAutoFilesAndAllUserFiles() {
+        val names = (9 downTo 1).map { "auto.20090$it-0000.json" } + listOf("user.200909-1503.json")
+        assertEquals(
+            listOf("auto.200902-0000.json", "auto.200901-0000.json"),
+            BackupConstants.autoFilesToDelete(names, keep = 7),
+        )
+    }
+
+    @Test
     fun ignoreCopiedFile() {
         assertFalse(BackupConstants.isBackupFile("user.200909-1503 (1).json"))
     }

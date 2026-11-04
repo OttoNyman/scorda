@@ -40,6 +40,14 @@
   <string name="p_attachment_dir">custom_files_dir</string>
   <string name="p_backup_dir">p_backup_dir</string>
   <string name="p_google_drive_backup">p_google_drive_backup</string>
+  <string name="p_google_drive_granted">p_google_drive_granted</string>
+  <string name="p_google_tasks_paused">p_google_tasks_paused</string>
+  <string name="p_google_tasks_list_id">p_google_tasks_list_id</string>
+  <string name="p_google_tasks_previous_list_id">p_google_tasks_previous_list_id</string>
+  <string name="p_google_tasks_force_create">p_google_tasks_force_create</string>
+  <string name="p_google_tasks_ambiguous">p_google_tasks_ambiguous</string>
+  <string name="p_google_tasks_list_problem">p_google_tasks_list_problem</string>
+  <string name="p_google_access_expired">p_google_access_expired</string>
   <string name="p_google_drive_backup_account">p_google_drive_backup_account</string>
   <string name="p_google_drive_backup_folder">p_google_drive_backup_folder</string>
   <!-- boolean : whether to enable quiet hours or not -->

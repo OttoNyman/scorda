@@ -115,6 +115,9 @@ class TasksJsonImporter @Inject constructor(
         val result = ImportResult()
         val accountUuidMap = mutableMapOf<String, String>()
         val calendarUuidMap = mutableMapOf<String, String>()
+        val hadGoogle = caldavDao.getAccounts(org.tasks.data.entity.CaldavAccount.TYPE_GOOGLE_TASKS).isNotEmpty()
+        val keepDrive = preferences.getBoolean(R.string.p_google_drive_backup, false)
+                || preferences.getBoolean(R.string.p_google_drive_granted, false)
         try {
             val version = importMetadata(context, inputStreamProvider, accountUuidMap, calendarUuidMap)
             importTasks(context, inputStreamProvider, onProgress, version, result, calendarUuidMap)
@@ -132,6 +135,13 @@ class TasksJsonImporter @Inject constructor(
             }
             Timber.d("Updating parents")
             caldavDao.updateParents(force = true)
+            val hasGoogle = caldavDao.getAccounts(org.tasks.data.entity.CaldavAccount.TYPE_GOOGLE_TASKS).isNotEmpty()
+            if (!hadGoogle && hasGoogle) {
+                preferences.setBoolean(R.string.p_google_tasks_paused, true)
+            }
+            if (!keepDrive) {
+                preferences.setBoolean(R.string.p_google_drive_backup, false)
+            }
             firebase.logEvent(
                 R.string.event_settings_click,
                 R.string.param_type to "import_backup_success",

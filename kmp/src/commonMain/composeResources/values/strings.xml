@@ -189,6 +189,10 @@
     <string name="hide_unused_tags">Hide unused tags</string>
     <string name="hide_unused_places">Hide unused places</string>
     <string name="backup_BPr_header">Backups</string>
+    <string name="sync_and_backup">Sync and backup</string>
+    <string name="google_list_missing">The Scorda list was deleted in Google Tasks. Tasks on this phone were kept.</string>
+    <string name="google_list_ambiguous">Several Google lists are named Scorda. Rename the extras, then sync again.</string>
+    <string name="google_access_expired">Google access expired. Sign in again.</string>
     <string name="preferences_advanced">Advanced</string>
     <string name="debug">Debug</string>
     <string name="about">About</string>

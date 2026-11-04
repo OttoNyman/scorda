@@ -47,10 +47,12 @@ class DriveUploader @AssistedInject constructor(
                     ?.let { preferences.setLong(R.string.p_backups_drive_last, it) }
             localBroadcastManager.broadcastPreferenceRefresh()
             if (inputData.getBoolean(EXTRA_PURGE, false)) {
-                drive
-                        .getFilesByPrefix(folder.id, "auto.")
-                        .drop(BackupWork.DAYS_TO_KEEP_BACKUP)
-                        .forEach { drive.delete(it) }
+                val files = drive.getFilesByPrefix(folder.id, "auto.")
+                val drop = BackupConstants.autoFilesToDelete(
+                    files.mapNotNull { it.name },
+                    BackupWork.DAYS_TO_KEEP_BACKUP,
+                ).toSet()
+                files.filter { it.name in drop }.forEach { drive.delete(it) }
             }
             Result.success()
         } catch (e: FileNotFoundException) {
@@ -67,7 +69,14 @@ class DriveUploader @AssistedInject constructor(
             retry(e)
         } catch (e: GoogleJsonResponseException) {
             when (e.statusCode) {
-                401, 403 -> fail(e)
+                401 -> {
+                    notifyExpired(R.string.google_access_expired)
+                    fail(e)
+                }
+                403 -> {
+                    notifyExpired(R.string.google_access_denied)
+                    fail(e)
+                }
                 503 -> retry(e)
                 else -> retry(e, report = true)
             }
@@ -101,11 +110,29 @@ class DriveUploader @AssistedInject constructor(
         if (!isNullOrEmpty(folderId)) {
             file = drive.getFile(folderId)
         }
-        return if (file == null || file.trashed) drive.createFolder(FOLDER_NAME) else file
+        if (file == null || file.trashed) {
+            file = drive.findFolder(FOLDER_NAME)
+        }
+        return if (file == null || file.trashed == true) drive.createFolder(FOLDER_NAME) else file
+    }
+
+    private fun notifyExpired(message: Int) {
+        val text = context.getString(message)
+        val notification = androidx.core.app.NotificationCompat.Builder(
+            context,
+            org.tasks.notifications.NotificationManager.NOTIFICATION_CHANNEL_MISCELLANEOUS,
+        )
+            .setSmallIcon(R.drawable.ic_check_white_24dp)
+            .setContentTitle(context.getString(R.string.app_name))
+            .setContentText(text)
+            .setAutoCancel(true)
+            .build()
+        androidx.core.app.NotificationManagerCompat.from(context).notify(EXPIRED_NOTIFICATION, notification)
     }
 
     companion object {
-        private const val FOLDER_NAME = "Tasks Backups"
+        private const val FOLDER_NAME = "Scorda Backups"
+        private const val EXPIRED_NOTIFICATION = 4817
         const val EXTRA_URI = "extra_uri"
         const val EXTRA_PURGE = "extra_purge"
     }

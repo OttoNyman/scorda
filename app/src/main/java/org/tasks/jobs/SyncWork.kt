@@ -30,6 +30,7 @@ import org.tasks.extensions.Context.hasNetworkConnectivity
 import org.tasks.gtasks.AndroidGoogleTaskSynchronizer
 import org.tasks.injection.BaseWorker
 import org.tasks.opentasks.OpenTasksSynchronizer
+import org.tasks.R
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
 import org.tasks.sync.SyncSource
@@ -136,6 +137,7 @@ class SyncWork @AssistedInject constructor(
 
     private suspend fun googleTaskJobs(): List<Deferred<Unit>> = coroutineScope {
         caldavDao.getAccounts(TYPE_GOOGLE_TASKS)
+            .filter { !preferences.getBoolean(R.string.p_google_tasks_paused, false) }
             .map { account ->
                 async(Dispatchers.IO) {
                     googleTaskSynchronizer.get().sync(account)

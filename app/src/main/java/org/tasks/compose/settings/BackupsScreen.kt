@@ -46,6 +46,18 @@ fun BackupsScreen(
     onAndroidBackup: (Boolean) -> Unit,
     onDeviceSettings: () -> Unit,
     onIgnoreWarnings: (Boolean) -> Unit,
+    tasksEnabled: Boolean = false,
+    driveDailyEnabled: Boolean = driveBackupEnabled,
+    expiredMessage: String? = null,
+    onTasksEnabled: (Boolean) -> Unit = {},
+    onDriveDaily: (Boolean) -> Unit = {},
+    onSaveDriveNow: () -> Unit = {},
+    onRestoreDrive: () -> Unit = {},
+    onHelp: () -> Unit = {},
+    listProblem: String = "",
+    ambiguousLists: List<Pair<String, String>> = emptyList(),
+    onRecreateList: () -> Unit = {},
+    onPickList: (String) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -103,34 +115,68 @@ fun BackupsScreen(
             }
         }
 
-        // Google Drive backup section
         SectionHeader(
-            R.string.google_drive_backup,
+            R.string.sync_and_backup,
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            onClick = onHelp,
         )
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             SettingsItemCard(position = CardPosition.First) {
-                val errorColor = colorResource(R.color.overdue)
                 SwitchPreferenceRow(
-                    title = stringResource(R.string.enabled),
-                    summary = lastDriveBackupSummary,
-                    checked = driveBackupEnabled,
-                    onCheckedChange = onDriveBackup,
-                    icon = if (showDriveBackupWarning)
-                        TasksIcons.ERROR_OUTLINE else null,
-                    iconTint = if (showDriveBackupWarning) errorColor else null,
+                    title = stringResource(R.string.google_tasks_sync),
+                    summary = stringResource(R.string.google_tasks_sync_summary),
+                    checked = tasksEnabled,
+                    onCheckedChange = onTasksEnabled,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                SwitchPreferenceRow(
+                    title = stringResource(R.string.google_drive_backup),
+                    summary = expiredMessage ?: stringResource(R.string.google_drive_backup_summary),
+                    checked = driveDailyEnabled,
+                    onCheckedChange = onDriveDaily,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(R.string.save_drive_now),
+                    onClick = onSaveDriveNow,
                 )
             }
             SettingsItemCard(position = CardPosition.Last) {
                 PreferenceRow(
-                    title = stringResource(R.string.account),
-                    summary = driveAccountSummary,
-                    enabled = driveAccountEnabled,
-                    onClick = onDriveAccount,
+                    title = stringResource(R.string.restore_drive),
+                    summary = lastDriveBackupSummary,
+                    onClick = onRestoreDrive,
                 )
+            }
+        }
+        if (listProblem == "missing" || ambiguousLists.isNotEmpty()) {
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                if (listProblem == "missing") {
+                    SettingsItemCard {
+                        PreferenceRow(
+                            title = stringResource(R.string.google_list_recreate),
+                            summary = stringResource(R.string.google_list_missing),
+                            onClick = onRecreateList,
+                        )
+                    }
+                }
+                ambiguousLists.forEach { (id, title) ->
+                    SettingsItemCard {
+                        PreferenceRow(
+                            title = title.ifBlank { id },
+                            summary = stringResource(R.string.google_list_pick),
+                            onClick = { onPickList(id) },
+                        )
+                    }
+                }
             }
         }
 

@@ -80,6 +80,31 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
             return
         }
         val invoker = invokerFactory.getGtasksInvoker(account.username!!)
-        synchronizer.sync(account, invoker)
+        synchronizer.sync(
+            account,
+            invoker,
+            savedListId = preferences.getStringValue(R.string.p_google_tasks_list_id),
+            previousListId = preferences.getStringValue(R.string.p_google_tasks_previous_list_id),
+            forceCreate = preferences.getBoolean(R.string.p_google_tasks_force_create, false),
+            saveListId = {
+                preferences.setString(R.string.p_google_tasks_list_id, it)
+                preferences.setBoolean(R.string.p_google_tasks_force_create, false)
+                preferences.setString(R.string.p_google_tasks_ambiguous, null)
+                preferences.setString(R.string.p_google_tasks_list_problem, null)
+            },
+            onAmbiguous = { lists ->
+                preferences.setString(
+                    R.string.p_google_tasks_ambiguous,
+                    lists.joinToString("\n") { (id, title) -> "$id\t$title" },
+                )
+                preferences.setString(R.string.p_google_tasks_list_problem, "ambiguous")
+            },
+            onMissing = {
+                preferences.setString(R.string.p_google_tasks_list_problem, "missing")
+            },
+            clearPreviousListId = {
+                preferences.setString(R.string.p_google_tasks_previous_list_id, null)
+            },
+        )
     }
 }

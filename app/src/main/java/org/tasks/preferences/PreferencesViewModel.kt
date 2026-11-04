@@ -29,11 +29,10 @@ import javax.inject.Inject
 class PreferencesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferences: Preferences,
-    invokers: InvokerFactory,
+    private val invokers: InvokerFactory,
     private val googleAccountManager: GoogleAccountManager,
     private val caldavDao: CaldavDao,
 ) : ViewModel() {
-    private val driveInvoker = invokers.getDriveInvoker()
     val lastBackup = MutableLiveData<Long?>()
     val lastDriveBackup = MutableLiveData<Long?>()
     val lastAndroidBackup = MutableLiveData<Long>()
@@ -77,6 +76,35 @@ class PreferencesViewModel @Inject constructor(
     suspend fun tasksAccount(): CaldavAccount? =
         caldavDao.getAccounts(CaldavAccount.TYPE_TASKS).firstOrNull()
 
+    suspend fun listDriveBackups(): List<com.google.api.services.drive.model.File> {
+        val drive = invokers.getDriveInvoker()
+        var folderId = preferences.getStringValue(R.string.p_google_drive_backup_folder)
+        if (folderId.isNullOrBlank()) {
+            folderId = drive.findFolder("Scorda Backups")?.id
+            if (!folderId.isNullOrBlank()) {
+                preferences.setString(R.string.p_google_drive_backup_folder, folderId)
+            }
+        }
+        if (folderId.isNullOrBlank()) return emptyList()
+        return drive.getFilesByPrefix(folderId, "auto.", "user.")
+    }
+
+    fun downloadDriveBackup(fileId: String, name: String, onReady: (Uri) -> Unit, onError: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                val file = File(context.cacheDir, name)
+                val drive = invokers.getDriveInvoker()
+                withContext(Dispatchers.IO) {
+                    file.outputStream().use { drive.download(fileId, it) }
+                }
+                onReady(Uri.fromFile(file))
+            } catch (e: Exception) {
+                Timber.e(e)
+                onError()
+            }
+        }
+    }
+
     fun updateDriveBackup() = viewModelScope.launch {
         if (driveAccount.isNullOrBlank()) {
             lastDriveBackup.value = -1L
@@ -87,7 +115,7 @@ class PreferencesViewModel @Inject constructor(
                 ?.takeIf { it.isNotBlank() }
                 ?.let {
                     try {
-                        driveInvoker.getFilesByPrefix(it, "auto.", "user.")
+                        invokers.getDriveInvoker().getFilesByPrefix(it, "auto.", "user.")
                                 .firstOrNull()
                                 ?.let(BackupConstants::getTimestamp)
                     } catch (e: Exception) {

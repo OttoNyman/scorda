@@ -302,6 +302,9 @@ WHERE cd_task IN (:tasks)
     @Query("SELECT cd_task FROM caldav_tasks WHERE cd_calendar = :calendar AND cd_deleted = 0")
     internal abstract suspend fun getTaskIdsByCalendar(calendar: String): List<Long>
 
+    @Query("UPDATE caldav_tasks SET cd_calendar = :target, cd_remote_id = '', cd_remote_parent = NULL, gt_moved = 0 WHERE cd_calendar = :source AND cd_deleted = 0")
+    abstract suspend fun reassignCalendar(source: String, target: String)
+
     @Transaction
     open suspend fun markCalendarDirty(calendar: String) {
         database.dirtyDao().setDirty(getTaskIdsByCalendar(calendar))

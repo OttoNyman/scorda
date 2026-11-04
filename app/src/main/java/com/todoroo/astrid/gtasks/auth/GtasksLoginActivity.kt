@@ -17,8 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.google.api.services.drive.DriveScopes
+import com.google.api.services.tasks.TasksScopes
 import org.tasks.PermissionUtil.verifyPermissions
 import org.tasks.R
+import org.tasks.preferences.Preferences
 import org.tasks.analytics.Constants
 import org.tasks.analytics.Firebase
 import org.tasks.data.dao.CaldavDao
@@ -41,6 +44,7 @@ class GtasksLoginActivity : AppCompatActivity() {
     @Inject lateinit var googleAccountManager: GoogleAccountManager
     @Inject lateinit var caldavDao: CaldavDao
     @Inject lateinit var firebase: Firebase
+    @Inject lateinit var preferences: Preferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +52,14 @@ class GtasksLoginActivity : AppCompatActivity() {
     }
 
     private fun chooseAccount() {
-        val chooseAccountIntent = AccountManager.newChooseAccountIntent(
-                null, null, arrayOf("com.google"), null, null, null, null)
-        startActivityForResult(chooseAccountIntent, RC_CHOOSE_ACCOUNT)
+        try {
+            val chooseAccountIntent = AccountManager.newChooseAccountIntent(
+                    null, null, arrayOf("com.google"), null, null, null, null)
+            startActivityForResult(chooseAccountIntent, RC_CHOOSE_ACCOUNT)
+        } catch (e: Exception) {
+            setResult(Activity.RESULT_CANCELED, Intent().putExtra(EXTRA_ERROR, getString(R.string.google_account_missing)))
+            finish()
+        }
     }
 
     private suspend fun getAuthToken(account: String) {
@@ -61,13 +70,14 @@ class GtasksLoginActivity : AppCompatActivity() {
 
     private suspend fun getAuthToken(accountName: String, pd: ProgressDialog) {
         try {
-            googleAccountManager.getTasksAuthToken(this, accountName)
+            googleAccountManager.getAuthToken(this, accountName, requestedScopes())
                     ?.let { bundle ->
                         val intent = bundle[AccountManager.KEY_INTENT]
                         if (intent is Intent) {
                             startActivity(intent)
                         } else {
                             withContext(NonCancellable) {
+                                if (TasksScopes.TASKS !in requestedScopes()) return@withContext
                                 val account = caldavDao.getAccount(TYPE_GOOGLE_TASKS, accountName)
                                 if (account == null) {
                                     caldavDao.insert(
@@ -89,6 +99,18 @@ class GtasksLoginActivity : AppCompatActivity() {
                                     caldavDao.resetLastSync(accountName)
                                 }
                             }
+                            val scopes = requestedScopes()
+                            if (TasksScopes.TASKS in scopes) {
+                                preferences.setBoolean(R.string.p_google_tasks_paused, false)
+                            }
+                            if (DriveScopes.DRIVE_FILE in scopes) {
+                                preferences.setBoolean(R.string.p_google_drive_granted, true)
+                                preferences.setString(R.string.p_google_drive_backup_account, accountName)
+                                if (getIntent().getBooleanExtra(EXTRA_DAILY_DRIVE, false)) {
+                                    preferences.setBoolean(R.string.p_google_drive_backup, true)
+                                }
+                            }
+                            scopes.forEach { preferences.setAlreadyNotified(accountName, it, false) }
                             setResult(Activity.RESULT_OK)
                             DialogUtilities.dismissDialog(this@GtasksLoginActivity, pd)
                             finish()
@@ -128,8 +150,13 @@ class GtasksLoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun requestedScopes(): List<String> =
+        intent.getStringArrayListExtra(EXTRA_SCOPES) ?: arrayListOf(TasksScopes.TASKS)
+
     companion object {
         const val EXTRA_ERROR = "extra_error"
+        const val EXTRA_SCOPES = "extra_scopes"
+        const val EXTRA_DAILY_DRIVE = "extra_daily_drive"
         private const val RC_CHOOSE_ACCOUNT = 10988
     }
 }

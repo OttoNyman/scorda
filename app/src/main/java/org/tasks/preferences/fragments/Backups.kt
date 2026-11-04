@@ -14,6 +14,27 @@ import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
 import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import org.tasks.jobs.WorkManager
+import org.tasks.sync.SyncSource
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
+import com.google.api.services.drive.DriveScopes
+import com.google.api.services.tasks.TasksScopes
+import com.todoroo.astrid.gtasks.auth.GtasksLoginActivity
+import kotlinx.coroutines.launch
 import org.tasks.compose.settings.BackupsScreen
 import org.tasks.dialogs.ExportTasksDialog
 import org.tasks.dialogs.ImportTasksDialog
@@ -35,6 +56,7 @@ private const val FRAG_TAG_IMPORT_TASKS = "frag_tag_import_tasks"
 class Backups : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var workManager: WorkManager
 
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val viewModel: BackupsViewModel by viewModels()
@@ -62,13 +84,18 @@ class Backups : Fragment() {
         }
     }
 
+    private var afterLogin: (() -> Unit)? = null
+
     private val driveLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             preferencesViewModel.updateDriveBackup()
+            afterLogin?.invoke()
         } else {
-            result.data?.getStringExtra(DriveLoginActivity.EXTRA_ERROR)
+            result.data?.getStringExtra(GtasksLoginActivity.EXTRA_ERROR)
                 ?.let { context?.toast(it) }
         }
+        afterLogin = null
+        viewModel.refreshTasks()
         viewModel.refreshDriveState(preferencesViewModel)
     }
 
@@ -90,11 +117,14 @@ class Backups : Fragment() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: android.os.Bundle?
     ) = content {
+        var showHelp by remember { mutableStateOf(false) }
+        var driveFiles by remember { mutableStateOf<List<Pair<String, String>>?>(null) }
         TasksSettingsTheme(
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
@@ -156,8 +186,111 @@ class Backups : Fragment() {
                 onIgnoreWarnings = { enabled ->
                     viewModel.updateIgnoreWarnings(enabled, preferencesViewModel)
                 },
+                tasksEnabled = viewModel.tasksSyncEnabled,
+                driveDailyEnabled = viewModel.driveBackupEnabled,
+                onTasksEnabled = { enabled ->
+                    if (enabled) {
+                        signIn(arrayListOf(TasksScopes.TASKS), daily = false)
+                    } else {
+                        viewModel.pauseTasks()
+                    }
+                },
+                onDriveDaily = { enabled ->
+                    if (enabled) {
+                        signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = true)
+                    } else {
+                        viewModel.setDriveDaily(false)
+                    }
+                },
+                onSaveDriveNow = {
+                    if (viewModel.driveGranted()) {
+                        ExportTasksDialog.newExportTasksDialog(uploadToDrive = true)
+                            .show(parentFragmentManager, FRAG_TAG_EXPORT_TASKS)
+                    } else {
+                        signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = false) {
+                            ExportTasksDialog.newExportTasksDialog(uploadToDrive = true)
+                                .show(parentFragmentManager, FRAG_TAG_EXPORT_TASKS)
+                        }
+                    }
+                },
+                onRestoreDrive = {
+                    val open = {
+                        lifecycleScope.launch {
+                            try {
+                                val files = preferencesViewModel.listDriveBackups()
+                                driveFiles = files.mapNotNull { file ->
+                                    file.id?.let { id -> id to (file.name ?: id) }
+                                }
+                            } catch (_: Exception) {
+                                context?.toast(R.string.google_request_failed)
+                            }
+                        }
+                    }
+                    if (viewModel.driveGranted()) open() else {
+                        signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = false) { open() }
+                    }
+                },
+                onHelp = { showHelp = true },
+                listProblem = viewModel.listProblem,
+                ambiguousLists = viewModel.ambiguousLists,
+                onRecreateList = {
+                    viewModel.recreateScordaList()
+                    lifecycleScope.launch { workManager.sync(SyncSource.USER_INITIATED) }
+                },
+                onPickList = { id ->
+                    viewModel.pickScordaList(id)
+                    lifecycleScope.launch { workManager.sync(SyncSource.USER_INITIATED) }
+                },
             )
+            if (showHelp) {
+                ModalBottomSheet(onDismissRequest = { showHelp = false }) {
+                    Column(modifier = Modifier.padding(24.dp)) {
+                        Text(text = stringResource(R.string.sync_help_title))
+                        Text(text = stringResource(R.string.sync_help_drive), modifier = Modifier.padding(top = 12.dp))
+                        Text(text = stringResource(R.string.sync_help_file), modifier = Modifier.padding(top = 12.dp))
+                        Text(text = stringResource(R.string.sync_help_tasks), modifier = Modifier.padding(top = 12.dp))
+                    }
+                }
+            }
+            driveFiles?.let { files ->
+                AlertDialog(
+                    onDismissRequest = { driveFiles = null },
+                    title = { Text(stringResource(R.string.restore_drive)) },
+                    text = {
+                        Column {
+                            if (files.isEmpty()) {
+                                Text(stringResource(R.string.last_backup_never))
+                            }
+                            files.forEach { (id, name) ->
+                                TextButton(onClick = {
+                                    driveFiles = null
+                                    preferencesViewModel.downloadDriveBackup(id, name, { uri ->
+                                        ImportTasksDialog.newImportTasksDialog(uri)
+                                            .show(parentFragmentManager, FRAG_TAG_IMPORT_TASKS)
+                                    }, {
+                                        context?.toast(R.string.google_request_failed)
+                                    })
+                                }) { Text(name) }
+                            }
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(onClick = { driveFiles = null }) {
+                            Text(stringResource(android.R.string.cancel))
+                        }
+                    },
+                )
+            }
         }
+    }
+
+    private fun signIn(scopes: ArrayList<String>, daily: Boolean, after: (() -> Unit)? = null) {
+        afterLogin = after
+        driveLauncher.launch(
+            Intent(requireContext(), GtasksLoginActivity::class.java)
+                .putStringArrayListExtra(GtasksLoginActivity.EXTRA_SCOPES, scopes)
+                .putExtra(GtasksLoginActivity.EXTRA_DAILY_DRIVE, daily)
+        )
     }
 
     override fun onResume() {

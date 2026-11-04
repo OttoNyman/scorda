@@ -38,6 +38,7 @@ import tasks.kmp.generated.resources.notifications
 import tasks.kmp.generated.resources.preferences_advanced
 import tasks.kmp.generated.resources.preferences_look_and_feel
 import tasks.kmp.generated.resources.settings
+import tasks.kmp.generated.resources.sync_and_backup
 import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
@@ -58,7 +59,7 @@ sealed class SettingsDestination(override val titleRes: StringResource) : Settin
     data object TaskEdit : SettingsDestination(Res.string.EPr_edit_screen_options)
     data object DateAndTime : SettingsDestination(Res.string.date_and_time)
     data object NavigationDrawer : SettingsDestination(Res.string.navigation_drawer)
-    data object Backups : SettingsDestination(Res.string.backup_BPr_header)
+    data object Backups : SettingsDestination(Res.string.sync_and_backup)
     data object Widgets : SettingsDestination(Res.string.widget_settings)
     data object McpServer : SettingsDestination(Res.string.mcp_server)
     data object Advanced : SettingsDestination(Res.string.preferences_advanced)

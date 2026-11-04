@@ -12,6 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
 import org.tasks.analytics.Firebase
+import org.tasks.data.dao.CaldavDao
+import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.files.FileHelper
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.kmp.org.tasks.time.DateFormatter
@@ -24,6 +26,7 @@ class BackupsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferences: Preferences,
     private val firebase: Firebase,
+    private val caldavDao: CaldavDao,
 ) : ViewModel() {
 
     var backupDirSummary by mutableStateOf("")
@@ -37,6 +40,12 @@ class BackupsViewModel @Inject constructor(
     var backupsEnabled by mutableStateOf(preferences.getBoolean(R.string.p_backups_enabled, true))
         private set
     var driveBackupEnabled by mutableStateOf(false)
+        private set
+    var tasksSyncEnabled by mutableStateOf(false)
+        private set
+    var listProblem by mutableStateOf("")
+        private set
+    var ambiguousLists by mutableStateOf<List<Pair<String, String>>>(emptyList())
         private set
     var driveAccountSummary by mutableStateOf("")
         private set
@@ -68,6 +77,7 @@ class BackupsViewModel @Inject constructor(
             R.string.p_backups_android_backup_enabled, true,
         )
         ignoreWarnings = preferences.getBoolean(R.string.p_backups_ignore_warnings, false)
+        refreshTasks()
         refreshDriveState(preferencesViewModel)
         refreshWarnings(preferencesViewModel)
         preferencesViewModel.updateBackups()
@@ -109,6 +119,70 @@ class BackupsViewModel @Inject constructor(
             R.string.param_type to type,
         )
     }
+
+    fun refreshTasks() {
+        viewModelScope.launch {
+            val account = caldavDao.getAccounts(TYPE_GOOGLE_TASKS).firstOrNull()
+            tasksSyncEnabled = account != null &&
+                    !preferences.getBoolean(R.string.p_google_tasks_paused, false)
+            listProblem = preferences.getStringValue(R.string.p_google_tasks_list_problem).orEmpty()
+            ambiguousLists = preferences.getStringValue(R.string.p_google_tasks_ambiguous)
+                .orEmpty()
+                .lineSequence()
+                .mapNotNull { line ->
+                    val parts = line.split('\t', limit = 2)
+                    val id = parts.getOrNull(0)?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                    id to parts.getOrNull(1).orEmpty().ifBlank { id }
+                }
+                .toList()
+        }
+    }
+
+    fun recreateScordaList() {
+        val current = preferences.getStringValue(R.string.p_google_tasks_list_id)
+        if (!current.isNullOrBlank()) {
+            preferences.setString(R.string.p_google_tasks_previous_list_id, current)
+        }
+        preferences.setString(R.string.p_google_tasks_list_id, null)
+        preferences.setBoolean(R.string.p_google_tasks_force_create, true)
+        preferences.setString(R.string.p_google_tasks_list_problem, null)
+        preferences.setString(R.string.p_google_tasks_ambiguous, null)
+        listProblem = ""
+        ambiguousLists = emptyList()
+        viewModelScope.launch {
+            caldavDao.getAccounts(TYPE_GOOGLE_TASKS).forEach {
+                caldavDao.update(it.copy(error = ""))
+            }
+        }
+    }
+
+    fun pickScordaList(id: String) {
+        preferences.setString(R.string.p_google_tasks_list_id, id)
+        preferences.setBoolean(R.string.p_google_tasks_force_create, false)
+        preferences.setString(R.string.p_google_tasks_list_problem, null)
+        preferences.setString(R.string.p_google_tasks_ambiguous, null)
+        listProblem = ""
+        ambiguousLists = emptyList()
+        viewModelScope.launch {
+            caldavDao.getAccounts(TYPE_GOOGLE_TASKS).forEach {
+                caldavDao.update(it.copy(error = ""))
+            }
+        }
+    }
+
+    fun pauseTasks() {
+        preferences.setBoolean(R.string.p_google_tasks_paused, true)
+        tasksSyncEnabled = false
+    }
+
+    fun setDriveDaily(enabled: Boolean) {
+        preferences.setBoolean(R.string.p_google_drive_backup, enabled)
+        driveBackupEnabled = enabled
+    }
+
+    fun driveGranted(): Boolean =
+        preferences.getBoolean(R.string.p_google_drive_granted, false) ||
+                preferences.getBoolean(R.string.p_google_drive_backup, false)
 
     fun refreshDriveState(preferencesViewModel: PreferencesViewModel) {
         val account = preferencesViewModel.driveAccount

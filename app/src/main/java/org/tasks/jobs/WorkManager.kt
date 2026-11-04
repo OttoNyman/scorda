@@ -29,7 +29,7 @@ interface WorkManager : BackgroundWork {
 
     fun scheduleConfigRefresh()
 
-    fun scheduleDriveUpload(uri: Uri, purge: Boolean)
+    fun scheduleDriveUpload(uri: Uri, purge: Boolean, force: Boolean = false)
 
     fun updatePurchases()
 

@@ -8,6 +8,8 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.todoroo.astrid.gtasks.api.HttpCredentialsAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.tasks.googleapis.HttpNotFoundException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.backup.BackupConstants
@@ -36,6 +38,20 @@ class DriveInvoker(
         try {
             execute(service.files().delete(file.id))
         } catch (ignored: HttpNotFoundException) {}
+    }
+
+    @Throws(IOException::class)
+    suspend fun findFolder(name: String): File? {
+        val query = "name = '$name' and mimeType = '$MIME_FOLDER' and trashed = false"
+        return execute(
+            service.files().list().setQ(query).setSpaces("drive").setFields("files(id, name, trashed)")
+        )?.files?.firstOrNull { it.trashed != true }
+    }
+
+    @Throws(IOException::class)
+    suspend fun download(fileId: String, out: java.io.OutputStream) = withContext(Dispatchers.IO) {
+        credentialsAdapter.checkToken()
+        service.files().get(fileId).setAlt("media").executeMediaAndDownloadTo(out)
     }
 
     @Throws(IOException::class)

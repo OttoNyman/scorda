@@ -25,9 +25,14 @@ import org.tasks.data.getDefaultAlarms
 import org.tasks.data.setDefaultReminders
 import org.tasks.date.DateTimeUtils.newDateTime
 import org.tasks.preferences.AppPreferences
+import org.tasks.resources.getString
 import org.tasks.service.TaskCompleter
 import org.tasks.service.TaskDeleter
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.google_access_expired
+import tasks.kmp.generated.resources.google_list_ambiguous
+import tasks.kmp.generated.resources.google_list_missing
 import java.io.IOException
 import java.util.Collections
 import kotlin.math.max
@@ -50,12 +55,29 @@ class GoogleTaskSynchronizer(
     private val taskCompleter: TaskCompleter,
     private val createTask: suspend () -> org.tasks.data.entity.Task,
 ) {
-    suspend fun sync(account: CaldavAccount, invoker: GtasksInvoker) {
+    suspend fun sync(
+        account: CaldavAccount,
+        invoker: GtasksInvoker,
+        savedListId: String? = null,
+        previousListId: String? = null,
+        forceCreate: Boolean = false,
+        saveListId: suspend (String) -> Unit = {},
+        onAmbiguous: suspend (List<Pair<String, String>>) -> Unit = {},
+        onMissing: suspend () -> Unit = {},
+        clearPreviousListId: suspend () -> Unit = {},
+    ) {
         Logger.d(TAG) { "$account: start sync" }
         try {
-            synchronize(account, invoker)
+            synchronize(
+                account, invoker, savedListId, previousListId, forceCreate,
+                saveListId, onAmbiguous, onMissing, clearPreviousListId,
+            )
         } catch (e: GoogleJsonResponseException) {
-            account.error = e.message
+            account.error = if (e.statusCode == 401) {
+                getString(Res.string.google_access_expired)
+            } else {
+                e.message
+            }
             when (e.statusCode) {
                 401, 503 -> Logger.e(TAG, e) { e.message.orEmpty() }
                 else -> reporting.reportException(e)
@@ -89,7 +111,78 @@ class GoogleTaskSynchronizer(
     }
 
     @Throws(IOException::class)
-    private suspend fun synchronize(account: CaldavAccount, gtasksInvoker: GtasksInvoker) {
+    private suspend fun prepareScordaList(
+        account: CaldavAccount,
+        gtasksInvoker: GtasksInvoker,
+        gtaskLists: List<TaskList>,
+        savedListId: String?,
+        previousListId: String?,
+        forceCreate: Boolean,
+        saveListId: suspend (String) -> Unit,
+        onAmbiguous: suspend (List<Pair<String, String>>) -> Unit,
+        onMissing: suspend () -> Unit,
+        clearPreviousListId: suspend () -> Unit,
+    ): String? {
+        val remote = gtaskLists.map { RemoteTaskList(it.id, it.title) }
+        val named = remote.filter { it.title == SCORDA_LIST_NAME }
+        val id = if (forceCreate && named.isEmpty()) {
+            gtasksInvoker.createGtaskList(SCORDA_LIST_NAME).id
+        } else if (forceCreate && named.size == 1) {
+            named.single().id
+        } else if (forceCreate) {
+            account.error = getString(Res.string.google_list_ambiguous)
+            caldavDao.update(account)
+            onAmbiguous(named.map { it.id to it.title.orEmpty() })
+            refreshBroadcaster.broadcastRefresh()
+            return null
+        } else {
+            when (val choice = chooseScordaList(remote, savedListId)) {
+                is ScordaListChoice.Ambiguous -> {
+                    account.error = getString(Res.string.google_list_ambiguous)
+                    caldavDao.update(account)
+                    onAmbiguous(choice.ids.map { listId ->
+                        listId to remote.first { it.id == listId }.title.orEmpty()
+                    })
+                    refreshBroadcaster.broadcastRefresh()
+                    return null
+                }
+                ScordaListChoice.Missing -> {
+                    account.error = getString(Res.string.google_list_missing)
+                    caldavDao.update(account)
+                    onMissing()
+                    refreshBroadcaster.broadcastRefresh()
+                    return null
+                }
+                ScordaListChoice.Create -> gtasksInvoker.createGtaskList(SCORDA_LIST_NAME).id
+                is ScordaListChoice.Ready -> choice.id
+            }
+        }
+        saveListId(id)
+        if (caldavDao.getCalendarByUuid(id) == null) {
+            caldavDao.insert(
+                CaldavCalendar(account = account.uuid, uuid = id, name = SCORDA_LIST_NAME),
+            )
+        }
+        val fromList = previousListId?.takeIf { it.isNotBlank() } ?: savedListId
+        moveLocalTasksToList(caldavDao, fromList, id)
+        clearPreviousListId()
+        val selected = gtaskLists.find { it.id == id }
+            ?: TaskList().setId(id).setTitle(SCORDA_LIST_NAME)
+        gtasksListService.updateLists(account, listOf(selected), id)
+        return id
+    }
+
+    private suspend fun synchronize(
+        account: CaldavAccount,
+        gtasksInvoker: GtasksInvoker,
+        savedListId: String?,
+        previousListId: String?,
+        forceCreate: Boolean,
+        saveListId: suspend (String) -> Unit,
+        onAmbiguous: suspend (List<Pair<String, String>>) -> Unit,
+        onMissing: suspend () -> Unit,
+        clearPreviousListId: suspend () -> Unit,
+    ) {
         val gtaskLists: MutableList<TaskList> = ArrayList()
         var nextPageToken: String? = null
         do {
@@ -101,7 +194,10 @@ class GoogleTaskSynchronizer(
             nextPageToken = remoteLists.nextPageToken
         } while (!nextPageToken.isNullOrEmpty())
         val remoteEtags = gtaskLists.associate { it.id to it.etag }
-        gtasksListService.updateLists(account, gtaskLists)
+        val scordaId = prepareScordaList(
+            account, gtasksInvoker, gtaskLists, savedListId, previousListId, forceCreate,
+            saveListId, onAmbiguous, onMissing, clearPreviousListId,
+        ) ?: return
         val defaultRemoteList = defaultListProvider.getDefaultList()
         if (defaultRemoteList.isGoogleTasks) {
             val list = caldavDao.getCalendarByUuid(defaultRemoteList.uuid)
@@ -110,6 +206,7 @@ class GoogleTaskSynchronizer(
             }
         }
         val calendars = caldavDao.getCalendarsByAccount(account.uuid!!)
+            .filter { it.uuid == scordaId }
             .onEach {
                 if (it.uuid.isNullOrEmpty()) {
                     reporting.reportException(RuntimeException("Empty remote id"))
@@ -244,18 +341,9 @@ class GoogleTaskSynchronizer(
         }
         dirtyDao.withDirtyVersion(caldavTaskId, dirtyVersion) {
             val remoteModel = Task()
-            val remoteId: String?
-            val defaultRemoteList = defaultListProvider.getDefaultList()
-            var listId =
-                if (defaultRemoteList.isGoogleTasks) defaultRemoteList.uuid else DEFAULT_LIST
-            if (newlyCreated) { // Create case
-                gtasksMetadata.calendar?.takeIf { it.isNotBlank() }?.let {
-                    listId = it
-                }
-            } else { // update case
-                remoteId = gtasksMetadata.remoteId
-                listId = gtasksMetadata.calendar!!
-                remoteModel.id = remoteId
+            val listId = gtasksMetadata.calendar?.takeIf { it.isNotBlank() } ?: return@withDirtyVersion
+            if (!newlyCreated) {
+                remoteModel.id = gtasksMetadata.remoteId
             }
 
             // Update the remote model's changed properties
@@ -263,7 +351,7 @@ class GoogleTaskSynchronizer(
                 remoteModel.deleted = true
             }
             remoteModel.title = truncate(task.title, MAX_TITLE_LENGTH)
-            remoteModel.notes = truncate(task.notes, MAX_DESCRIPTION_LENGTH)
+            remoteModel.notes = GoogleTaskNotes.pack(task.notes, task, MAX_DESCRIPTION_LENGTH)
             if (task.hasDueDate()) {
                 remoteModel.due =
                     GtasksApiUtilities.unixTimeToGtasksDueDate(task.dueDate)?.toStringRfc3339()
@@ -453,7 +541,9 @@ class GoogleTaskSynchronizer(
             task.completionDate = GtasksApiUtilities.gtasksCompletedTimeToUnixTime(gtask.completed?.let(::DateTime))
             val dueDate = GtasksApiUtilities.gtasksDueTimeToUnixTime(gtask.due?.let(::DateTime))
             mergeDates(createDueDate(org.tasks.data.entity.Task.URGENCY_SPECIFIC_DAY, dueDate), task)
-            task.notes = getTruncatedValue(task.notes, gtask.notes, MAX_DESCRIPTION_LENGTH)
+            val (humanNotes, extra) = GoogleTaskNotes.unpack(gtask.notes)
+            task.notes = getTruncatedValue(task.notes, humanNotes, MAX_DESCRIPTION_LENGTH)
+            if (extra != null) GoogleTaskNotes.apply(task, extra)
             if (recreate && task.isCompleted && !original.isCompleted) {
                 task.suppressRefresh()
                 repeatTaskHelper.handleRepeat(task)
@@ -518,7 +608,6 @@ class GoogleTaskSynchronizer(
 
     companion object {
         private const val TAG = "GoogleTaskSynchronizer"
-        private const val DEFAULT_LIST = "@default"
         private const val MAX_TITLE_LENGTH = 1024
         private const val MAX_DESCRIPTION_LENGTH = 8192
         private val PARENTS_FIRST = Comparator { o1: Task, o2: Task ->

@@ -115,8 +115,12 @@ class WorkManagerImpl(
 
     override fun updateBackgroundSync() {
         throttle.run {
-            val enabled = caldavDao.getAccounts(TYPE_GOOGLE_TASKS, TYPE_CALDAV)
-                .any { !it.isTasksOrg }
+            val google = if (preferences.getBoolean(R.string.p_google_tasks_paused, false)) {
+                emptyList()
+            } else {
+                caldavDao.getAccounts(TYPE_GOOGLE_TASKS)
+            }
+            val enabled = (google + caldavDao.getAccounts(TYPE_CALDAV)).any { !it.isTasksOrg }
             if (enabled) {
                 Timber.d("Enabling background sync")
                 val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, 1, TimeUnit.HOURS)
@@ -179,8 +183,9 @@ class WorkManagerImpl(
         }
     }
 
-    override fun scheduleDriveUpload(uri: Uri, purge: Boolean) {
-        if (!preferences.getBoolean(R.string.p_google_drive_backup, false)) {
+    override fun scheduleDriveUpload(uri: Uri, purge: Boolean, force: Boolean) {
+        val allowed = force || preferences.getBoolean(R.string.p_google_drive_backup, false)
+        if (!allowed) {
             return
         }
         val builder = OneTimeWorkRequest.Builder(DriveUploader::class.java)

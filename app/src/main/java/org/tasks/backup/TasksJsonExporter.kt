@@ -73,7 +73,7 @@ class TasksJsonExporter @Inject constructor(
         this.context = context
         exportCount = 0
         this.progressDialog = progressDialog
-        if (exportType == ExportType.EXPORT_TYPE_MANUAL) {
+        if (exportType != ExportType.EXPORT_TYPE_SERVICE) {
             handler = Handler()
         }
         runBackup(exportType)
@@ -97,9 +97,15 @@ class TasksJsonExporter @Inject constructor(
                     Files.getNameWithoutExtension(filename),
                     EXTENSION)
             FileHelper.copyStream(context!!, internalStorageBackup, externalStorageBackup)
-            workManager.scheduleDriveUpload(externalStorageBackup, exportType == ExportType.EXPORT_TYPE_SERVICE)
+            when (exportType) {
+                ExportType.EXPORT_TYPE_SERVICE ->
+                    workManager.scheduleDriveUpload(externalStorageBackup, purge = true)
+                ExportType.EXPORT_TYPE_DRIVE_NOW ->
+                    workManager.scheduleDriveUpload(externalStorageBackup, purge = false, force = true)
+                ExportType.EXPORT_TYPE_MANUAL -> Unit
+            }
             BackupManager(context).dataChanged()
-            if (exportType == ExportType.EXPORT_TYPE_MANUAL) {
+            if (exportType != ExportType.EXPORT_TYPE_SERVICE) {
                 onFinishExport(filename)
             }
         } catch (e: IOException) {
@@ -198,11 +204,12 @@ class TasksJsonExporter @Inject constructor(
     private fun getFileName(type: ExportType): String =
         when (type) {
             ExportType.EXPORT_TYPE_SERVICE -> String.format(BackupConstants.BACKUP_FILE_NAME, dateForExport)
-            ExportType.EXPORT_TYPE_MANUAL -> String.format(BackupConstants.EXPORT_FILE_NAME, dateForExport)
+            ExportType.EXPORT_TYPE_MANUAL,
+            ExportType.EXPORT_TYPE_DRIVE_NOW -> String.format(BackupConstants.EXPORT_FILE_NAME, dateForExport)
         }
 
     enum class ExportType {
-        EXPORT_TYPE_SERVICE, EXPORT_TYPE_MANUAL
+        EXPORT_TYPE_SERVICE, EXPORT_TYPE_MANUAL, EXPORT_TYPE_DRIVE_NOW
     }
 
     companion object {

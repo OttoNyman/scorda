@@ -15,6 +15,9 @@ object BackupConstants {
 
     fun isBackupFile(name: String?) = name?.let { MATCHER.matcher(it).matches() } ?: false
 
+    fun autoFilesToDelete(namesNewestFirst: List<String>, keep: Int = 7): List<String> =
+        namesNewestFirst.filter { it.startsWith("auto.") && isBackupFile(it) }.drop(keep)
+
     fun getTimestamp(file: java.io.File): Long {
         return getTimestampFromFilename(file.name) ?: file.lastModified()
     }

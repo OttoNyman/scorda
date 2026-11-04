@@ -131,6 +131,10 @@
     <string name="date_and_time">Дата и время</string>
     <string name="navigation_drawer">Панель навигации</string>
     <string name="backup_BPr_header">Резервные копии</string>
+    <string name="sync_and_backup">Синхронизация и бэкап</string>
+    <string name="google_list_missing">Список Scorda удалён в Google Tasks. Задачи на телефоне сохранены.</string>
+    <string name="google_list_ambiguous">В Google несколько списков с именем Scorda. Переименуйте лишние и синхронизируйте снова.</string>
+    <string name="google_access_expired">Доступ к Google истёк. Войдите снова.</string>
     <string name="preferences_advanced">Расширенные</string>
     <string name="about">О программе</string>
     <string name="widget_settings">Настройки виджета</string>

@@ -68,6 +68,9 @@ class GoogleAccountManager @Inject constructor(
     suspend fun getTasksAuthToken(activity: Activity, accountName: String): Bundle? =
             getToken(TasksScopes.TASKS, activity, accountName)
 
+    suspend fun getAuthToken(activity: Activity, accountName: String, scopes: List<String>): Bundle? =
+            getToken(scopes.joinToString(" "), activity, accountName)
+
     suspend fun getDriveAuthToken(activity: Activity, accountName: String): Bundle? =
             getToken(DriveScopes.DRIVE_FILE, activity, accountName)
 
