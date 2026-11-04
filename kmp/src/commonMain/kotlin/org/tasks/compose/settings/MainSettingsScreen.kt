@@ -124,6 +124,7 @@ fun MainSettingsScreen(
     onSettingsClick: (SettingsDestination) -> Unit,
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
+    showWorksWith: Boolean = false,
     onLinkDesktopClick: () -> Unit = {},
     bottomContent: @Composable () -> Unit = {},
 ) {
@@ -179,32 +180,38 @@ fun MainSettingsScreen(
             Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            if (showDesktopLinking) {
-                SettingsItemCard(position = CardPosition.First) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.link_desktop),
-                        summary = stringResource(Res.string.link_desktop_description),
-                        icon = TasksIcons.LAPTOP,
-                        onClick = onLinkDesktopClick,
-                    )
+        if (showDesktopLinking || showWorksWith) {
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                if (showDesktopLinking) {
+                    SettingsItemCard(
+                        position = if (showWorksWith) CardPosition.First else CardPosition.Only,
+                    ) {
+                        PreferenceRow(
+                            title = stringResource(Res.string.link_desktop),
+                            summary = stringResource(Res.string.link_desktop_description),
+                            icon = TasksIcons.LAPTOP,
+                            onClick = onLinkDesktopClick,
+                        )
+                    }
+                }
+                if (showWorksWith) {
+                    SettingsItemCard(
+                        position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
+                    ) {
+                        PreferenceRow(
+                            title = stringResource(Res.string.works_with_tasks),
+                            summary = stringResource(Res.string.works_with_tasks_description),
+                            icon = TasksIcons.EXTENSION,
+                            onClick = { onSettingsClick(SettingsDestination.WorksWith) },
+                        )
+                    }
                 }
             }
-            SettingsItemCard(
-                position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
-            ) {
-                PreferenceRow(
-                    title = stringResource(Res.string.works_with_tasks),
-                    summary = stringResource(Res.string.works_with_tasks_description),
-                    icon = TasksIcons.EXTENSION,
-                    onClick = { onSettingsClick(SettingsDestination.WorksWith) },
-                )
-            }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         SettingsCategories(
             showBackupWarning = showBackupWarning,
