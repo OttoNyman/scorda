@@ -1,4 +1,4 @@
-rootProject.name = "Tasks"
+rootProject.name = "Scorda"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -48,11 +48,16 @@ dependencyResolutionManagement {
     }
 }
 
+fun enabled(name: String) =
+    providers.gradleProperty("scorda.$name").orNull == "true"
+
 include("app")
 include("data")
 include(":kmp")
-include(":wear")
-include(":wear-datalayer")
 include(":cert4android")
-include(":composeApp")
-include(":baselineprofile")
+if (enabled("wear")) {
+    include(":wear")
+    include(":wear-datalayer")
+}
+if (enabled("composeApp")) include(":composeApp")
+if (enabled("baselineprofile")) include(":baselineprofile")

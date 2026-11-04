@@ -1,12 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    // id("com.google.gms.google-services")
+    // id("com.google.firebase.crashlytics")
     kotlin("android")
     id("dagger.hilt.android.plugin")
     id("com.google.android.gms.oss-licenses-plugin")
@@ -50,14 +49,14 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        testApplicationId = "org.tasks.test"
+        testApplicationId = "com.scorda.app.test"
         applicationId = libs.versions.applicationId.get()
         versionCode = appVersionCode
         versionName = appVersionName
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
         testInstrumentationRunner = "org.tasks.TestRunner"
-        manifestPlaceholders["appAuthRedirectScheme"] = "org.tasks"
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.scorda.app"
         resValue("string", "opentasks_authority", "$applicationId.opentasks")
     }
 
@@ -86,9 +85,6 @@ android {
     @Suppress("LocalVariableName")
     buildTypes {
         debug {
-            configure<CrashlyticsExtension> {
-                mappingFileUploadEnabled = false
-            }
             val tasks_mapbox_key_debug: String? by project
             val tasks_google_key_debug: String? by project
             resValue("string", "mapbox_key", tasks_mapbox_key_debug ?: "")
@@ -124,11 +120,11 @@ android {
 
     productFlavors {
         create("generic") {
+            isDefault = true
             dimension = "store"
             proguardFile("proguard-generic.pro")
         }
         create("googleplay") {
-            isDefault = true
             dimension = "store"
         }
     }
@@ -188,7 +184,9 @@ val googleplayImplementation by configurations
 dependencies {
     implementation(projects.data)
     implementation(projects.kmp)
-    baselineProfile(projects.baselineprofile)
+    if (findProject(":baselineprofile") != null) {
+        baselineProfile(project(":baselineprofile"))
+    }
     implementation(libs.kermit)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.adaptive.navigation.android)
@@ -303,7 +301,9 @@ dependencies {
     googleplayImplementation(libs.microsoft.authentication) {
         exclude("com.microsoft.device.display", "display-mask")
     }
-    googleplayImplementation(projects.wearDatalayer)
+    if (findProject(":wear-datalayer") != null) {
+        googleplayImplementation(project(":wear-datalayer"))
+    }
 
     androidTestImplementation(libs.dagger.hilt.testing)
     kspAndroidTest(libs.dagger.hilt.compiler)

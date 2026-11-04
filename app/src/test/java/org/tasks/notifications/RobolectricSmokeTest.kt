@@ -19,7 +19,7 @@ class RobolectricSmokeTest {
     fun androidResourcesAndManifestAreAvailable() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
-        assertEquals("org.tasks", context.packageName)
+        assertEquals("com.scorda.app", context.packageName)
         assertTrue(context.getString(R.string.TAd_actionEditTask).isNotBlank())
         assertTrue(context.resources.getQuantityString(R.plurals.task_count, 2, 2).isNotBlank())
     }

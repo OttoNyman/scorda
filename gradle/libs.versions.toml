@@ -1,5 +1,5 @@
 [versions]
-applicationId = "org.tasks"
+applicationId = "com.scorda.app"
 agp = "9.4.1"
 android-compileSdk = "37"
 android-minSdk = "26"

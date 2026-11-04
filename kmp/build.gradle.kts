@@ -225,6 +225,7 @@ val libicalZoneinfo by tasks.registering(Sync::class) {
 
 compose.resources {
     publicResClass = true
+    packageOfResClass = "tasks.kmp.generated.resources"
     generateResClass = always
     customDirectory(
         sourceSetName = "iosMain",

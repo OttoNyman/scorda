@@ -51,6 +51,7 @@ kotlin {
 
 compose.resources {
     publicResClass = true
+    packageOfResClass = "tasks.cert4android.generated.resources"
     generateResClass = always
 }
 
