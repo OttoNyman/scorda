@@ -8,9 +8,7 @@ import com.todoroo.astrid.timers.TimerPlugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
@@ -41,10 +39,6 @@ import org.tasks.data.db.Database
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
 import org.tasks.data.entity.Place
 import org.tasks.data.entity.Task
 import org.tasks.data.getOrCreateDefaultListFilter
@@ -97,7 +91,6 @@ import org.tasks.service.TaskMigrator
 import org.tasks.sync.SyncAdapters
 import org.tasks.sync.SyncRunner
 import org.tasks.sync.SyncSource
-import org.tasks.sync.microsoft.MicrosoftSynchronizer
 import org.tasks.tags.TagPickerViewModel
 import org.tasks.tasklist.HeaderFormatter
 import org.tasks.viewmodel.AppViewModel
@@ -124,28 +117,8 @@ val commonModule = module {
         val refreshScheduler = get<RefreshScheduler>()
         val runner = SyncRunner(scope, get(), { get() }) { pass ->
             val caldavSynchronizer = get<CaldavSynchronizer>()
-            val etebaseSynchronizer = get<EtebaseSynchronizer>()
-            pass.accounts(TYPE_CALDAV, TYPE_TASKS).forEach { account ->
+            pass.accounts(TYPE_CALDAV).forEach { account ->
                 caldavSynchronizer.sync(account, hasPro = pass.hasPro)
-            }
-            pass.accounts(TYPE_ETEBASE).forEach { account ->
-                etebaseSynchronizer.sync(account, hasPro = pass.hasPro)
-            }
-            pass.accounts(TYPE_GOOGLE_TASKS).forEach { account ->
-                get<DesktopGoogleTasksSynchronizer>()
-                    .sync(account, hasPro = pass.googleAndMicrosoftPro)
-            }
-            val microsoftAccounts = pass.accounts(TYPE_MICROSOFT)
-            if (microsoftAccounts.isNotEmpty()) {
-                val microsoftSynchronizer = get<MicrosoftSynchronizer>()
-                coroutineScope {
-                    microsoftAccounts.forEach { account ->
-                        launch {
-                            microsoftSynchronizer
-                                .sync(account, hasPro = pass.googleAndMicrosoftPro)
-                        }
-                    }
-                }
             }
             get<OpenTasksSyncer>().sync(hasPro = pass.hasPro)
         }

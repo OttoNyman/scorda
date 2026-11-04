@@ -64,9 +64,9 @@ class TasksServerEnvironment(
         const val ENV_STAGING = "staging"
         const val ENV_DEV = "local"
 
-        private const val PRODUCTION_CALDAV_URL = "https://caldav.tasks.org"
-        private const val PRODUCTION_NOMINATIM_URL = "https://nominatim.tasks.org"
-        private const val PRODUCTION_PLACES_URL = "https://places.tasks.org"
-        private const val STAGING_URL = "https://staging.tasks.org"
+        private const val PRODUCTION_CALDAV_URL = "https://disabled.invalid"
+        private const val PRODUCTION_NOMINATIM_URL = "https://nominatim.openstreetmap.org"
+        private const val PRODUCTION_PLACES_URL = "https://disabled.invalid"
+        private const val STAGING_URL = "https://disabled.invalid"
     }
 }

@@ -102,6 +102,10 @@ class CaldavSynchronizer(
     private val tagMetadataSync: TagMetadataSync,
 ) {
     suspend fun sync(account: CaldavAccount, hasPro: Boolean) {
+        if (account.isTasksOrg) {
+            Logger.w(TAG) { "Tasks.org sync disabled" }
+            return
+        }
         Logger.d(TAG) { "Synchronizing $account" }
         if (!hasPro && !account.isTasksOrg) {
             setError(account, getString(Res.string.subscription_required))

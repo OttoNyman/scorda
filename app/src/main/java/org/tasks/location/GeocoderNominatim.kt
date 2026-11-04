@@ -36,7 +36,7 @@ class GeocoderNominatim @Inject constructor(
 
     companion object {
         private const val USER_AGENT = "User-Agent"
-        private const val UA_VALUE = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}-${BuildConfig.BUILD_TYPE})"
+        private const val UA_VALUE = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}-${BuildConfig.BUILD_TYPE}; +https://github.com/OttoNyman/scorda)"
 
         internal fun jsonToPlace(json: String): Place? =
             Json.parseToJsonElement(json)

@@ -49,8 +49,8 @@ fun HelpAndFeedbackContent(
             viewModel.logEvent(SettingsClick.CONTACT_DEVELOPER)
             if (onContactDeveloper != null) {
                 onContactDeveloper()
-            } else {
-                openUri("mailto:${TasksUrls.SUPPORT_EMAIL}?subject=Tasks%20Feedback")
+            } else if (TasksUrls.SUPPORT_EMAIL.isNotBlank()) {
+                openUri("mailto:${TasksUrls.SUPPORT_EMAIL}?subject=Scorda%20Feedback")
             }
         },
         onSendLogs = {

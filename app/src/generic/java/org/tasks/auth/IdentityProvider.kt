@@ -29,9 +29,9 @@ data class IdentityProvider(
     companion object {
         val MICROSOFT = IdentityProvider(
             "Microsoft",
-            "https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration".toUri(),
-            "9d4babd5-e7ba-4286-ba4b-17274495a901",
-            "msauth://org.tasks/8wnYBRqh5nnQgFzbIXfxXSs41xE%3D".toUri(),
+            "https://disabled.invalid/microsoft".toUri(),
+            "disabled",
+            "msauth://com.scorda.app/disabled".toUri(),
             "user.read Tasks.ReadWrite openid offline_access email"
         )
     }

@@ -1,8 +1,8 @@
 {
-  "client_id": "a50fdbf3e289a7fb2fc6",
-  "redirect_uri": "org.tasks.github.a50fdbf3e289a7fb2fc6://oauth2redirect",
+  "client_id": "disabled",
+  "redirect_uri": "com.scorda.app.oauth.github://oauth2redirect",
   "authorization_scope": "none",
-  "discovery_uri": "https://caldav.tasks.org/oauth/github-configuration",
+  "discovery_uri": "https://disabled.invalid/oauth/github-configuration",
   "authorization_endpoint_uri": "",
   "token_endpoint_uri": "",
   "registration_endpoint_uri": "",

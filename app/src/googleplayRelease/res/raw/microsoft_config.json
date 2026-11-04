@@ -1,9 +1,9 @@
 {
-  "client_id" : "9d4babd5-e7ba-4286-ba4b-17274495a901",
-  "authorization_user_agent" : "DEFAULT",
-  "redirect_uri" : "msauth://org.tasks/sEe08kX5nGJi4miFX3VkNXICC%2FY%3D",
-  "account_mode" : "MULTIPLE",
-  "authorities" : [
+  "client_id": "disabled",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://com.scorda.app/disabled",
+  "account_mode": "MULTIPLE",
+  "authorities": [
     {
       "type": "AAD",
       "audience": {
@@ -11,10 +11,5 @@
         "tenant_id": "common"
       }
     }
-  ],
-  "logging": {
-    "level": "info",
-    "logcat_enabled": true,
-    "pii_enabled": false
-  }
+  ]
 }

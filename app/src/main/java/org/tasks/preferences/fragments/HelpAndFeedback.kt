@@ -59,17 +59,17 @@ class HelpAndFeedback : Fragment() {
                     context?.openUri(R.string.market_url)
                 },
                 onContactDeveloper = {
-                    val uri = Uri.fromParts(
-                        "mailto",
-                        "Alex <${TasksUrls.SUPPORT_EMAIL}>",
-                        null
-                    )
+                    val email = TasksUrls.SUPPORT_EMAIL
+                    if (email.isBlank()) return@HelpAndFeedbackContent
+                    val uri = Uri.fromParts("mailto", email, null)
                     val intent = Intent(Intent.ACTION_SENDTO, uri)
-                        .putExtra(Intent.EXTRA_SUBJECT, "Tasks Feedback")
+                        .putExtra(Intent.EXTRA_SUBJECT, "Scorda Feedback")
                         .putExtra(Intent.EXTRA_TEXT, diagnosticInfo.debugInfo)
                     startActivity(intent)
                 },
                 onSendLogs = {
+                    val email = TasksUrls.SUPPORT_EMAIL
+                    if (email.isBlank()) return@HelpAndFeedbackContent
                     lifecycleScope.launch {
                         val file = FileProvider.getUriForFile(
                             requireContext(),
@@ -78,8 +78,8 @@ class HelpAndFeedback : Fragment() {
                         )
                         val intent = Intent(Intent.ACTION_SEND)
                             .setType("message/rfc822")
-                            .putExtra(Intent.EXTRA_EMAIL, arrayOf(TasksUrls.SUPPORT_EMAIL))
-                            .putExtra(Intent.EXTRA_SUBJECT, "Tasks logs")
+                            .putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                            .putExtra(Intent.EXTRA_SUBJECT, "Scorda logs")
                             .putExtra(Intent.EXTRA_TEXT, diagnosticInfo.debugInfo)
                             .putExtra(Intent.EXTRA_STREAM, file)
                             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

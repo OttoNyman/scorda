@@ -85,7 +85,7 @@ class BlogFeedChecker(
 
     companion object {
         private val logger = Logger.withTag("BlogFeedChecker")
-        const val FEED_URL = "https://tasks.org/blog/rss.xml"
+        const val FEED_URL = "https://disabled.invalid/rss.xml"
 
         internal fun parseRfc2822(date: String): Long? = try {
             SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US).parse(date)?.time

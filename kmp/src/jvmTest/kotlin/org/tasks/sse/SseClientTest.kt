@@ -103,7 +103,7 @@ class SseClientTest {
 
         assertEquals(listOf(SyncSource.PUSH_NOTIFICATION), synced)
         val request = requests.first()
-        assertEquals("https://caldav.tasks.org/sse?token=t0ken", request.url.toString())
+        assertEquals("https://disabled.invalid/sse?token=t0ken", request.url.toString())
         assertEquals("text/event-stream", request.headers["Accept"])
         val basic = Base64.getEncoder().encodeToString("google_1:secret".toByteArray())
         assertEquals("Basic $basic", request.headers["Authorization"])

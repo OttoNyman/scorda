@@ -1309,7 +1309,7 @@ fun App(
                                     },
                                     onHelp = {
                                         showSignInDialog = false
-                                        openUrl("https://tasks.org/docs/sync")
+                                        openUrl("https://github.com/OttoNyman/scorda")
                                     },
                                     onCancel = { showSignInDialog = false },
                                 )
@@ -1383,7 +1383,7 @@ fun App(
                                 openUrl = openUrl,
                             )
                         },
-                        onHelp = { openUrl("https://tasks.org/docs/sync") },
+                        onHelp = { openUrl("https://github.com/OttoNyman/scorda") },
                         onCancel = { cloudSignInSource = null },
                     )
                 }

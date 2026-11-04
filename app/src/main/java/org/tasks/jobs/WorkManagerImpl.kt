@@ -29,14 +29,10 @@ import org.tasks.data.OpenTaskDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
 import org.tasks.data.entity.Task
 import org.tasks.date.DateTimeUtils.midnight
 import org.tasks.date.DateTimeUtils.newDateTime
-import org.tasks.feed.BlogFeedMode
 import org.tasks.jobs.DriveUploader.Companion.EXTRA_PURGE
 import org.tasks.jobs.DriveUploader.Companion.EXTRA_URI
 import org.tasks.jobs.MigrateLocalWork.Companion.EXTRA_ACCOUNT
@@ -119,13 +115,8 @@ class WorkManagerImpl(
 
     override fun updateBackgroundSync() {
         throttle.run {
-            val enabled = caldavDao.getAccounts(
-                TYPE_GOOGLE_TASKS,
-                TYPE_CALDAV,
-                TYPE_TASKS,
-                TYPE_ETEBASE,
-                TYPE_MICROSOFT
-            ).isNotEmpty()
+            val enabled = caldavDao.getAccounts(TYPE_GOOGLE_TASKS, TYPE_CALDAV)
+                .any { !it.isTasksOrg }
             if (enabled) {
                 Timber.d("Enabling background sync")
                 val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, 1, TimeUnit.HOURS)
@@ -208,26 +199,7 @@ class WorkManagerImpl(
         enqueueUnique(TAG_UPDATE_PURCHASES, UpdatePurchaseWork::class.java)
 
     override suspend fun scheduleBlogFeedCheck() {
-        val mode = BlogFeedMode.fromValue(
-            tasksPreferences.get(TasksPreferences.blogFeedMode, BlogFeedMode.ANNOUNCEMENTS.value)
-        )
-        if (mode == BlogFeedMode.NONE) {
-            workManager.cancelUniqueWork(TAG_BLOG_FEED)
-            return
-        }
-        val lastChecked = tasksPreferences.get(TasksPreferences.blogLastChecked, 0L)
-            .takeIf { it > 0 }
-            ?: currentTimeMillis()
-            .also { tasksPreferences.set(TasksPreferences.blogLastChecked, it) }
-        val time = lastChecked + TimeUnit.HOURS.toMillis(WorkManager.BLOG_FEED_INTERVAL_HOURS)
-        val overdue = currentTimeMillis() - lastChecked > TimeUnit.DAYS.toMillis(7)
-        enqueueUnique(
-            TAG_BLOG_FEED,
-            BlogFeedWork::class.java,
-            time,
-            constraints = if (overdue) networkConstraints else blogFeedConstraints,
-            backoffPolicy = BackoffPolicy.EXPONENTIAL,
-        )
+        workManager.cancelUniqueWork(TAG_BLOG_FEED)
     }
 
     @SuppressLint("EnqueueWork")

@@ -43,12 +43,12 @@ import javax.inject.Singleton
 class FlavorModule {
     @Provides
     fun getPlatformConfiguration() = PlatformConfiguration(
-        supportsTasksOrg = true,
-        supportsCaldav = true,
+        supportsTasksOrg = false,
+        supportsCaldav = false,
         supportsGoogleTasks = true,
-        supportsMicrosoft = true,
-        supportsOpenTasks = true,
-        supportsEteSync = true,
+        supportsMicrosoft = false,
+        supportsOpenTasks = false,
+        supportsEteSync = false,
         supportsBackupImport = true,
         supportsGeofences = true,
         supportsCalendarEvents = true,

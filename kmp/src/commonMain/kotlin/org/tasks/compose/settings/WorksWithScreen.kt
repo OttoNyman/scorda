@@ -161,10 +161,12 @@ private fun MissingSomething(onLinkClick: (String) -> Unit, modifier: Modifier =
     val linkStyles = TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
     val text = buildAnnotatedString {
         append(sentence)
-        listOf(
-            pullRequest to TasksUrls.WORKS_WITH_SOURCE,
-            email to "mailto:$email?subject=Works%20with%20Tasks.org",
-        ).forEach { (label, url) ->
+        buildList {
+            add(pullRequest to TasksUrls.WORKS_WITH_SOURCE)
+            if (email.isNotBlank()) {
+                add(email to "mailto:$email?subject=Scorda")
+            }
+        }.forEach { (label, url) ->
             val start = sentence.indexOf(label)
             if (start < 0) return@forEach
             addLink(

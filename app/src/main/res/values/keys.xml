@@ -5,30 +5,30 @@
 -->
 <resources>
   <string name="app_package">org.tasks</string>
-  <string name="backup_api_key">AEdPqrEAAAAI49v5bBusi_bq1bgLBB1LIsepNV0eBrFkQrBZkw</string>
+  <string name="backup_api_key"></string>
   <string name="FSA_label">Tasks Shortcut</string>
   <string name="caldav">CalDAV</string>
   <string name="etesync">EteSync</string>
   <string name="davx5">DAVx⁵</string>
   <string name="decsync">DecSync CC</string>
-  <string name="tasks_org">Tasks.org</string>
-  <string name="tasks_org_account">Tasks.org Cloud</string>
+  <string name="tasks_org">Scorda</string>
+  <string name="tasks_org_account">Scorda Cloud</string>
   <string name="gtasks_GPr_header">Google Tasks</string>
   <string name="microsoft">Microsoft To&#xA0;Do</string>
-  <string name="etebase_url">https://api.etebase.com/partner/tasksorg/</string>
-  <string name="help_url_sync">https://tasks.org/sync</string>
+  <string name="etebase_url">https://disabled.invalid/</string>
+  <string name="help_url_sync">https://github.com/OttoNyman/scorda</string>
 
-  <string name="url_davx5">https://tasks.org/davx5</string>
-  <string name="url_caldav">https://tasks.org/caldav</string>
-  <string name="url_etesync">https://tasks.org/etesync</string>
-  <string name="url_tasker">https://tasks.org/help/tasker</string>
-  <string name="url_donate">https://tasks.org/donate</string>
-  <string name="url_filters">https://tasks.org/filters</string>
-  <string name="url_backups">https://tasks.org/backups</string>
-  <string name="url_notifications">https://tasks.org/notifications</string>
-  <string name="url_troubleshoot_intents">https://tasks.org/intents</string>
-  <string name="url_google_tasks">https://tasks.org/docs/sync_google_tasks</string>
-  <string name="url_microsoft">https://tasks.org/docs/sync_microsoft</string>
+  <string name="url_davx5">https://github.com/OttoNyman/scorda</string>
+  <string name="url_caldav">https://github.com/OttoNyman/scorda</string>
+  <string name="url_etesync">https://github.com/OttoNyman/scorda</string>
+  <string name="url_tasker">https://github.com/OttoNyman/scorda</string>
+  <string name="url_donate">https://github.com/OttoNyman/scorda</string>
+  <string name="url_filters">https://github.com/OttoNyman/scorda</string>
+  <string name="url_backups">https://github.com/OttoNyman/scorda</string>
+  <string name="url_notifications">https://github.com/OttoNyman/scorda</string>
+  <string name="url_troubleshoot_intents">https://github.com/OttoNyman/scorda</string>
+  <string name="url_google_tasks">https://github.com/OttoNyman/scorda</string>
+  <string name="url_microsoft">https://github.com/OttoNyman/scorda</string>
 
   <string name="p_date_shortcut_morning">date_shortcut_morning</string>
   <string name="p_date_shortcut_afternoon">date_shortcut_afternoon</string>

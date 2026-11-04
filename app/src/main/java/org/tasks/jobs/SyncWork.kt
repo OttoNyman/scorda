@@ -24,19 +24,14 @@ import org.tasks.billing.Inventory
 import org.tasks.caldav.CaldavSynchronizer
 import org.tasks.data.OpenTaskDao
 import org.tasks.data.dao.CaldavDao
-import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
-import org.tasks.etebase.EtebaseSynchronizer
+import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.extensions.Context.hasNetworkConnectivity
 import org.tasks.gtasks.AndroidGoogleTaskSynchronizer
 import org.tasks.injection.BaseWorker
 import org.tasks.opentasks.OpenTasksSynchronizer
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
-import org.tasks.sync.microsoft.MicrosoftSynchronizer
 import org.tasks.sync.SyncSource
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import timber.log.Timber
@@ -50,10 +45,8 @@ class SyncWork @AssistedInject constructor(
     private val preferences: Preferences,
     private val caldavDao: CaldavDao,
     private val caldavSynchronizer: Lazy<CaldavSynchronizer>,
-    private val etebaseSynchronizer: Lazy<EtebaseSynchronizer>,
     private val googleTaskSynchronizer: Lazy<AndroidGoogleTaskSynchronizer>,
     private val openTasksSynchronizer: Lazy<OpenTasksSynchronizer>,
-    private val microsoftSynchronizer: Lazy<MicrosoftSynchronizer>,
     private val openTaskDao: OpenTaskDao,
     private val inventory: Inventory,
     private val tasksPreferences: TasksPreferences,
@@ -142,7 +135,7 @@ class SyncWork @AssistedInject constructor(
     }
 
     private suspend fun googleTaskJobs(): List<Deferred<Unit>> = coroutineScope {
-        getGoogleAccounts()
+        caldavDao.getAccounts(TYPE_GOOGLE_TASKS)
             .map { account ->
                 async(Dispatchers.IO) {
                     googleTaskSynchronizer.get().sync(account)
@@ -151,24 +144,15 @@ class SyncWork @AssistedInject constructor(
     }
 
     private suspend fun caldavJobs(): List<Deferred<Unit>> = coroutineScope {
-        getCaldavAccounts().map {
-            async(Dispatchers.IO) {
-                Thread.currentThread().contextClassLoader = context.classLoader
-                when (it.accountType) {
-                    TYPE_ETEBASE -> etebaseSynchronizer.get().sync(it, inventory.hasPro)
-                    TYPE_TASKS,
-                    TYPE_CALDAV -> caldavSynchronizer.get().sync(it, inventory.hasPro)
-                    TYPE_MICROSOFT -> microsoftSynchronizer.get().sync(it, hasPro = true)
+        caldavDao.getAccounts(TYPE_CALDAV)
+            .filter { !it.isTasksOrg }
+            .map {
+                async(Dispatchers.IO) {
+                    Thread.currentThread().contextClassLoader = context.classLoader
+                    caldavSynchronizer.get().sync(it, inventory.hasPro)
                 }
             }
-        }
     }
-
-    private suspend fun getGoogleAccounts() =
-        caldavDao.getAccounts(CaldavAccount.TYPE_GOOGLE_TASKS)
-
-    private suspend fun getCaldavAccounts() =
-            caldavDao.getAccounts(TYPE_CALDAV, TYPE_TASKS, TYPE_ETEBASE, TYPE_MICROSOFT)
 
     companion object {
         const val EXTRA_SOURCE = "extra_source"
