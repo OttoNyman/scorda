@@ -264,7 +264,7 @@
     <string name="always_display_full_date">Näita pikka kuupäeva</string>
     <string name="no_start_date">Alguskuupäev puudub</string>
     <string name="SSD_sort_start">Alguskuupäeva alusel</string>
-    <string name="tasks_org_account_required">Vajalik on Tasks.org-i konto</string>
+    <string name="tasks_org_account_required">Vajalik on Scorda-i konto</string>
     <string name="save_percent">Salvesta %d%%</string>
     <string name="repeats_from">Kordub alates</string>
     <string name="no_due_date">Tähtaeg puudub</string>
@@ -354,7 +354,7 @@
     <string name="sign_in_with_google">Logi sisse Google\'i kasutajakontoga</string>
     <string name="pro_free_trial">Uued tellijad võivad kasutada 7-päevast tasuta testperioodi, mida on võimalik igal ajahetkel katkestada</string>
     <string name="filter_eisenhower_box_2">Tähtis ja mittekiire</string>
-    <string name="migrate_count">Teisalda %s teenusesse Tasks.org</string>
+    <string name="migrate_count">Teisalda %s teenusesse Scorda</string>
     <string name="sort_completion_group">Lõpetatud %s</string>
     <string name="auto_dismiss_datetime_list">Ülesannete loend</string>
     <string name="upgrade_blurb_1">Tere! Minu nimi on Alex ja ma olen sõltumatu arendaja, kes on Taski arendust juhtinud</string>
@@ -373,7 +373,7 @@
     <string name="auto_dismiss_datetime_summary">Peale kuupäeva ja/või aja valimist, sulge kuupäevavalija automaatselt</string>
     <string name="permission_read_tasks">Täismahuline ligipääs Tasksi andmekogule</string>
     <string name="copied_to_clipboard">%s on kopeeritud lõikelauale</string>
-    <string name="upgrade_tasks_org_account_description">Sünkroniseeri Tasks.org teenusega ja tee koostööd teiste kasutajatega</string>
+    <string name="upgrade_tasks_org_account_description">Sünkroniseeri Scorda teenusega ja tee koostööd teiste kasutajatega</string>
     <string name="upgrade_more_customization_description">Muuda kõik kujundused, värvid ja ikoonid saadavaks</string>
     <string name="android_auto_backup_device_summary">Sa pead varukoopiateenusega nutiseadme seadistustes liituma. Kõikides nutiseadmetes sellist võimalust pole.</string>
     <string name="enable_alarms_description">Tagamaks, et alati saad õigel ajal teavitusi, palun luba nutiseadme seadistustest äratuste ja meeldetuletuste kasutamine</string>
@@ -404,8 +404,8 @@
     <string name="multiline_title_off">Ülesande salvestamiseks vajuta nuppu „Valmis“</string>
     <string name="delete_tasks_warning">%s saab olema kustutatud. Seda tegevust ei saa tagasi pöörata!</string>
     <string name="widget_view_more_tasks">Vaata veel ülesandeid</string>
-    <string name="subscription_required_fdroid">Tasks.org\'i sünkroonimisvõimaluste kasutamiseks on vajalik tellimus. Tellimused peavad olema lisatud Tasks-rakenduse Google Play versioonis.</string>
-    <string name="sponsorship_required_fdroid">Tasks.org\'i sünkroonimisvõimaluste kasutamiseks on vajalik GitHubi sponsorlus. Sponsoriks hakkamiseks klõpsa järgnevat linki.</string>
+    <string name="subscription_required_fdroid">Scorda\'i sünkroonimisvõimaluste kasutamiseks on vajalik tellimus. Tellimused peavad olema lisatud Tasks-rakenduse Google Play versioonis.</string>
+    <string name="sponsorship_required_fdroid">Scorda\'i sünkroonimisvõimaluste kasutamiseks on vajalik GitHubi sponsorlus. Sponsoriks hakkamiseks klõpsa järgnevat linki.</string>
     <string name="tos_updated_title">Me oleme uuendanud oma kasutustingimusi</string>
     <string name="accept">Nõustu</string>
     <string name="exit">Välju</string>
@@ -422,14 +422,14 @@
     <string name="location_update_interval_summary">Aeg-ajalt toimuvad asukoha uuendused parandavad geotarastuse töökindlust</string>
     <string name="per_list_sort_title">Loendikohane järjestus</string>
     <string name="per_list_sort_summary">Järjestuse ja rühmitamise seadistused jäävad salvestuvad iga loendi puhul eraldi</string>
-    <string name="guest_create_list_message">Sul on praegu külaliskasutaja juurdepääs jagatud loenditele. Oma isiklike loendite loomiseks ja pilvega sünkroonimiseks on vaja Tasks.org-i tellimust. Või võid luua tasuta kohaliku nimekirja, mis jääb sellesse seadmesse.</string>
-    <string name="upgrade_desktop_app">Tasks.org töölaua jaoks</string>
+    <string name="guest_create_list_message">Sul on praegu külaliskasutaja juurdepääs jagatud loenditele. Oma isiklike loendite loomiseks ja pilvega sünkroonimiseks on vaja Scorda-i tellimust. Või võid luua tasuta kohaliku nimekirja, mis jääb sellesse seadmesse.</string>
+    <string name="upgrade_desktop_app">Scorda töölaua jaoks</string>
     <string name="upgrade_desktop_app_description">Varajane ligipääs töölauarakendusele</string>
     <string name="upgrade_friends_and_family">Sõbrad ja pere</string>
     <string name="upgrade_friends_and_family_description">5 tasuta külalist jagatud loendites. Töötab ka „Apple Reminders“ rakendusega</string>
     <string name="read_more">Loe lisaks</string>
     <string name="p_per_list_sort">per_list_sort</string>
-    <string name="legal_disclosure_prefix_using">Tasks.org-i kasutamisel</string>
+    <string name="legal_disclosure_prefix_using">Scorda-i kasutamisel</string>
     <string name="sort_options">Järjestuse valikud</string>
     <string name="write_permission_label">Muuda ülesandeid</string>
     <string name="permission_write_tasks">Lisa, muuda ja kustuta oma ülesandeid, loendeid, silte ja kohti</string>

@@ -47,7 +47,7 @@
     <string name="davx5_selection_description">Sinkronizatu zure zereginak DAVx⁵ aplikazioarekin</string>
     <string name="etesync_selection_description">Muturretik-muturrera zifratutako sinkronizazioa</string>
     <string name="decsync_selection_description">Fitxategietan oinarritutako sinkronizazioa</string>
-    <string name="sign_in_to_tasks">Hasi saioa Tasks.org gunean</string>
+    <string name="sign_in_to_tasks">Hasi saioa Scorda gunean</string>
     <string name="sign_in_with_google">Hasi saioa Google-n</string>
     <string name="sign_in_with_github">Hasi saioa GitHub erabiliz</string>
     <string name="completed">Amaituta</string>
@@ -96,12 +96,12 @@
     <string name="your_subscription_expired">Zure harpidetza agortu da. Harpidetu orain zerbitzua berrekiteko.</string>
     <string name="insufficient_subscription">Harpidetza maila ez da nahikoa. Hobetu zure harpidetza zerbitzua berrekiteko.</string>
     <string name="authentication_required">Autentifikazioa derrigorrezkoa</string>
-    <string name="app_password_save">Erabili kredentzial hauek hirugarrengoen aplikazio bat konfiguratzeko. Zure Tasks.org kontura sarbide osoa ematen dute, ez idatzi inon eta ez partekatu inorekin!</string>
+    <string name="app_password_save">Erabili kredentzial hauek hirugarrengoen aplikazio bat konfiguratzeko. Zure Scorda kontura sarbide osoa ematen dute, ez idatzi inon eta ez partekatu inorekin!</string>
     <string name="url">URL-a</string>
     <string name="user">Erabiltzailea</string>
     <string name="password">Pasahitza</string>
     <string name="migrating_tasks">Zereginak migratzen</string>
-    <string name="migrate_count">Eraman %1$s Tasks.org gunera</string>
+    <string name="migrate_count">Eraman %1$s Scorda gunera</string>
     <string name="preferences_look_and_feel">Itxura</string>
     <string name="notifications">Jakinarazpenak</string>
     <string name="task_defaults">Zereginen lehenespenak</string>

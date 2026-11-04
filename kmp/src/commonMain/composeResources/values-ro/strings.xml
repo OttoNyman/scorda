@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">Sincronizează-ți sarcinile cu aplicația DAVx⁵</string>
     <string name="etesync_selection_description">Sincronizare criptată end-to-end</string>
     <string name="decsync_selection_description">Sincronizare pe bază de fișiere</string>
-    <string name="sign_in_to_tasks">Conectează-te la Tasks.org</string>
+    <string name="sign_in_to_tasks">Conectează-te la Scorda</string>
     <string name="sign_in_with_google">Conectează-te cu Google</string>
     <string name="sign_in_with_github">Conectează-te cu GitHub</string>
     <string name="completed">Finalizat</string>
@@ -112,12 +112,12 @@
     <string name="your_subscription_expired">Abonamentul a expirat. Abonează-te acum pentru a relua serviciul.</string>
     <string name="insufficient_subscription">Nivel de abonament insuficient. Actualizează abonamentul pentru a relua serviciul.</string>
     <string name="authentication_required">Autentificare necesară</string>
-    <string name="app_password_save">Utilizează aceste acreditări pentru a configura o aplicație terță. Acestea acordă acces complet la contul Tasks.org, nu le nota și nu le împărtăși cu nimeni!</string>
+    <string name="app_password_save">Utilizează aceste acreditări pentru a configura o aplicație terță. Acestea acordă acces complet la contul Scorda, nu le nota și nu le împărtăși cu nimeni!</string>
     <string name="url">URL</string>
     <string name="user">Utilizator</string>
     <string name="password">Parolă</string>
     <string name="migrating_tasks">Mutarea sarcinilor</string>
-    <string name="migrate_count">Mută %1$s în Tasks.org</string>
+    <string name="migrate_count">Mută %1$s în Scorda</string>
     <string name="preferences_look_and_feel">Aspect și senzație</string>
     <string name="notifications">Notificări</string>
     <string name="task_defaults">Sarcini implicite</string>
@@ -181,11 +181,11 @@
     <string name="blog_feed_none">Niciuna</string>
     <string name="cannot_access_account">Nu se poate accesa contul</string>
     <string name="email_to_task_address">Adresa ta de e-mail</string>
-    <string name="legal_disclosure_prefix_using">Prin utilizarea Tasks.org</string>
+    <string name="legal_disclosure_prefix_using">Prin utilizarea Scorda</string>
     <string name="tos_updated_title">Am actualizat Termenii și condițiile</string>
     <string name="accept">Acceptă</string>
     <string name="email_to_task">E-mail către sarcină</string>
-    <string name="upgrade_subscription_banner">Îți mulțumim pentru suport! Actualizează-ți abonamentul pentru a activa Tasks.org Cloud Sync</string>
+    <string name="upgrade_subscription_banner">Îți mulțumim pentru suport! Actualizează-ți abonamentul pentru a activa Scorda Cloud Sync</string>
     <string name="new_list">Crează o nouă listă</string>
     <string name="list_members">Lista membrilor</string>
     <string name="remove_user">Elimini utilizatorul?</string>
@@ -493,7 +493,7 @@
     <string name="theme_wallpaper">Imagine de fundal</string>
     <string name="theme_day_night">Zi/Noapte</string>
     <string name="theme_system_default">Implicit</string>
-    <string name="works_with_desktop">Tasks.org pentru desktop</string>
+    <string name="works_with_desktop">Scorda pentru desktop</string>
     <string name="mcp_access_advanced">Avansat</string>
     <string name="mcp_tools_group_lists">Liste</string>
     <string name="mcp_tools_group_tags">Etichete</string>

@@ -47,7 +47,7 @@
     <string name="davx5_selection_description">Sinchronizuoti užduotis su DAVx⁵ programėle</string>
     <string name="etesync_selection_description">Sinchronizacija paremta abipusiu šifravimu</string>
     <string name="decsync_selection_description">Failais paremta sinchronizacija</string>
-    <string name="sign_in_to_tasks">Prisijungti prie Tasks.org</string>
+    <string name="sign_in_to_tasks">Prisijungti prie Scorda</string>
     <string name="sign_in_with_google">Prisijungti naudojant Google</string>
     <string name="sign_in_with_github">Prisijungti naudojant GitHub</string>
     <string name="completed">Įvykdyta</string>
@@ -96,12 +96,12 @@
     <string name="your_subscription_expired">Jūsų prenumeratos galiojimo laikas baigėsi. Prenumeruokite dabar, norėdami tęsti paslaugą.</string>
     <string name="insufficient_subscription">Nepakankamas prenumeratos lygis. Atnaujinkite savo prenumeratą, kad būtų tęsiama paslauga.</string>
     <string name="authentication_required">Autentifikacija privaloma</string>
-    <string name="app_password_save">Naudodami šiuos kredencialus sukonfigūruokite trečiosios šalies programėlę. Jie suteikia visišką prieigą prie jūsų Tasks.org paskyros, nerašykite jų ir nesidalykite jais su niekuo!</string>
+    <string name="app_password_save">Naudodami šiuos kredencialus sukonfigūruokite trečiosios šalies programėlę. Jie suteikia visišką prieigą prie jūsų Scorda paskyros, nerašykite jų ir nesidalykite jais su niekuo!</string>
     <string name="url">URL</string>
     <string name="user">Vartotojas</string>
     <string name="password">Slaptažodis</string>
     <string name="migrating_tasks">Migruojamos užduotys</string>
-    <string name="migrate_count">Migruoti %1$s į Tasks.org</string>
+    <string name="migrate_count">Migruoti %1$s į Scorda</string>
     <string name="preferences_look_and_feel">Išvaizda</string>
     <string name="notifications">Pranešimai</string>
     <string name="task_defaults">Užduoties numatyti nustatymai</string>

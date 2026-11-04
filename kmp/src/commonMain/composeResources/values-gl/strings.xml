@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">Sincronizar tarefas co aplicativo DAVx⁵</string>
     <string name="etesync_selection_description">Sincronización con cifrado par a par</string>
     <string name="decsync_selection_description">Sincronización baseada en ficheiros</string>
-    <string name="sign_in_to_tasks">Acceder a Tasks.org</string>
+    <string name="sign_in_to_tasks">Acceder a Scorda</string>
     <string name="sign_in_with_google">Acceso con Google</string>
     <string name="sign_in_with_github">Acceso con GitHub</string>
     <string name="completed">Finalizada</string>
@@ -112,12 +112,12 @@
     <string name="your_subscription_expired">A túa subscrición caducou. Subscríbete agora para retomar o servizo.</string>
     <string name="insufficient_subscription">Nivel de subscrición insuficiente. Por favor actualiza a túa subscrición para reanudar o servizo.</string>
     <string name="authentication_required">Precísase autenticación</string>
-    <string name="app_password_save">Usa estas credenciais para configurar unha aplicación de terceiros. Conceden acceso completo á túa conta de Tasks.org, non as escribas nin as compartas con ninguén!</string>
+    <string name="app_password_save">Usa estas credenciais para configurar unha aplicación de terceiros. Conceden acceso completo á túa conta de Scorda, non as escribas nin as compartas con ninguén!</string>
     <string name="url">URL</string>
     <string name="user">Usuario/a</string>
     <string name="password">Contrasinal</string>
     <string name="migrating_tasks">Migrando as tarefas</string>
-    <string name="migrate_count">Mover %1$s a Tasks.org</string>
+    <string name="migrate_count">Mover %1$s a Scorda</string>
     <string name="preferences_look_and_feel">Estilo e apariencia</string>
     <string name="notifications">Notificacións</string>
     <string name="task_defaults">Predefinicións das tarefas</string>

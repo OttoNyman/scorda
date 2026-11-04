@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">உங்கள் பணிகளை DAVX⁵ பயன்பாட்டுடன் ஒத்திசைக்கவும்</string>
     <string name="etesync_selection_description">திறந்த மூல, இறுதி முதல் இறுதி மறைகுறியாக்க ஒத்திசைவு</string>
     <string name="decsync_selection_description">கோப்பு அடிப்படையிலான ஒத்திசைவு</string>
-    <string name="sign_in_to_tasks">Tasks.org இல் உள்நுழைக</string>
+    <string name="sign_in_to_tasks">Scorda இல் உள்நுழைக</string>
     <string name="sign_in_with_google">Google உடன் உள்நுழைக</string>
     <string name="sign_in_with_github">கிதுபுடன் உள்நுழைக</string>
     <string name="completed">முடிந்தது</string>

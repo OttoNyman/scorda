@@ -334,9 +334,9 @@
     <string name="sort_created_group">Създадена %s</string>
     <string name="sort_modified_group">Променена %s</string>
     <string name="github_sponsor">Дарител</string>
-    <string name="tasks_org_account_required">Необходим е профил в Tasks.org</string>
+    <string name="tasks_org_account_required">Необходим е профил в Scorda</string>
     <string name="sign_in_with_google">Вход с Google</string>
-    <string name="migrate_count">Преместване на %s в Tasks.org</string>
+    <string name="migrate_count">Преместване на %s в Scorda</string>
     <string name="above_average">Над средното</string>
     <string name="migrating_tasks">Преместване на задачи</string>
     <string name="save_percent">Спестявате %d%%</string>
@@ -358,7 +358,7 @@
     <string name="compact">Компакт</string>
     <string name="no_google_play_subscription">Не е намерен подходящ абонамент от Google Play</string>
     <string name="authentication_required">Необходимо е удостоверяване</string>
-    <string name="upgrade_tasks_org_account_description">Синхронизиране чрез Tasks.org и сътрудничество с други потребители</string>
+    <string name="upgrade_tasks_org_account_description">Синхронизиране чрез Scorda и сътрудничество с други потребители</string>
     <string name="snackbar_tasks_completed">%d задачи са завършени</string>
     <string name="dismiss">Отхвърляне</string>
     <string name="hint_customize_edit_title">Твърде много информация\?</string>
@@ -404,9 +404,9 @@
     <string name="multiline_title_off">Докоснете „Готово“ за запазване на задачата</string>
     <string name="delete_tasks_warning">Задачата %s ще бъде премахната. Действието е необратимо!</string>
     <string name="widget_view_more_tasks">Повече задачи</string>
-    <string name="subscription_required_fdroid">За да използвате синхронизацията на Tasks.org е необходим абонамент. Абонаментите трябва да се започват от версията на Tasks в Google Play.</string>
-    <string name="sponsorship_required_fdroid">За да използвате синхронизацията на Tasks.org е необходимо даряване чрез Гитхъб. Докоснете отдолу, за да станете дарител.</string>
-    <string name="legal_disclosure_prefix_using">Използвайки Tasks.org</string>
+    <string name="subscription_required_fdroid">За да използвате синхронизацията на Scorda е необходим абонамент. Абонаментите трябва да се започват от версията на Tasks в Google Play.</string>
+    <string name="sponsorship_required_fdroid">За да използвате синхронизацията на Scorda е необходимо даряване чрез Гитхъб. Докоснете отдолу, за да станете дарител.</string>
+    <string name="legal_disclosure_prefix_using">Използвайки Scorda</string>
     <string name="tos_updated_title">Променихме условията за използване на услугата</string>
     <string name="accept">Приемане</string>
     <string name="exit">Изход</string>
@@ -424,8 +424,8 @@
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="per_list_sort_title">Запомняне на сортирането по списък</string>
     <string name="per_list_sort_summary">Запазване на настройките на сортиране и групиране за всеки списък поотделно</string>
-    <string name="guest_create_list_message">В момента имате достъп като гост до споделените списъци. За да създавате и синхронизирате свои списъци в облака, ще ви е необходим абонамент за Tasks.org. Можете и да създадете безплатен местен списък, който остава на това устройство. Периодичните обновявания на местоположението подобряват надеждността на ограниченията по местоположение.</string>
-    <string name="upgrade_desktop_app">Tasks.org за настолно у-во</string>
+    <string name="guest_create_list_message">В момента имате достъп като гост до споделените списъци. За да създавате и синхронизирате свои списъци в облака, ще ви е необходим абонамент за Scorda. Можете и да създадете безплатен местен списък, който остава на това устройство. Периодичните обновявания на местоположението подобряват надеждността на ограниченията по местоположение.</string>
+    <string name="upgrade_desktop_app">Scorda за настолно у-во</string>
     <string name="upgrade_desktop_app_description">Ранен достъп до новото приложение за настолни устройства</string>
     <string name="upgrade_friends_and_family">Приятели и семейство</string>
     <string name="upgrade_friends_and_family_description">5 безплатни достъпа като гост на споделени листове. Работи с Apple Reminders</string>

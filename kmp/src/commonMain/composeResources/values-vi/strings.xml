@@ -47,7 +47,7 @@
     <string name="davx5_selection_description">Đồng bộ hoá các công việc của bạn bằng ứng dụng DAVx⁵</string>
     <string name="etesync_selection_description">Đồng bộ hoá được mã hoá đầu cuối</string>
     <string name="decsync_selection_description">Đồng bộ hoá dựa trên từng tệp</string>
-    <string name="sign_in_to_tasks">Đăng nhập vào Tasks.org</string>
+    <string name="sign_in_to_tasks">Đăng nhập vào Scorda</string>
     <string name="sign_in_with_google">Đăng nhập bằng Google</string>
     <string name="sign_in_with_github">Đăng nhập bằng GitHub</string>
     <string name="completed">Hoàn tất</string>
@@ -104,12 +104,12 @@
     <string name="your_subscription_expired">Đăng ký của bạn đã hết hạn. Đăng ký ngay để tiếp tục dịch vụ.</string>
     <string name="insufficient_subscription">Không đủ cấp độ đăng ký. Vui lòng nâng cấp đăng ký của bạn để tiếp tục dịch vụ.</string>
     <string name="authentication_required">Yêu cầu xác thực</string>
-    <string name="app_password_save">Sử dụng thông tin này để thiết lập một ứng dụng bên thứ ba. Chúng cấp quyền truy cập toàn bộ vào tài khoản Tasks.org của bạn, đừng viết chúng ra hoặc chia sẻ chúng với bất kỳ ai!</string>
+    <string name="app_password_save">Sử dụng thông tin này để thiết lập một ứng dụng bên thứ ba. Chúng cấp quyền truy cập toàn bộ vào tài khoản Scorda của bạn, đừng viết chúng ra hoặc chia sẻ chúng với bất kỳ ai!</string>
     <string name="url">URL</string>
     <string name="user">Người dùng</string>
     <string name="password">Mật khẩu</string>
     <string name="migrating_tasks">Đang di cư các công việc</string>
-    <string name="migrate_count">Di chuyển %1$s đến Tasks.org</string>
+    <string name="migrate_count">Di chuyển %1$s đến Scorda</string>
     <string name="preferences_look_and_feel">Ngoại hình</string>
     <string name="notifications">Thông báo</string>
     <string name="task_defaults">Giá trị mặc định</string>

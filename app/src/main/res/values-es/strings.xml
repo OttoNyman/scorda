@@ -340,7 +340,7 @@
     <string name="sign_in_with_google">Acceder con Google</string>
     <string name="github_sponsor">Patrocinador</string>
     <string name="authentication_required">Se necesita autenticación</string>
-    <string name="migrate_count">Mueve %s a Tasks.org</string>
+    <string name="migrate_count">Mueve %s a Scorda</string>
     <string name="migrating_tasks">Migración de tareas</string>
     <string name="github_sponsors">Patrocinadores de GitHub</string>
     <string name="no_google_play_subscription">No se encontró ninguna suscripción de Google Play elegible</string>
@@ -360,12 +360,12 @@
     <string name="CFC_startBefore_text">Comienza: \?</string>
     <string name="subscription">Suscripción</string>
     <string name="widget_show_title">Mostrar título</string>
-    <string name="tasks_org_account_required">Se requiere una cuenta de Tasks.org</string>
+    <string name="tasks_org_account_required">Se requiere una cuenta de Scorda</string>
     <string name="privacy">Privacidad</string>
     <string name="open_source">Código abierto</string>
     <string name="support">Asistencia</string>
     <string name="upgrade_open_source_description">Su suscripción apoya el desarrollo continuo</string>
-    <string name="upgrade_tasks_org_account_description">Sincronizar con Tasks.org y colaborar con otros usuarios</string>
+    <string name="upgrade_tasks_org_account_description">Sincronizar con Scorda y colaborar con otros usuarios</string>
     <string name="upgrade_more_customization_description">Desbloquea todos los temas, colores e iconos</string>
     <string name="upgrade_more_customization">Más personalización</string>
     <string name="pro_free_trial">Los suscriptores nuevos reciben una prueba gratuita de 7 días, cancelable en cualquier momento</string>
@@ -413,7 +413,7 @@
     <string name="widget_view_more_tasks">Ver más tareas</string>
     <string name="import_failed">Importación fallida</string>
     <string name="import_failed_message">No se pudo leer el archivo de respaldo</string>
-    <string name="legal_disclosure_prefix_using">Al utilizar Tasks.org</string>
+    <string name="legal_disclosure_prefix_using">Al utilizar Scorda</string>
     <string name="accept">Aceptar</string>
     <string name="rmd_EPr_rmd_time_desc">Las notificaciones de las tareas de todo el día aparecerán a las %1$s</string>
     <string name="email_to_task">Correo electrónico a tarea</string>

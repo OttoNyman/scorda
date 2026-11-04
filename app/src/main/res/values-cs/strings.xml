@@ -335,13 +335,13 @@
     <string name="chip_appearance">Vzhled známek</string>
     <string name="chips">Známky</string>
     <string name="your_subscription_expired">Platnost vašeho předplatného skončila. Pokud chcete službu dále využívat, obnovte ho.</string>
-    <string name="tasks_org_account_required">Je vyžadován účet na Tasks.org</string>
+    <string name="tasks_org_account_required">Je vyžadován účet na Scorda</string>
     <string name="copied_to_clipboard">%s zkopírováno do schránky</string>
     <string name="app_passwords_more_info">Synchronizujte své úkoly a kalendáře s desktopovými a mobilními aplikacemi třetích stran. Pro více informací klepněte sem</string>
     <string name="app_password">Heslo k aplikaci</string>
     <string name="save_percent">Ušetříte %d%%</string>
     <string name="above_average">Nadprůměrné</string>
-    <string name="migrate_count">Přesunout %s do Tasks.org</string>
+    <string name="migrate_count">Přesunout %s do Scorda</string>
     <string name="migrating_tasks">Probíhá přesouvání úkolů</string>
     <string name="github_sponsor">Sponzor</string>
     <string name="authentication_required">Je vyžadováno ověření se</string>
@@ -365,7 +365,7 @@
     <string name="SSD_sort_start">Podle data zahájení</string>
     <string name="ok">OK</string>
     <string name="upgrade_open_source_description">Vaše předplatné podporuje pokračování vývoje</string>
-    <string name="upgrade_tasks_org_account_description">Synchronizujte s Tasks.org a spolupracujte s ostatními uživateli</string>
+    <string name="upgrade_tasks_org_account_description">Synchronizujte s Scorda a spolupracujte s ostatními uživateli</string>
     <string name="upgrade_more_customization_description">Odemknout všechny vzhledy, barvy a ikony</string>
     <string name="upgrade_more_customization">Další přizpůsobení</string>
     <string name="pro_free_trial">Noví předplatitelé dostanou 7 dnů na vyzkoušení zdarma. Předplatné je možné kdykoli zrušit</string>
@@ -411,9 +411,9 @@
     <string name="banner_app_updated_description">Aplikace Tasks byla aktualizována na %s. Chcete zobrazit seznam změn?</string>
     <string name="delete_tasks_warning">Úkol %s bude odstraněn. Tato akce je nevratná!</string>
     <string name="widget_view_more_tasks">Zobrazit další úkoly</string>
-    <string name="subscription_required_fdroid">Pro využití synchronizace Tasks.org je vyžadováno předplatné. Předplatná lze pořídit v Google Play verzi aplikace Tasks.</string>
-    <string name="sponsorship_required_fdroid">Sponzorství na GitHubu je vyžadováno pro synchronizaci Tasks.org. Kliknutím níže se stanete sponzorem.</string>
-    <string name="legal_disclosure_prefix_using">Používáním Tasks.org</string>
+    <string name="subscription_required_fdroid">Pro využití synchronizace Scorda je vyžadováno předplatné. Předplatná lze pořídit v Google Play verzi aplikace Tasks.</string>
+    <string name="sponsorship_required_fdroid">Sponzorství na GitHubu je vyžadováno pro synchronizaci Scorda. Kliknutím níže se stanete sponzorem.</string>
+    <string name="legal_disclosure_prefix_using">Používáním Scorda</string>
     <string name="tos_updated_title">Upravili jsme naše Podmínky služby</string>
     <string name="accept">Přijmout</string>
     <string name="exit">Ukončit</string>
@@ -427,7 +427,7 @@
     <string name="upgrade_email_to_task_description">Přeměňte e-maily na úkoly jejich přesměrováním do vaší soukromé schránky</string>
     <string name="advanced_tools">Pokročilé nástroje</string>
     <string name="advanced_tools_description">Místa Google, CalDAV, EteSync a další!</string>
-    <string name="guest_create_list_message">V současné době máte přístup hosta ke sdíleným seznamům. Pro vytvoření a synchronizaci vašich vlastních soukromých seznamů budete potřebovat předplatné Tasks.org. Můžete si také vytvořit lokální seznam, který zůstane na vašem zařízení.</string>
+    <string name="guest_create_list_message">V současné době máte přístup hosta ke sdíleným seznamům. Pro vytvoření a synchronizaci vašich vlastních soukromých seznamů budete potřebovat předplatné Scorda. Můžete si také vytvořit lokální seznam, který zůstane na vašem zařízení.</string>
     <string name="upgrade_friends_and_family">Přátelé a rodina</string>
     <string name="upgrade_friends_and_family_description">5 bezplatných hostů ve sdílených seznamech. Funguje s Připomínkami Apple</string>
     <string name="p_per_list_sort">per_list_sort</string>
@@ -435,7 +435,7 @@
     <string name="per_list_sort_summary">Zapamatovat si nastavení řazení a skupin zvlášť pro každý seznam</string>
     <string name="location_update_interval_summary">Pravidelné aktualizace polohy zvyšují spolehlivost geofence</string>
     <string name="read_more">Více informací</string>
-    <string name="upgrade_desktop_app">Tasks.org pro počítače</string>
+    <string name="upgrade_desktop_app">Scorda pro počítače</string>
     <string name="upgrade_desktop_app_description">Předběžný přístup k nové aplikaci pro počítače</string>
     <string name="sort_options">Předvolby řazení</string>
 </resources>

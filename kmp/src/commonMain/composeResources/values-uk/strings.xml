@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">Синхронізувати ваші завдання з застосунком DAVx⁵</string>
     <string name="etesync_selection_description">Захищена наскрізним шифруванням синхронізація</string>
     <string name="decsync_selection_description">Синхронізація на основі файлів</string>
-    <string name="sign_in_to_tasks">Увійти на Tasks.org</string>
+    <string name="sign_in_to_tasks">Увійти на Scorda</string>
     <string name="sign_in_with_google">Увійти через Google</string>
     <string name="sign_in_with_github">Увійти через GitHub</string>
     <string name="completed">Виконано</string>
@@ -112,12 +112,12 @@
     <string name="your_subscription_expired">Термін дії вашої підписки закінчився. Підпишіться зараз, щоб відновити обслуговування.</string>
     <string name="insufficient_subscription">Недостатній рівень підписки. Будь ласка, оновіть свою підписку, щоб відновити обслуговування.</string>
     <string name="authentication_required">Необхідна аутентифікація</string>
-    <string name="app_password_save">Використовуйте ці дані для налаштування стороннього застосунку. Вони надають повний доступ до вашого облікового запису Tasks.org, не записуйте їх та нікому не повідомляйте!</string>
+    <string name="app_password_save">Використовуйте ці дані для налаштування стороннього застосунку. Вони надають повний доступ до вашого облікового запису Scorda, не записуйте їх та нікому не повідомляйте!</string>
     <string name="url">URL</string>
     <string name="user">Користувач</string>
     <string name="password">Пароль</string>
     <string name="migrating_tasks">Перенесення завдань</string>
-    <string name="migrate_count">Перемістити %1$s на Tasks.org</string>
+    <string name="migrate_count">Перемістити %1$s на Scorda</string>
     <string name="preferences_look_and_feel">Зовнішній вигляд</string>
     <string name="notifications">Сповіщення</string>
     <string name="task_defaults">Типові налаштування завдань</string>
@@ -495,10 +495,10 @@
     <string name="sort_modified">Змінено</string>
     <string name="all_done">Усе виконано!</string>
     <string name="add_platform_account">Додати обліковий запис %1$s</string>
-    <string name="works_with_desktop">Tasks.org для комп\'ютера</string>
+    <string name="works_with_desktop">Scorda для комп\'ютера</string>
     <string name="new_filter">Створити новий фільтр</string>
     <string name="email_to_task_address">Ваша адреса е-пошти</string>
-    <string name="legal_disclosure_prefix_using">Використовуючи Tasks.org</string>
+    <string name="legal_disclosure_prefix_using">Використовуючи Scorda</string>
     <string name="tos_updated_title">Ми оновили Умови користування</string>
     <string name="accept">Прийняти</string>
     <string name="email_to_task">Е-лист до завдання</string>

@@ -311,7 +311,7 @@
     <string name="app_password">App-adgangskode</string>
     <string name="save_percent">Gem %d%%</string>
     <string name="above_average">Over gennemsnit</string>
-    <string name="migrate_count">Flyt %s til Tasks.org</string>
+    <string name="migrate_count">Flyt %s til Scorda</string>
     <string name="migrating_tasks">Migrerer opgaver</string>
     <string name="github_sponsor">Sponsor</string>
     <string name="authentication_required">Godkendelse påkrævet</string>
@@ -337,11 +337,11 @@
     <string name="custom_filter_has_subtask">Har underopgaver</string>
     <string name="no_google_play_subscription">Intet kvalificeret Google Play-abonnement fundet</string>
     <string name="upgrade_open_source_description">Dit abonnement støtter den fortsatte udvikling</string>
-    <string name="upgrade_tasks_org_account_description">Synkroniser med Tasks.org, og samarbejd med andre brugere</string>
+    <string name="upgrade_tasks_org_account_description">Synkroniser med Scorda, og samarbejd med andre brugere</string>
     <string name="upgrade_more_customization_description">Lås op for alle temaer, farver og ikoner</string>
     <string name="upgrade_more_customization">Mere tilpasning</string>
     <string name="pro_free_trial">Nye abonnenter får en 7-dages gratis prøveperiode. Opsig når som helst</string>
-    <string name="tasks_org_account_required">Tasks.org-konto påkrævet</string>
+    <string name="tasks_org_account_required">Scorda-konto påkrævet</string>
     <string name="privacy">Privatliv</string>
     <string name="open_source">Open source</string>
     <string name="support">Støtte</string>
@@ -406,9 +406,9 @@
     <string name="widget_view_more_tasks">Vis flere opgaver</string>
     <string name="import_failed">Import mislykkedes</string>
     <string name="import_failed_message">Kunne ikke læse sikkerhedskopifil</string>
-    <string name="subscription_required_fdroid">Der kræves et abonnement for at kunne bruge Tasks.org-synkronisering. Abonnementer skal oprettes fra Google Play-versionen af Tasks.</string>
-    <string name="sponsorship_required_fdroid">Der kræves et GitHub-sponsorat for at kunne bruge Tasks.org-synkronisering. Klik nedenfor for at blive sponsor.</string>
-    <string name="legal_disclosure_prefix_using">Ved at bruge Tasks.org</string>
+    <string name="subscription_required_fdroid">Der kræves et abonnement for at kunne bruge Scorda-synkronisering. Abonnementer skal oprettes fra Google Play-versionen af Tasks.</string>
+    <string name="sponsorship_required_fdroid">Der kræves et GitHub-sponsorat for at kunne bruge Scorda-synkronisering. Klik nedenfor for at blive sponsor.</string>
+    <string name="legal_disclosure_prefix_using">Ved at bruge Scorda</string>
     <string name="tos_updated_title">Vi har opdateret vores servicevilkår</string>
     <string name="accept">Acceptér</string>
     <string name="exit">Afslut</string>
@@ -424,8 +424,8 @@
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="per_list_sort_title">Per-list sortering</string>
     <string name="per_list_sort_summary">Husk indstillingerne for sortering og gruppering for hver liste separat</string>
-    <string name="guest_create_list_message">Du har i øjeblikket gæsteadgang til delte lister. For at oprette og synkronisere dine egne private lister til skyen skal du have et Tasks.org-abonnement. Du kan også oprette en gratis lokal liste, der forbliver på denne enhed.</string>
-    <string name="upgrade_desktop_app">Tasks.org til desktop</string>
+    <string name="guest_create_list_message">Du har i øjeblikket gæsteadgang til delte lister. For at oprette og synkronisere dine egne private lister til skyen skal du have et Scorda-abonnement. Du kan også oprette en gratis lokal liste, der forbliver på denne enhed.</string>
+    <string name="upgrade_desktop_app">Scorda til desktop</string>
     <string name="upgrade_desktop_app_description">Tidlig adgang til den nye desktop-app</string>
     <string name="upgrade_friends_and_family">Venner og familie</string>
     <string name="upgrade_friends_and_family_description">5 gratis gæster på delte lister. Fungerer med Apple Reminders</string>

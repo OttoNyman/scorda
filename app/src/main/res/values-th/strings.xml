@@ -30,14 +30,14 @@
     <string name="tomorrow">พรุ่งนี้</string>
     <string name="repeat_option_custom">กำหนดเอง…</string>
     <string name="delete_tag_confirmation">ลบ %s หรือไม่\?</string>
-    <string name="upgrade_tasks_org_account_description">ซิงค์กับ Tasks.org และทํางานร่วมกับผู้ใช้รายอื่น</string>
-    <string name="tasks_org_account_required">Tasks.org บัญชีลูกค้า</string>
+    <string name="upgrade_tasks_org_account_description">ซิงค์กับ Scorda และทํางานร่วมกับผู้ใช้รายอื่น</string>
+    <string name="tasks_org_account_required">Scorda บัญชีลูกค้า</string>
     <string name="copied_to_clipboard">%s คัดลอกไปยังคลิปบอร์ดแล้ว</string>
     <string name="app_passwords_more_info">ซิงโครไนซ์งานและปฏิทินของคุณกับเดสก์ท็อปและแอปสําหรับอุปกรณ์เคลื่อนที่ของบริษัทอื่น แตะที่นี่สําหรับข้อมูลเพิ่มเติม</string>
     <string name="app_password">รหัสผ่านของแอป</string>
     <string name="save_percent">ประหยัด %d%%</string>
     <string name="above_average">สูงกว่าค่าเฉลี่ย</string>
-    <string name="migrate_count">ย้าย %s ไปยัง Tasks.org</string>
+    <string name="migrate_count">ย้าย %s ไปยัง Scorda</string>
     <string name="migrating_tasks">กําลังโยกย้ายงาน</string>
     <string name="github_sponsor">สปอนเซอร์</string>
     <string name="authentication_required">ต้องการการรับรองความถูกต้อง</string>

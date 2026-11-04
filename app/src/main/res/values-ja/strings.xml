@@ -277,7 +277,7 @@
     <string name="auto_dismiss_datetime_widget">ウィジェット</string>
     <string name="lists">リスト</string>
     <string name="migrating_tasks">タスクを移行する</string>
-    <string name="migrate_count">%s を Tasks.org に移動</string>
+    <string name="migrate_count">%s を Scorda に移動</string>
     <string name="upgrade_blurb_2">私は何千時間もかけて Tasks を開発し、すべてのソースコードをオンラインで無料公開しています。私の仕事をサポートしていただくために、いくつかの機能は有料です</string>
     <string name="enjoying_tasks">Tasks を気に入っていだだけましたか？</string>
     <string name="widget_show_dividers">区切り線を表示</string>
@@ -322,7 +322,7 @@
     <string name="multi_select_reschedule">スケジュール変更</string>
     <string name="privacy">プライバシー</string>
     <string name="authorization_cancelled">認証が取り消されました</string>
-    <string name="tasks_org_account_required">Tasks.org のアカウントが必要です</string>
+    <string name="tasks_org_account_required">Scorda のアカウントが必要です</string>
     <string name="decsync_selection_description">ファイルベースによる同期</string>
     <string name="filter_no_priority">優先度 なし</string>
     <string name="filter_eisenhower_box_3">重要ではないが緊急</string>
@@ -339,7 +339,7 @@
     <string name="account">アカウント</string>
     <string name="device_settings">デバイス設定</string>
     <string name="custom_filter_has_reminder">リマインダーあり</string>
-    <string name="upgrade_tasks_org_account_description">Tasks.org と同期し、他のユーザーと共同作業が可能</string>
+    <string name="upgrade_tasks_org_account_description">Scorda と同期し、他のユーザーと共同作業が可能</string>
     <string name="upgrade_open_source_description">あなたの支援が継続的な開発を支えます</string>
     <string name="snackbar_tasks_completed">完了したタスク: %d</string>
     <string name="header_spacing">高さ</string>
@@ -405,14 +405,14 @@
     <string name="import_failed_message">バックアップファイルを読めません</string>
     <string name="import_failed">インポートできませんでした</string>
     <string name="banner_subscription_required_body">%sとの同期をするため、お好みの金額をお支払いください</string>
-    <string name="sponsorship_required_fdroid">Tasks.orgと同期するには GitHubへの寄付が必要です。寄付をするには下をクリックしてください。</string>
-    <string name="subscription_required_fdroid">Tasks.orgと同期するには定期購入が必要です。定期購入はGoogle Play版のTasksアプリからお申し込みください。</string>
+    <string name="sponsorship_required_fdroid">Scordaと同期するには GitHubへの寄付が必要です。寄付をするには下をクリックしてください。</string>
+    <string name="subscription_required_fdroid">Scordaと同期するには定期購入が必要です。定期購入はGoogle Play版のTasksアプリからお申し込みください。</string>
     <string name="email_to_task_address">あなたのメールアドレス</string>
     <string name="tos_updated_title">サービス規約を改定しました</string>
     <string name="accept">了承</string>
     <string name="exit">終了する</string>
     <string name="returning_user">以前利用していましたか？</string>
-    <string name="legal_disclosure_prefix_using">Tasks.orgを使用</string>
+    <string name="legal_disclosure_prefix_using">Scordaを使用</string>
     <string name="email_to_task">メールでタスクを追加する</string>
     <string name="upgrade_email_to_task_description">あなたの私書箱に送ったメールをタスクに変換する</string>
     <string name="advanced_tools_description">Google Places、CalDAV、EteSyncなど！</string>
@@ -421,10 +421,10 @@
     <string name="per_list_sort_summary">並べ替えやグループの設定を個別に保存する</string>
     <string name="per_list_sort_title">リストごとの並べ替え設定</string>
     <string name="p_per_list_sort">リストごとの並べ替え設定</string>
-    <string name="guest_create_list_message">あなたは共有リストへのゲストアクセスがあります。自分の個人的なリストを作成してクラウドに同期するにはTasks.orgの購読が必要です。または、端末内に保存する無料のローカルリストを作成することができます。</string>
+    <string name="guest_create_list_message">あなたは共有リストへのゲストアクセスがあります。自分の個人的なリストを作成してクラウドに同期するにはScordaの購読が必要です。または、端末内に保存する無料のローカルリストを作成することができます。</string>
     <string name="upgrade_friends_and_family">家族・友人</string>
     <string name="upgrade_friends_and_family_description">共有リストに無料のゲスト5名。Apple Remindersで利用可能</string>
-    <string name="upgrade_desktop_app">デスクトップ版Tasks.org</string>
+    <string name="upgrade_desktop_app">デスクトップ版Scorda</string>
     <string name="upgrade_desktop_app_description">新しいデスクトップアプリの早期利用</string>
     <string name="read_more">より詳しく</string>
 </resources>

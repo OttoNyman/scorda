@@ -45,7 +45,7 @@
     <string name="davx5_selection_description">Synkroniser dine gjøremål med DAVx⁵-programmet</string>
     <string name="etesync_selection_description">Ende-til-ende-kryptert synkronisering</string>
     <string name="decsync_selection_description">Filbasert synkronisering</string>
-    <string name="sign_in_to_tasks">Logg inn på Tasks.org</string>
+    <string name="sign_in_to_tasks">Logg inn på Scorda</string>
     <string name="sign_in_with_google">Logg inn med Google</string>
     <string name="sign_in_with_github">Logg inn med GitHub</string>
     <string name="completed">Fullført</string>
@@ -103,12 +103,12 @@
     <string name="your_subscription_expired">Ditt abonnement har utløpt. Abonner nå for å fortsette tjenesten.</string>
     <string name="insufficient_subscription">Utilstrekkelig abonnementsnivå. Oppgrader ditt abonnement for å fortsette tjenesten.</string>
     <string name="authentication_required">Identitetsbekreftelse kreves</string>
-    <string name="app_password_save">Bruk disse identitetsdetaljene for å sette opp tredjepartsprogrammer. De tilbyr full tilgang til din Tasks.org-konto. Ikke skriv dem ned eller del dem med noen!</string>
+    <string name="app_password_save">Bruk disse identitetsdetaljene for å sette opp tredjepartsprogrammer. De tilbyr full tilgang til din Scorda-konto. Ikke skriv dem ned eller del dem med noen!</string>
     <string name="url">Nettadresse</string>
     <string name="user">Bruker</string>
     <string name="password">Passord</string>
     <string name="migrating_tasks">Flytting av gjøremål</string>
-    <string name="migrate_count">Flytt %1$s til Tasks.org</string>
+    <string name="migrate_count">Flytt %1$s til Scorda</string>
     <string name="preferences_look_and_feel">Utseende og oppførsel</string>
     <string name="notifications">Varsler</string>
     <string name="task_defaults">Gjøremålsforvalg</string>

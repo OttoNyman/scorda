@@ -333,7 +333,7 @@
     <string name="sign_in_with_google">Bejelentkezés Google fiókkal</string>
     <string name="github_sponsor">Szponzor</string>
     <string name="authentication_required">Azonosítás szükséges</string>
-    <string name="migrate_count">%s mozgatása a Tasks.org-ra</string>
+    <string name="migrate_count">%s mozgatása a Scorda-ra</string>
     <string name="migrating_tasks">Feladatok migrálása</string>
     <string name="github_sponsors">GitHub szponzorok</string>
     <string name="no_google_play_subscription">Nem található Google Play előfizetés</string>
@@ -353,12 +353,12 @@
     <string name="CFC_startBefore_text">Kezdés: \?</string>
     <string name="SSD_sort_start">Kezdés dátuma szerint</string>
     <string name="widget_show_title">Cím megjelenítése</string>
-    <string name="tasks_org_account_required">Tasks.org fiók szükséges</string>
+    <string name="tasks_org_account_required">Scorda fiók szükséges</string>
     <string name="privacy">Adatvédelem</string>
     <string name="open_source">Nyílt forráskódú</string>
     <string name="support">Támogatás</string>
     <string name="upgrade_open_source_description">Az előfizetéseddel a folyamatos fejlesztést támogatod</string>
-    <string name="upgrade_tasks_org_account_description">Tasks.org szinkronizáció és együttműködés más felhasználókkal</string>
+    <string name="upgrade_tasks_org_account_description">Scorda szinkronizáció és együttműködés más felhasználókkal</string>
     <string name="upgrade_more_customization_description">Az összes téma, szín és ikon feloldása</string>
     <string name="upgrade_more_customization">Még nagyobb testreszabhatóság</string>
     <string name="pro_free_trial">Az új előfizetők 7 napos ingyenes kipróbálási lehetőséget kapnak. Az előfizetés bármikor lemondható</string>
@@ -404,9 +404,9 @@
     <string name="delete_tasks_warning">A(z) %s törlésre kerül. Ez a művelet nem visszavonható!</string>
     <string name="multiline_title_off">Kattints a Kész gombra a feladat elmentéséhez</string>
     <string name="widget_view_more_tasks">További feladatok megtekintése</string>
-    <string name="subscription_required_fdroid">A Tasks.org szinkronizáláshoz előfizetés szükséges. Az előfizetést a Tasks alkalmazás Google Play verziójából lehet kezdeményezni.</string>
-    <string name="sponsorship_required_fdroid">A Tasks.org szinkronizáláshoz GitHub szponzori előfizetés szükséges. A szponzori tagsághoz kattints az alábbi linkre.</string>
-    <string name="legal_disclosure_prefix_using">A Tasks.org használata által</string>
+    <string name="subscription_required_fdroid">A Scorda szinkronizáláshoz előfizetés szükséges. Az előfizetést a Tasks alkalmazás Google Play verziójából lehet kezdeményezni.</string>
+    <string name="sponsorship_required_fdroid">A Scorda szinkronizáláshoz GitHub szponzori előfizetés szükséges. A szponzori tagsághoz kattints az alábbi linkre.</string>
+    <string name="legal_disclosure_prefix_using">A Scorda használata által</string>
     <string name="tos_updated_title">Frissítettük a Szolgáltatási feltételeket</string>
     <string name="accept">Elfogadás</string>
     <string name="exit">Kilépés</string>
@@ -420,7 +420,7 @@
     <string name="upgrade_email_to_task_description">Feladatok létrehozásához küldd tovább a leveleidet a privát fiókodba</string>
     <string name="advanced_tools">Speciális eszközök</string>
     <string name="advanced_tools_description">Google Helyek, CalDAV, EteSync, és egyebek!</string>
-    <string name="guest_create_list_message">A megosztott listához jelenleg vendég hozzáféréssel rendelkezel. Saját privát listák létrehozásához és felhős szinkronizálásához Tasks.org előfizetésre van szükséged. Alternatívaként létrehozhatsz egy ingyenes helyi listát, ami ezen a készüléken tárolódik.</string>
+    <string name="guest_create_list_message">A megosztott listához jelenleg vendég hozzáféréssel rendelkezel. Saját privát listák létrehozásához és felhős szinkronizálásához Scorda előfizetésre van szükséged. Alternatívaként létrehozhatsz egy ingyenes helyi listát, ami ezen a készüléken tárolódik.</string>
     <string name="upgrade_friends_and_family">Család és barátok</string>
     <string name="upgrade_friends_and_family_description">A megosztott listához 5 ingyenes vendég adható hozzá. Apple Reminders-el is működik</string>
     <string name="per_list_sort_title">Listánkénti rendezés</string>
@@ -428,7 +428,7 @@
     <string name="per_list_sort_summary">Listánként eltérő rendezési és csoportosítási beállítások eltárolása</string>
     <string name="location_update_interval_summary">A rendszeres helyadat frissítés javítja a geokerítés megbízhatóságát</string>
     <string name="read_more">Mutass többet</string>
-    <string name="upgrade_desktop_app">Tasks.org PC-re</string>
+    <string name="upgrade_desktop_app">Scorda PC-re</string>
     <string name="upgrade_desktop_app_description">Korai hozzáférés az új PC-s alkalmazáshoz</string>
     <string name="sort_options">Rendezési lehetőségek</string>
     <string name="write_permission_label">Feledat módosítása</string>

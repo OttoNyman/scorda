@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">Συγχρονίστε τις εργασίες σας με την εφαρμογή DAVx⁵</string>
     <string name="etesync_selection_description">Κρυπτογραφημένος συγχρονισμός από άκρο σε άκρο</string>
     <string name="decsync_selection_description">Συγχρονισμός βάσει αρχείων</string>
-    <string name="sign_in_to_tasks">Συνδεθείτε στο Tasks.org</string>
+    <string name="sign_in_to_tasks">Συνδεθείτε στο Scorda</string>
     <string name="sign_in_with_google">Συνδεθείτε μέσω Google</string>
     <string name="sign_in_with_github">Συνδεθείτε μέσω GitHub</string>
     <string name="completed">Ολοκληρώθηκε</string>
@@ -112,12 +112,12 @@
     <string name="your_subscription_expired">Η συνδρομή σας έχει λήξει. Γίνετε συνδρομητής τώρα για να συνεχίσετε την υπηρεσία.</string>
     <string name="insufficient_subscription">Ανεπαρκές επίπεδο συνδρομής. Παρακαλούμε αναβαθμίστε τη συνδρομή σας για να συνεχίσετε την υπηρεσία.</string>
     <string name="authentication_required">Απαιτείται πιστοποίηση ταυτότητας</string>
-    <string name="app_password_save">Χρησιμοποιήστε αυτά τα διαπιστευτήρια για να ρυθμίσετε μια εφαρμογή τρίτων. Σας παραχωρούν πλήρη πρόσβαση στο λογαριασμό σας στο Tasks.org, μην τα γράψετε ή τα μοιραστείτε με κανέναν!</string>
+    <string name="app_password_save">Χρησιμοποιήστε αυτά τα διαπιστευτήρια για να ρυθμίσετε μια εφαρμογή τρίτων. Σας παραχωρούν πλήρη πρόσβαση στο λογαριασμό σας στο Scorda, μην τα γράψετε ή τα μοιραστείτε με κανέναν!</string>
     <string name="url">Ηλεκτρονική διεύθυνση (URL)</string>
     <string name="user">Χρήστης</string>
     <string name="password">Κωδικός</string>
     <string name="migrating_tasks">Εργασίες μετακίνησης</string>
-    <string name="migrate_count">Μετακίνηση %1$s στο Tasks.org</string>
+    <string name="migrate_count">Μετακίνηση %1$s στο Scorda</string>
     <string name="preferences_look_and_feel">Όψη και αίσθηση</string>
     <string name="notifications">Ειδοποιήσεις</string>
     <string name="task_defaults">Προεπιλογές Εργασιών</string>

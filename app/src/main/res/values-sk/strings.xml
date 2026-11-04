@@ -331,7 +331,7 @@
     <string name="open_source">Otvorený zdrojový kód</string>
     <string name="github_sponsor">Sponzor</string>
     <string name="migrating_tasks">Prebieha presúvanie úloh</string>
-    <string name="migrate_count">Presunúť %s do Tasks.org</string>
+    <string name="migrate_count">Presunúť %s do Scorda</string>
     <string name="above_average">Nadpriemerné</string>
     <string name="snackbar_tasks_completed">%d úloh bolo dokončených</string>
     <string name="cost_money">Cena: $</string>
@@ -339,7 +339,7 @@
     <string name="auto_dismiss_datetime_edit">Úprava úlohy</string>
     <string name="auto_dismiss_datetime_widget">Widget</string>
     <string name="select_all">Vybrať všetko</string>
-    <string name="tasks_org_account_required">Vyžaduje sa účet na Tasks.org</string>
+    <string name="tasks_org_account_required">Vyžaduje sa účet na Scorda</string>
     <string name="upgrade_blurb_2">Prácou na Tasks som strávil tisíce hodín a bez nároku na odmenu zverejňujem všetok zdrojový kód online. Za účelom podpory mojej práce niektoré funkcie aplikácie vyžadujú predplatné</string>
     <string name="auto_dismiss_datetime_list_summary">Automaticky zatvoriť pri výbere zo zoznamu úloh</string>
     <string name="auto_dismiss_datetime_summary">Zatvoriť výber dátumu a času po zvolení dátumu alebo času</string>
@@ -392,7 +392,7 @@
     <string name="multiline_title">Povoliť názvy na viac riadkov</string>
     <string name="multiline_title_on">Stlačením Enter pridáte konce riadkov</string>
     <string name="hint_customize_edit_body">Túto obrazovku si môžete prispôsobiť preskupením alebo odobraním polí</string>
-    <string name="upgrade_tasks_org_account_description">Synchronizujte s Tasks.org a spolupracujte s ostatnými používateľmi</string>
+    <string name="upgrade_tasks_org_account_description">Synchronizujte s Scorda a spolupracujte s ostatnými používateľmi</string>
     <string name="pro_free_trial">Noví predplatitelia dostanú 7 dní na bezplatné otestovanie. Predplatné je možné kedykoľvek zrušiť</string>
     <string name="upgrade_more_customization">Ďalšie prispôsobenie</string>
     <string name="upgrade_more_customization_description">Odomknúť všetky motívy, farby a ikony</string>

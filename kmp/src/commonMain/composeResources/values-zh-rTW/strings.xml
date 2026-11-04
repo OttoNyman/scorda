@@ -57,7 +57,7 @@
     <string name="terms_of_service_proper">服務條款</string>
     <string name="privacy_policy_proper">隱私權政策</string>
     <string name="gplv3_license">GPLv3 授權</string>
-    <string name="returning_user_import_backup">匯入 Tasks.org 備份</string>
+    <string name="returning_user_import_backup">匯入 Scorda 備份</string>
     <string name="microsoft_selection_description">與您的個人 Microsoft 帳戶同步</string>
     <string name="google_tasks_selection_description">基本服務，與您的 Google 帳戶同步</string>
     <string name="name_your_price_blurb">支付您想要的金額以解鎖主題、圖示和這些進階同步選項</string>
@@ -65,12 +65,12 @@
     <string name="cost_free">免費</string>
     <string name="tasks_org_description">包含家人和朋友共享以及電子郵件轉任務</string>
     <string name="name_your_price">自行設定價格</string>
-    <string name="legal_disclosure_prefix_using">使用 Tasks.org</string>
+    <string name="legal_disclosure_prefix_using">使用 Scorda</string>
     <string name="caldav_selection_description">基於開放網際網路標準的同步</string>
     <string name="davx5_selection_description">使用 DAVx⁵ 應用程式同步您的任務</string>
     <string name="etesync_selection_description">端對端加密同步</string>
     <string name="decsync_selection_description">基於檔案的同步</string>
-    <string name="sign_in_to_tasks">登入 Tasks.org</string>
+    <string name="sign_in_to_tasks">登入 Scorda</string>
     <string name="sign_in_with_google">使用 Google 登入</string>
     <string name="sign_in_with_github">使用 GitHub 登入</string>
     <string name="completed">已完成</string>
@@ -109,11 +109,11 @@
     <string name="back">返回</string>
     <string name="help">幫助</string>
     <string name="display_name">顯示名稱</string>
-    <string name="upgrade_to_pro_card_description">解鎖 Tasks.org 雲端同步、家人和朋友共享，以及電子郵件轉任務</string>
+    <string name="upgrade_to_pro_card_description">解鎖 Scorda 雲端同步、家人和朋友共享，以及電子郵件轉任務</string>
     <string name="price_per_month_with_currency">每月 %1$s</string>
     <string name="price_per_year_with_currency">每年 %1$s</string>
     <string name="supporter_summary">%1$s • 感謝您！</string>
-    <string name="sign_in_to_connect">登入以連線您的 Tasks.org 帳戶</string>
+    <string name="sign_in_to_connect">登入以連線您的 Scorda 帳戶</string>
     <string name="guest">訪客</string>
     <string name="donate">捐贈</string>
     <string name="donate_nag">考慮透過捐款來表達您的支持！</string>
@@ -145,7 +145,7 @@
     <string name="your_subscription_expired">您的訂閱已過期。立即訂閱以恢復服務。</string>
     <string name="insufficient_subscription">訂閱等級不足。請升級訂閱以恢復服務。</string>
     <string name="authentication_required">需要授權</string>
-    <string name="app_password_save">請使用這些憑證來設定第三方應用程式。它們授予您對 Tasks.org 帳戶的完全存取權限，請勿將其寫下或與他人分享！</string>
+    <string name="app_password_save">請使用這些憑證來設定第三方應用程式。它們授予您對 Scorda 帳戶的完全存取權限，請勿將其寫下或與他人分享！</string>
     <string name="url">URL</string>
     <string name="user">使用者名稱</string>
     <string name="password">密碼</string>
@@ -214,7 +214,7 @@
     <string name="restart_later">稍後</string>
     <string name="blog_feed_none">無</string>
     <string name="cannot_access_account">無法存取帳號</string>
-    <string name="upgrade_subscription_banner">感謝您的支持！升級您的訂閱以啟用 Tasks.org 雲端同步</string>
+    <string name="upgrade_subscription_banner">感謝您的支持！升級您的訂閱以啟用 Scorda 雲端同步</string>
     <string name="new_list">新增清單</string>
     <string name="list_members">清單成員</string>
     <string name="remove_user">刪除使用者？</string>

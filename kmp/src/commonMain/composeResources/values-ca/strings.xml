@@ -52,7 +52,7 @@
     <string name="davx5_selection_description">Sincronitza les teves tasques amb l'aplicació DAVx5</string>
     <string name="etesync_selection_description">Sincronització xifrada d'extrem a extrem</string>
     <string name="decsync_selection_description">Sincronització per fitxers</string>
-    <string name="sign_in_to_tasks">Inicieu la sessió a Tasks.org</string>
+    <string name="sign_in_to_tasks">Inicieu la sessió a Scorda</string>
     <string name="sign_in_with_google">Inicieu sessió amb Google</string>
     <string name="sign_in_with_github">Inicieu sessió amb GitHub</string>
     <string name="completed">Completat</string>
@@ -112,12 +112,12 @@
     <string name="your_subscription_expired">La vostra subscripció ha caducat. Subscriu-te ara per reprendre el servei.</string>
     <string name="insufficient_subscription">Nivell de subscripció insuficient. Actualitzeu la vostra subscripció per reprendre el servei.</string>
     <string name="authentication_required">Es requereix autenticació</string>
-    <string name="app_password_save">Utilitzeu aquestes credencials per configurar una aplicació de tercers. Atorguen accés complet al vostre compte de Tasks.org, no els escriguis ni els comparteixis amb ningú!</string>
+    <string name="app_password_save">Utilitzeu aquestes credencials per configurar una aplicació de tercers. Atorguen accés complet al vostre compte de Scorda, no els escriguis ni els comparteixis amb ningú!</string>
     <string name="url">URL</string>
     <string name="user">Usuari</string>
     <string name="password">Contrasenya</string>
     <string name="migrating_tasks">Migració de tasques</string>
-    <string name="migrate_count">Mou %1$s a Tasks.org</string>
+    <string name="migrate_count">Mou %1$s a Scorda</string>
     <string name="preferences_look_and_feel">Aspecte i comportament</string>
     <string name="notifications">Notificacions</string>
     <string name="task_defaults">Valors predeterminats de la tasca</string>

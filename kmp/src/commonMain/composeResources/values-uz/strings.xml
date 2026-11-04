@@ -109,7 +109,7 @@
     <string name="email_to_task_address">E-pochta manzilingiz</string>
     <string name="completed">Bajarildi</string>
     <string name="dismiss">Yopish</string>
-    <string name="legal_disclosure_prefix_using">Tasks.org’dan foydalanish orqali</string>
+    <string name="legal_disclosure_prefix_using">Scorda’dan foydalanish orqali</string>
     <string name="accept">Qabul qilish</string>
     <string name="tos_updated_title">Foydalanish shartlarimiz yangilandi.</string>
     <string name="search">Qidirish</string>
@@ -166,7 +166,7 @@
     <string name="mcp_tools_group_reminders">Eslatmalar</string>
     <string name="mcp_copy">Koʻchirma</string>
     <string name="metadata_move">Ko‘chirish</string>
-    <string name="works_with_desktop">Kompyuter uchun Tasks.org</string>
+    <string name="works_with_desktop">Kompyuter uchun Scorda</string>
     <string name="blog_feed_none">Yo\'q</string>
     <string name="new_filter">Yangi filtr yaratish</string>
 </resources>

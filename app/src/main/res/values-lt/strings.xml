@@ -292,7 +292,7 @@
     <string name="ok">Gerai</string>
     <string name="pro_free_trial">Naujiems prenumeratoriams suteikiamas 7 dienų nemokamas bandomasis laikotarpis. Atšaukite bet kuriuo metu</string>
     <string name="upgrade_more_customization">Daugiau tinkinimo</string>
-    <string name="upgrade_tasks_org_account_description">Sinchronizuokite su Tasks.org ir bendradarbiaukite su kitais naudotojais</string>
+    <string name="upgrade_tasks_org_account_description">Sinchronizuokite su Scorda ir bendradarbiaukite su kitais naudotojais</string>
     <string name="account">Paskyra</string>
     <string name="last_backup_never">niekada</string>
     <string name="lists">Sąrašai</string>
@@ -319,7 +319,7 @@
     <string name="github_sponsors">GitHub rėmėjai</string>
     <string name="sign_in_with_google">Prisijungti naudojant Google</string>
     <string name="current_subscription">Dabartinė prenumerata: %s</string>
-    <string name="migrate_count">Migruoti %s į Tasks.org</string>
+    <string name="migrate_count">Migruoti %s į Scorda</string>
     <string name="migrating_tasks">Migruojamos užduotys</string>
     <string name="background_location_permission_required">Tasks renka vietovės duomenis, kad įgalintų priminimus pagal vietovę, net kai programa uždaryta arba nenaudojama.</string>
     <string name="help_and_feedback">Pagalba ir atsiliepimai</string>
@@ -335,7 +335,7 @@
     <string name="privacy">Privatumas</string>
     <string name="open_source">Atviras kodas</string>
     <string name="support">Pagalba</string>
-    <string name="tasks_org_account_required">Būtina Tasks.org paskyra</string>
+    <string name="tasks_org_account_required">Būtina Scorda paskyra</string>
     <string name="your_subscription_expired">Jūsų prenumeratos galiojimo laikas baigėsi. Prenumeruokite dabar, norėdami tęsti paslaugą.</string>
     <string name="custom_filter_is_subtask">Ar antrinė užduotis</string>
     <string name="custom_filter_has_subtask">Turi antrinių užduočių</string>

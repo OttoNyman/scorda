@@ -340,7 +340,7 @@
     <string name="sign_in_with_google">Connectez-vous avec « Google »</string>
     <string name="github_sponsor">Parrainer</string>
     <string name="authentication_required">Authentification requise</string>
-    <string name="migrate_count">Déplacer %s vers Tasks.org</string>
+    <string name="migrate_count">Déplacer %s vers Scorda</string>
     <string name="migrating_tasks">Migration de tâches</string>
     <string name="github_sponsors">Parrains « GitHub »</string>
     <string name="no_google_play_subscription">Aucun abonnement « Google Play » éligible n\'a été trouvé</string>
@@ -360,12 +360,12 @@
     <string name="CFC_startBefore_text">Débute par : \?</string>
     <string name="subscription">Abonnement</string>
     <string name="widget_show_title">Afficher le titre</string>
-    <string name="tasks_org_account_required">Compte « Tasks.org » requis</string>
+    <string name="tasks_org_account_required">Compte « Scorda » requis</string>
     <string name="privacy">Confidentialité</string>
     <string name="open_source">Code source ouvert</string>
     <string name="support">Aide</string>
     <string name="upgrade_open_source_description">Votre abonnement soutient le développement continu</string>
-    <string name="upgrade_tasks_org_account_description">Synchronisez avec « Tasks.org » et collaborez avec les autres utilisateurs</string>
+    <string name="upgrade_tasks_org_account_description">Synchronisez avec « Scorda » et collaborez avec les autres utilisateurs</string>
     <string name="upgrade_more_customization_description">Déverrouillez tous les thèmes, couleurs et icônes</string>
     <string name="upgrade_more_customization">Plus de personnalisation</string>
     <string name="pro_free_trial">Les nouveaux abonnés bénéficient d\'un essai gratuit de 7 jours. Annulez à tout moment</string>
@@ -411,9 +411,9 @@
     <string name="delete_tasks_warning">%s sera supprimé. Cette opération est irréversible !</string>
     <string name="multiline_title_off">Appuyer sur Terminé pour enregistrer la tâche</string>
     <string name="widget_view_more_tasks">Voir plus de tâches</string>
-    <string name="subscription_required_fdroid">Un abonnement est nécessaire pour utiliser la synchronisation avec Tasks.org. Les abonnements doivent être initiés à partir de la version Google Play de Tasks.</string>
-    <string name="sponsorship_required_fdroid">Un parrainage GitHub est nécessaire pour utiliser la synchronisation avec Tasks.org. Cliquez ci-dessous pour devenir un parrain.</string>
-    <string name="legal_disclosure_prefix_using">En utilisant Tasks.org</string>
+    <string name="subscription_required_fdroid">Un abonnement est nécessaire pour utiliser la synchronisation avec Scorda. Les abonnements doivent être initiés à partir de la version Google Play de Tasks.</string>
+    <string name="sponsorship_required_fdroid">Un parrainage GitHub est nécessaire pour utiliser la synchronisation avec Scorda. Cliquez ci-dessous pour devenir un parrain.</string>
+    <string name="legal_disclosure_prefix_using">En utilisant Scorda</string>
     <string name="tos_updated_title">Nous avons mis à jour nos conditions d\'utilisation</string>
     <string name="accept">Accepter</string>
     <string name="exit">Sortir</string>
@@ -427,7 +427,7 @@
     <string name="upgrade_email_to_task_description">Transformez vos courriels en tâches en les transférant vers votre boîte de réception privée</string>
     <string name="advanced_tools">Outils avancés</string>
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync, et plus encore !</string>
-    <string name="guest_create_list_message">Vous disposez actuellement d\'un accès invité aux listes partagées. Pour créer et synchroniser vos propres listes privées sur le cloud, vous devez souscrire un abonnement à Tasks.org. Vous pouvez également créer une liste locale gratuite qui restera sur cet appareil.</string>
+    <string name="guest_create_list_message">Vous disposez actuellement d\'un accès invité aux listes partagées. Pour créer et synchroniser vos propres listes privées sur le cloud, vous devez souscrire un abonnement à Scorda. Vous pouvez également créer une liste locale gratuite qui restera sur cet appareil.</string>
     <string name="upgrade_friends_and_family">Amis et famille</string>
     <string name="upgrade_friends_and_family_description">5 invités gratuits sur des listes partagées. Fonctionne avec les rappels Apple</string>
     <string name="per_list_sort_title">Tri par liste</string>
@@ -435,7 +435,7 @@
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="location_update_interval_summary">Les mises à jour périodiques de la position améliorent la fiabilité des zones de géorepérage</string>
     <string name="read_more">Lire la suite</string>
-    <string name="upgrade_desktop_app">Tasks.org pour bureau</string>
+    <string name="upgrade_desktop_app">Scorda pour bureau</string>
     <string name="upgrade_desktop_app_description">Accès anticipé à la nouvelle application de bureau</string>
     <string name="sort_options">Options de tri</string>
     <string name="permission_write_tasks">Ajoutez, modifiez et supprimez vos tâches, vos listes, vos étiquettes et vos lieux</string>

@@ -343,7 +343,7 @@
     <string name="app_password">Aplikazioaren pasahitza</string>
     <string name="save_percent">Aurreztu %% %d</string>
     <string name="above_average">Batezbestekotik gora</string>
-    <string name="migrate_count">Eraman %s Tasks.org gunera</string>
+    <string name="migrate_count">Eraman %s Scorda gunera</string>
     <string name="migrating_tasks">Zereginak migratzen</string>
     <string name="authentication_required">Autentifikazioa derrigorrezkoa</string>
     <string name="no_google_play_subscription">Ez da Google Play harpidetza egokirik aurkitu</string>
@@ -356,12 +356,12 @@
     <string name="no_start_date">Hasiera data gabe</string>
     <string name="CFC_startBefore_name">Hasiera…</string>
     <string name="CFC_startBefore_text">Hasiera: \?</string>
-    <string name="tasks_org_account_required">Tasks.org kontua behar da</string>
+    <string name="tasks_org_account_required">Scorda kontua behar da</string>
     <string name="privacy">Pribatutasuna</string>
     <string name="open_source">Kode irekia</string>
     <string name="support">Euskarria</string>
     <string name="upgrade_open_source_description">Harpidetzak etengabeko garapenaren alde egiten du</string>
-    <string name="upgrade_tasks_org_account_description">Sinkronizatu Tasks.org-ekin eta lankidetu beste erabiltzaile batzuekin</string>
+    <string name="upgrade_tasks_org_account_description">Sinkronizatu Scorda-ekin eta lankidetu beste erabiltzaile batzuekin</string>
     <string name="upgrade_more_customization_description">Desblokeatu gai, kolore eta ikono guztiak</string>
     <string name="upgrade_more_customization">Pertsonalizazio gehiago</string>
     <string name="pro_free_trial">Harpidedun berriek 7 eguneko doako proba jasotzen dute. Ezeztatu edozein unetan</string>

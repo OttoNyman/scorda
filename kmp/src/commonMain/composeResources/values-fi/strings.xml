@@ -63,7 +63,7 @@
     <string name="davx5_selection_description">Tehtävien synkronointi DAVx⁵sovelluksen kanssa</string>
     <string name="etesync_selection_description">End-to-end-salattu synkronointi</string>
     <string name="decsync_selection_description">Tiedostopohjainen synkronointi</string>
-    <string name="sign_in_to_tasks">Kirjautuminen Tasks.org</string>
+    <string name="sign_in_to_tasks">Kirjautuminen Scorda</string>
     <string name="sign_in_with_google">Kirjaudu sisään Googlen avulla</string>
     <string name="sign_in_with_github">Kirjaudu sisään GitHubilla</string>
     <string name="completed">Valmiit</string>
@@ -101,7 +101,7 @@
     <string name="back">Takaisin</string>
     <string name="help">Apua</string>
     <string name="display_name">Näytetään nimellä</string>
-    <string name="upgrade_to_pro_card_description">Avaa Tasks.org-pilvisynkronointi, perhe- ja ystäväjako sekä sähköpostista tehtäväksi -toiminto</string>
+    <string name="upgrade_to_pro_card_description">Avaa Scorda-pilvisynkronointi, perhe- ja ystäväjako sekä sähköpostista tehtäväksi -toiminto</string>
     <string name="price_per_month_with_currency">%1$s/kuukausi</string>
     <string name="price_per_year_with_currency">%1$s/vuosi</string>
     <string name="donate_nag">Harkitse tuen osoittamista lahjoituksella!</string>
@@ -124,12 +124,12 @@
     <string name="your_subscription_expired">Tilauksesi on päättynyt. Tilaa nyt jatkaaksesi palvelua.</string>
     <string name="insufficient_subscription">Riittämätön tilaustaso. Päivitä tilauksesi palvelun jatkamiseksi.</string>
     <string name="authentication_required">Vaadittu tunnistautuminen</string>
-    <string name="app_password_save">Käytä näitä tunnistetietoja kolmannen osapuolen sovelluksen määrittämiseen. Ne antavat täydellisen pääsyn Tasks.org-tiliisi, älä kirjoita niitä ylös tai jaa niitä kenenkään kanssa!</string>
+    <string name="app_password_save">Käytä näitä tunnistetietoja kolmannen osapuolen sovelluksen määrittämiseen. Ne antavat täydellisen pääsyn Scorda-tiliisi, älä kirjoita niitä ylös tai jaa niitä kenenkään kanssa!</string>
     <string name="url">URL</string>
     <string name="user">Käyttäjä</string>
     <string name="password">Salasana</string>
     <string name="migrating_tasks">Tehtävien siirtäminen</string>
-    <string name="migrate_count">Siirrä %1$s osoitteeseen Tasks.org</string>
+    <string name="migrate_count">Siirrä %1$s osoitteeseen Scorda</string>
     <string name="preferences_look_and_feel">Ulkonäkö ja tunnelma</string>
     <string name="notifications">Ilmoitukset</string>
     <string name="task_defaults">Tehtävän oletukset</string>

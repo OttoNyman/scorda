@@ -342,7 +342,7 @@
     <string name="app_password">Hasło aplikacji</string>
     <string name="save_percent">Zapisano %d%%</string>
     <string name="above_average">Powyżej średniej</string>
-    <string name="migrate_count">Przenieś %s do Tasks.org</string>
+    <string name="migrate_count">Przenieś %s do Scorda</string>
     <string name="migrating_tasks">Migrowanie zadań</string>
     <string name="github_sponsors">Sponsorzy GitHub</string>
     <string name="authorization_cancelled">Autoryzacja anulowana</string>
@@ -360,11 +360,11 @@
     <string name="SSD_sort_start">Wg daty rozpoczęcia</string>
     <string name="subscription">Subskrypcja</string>
     <string name="widget_show_title">Pokaż tytuł</string>
-    <string name="tasks_org_account_required">Wymagane konto Tasks.org</string>
+    <string name="tasks_org_account_required">Wymagane konto Scorda</string>
     <string name="privacy">Prywatność</string>
     <string name="support">Wsparcie</string>
     <string name="upgrade_open_source_description">Twoja subskrypcja wspiera dalszy rozwój aplikacji</string>
-    <string name="upgrade_tasks_org_account_description">Synchronizuj z Tasks.org oraz współpracuj z innymi użytkownikami</string>
+    <string name="upgrade_tasks_org_account_description">Synchronizuj z Scorda oraz współpracuj z innymi użytkownikami</string>
     <string name="upgrade_more_customization_description">Odblokuj wszystkie motywy, kolory oraz ikony</string>
     <string name="upgrade_more_customization">Więcej możliwości konfiguracji</string>
     <string name="pro_free_trial">Nowi subskrybenci otrzymują 7-dniowy, darmowy okres próbny. Można anulować w dowolnym momencie</string>

@@ -193,8 +193,7 @@ val worksWithCatalog = listOf(
                 requiresStore = AppStore.GOOGLE_PLAY,
                 requiresStoreDescription = Res.string.works_with_wear_requires_googleplay,
                 links = WorksWithLinks(
-                    web = TasksUrls.GOOGLE_PLAY_LISTING,
-                    play = "org.tasks",
+                    web = TasksUrls.SOURCE_CODE,
                 ),
             ),
             WorksWithEntry(

@@ -214,7 +214,7 @@
     <string name="calendar_event_not_found">لم يوجد حدث التقويم</string>
     <string name="CFC_tag_contains_text">اسم العلامة يحتوي: \?</string>
     <string name="EPr_manage_delete_completed_gcal_message">هل حقًّا تريد حذف كل أحداثك للمهام المتمّمة؟</string>
-    <string name="tasks_org_account_required">حساب Tasks.org مطلوب</string>
+    <string name="tasks_org_account_required">حساب Scorda مطلوب</string>
     <string name="support">دعم</string>
     <string name="backups_ignore_warnings">تجاهل التحذيرات</string>
     <string name="device_settings">إعدادات الجهاز</string>
@@ -245,7 +245,7 @@
     <string name="TEA_control_timer">ضوابط المؤقت</string>
     <string name="upgrade_open_source_description">اشتراكك يدعم التطور المستمر</string>
     <string name="copied_to_clipboard">تم نسخ %s إلى الحافظة</string>
-    <string name="migrate_count">انقل %s إلى Tasks.org</string>
+    <string name="migrate_count">انقل %s إلى Scorda</string>
     <string name="open_source">مفتوح المصدر</string>
     <string name="your_subscription_expired">لقد انتهى اشتراكك. اشترك الآن لإكمال الخدمة.</string>
     <string name="multi_select_reschedule">غيّر التاريخ</string>
@@ -280,7 +280,7 @@
     <string name="widget_settings">إعدادات الودجيت</string>
     <string name="CFC_dueBefore_name">تستحق في…</string>
     <string name="EPr_cal_end_or_start_at_due_time">وقت حدث التقويم</string>
-    <string name="upgrade_tasks_org_account_description">قم بالمزامنة مع Tasks.org وتعاون مع مستخدمين آخرين</string>
+    <string name="upgrade_tasks_org_account_description">قم بالمزامنة مع Scorda وتعاون مع مستخدمين آخرين</string>
     <string name="upgrade_more_customization_description">افتح جميع الثيمات والألوان والرموز</string>
     <string name="upgrade_more_customization">المزيد من التخصيص</string>
     <string name="pro_free_trial">يحصل المشتركون الجدد على نسخة تجريبية مجانية مدتها 7 أيام. تلغى في أي وقت</string>

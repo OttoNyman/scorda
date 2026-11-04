@@ -333,7 +333,7 @@
     <string name="sign_in_with_google">Google ile oturum aç</string>
     <string name="github_sponsor">Sponsor</string>
     <string name="authentication_required">Kimlik doğrulama gerekli</string>
-    <string name="migrate_count">%s taneyi Tasks.org\'a taşı</string>
+    <string name="migrate_count">%s taneyi Scorda\'a taşı</string>
     <string name="migrating_tasks">Görevler göç ediliyor</string>
     <string name="github_sponsors">GitHub Sponsorları</string>
     <string name="no_google_play_subscription">Uygun Google Play aboneliği bulunamadı</string>
@@ -353,13 +353,13 @@
     <string name="filter_any_start_date">Herhangi başlangıç tarihi</string>
     <string name="subscription">Abonelik</string>
     <string name="widget_show_title">Başlığı göster</string>
-    <string name="tasks_org_account_required">Tasks.org hesabı gerekli</string>
+    <string name="tasks_org_account_required">Scorda hesabı gerekli</string>
     <string name="privacy">Gizlilik</string>
     <string name="open_source">Açık kaynak</string>
     <string name="support">Destek</string>
     <string name="upgrade_open_source_description">Aboneliğiniz geliştirmenin sürekliliğini destekler</string>
     <string name="upgrade_more_customization_description">Tüm gövdeler, renkler ve simgeler kullanılabilir</string>
-    <string name="upgrade_tasks_org_account_description">Tasks.org ile eşzamanla ve diğer kullanıcılarla ortak çalış</string>
+    <string name="upgrade_tasks_org_account_description">Scorda ile eşzamanla ve diğer kullanıcılarla ortak çalış</string>
     <string name="upgrade_more_customization">Daha çok özelleştirme</string>
     <string name="pro_free_trial">Yeni aboneler 7 günlük sınama süresi kazanır. İstendiğinde iptal edilir</string>
     <string name="now">Şimdi</string>
@@ -404,9 +404,9 @@
     <string name="multiline_title_off">Tamamlandıya basarak görevi kaydet</string>
     <string name="delete_tasks_warning">%s silinecek. Bu geri alınamaz!</string>
     <string name="widget_view_more_tasks">Daha çok görev gör</string>
-    <string name="subscription_required_fdroid">Tasks.org eşzamanlamasını kullanmak için abonelik gerekir. Abonelikler, Tasks\'ın Google Play sürümünden başlatılmalıdır.</string>
-    <string name="sponsorship_required_fdroid">Tasks.org eşzamanlamasını kullanmak için GitHub sponsorluğu gerekir. Sponsor olmak için aşağıya tıklayın.</string>
-    <string name="legal_disclosure_prefix_using">Tasks.org\'u kullanarak</string>
+    <string name="subscription_required_fdroid">Scorda eşzamanlamasını kullanmak için abonelik gerekir. Abonelikler, Tasks\'ın Google Play sürümünden başlatılmalıdır.</string>
+    <string name="sponsorship_required_fdroid">Scorda eşzamanlamasını kullanmak için GitHub sponsorluğu gerekir. Sponsor olmak için aşağıya tıklayın.</string>
+    <string name="legal_disclosure_prefix_using">Scorda\'u kullanarak</string>
     <string name="tos_updated_title">Hizmet Koşullarımızı güncelledik</string>
     <string name="accept">Onayla</string>
     <string name="exit">Çık</string>
@@ -420,7 +420,7 @@
     <string name="advanced_tools">Gelişmiş araçlar</string>
     <string name="advanced_tools_description">Google Yerler, CalDAV, EteSync ve dahası!</string>
     <string name="rmd_EPr_rmd_time_desc">Tüm gün görevleri için bildirimlerin görüneceği an: %1$s</string>
-    <string name="guest_create_list_message">Bu paylaşılan listeye konuk erişiminiz var. Kendi özel listelerinizi oluşturmak ve buluta eşzamanlamak için Tasks.org aboneliğine gereksineceksiniz. Ya da bu aygıtta kalacak ücretsiz yerel liste oluştuabilirsiniz.</string>
+    <string name="guest_create_list_message">Bu paylaşılan listeye konuk erişiminiz var. Kendi özel listelerinizi oluşturmak ve buluta eşzamanlamak için Scorda aboneliğine gereksineceksiniz. Ya da bu aygıtta kalacak ücretsiz yerel liste oluştuabilirsiniz.</string>
     <string name="upgrade_friends_and_family">Arkadaşlar &amp; Aile</string>
     <string name="upgrade_friends_and_family_description">Paylaşılan listelerde 5 ücretsiz konuk. Apple Anımsatıcılar ile çalışır</string>
     <string name="per_list_sort_title">Liste başına sıralama</string>
@@ -428,7 +428,7 @@
     <string name="location_update_interval_summary">Dönemsel konum güncellemeleri coğrafi sınır güvenirliğini iyileştirir</string>
     <string name="read_more">Daha çoğunu oku</string>
     <string name="p_per_list_sort">per_list_sort</string>
-    <string name="upgrade_desktop_app">Masaüstü için Tasks.org</string>
+    <string name="upgrade_desktop_app">Masaüstü için Scorda</string>
     <string name="upgrade_desktop_app_description">Yeni masaüstü uygulamasına erken erişim</string>
     <string name="sort_options">Sıralama seçenekleri</string>
     <string name="write_permission_label">Görevleri Değiştir</string>
