@@ -18,6 +18,7 @@ import org.tasks.notifications.ReminderCheck
 import org.tasks.notifications.ReminderCheckId
 import org.tasks.preferences.AppPreferences
 import org.tasks.preferences.NotificationSettings
+import org.tasks.preferences.SwipeAction
 import org.tasks.preferences.isCurrentlyQuietHours
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.plusDays
@@ -74,6 +75,10 @@ open class NotificationsViewModel(
 
     var showSnoozeDialog by mutableStateOf(false)
         private set
+
+    var showSwipeDialog by mutableStateOf(false)
+
+    var showSwipeHelp by mutableStateOf(false)
 
     var timePickerTarget by mutableStateOf<TimePickerTarget?>(null)
         private set
@@ -198,9 +203,10 @@ open class NotificationsViewModel(
         persist { appPreferences.setVoiceReminders(enabled) }
     }
 
-    fun updateSwipeToSnooze(enabled: Boolean) {
-        settings = settings.copy(swipeToSnoozeEnabled = enabled)
-        persist { appPreferences.setSwipeToSnoozeEnabled(enabled) }
+    fun updateSwipeAction(action: SwipeAction) {
+        settings = settings.copy(swipeAction = action)
+        showSwipeDialog = false
+        persist { appPreferences.setSwipeAction(action) }
     }
 
     fun setSnoozeTime(minutes: Int) {

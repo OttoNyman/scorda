@@ -66,8 +66,8 @@
   <!-- whether "clear all notifications" clears astrid notifications -->
   <string name="p_rmd_persistent">notif_annoy</string>
 
-  <string name="p_rmd_swipe_to_snooze_enabled">notif_swipe_to_snooze_enabled</string>
-  <string name="p_rmd_swipe_to_snooze_time_minutes">notif_swipe_to_snooze_time_minutes</string>
+  <string name="p_rmd_swipe_action">notif_swipe_action</string>
+  <string name="p_rmd_swipe_to_snooze_time_minutes">notif_swipe_snooze_minutes</string>
 
   <!-- ringtone to use for notifications -->
   <string name="p_completion_ringtone">completion_ringtone</string>

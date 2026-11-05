@@ -21,8 +21,6 @@ import org.tasks.notifications.NotificationManager
 import org.tasks.notifications.Ringer
 import org.tasks.notifications.alertLevel
 import org.tasks.notifications.maxAlertLevel
-import org.tasks.notifications.nextBatchDelay
-import org.tasks.notifications.nextEpisodeDelay
 import org.tasks.notifications.TelephonyManager
 import org.tasks.preferences.Preferences
 import org.tasks.themes.ColorProvider
@@ -124,17 +122,12 @@ class Notifier @Inject constructor(
             val level = maxAlertLevel(owned.map { it.second })
             val sounding = owned
                 .filter { it.second != AlertLevel.SILENT }
+                .sortedByDescending { it.second.ordinal }
                 .map { it.first.taskId }
             if (sounding.isNotEmpty()) {
                 ringer.playEpisode(level, sounding)
             }
-            val delay = nextBatchDelay(owned.map { it.second }, 0)
-            if (delay != null) {
-                val repeating = owned
-                    .filter { nextEpisodeDelay(it.second, 0) != null }
-                    .map { it.first.taskId }
-                ringer.scheduleNext(repeating, 1, delay)
-            }
+            ringer.scheduleRepeats(owned.map { it.first.taskId to it.second }, 0)
 
             if (preferences.getBoolean(R.string.p_voiceRemindersEnabled, false)
                     && level != AlertLevel.SUPER

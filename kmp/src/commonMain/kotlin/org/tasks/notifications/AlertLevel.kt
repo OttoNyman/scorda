@@ -13,8 +13,7 @@ data class SoundState(
     val vibrateAllowed: Boolean = true,
 )
 
-const val PERSISTENT_EPISODES = 3
-const val PERSISTENT_INTERVAL_MS = 2 * 60_000L
+val PERSISTENT_PAUSES_MS: List<Long> = listOf(1L, 2, 4, 8, 15, 30).map { it * 60_000L }
 const val SUPER_EPISODES = 3
 const val SUPER_RING_MS = 60_000L
 const val SUPER_PAUSE_MS = 5 * 60_000L
@@ -45,8 +44,7 @@ fun vibrate(level: AlertLevel, state: SoundState): Boolean =
     level != AlertLevel.SILENT && !state.inCall && state.vibrateAllowed
 
 fun nextEpisodeDelay(level: AlertLevel, index: Int): Long? = when (level) {
-    AlertLevel.PERSISTENT ->
-        if (index < PERSISTENT_EPISODES - 1) PERSISTENT_INTERVAL_MS else null
+    AlertLevel.PERSISTENT -> PERSISTENT_PAUSES_MS.getOrNull(index)
     AlertLevel.SUPER ->
         if (index < SUPER_EPISODES - 1) SUPER_RING_MS + SUPER_PAUSE_MS else null
     else -> null
@@ -54,8 +52,3 @@ fun nextEpisodeDelay(level: AlertLevel, index: Int): Long? = when (level) {
 
 fun maxAlertLevel(levels: List<AlertLevel>): AlertLevel =
     levels.maxByOrNull { it.ordinal } ?: AlertLevel.ONCE
-
-fun nextBatchDelay(levels: List<AlertLevel>, index: Int): Long? =
-    levels.mapNotNull { level -> nextEpisodeDelay(level, index)?.let { level to it } }
-        .maxByOrNull { it.first.ordinal }
-        ?.second

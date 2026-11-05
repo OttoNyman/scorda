@@ -52,10 +52,10 @@ class AlertLevelTest {
     }
 
     @Test
-    fun persistentRepeatsTwiceThenStops() {
-        assertEquals(PERSISTENT_INTERVAL_MS, nextEpisodeDelay(AlertLevel.PERSISTENT, 0))
-        assertEquals(PERSISTENT_INTERVAL_MS, nextEpisodeDelay(AlertLevel.PERSISTENT, 1))
-        assertNull(nextEpisodeDelay(AlertLevel.PERSISTENT, 2))
+    fun persistentBacksOffThenStops() {
+        val pauses = (0..5).map { nextEpisodeDelay(AlertLevel.PERSISTENT, it)!! / 60_000L }
+        assertEquals(listOf(1L, 2, 4, 8, 15, 30), pauses)
+        assertNull(nextEpisodeDelay(AlertLevel.PERSISTENT, 6))
         assertNull(nextEpisodeDelay(AlertLevel.ONCE, 0))
     }
 
@@ -64,19 +64,6 @@ class AlertLevelTest {
         assertEquals(SUPER_RING_MS + SUPER_PAUSE_MS, nextEpisodeDelay(AlertLevel.SUPER, 0))
         assertEquals(SUPER_RING_MS + SUPER_PAUSE_MS, nextEpisodeDelay(AlertLevel.SUPER, 1))
         assertNull(nextEpisodeDelay(AlertLevel.SUPER, 2))
-    }
-
-    @Test
-    fun aBatchFollowsTheLoudestDelay() {
-        assertEquals(
-            SUPER_RING_MS + SUPER_PAUSE_MS,
-            nextBatchDelay(listOf(AlertLevel.PERSISTENT, AlertLevel.SUPER), 0),
-        )
-        assertEquals(
-            PERSISTENT_INTERVAL_MS,
-            nextBatchDelay(listOf(AlertLevel.PERSISTENT, AlertLevel.ONCE), 0),
-        )
-        assertNull(nextBatchDelay(listOf(AlertLevel.ONCE), 0))
     }
 
     private fun state(

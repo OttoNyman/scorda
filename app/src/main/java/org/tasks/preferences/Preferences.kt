@@ -102,10 +102,7 @@ class Preferences @JvmOverloads constructor(
             R.string.p_voiceRemindersEnabled,
             notificationDefaults.voiceReminders
         ),
-        swipeToSnoozeEnabled = getBoolean(
-            R.string.p_rmd_swipe_to_snooze_enabled,
-            notificationDefaults.swipeToSnoozeEnabled
-        ),
+        swipeAction = swipeAction(),
         swipeToSnoozeMinutes = getIntegerFromString(
             R.string.p_rmd_swipe_to_snooze_time_minutes,
             notificationDefaults.swipeToSnoozeMinutes
@@ -139,8 +136,8 @@ class Preferences @JvmOverloads constructor(
     override suspend fun setVoiceReminders(value: Boolean) =
         setBoolean(R.string.p_voiceRemindersEnabled, value)
 
-    override suspend fun setSwipeToSnoozeEnabled(value: Boolean) =
-        setBoolean(R.string.p_rmd_swipe_to_snooze_enabled, value)
+    override suspend fun setSwipeAction(value: SwipeAction) =
+        setStringFromInteger(R.string.p_rmd_swipe_action, value.ordinal)
 
     override suspend fun setSwipeToSnoozeMinutes(value: Int) =
         setStringFromInteger(R.string.p_rmd_swipe_to_snooze_time_minutes, value)
@@ -721,8 +718,10 @@ class Preferences @JvmOverloads constructor(
     fun usePersistentReminders(): Boolean =
             AndroidUtilities.preUpsideDownCake() && getBoolean(R.string.p_rmd_persistent, true)
 
-    fun useSwipeToSnooze(): Boolean =
-            getBoolean(R.string.p_rmd_swipe_to_snooze_enabled, false)
+    fun swipeAction(): SwipeAction =
+        SwipeAction.entries.getOrNull(
+            getIntegerFromString(R.string.p_rmd_swipe_action, SwipeAction.SNOOZE.ordinal)
+        ) ?: SwipeAction.SNOOZE
 
     fun swipeToSnoozeIntervalMS(): Long =
         TimeUnit.MINUTES.toMillis(

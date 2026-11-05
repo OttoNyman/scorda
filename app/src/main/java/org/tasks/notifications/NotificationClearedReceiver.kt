@@ -12,6 +12,8 @@ import org.tasks.analytics.Firebase
 import org.tasks.data.entity.Alarm
 import org.tasks.injection.ApplicationScope
 import org.tasks.preferences.Preferences
+import org.tasks.preferences.SwipeAction
+import org.tasks.service.TaskCompleter
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +25,7 @@ class NotificationClearedReceiver : BroadcastReceiver() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var alarmService: AlarmService
     @Inject lateinit var firebase: Firebase
+    @Inject lateinit var taskCompleter: TaskCompleter
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getLongExtra(NotificationManager.EXTRA_NOTIFICATION_ID, -1L)
@@ -38,7 +41,12 @@ class NotificationClearedReceiver : BroadcastReceiver() {
                 else -> false
             }
         scope.launch {
-            if (preferences.useSwipeToSnooze() && !isLocationReminder) {
+            val action = preferences.swipeAction()
+            if (action == SwipeAction.COMPLETE) {
+                firebase.logEvent(R.string.event_notification, R.string.param_type to "swipe_complete")
+                notificationManager.cancel(notificationId, CancelReason.COMPLETE)
+                taskCompleter.setComplete(notificationId)
+            } else if (action == SwipeAction.SNOOZE && !isLocationReminder) {
                 firebase.logEvent(R.string.event_notification, R.string.param_type to "auto_snooze")
                 var snoozeTime = preferences.swipeToSnoozeIntervalMS()
                 // snoozing for 0ms will cause the alarm service to miss this notification

@@ -90,13 +90,25 @@ import tasks.kmp.generated.resources.swipe_to_snooze_time_24_hours
 import tasks.kmp.generated.resources.swipe_to_snooze_time_30_minutes
 import tasks.kmp.generated.resources.swipe_to_snooze_time_description
 import tasks.kmp.generated.resources.swipe_to_snooze_time_immediately
-import tasks.kmp.generated.resources.swipe_to_snooze_title
+import tasks.kmp.generated.resources.swipe_title
+import tasks.kmp.generated.resources.swipe_action
+import tasks.kmp.generated.resources.swipe_snooze
+import tasks.kmp.generated.resources.swipe_dismiss
+import tasks.kmp.generated.resources.swipe_complete
+import tasks.kmp.generated.resources.swipe_snooze_help
+import tasks.kmp.generated.resources.swipe_dismiss_help
+import tasks.kmp.generated.resources.swipe_complete_help
+import tasks.kmp.generated.resources.swipe_help_always
+import tasks.kmp.generated.resources.swipe_to_snooze_time_5_minutes
+import tasks.kmp.generated.resources.ok
+import org.tasks.preferences.SwipeAction
 import tasks.kmp.generated.resources.troubleshooting
 import tasks.kmp.generated.resources.wearable_notifications
 import tasks.kmp.generated.resources.wearable_notifications_summary
 
 val SnoozeTimes: List<Pair<Int, StringResource>> = listOf(
     0 to Res.string.swipe_to_snooze_time_immediately,
+    5 to Res.string.swipe_to_snooze_time_5_minutes,
     15 to Res.string.swipe_to_snooze_time_15_minutes,
     30 to Res.string.swipe_to_snooze_time_30_minutes,
     60 to Res.string.swipe_to_snooze_time_1_hour,
@@ -129,7 +141,7 @@ fun NotificationsScreen(
     wearableEnabled: Boolean,
     bundleEnabled: Boolean,
     voiceEnabled: Boolean,
-    swipeToSnoozeEnabled: Boolean,
+    swipeAction: SwipeAction,
     swipeToSnoozeMinutes: Int,
     defaultRemindersEnabled: Boolean,
     defaultReminderTime: Int,
@@ -145,7 +157,8 @@ fun NotificationsScreen(
     onBundle: (Boolean) -> Unit,
     onVoice: (Boolean) -> Unit,
     onMoreSettings: () -> Unit,
-    onSwipeToSnooze: (Boolean) -> Unit,
+    onSwipeAction: () -> Unit,
+    onSwipeHelp: () -> Unit,
     onSnoozeTime: () -> Unit,
     onDefaultReminders: (Boolean) -> Unit,
     onReminderTime: () -> Unit,
@@ -353,30 +366,33 @@ fun NotificationsScreen(
             }
             if (showSwipeToSnooze) {
                 SectionHeader(
-                    stringResource(Res.string.swipe_to_snooze_title),
+                    stringResource(Res.string.swipe_title),
                     modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                    onClick = onSwipeHelp,
                 )
                 Column(
                     modifier = Modifier.padding(horizontal = SettingsContentPadding),
                     verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
                 ) {
-                    SettingsItemCard(position = CardPosition.First) {
-                        SwitchPreferenceRow(
-                            title = stringResource(Res.string.enabled),
-                            checked = swipeToSnoozeEnabled,
-                            onCheckedChange = onSwipeToSnooze,
+                    val snoozing = swipeAction == SwipeAction.SNOOZE
+                    SettingsItemCard(position = if (snoozing) CardPosition.First else CardPosition.Only) {
+                        PreferenceRow(
+                            title = stringResource(Res.string.swipe_action),
+                            summary = stringResource(swipeLabel(swipeAction)),
+                            onClick = onSwipeAction,
                         )
                     }
-                    SettingsItemCard(position = CardPosition.Last) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.swipe_to_snooze_description),
-                            summary = stringResource(
-                                Res.string.swipe_to_snooze_time_description,
-                                stringResource(snoozeLabel(swipeToSnoozeMinutes)),
-                            ),
-                            enabled = swipeToSnoozeEnabled,
-                            onClick = onSnoozeTime,
-                        )
+                    if (snoozing) {
+                        SettingsItemCard(position = CardPosition.Last) {
+                            PreferenceRow(
+                                title = stringResource(Res.string.swipe_to_snooze_description),
+                                summary = stringResource(
+                                    Res.string.swipe_to_snooze_time_description,
+                                    stringResource(snoozeLabel(swipeToSnoozeMinutes)),
+                                ),
+                                onClick = onSnoozeTime,
+                            )
+                        }
                     }
                 }
             }
@@ -495,6 +511,83 @@ fun RingLevelDialog(
             }
         },
         confirmButton = {},
+    )
+}
+
+private val SwipeOptions: List<Triple<SwipeAction, StringResource, StringResource>> = listOf(
+    Triple(SwipeAction.SNOOZE, Res.string.swipe_snooze, Res.string.swipe_snooze_help),
+    Triple(SwipeAction.DISMISS, Res.string.swipe_dismiss, Res.string.swipe_dismiss_help),
+    Triple(SwipeAction.COMPLETE, Res.string.swipe_complete, Res.string.swipe_complete_help),
+)
+
+private fun swipeLabel(action: SwipeAction): StringResource =
+    SwipeOptions.first { it.first == action }.second
+
+@Composable
+fun SwipeActionDialog(
+    selected: SwipeAction,
+    onSelect: (SwipeAction) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.swipe_title)) },
+        text = {
+            Column {
+                SwipeOptions.forEach { (action, label, _) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = action == selected,
+                                role = Role.RadioButton,
+                                onClick = { onSelect(action) },
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = action == selected, onClick = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(label),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+    )
+}
+
+@Composable
+fun SwipeHelpDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.swipe_title)) },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                SwipeOptions.forEach { (_, label, help) ->
+                    Text(
+                        text = stringResource(label),
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(top = 12.dp),
+                    )
+                    Text(
+                        text = stringResource(help),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+                Text(
+                    text = stringResource(Res.string.swipe_help_always),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 16.dp),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(Res.string.ok)) }
+        },
     )
 }
 

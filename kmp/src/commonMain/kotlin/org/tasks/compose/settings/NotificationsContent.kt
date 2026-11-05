@@ -62,7 +62,7 @@ fun NotificationsContent(
         wearableEnabled = settings.wearableNotifications,
         bundleEnabled = settings.bundleNotifications,
         voiceEnabled = settings.voiceReminders,
-        swipeToSnoozeEnabled = settings.swipeToSnoozeEnabled,
+        swipeAction = settings.swipeAction,
         swipeToSnoozeMinutes = settings.swipeToSnoozeMinutes,
         defaultRemindersEnabled = settings.defaultRemindersEnabled,
         defaultReminderTime = settings.defaultReminderTime,
@@ -78,7 +78,8 @@ fun NotificationsContent(
         onBundle = { viewModel.updateBundle(it) },
         onVoice = { viewModel.updateVoice(it) },
         onMoreSettings = { onMoreSettings?.invoke() },
-        onSwipeToSnooze = { viewModel.updateSwipeToSnooze(it) },
+        onSwipeAction = { viewModel.showSwipeDialog = true },
+        onSwipeHelp = { viewModel.showSwipeHelp = true },
         onSnoozeTime = { viewModel.openSnoozeDialog() },
         onDefaultReminders = { viewModel.updateDefaultReminders(it) },
         onReminderTime = { viewModel.openTimePicker(TimePickerTarget.DEFAULT_REMINDER) },
@@ -112,6 +113,18 @@ fun NotificationsContent(
             onSelect = { viewModel.setSnoozeTime(it) },
             onDismiss = { viewModel.dismissSnoozeDialog() },
         )
+    }
+
+    if (viewModel.showSwipeDialog) {
+        SwipeActionDialog(
+            selected = settings.swipeAction,
+            onSelect = { viewModel.updateSwipeAction(it) },
+            onDismiss = { viewModel.showSwipeDialog = false },
+        )
+    }
+
+    if (viewModel.showSwipeHelp) {
+        SwipeHelpDialog(onDismiss = { viewModel.showSwipeHelp = false })
     }
 
     if (viewModel.showRingDialog) {

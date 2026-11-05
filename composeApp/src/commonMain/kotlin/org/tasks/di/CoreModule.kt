@@ -329,8 +329,8 @@ val coreModule: Module = module {
                 tasksPreferences.set(TasksPreferences.bundleNotifications, value)
             override suspend fun setVoiceReminders(value: Boolean) =
                 tasksPreferences.set(TasksPreferences.voiceReminders, value)
-            override suspend fun setSwipeToSnoozeEnabled(value: Boolean) =
-                tasksPreferences.set(TasksPreferences.swipeToSnoozeEnabled, value)
+            override suspend fun setSwipeAction(value: org.tasks.preferences.SwipeAction) =
+                tasksPreferences.set(TasksPreferences.swipeAction, value.ordinal)
             override suspend fun setSwipeToSnoozeMinutes(value: Int) =
                 tasksPreferences.set(TasksPreferences.swipeToSnoozeMinutes, value)
             override suspend fun setDefaultRemindersEnabled(value: Boolean) =
@@ -822,10 +822,9 @@ internal fun PreferencesSnapshot.notificationSettings() = NotificationSettings(
         notificationDefaults.bundleNotifications
     ),
     voiceReminders = get(TasksPreferences.voiceReminders, notificationDefaults.voiceReminders),
-    swipeToSnoozeEnabled = get(
-        TasksPreferences.swipeToSnoozeEnabled,
-        notificationDefaults.swipeToSnoozeEnabled
-    ),
+    swipeAction = org.tasks.preferences.SwipeAction.entries.getOrNull(
+        get(TasksPreferences.swipeAction, notificationDefaults.swipeAction.ordinal)
+    ) ?: notificationDefaults.swipeAction,
     swipeToSnoozeMinutes = get(
         TasksPreferences.swipeToSnoozeMinutes,
         notificationDefaults.swipeToSnoozeMinutes

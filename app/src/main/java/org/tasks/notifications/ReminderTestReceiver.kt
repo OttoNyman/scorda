@@ -50,8 +50,7 @@ class ReminderTestReceiver : BroadcastReceiver() {
                 NotificationManagerCompat.from(context).notify(TEST_NOTIFICATION_ID, notification)
                 val id = TEST_NOTIFICATION_ID.toLong()
                 ringer.playEpisode(level, listOf(id))
-                val delay = nextEpisodeDelay(level, 0) ?: return@launch
-                ringer.scheduleNext(listOf(id), 1, delay)
+                ringer.scheduleRepeats(listOf(id to level), 0)
             } finally {
                 pending.finish()
             }
@@ -82,15 +81,8 @@ class RingReceiver : BroadcastReceiver() {
                     .map { it to levelOf(it) }
                     .filter { it.second != AlertLevel.SILENT }
                 if (sounding.isEmpty()) return@launch
-                val levels = sounding.map { it.second }
-                ringer.playEpisode(maxAlertLevel(levels), sounding.map { it.first })
-                val delay = nextBatchDelay(levels, index) ?: return@launch
-                val repeating = sounding
-                    .filter { nextEpisodeDelay(it.second, index) != null }
-                    .map { it.first }
-                if (repeating.isNotEmpty()) {
-                    ringer.scheduleNext(repeating, index + 1, delay)
-                }
+                ringer.playEpisode(maxAlertLevel(sounding.map { it.second }), sounding.map { it.first })
+                ringer.scheduleRepeats(sounding, index)
             } finally {
                 pending.finish()
             }

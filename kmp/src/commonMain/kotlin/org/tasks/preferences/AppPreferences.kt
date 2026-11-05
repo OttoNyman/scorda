@@ -18,7 +18,10 @@ import org.tasks.time.withMillisOfDay
 const val DEFAULT_REMINDER_TIME = 18 * 60 * 60 * 1000
 const val DEFAULT_QUIET_HOURS_START = 22 * 60 * 60 * 1000
 const val DEFAULT_QUIET_HOURS_END = 10 * 60 * 60 * 1000
-const val DEFAULT_SNOOZE_MINUTES = 15
+const val DEFAULT_SNOOZE_MINUTES = 5
+
+/** What swiping a reminder away does. Stored by ordinal: keep the order. */
+enum class SwipeAction { SNOOZE, DISMISS, COMPLETE }
 const val DEFAULT_LOCATION_UPDATE_INTERVAL = 15
 
 val DEFAULT_ALARMS: List<Alarm> = listOf(
@@ -63,7 +66,7 @@ data class NotificationSettings(
     val wearableNotifications: Boolean = true,
     val bundleNotifications: Boolean = true,
     val voiceReminders: Boolean = false,
-    val swipeToSnoozeEnabled: Boolean = false,
+    val swipeAction: SwipeAction = SwipeAction.SNOOZE,
     val swipeToSnoozeMinutes: Int = DEFAULT_SNOOZE_MINUTES,
     val defaultRemindersEnabled: Boolean = true,
     val defaultReminderTime: Int = DEFAULT_REMINDER_TIME,
@@ -200,7 +203,7 @@ interface AppPreferences {
     suspend fun setWearableNotifications(value: Boolean)
     suspend fun setBundleNotifications(value: Boolean)
     suspend fun setVoiceReminders(value: Boolean)
-    suspend fun setSwipeToSnoozeEnabled(value: Boolean)
+    suspend fun setSwipeAction(value: SwipeAction)
     suspend fun setSwipeToSnoozeMinutes(value: Int)
     suspend fun setDefaultRemindersEnabled(value: Boolean)
     suspend fun setDefaultReminderTime(value: Int)

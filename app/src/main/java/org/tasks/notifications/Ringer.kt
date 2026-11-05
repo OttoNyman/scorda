@@ -45,6 +45,8 @@ class Ringer @Inject constructor(
     private val toneHandler = Handler(Looper.getMainLooper())
     @Volatile
     private var episodeFinish: (() -> Unit)? = null
+    @Volatile
+    private var alarmCard: Long? = null
 
     fun soundState(): SoundState {
         val audio = context.getSystemService(AudioManager::class.java)
@@ -75,12 +77,17 @@ class Ringer @Inject constructor(
             }
             when (next) {
                 Route.NONE -> Unit
-                Route.NOTIFICATION -> play(
-                    melody(RingtoneManager.TYPE_NOTIFICATION),
-                    AudioAttributes.USAGE_NOTIFICATION,
-                )
-                Route.CALL_TONE -> beeps(if (level == AlertLevel.SUPER) SUPER_BEEPS else SHORT_BEEPS)
-                Route.ALARM -> startAlarm()
+                Route.NOTIFICATION -> if (level == AlertLevel.PERSISTENT) {
+                    pips(AudioManager.STREAM_NOTIFICATION, 1)
+                } else {
+                    play(
+                        melody(RingtoneManager.TYPE_NOTIFICATION),
+                        AudioAttributes.USAGE_NOTIFICATION,
+                    )
+                }
+                Route.CALL_TONE ->
+                    pips(AudioManager.STREAM_VOICE_CALL, if (level == AlertLevel.SUPER) SUPER_PIPS else 1)
+                Route.ALARM -> startAlarm(taskIds.first())
             }
         }.onFailure { Timber.w(it, "Reminder sound failed") } }
     }
@@ -95,7 +102,7 @@ class Ringer @Inject constructor(
             }
         }
         if (!hit) return
-        RingerService.stopIfRunning()
+        RingerService.stopIfRunning(removeCard = alarmCard in ids)
         NotificationManagerCompat.from(context).cancel(RingAlarm.INSISTENT_NOTIFICATION_ID)
         episodeFinish?.invoke()
     }
@@ -108,8 +115,11 @@ class Ringer @Inject constructor(
         synchronized(idsLock) { ringingIds = ringingIds + ids }
     }
 
-    fun scheduleNext(taskIds: List<Long>, index: Int, delayMs: Long) {
-        RingAlarm.schedule(context, taskIds, index, delayMs)
+    /** One repeat chain per level, so each level keeps its own rhythm. */
+    fun scheduleRepeats(tasks: List<Pair<Long, AlertLevel>>, index: Int) {
+        tasks.groupBy({ it.second }, { it.first }).forEach { (level, ids) ->
+            nextEpisodeDelay(level, index)?.let { RingAlarm.schedule(context, ids, index + 1, it) }
+        }
     }
 
     fun melody(kind: Int): Uri {
@@ -120,10 +130,12 @@ class Ringer @Inject constructor(
         return RingtoneManager.getDefaultUri(kind)
     }
 
-    private fun startAlarm() {
+    private fun startAlarm(cardId: Long) {
         RingerService.prepareToStart()
+        alarmCard = cardId
         val intent = Intent(context, RingerService::class.java)
             .putExtra(RingerService.EXTRA_URI, melody(RingtoneManager.TYPE_ALARM).toString())
+            .putExtra(RingerService.EXTRA_CARD_ID, cardId.toInt())
         try {
             ContextCompat.startForegroundService(context, intent)
         } catch (e: Exception) {
@@ -193,12 +205,13 @@ class Ringer @Inject constructor(
         }
     }
 
-    private suspend fun beeps(count: Int) {
-        val tone = ToneGenerator(AudioManager.STREAM_VOICE_CALL, TONE_VOLUME)
+    /** Each pair is two short 1200 Hz pips. */
+    private suspend fun pips(stream: Int, pairs: Int) {
+        val tone = ToneGenerator(stream, TONE_VOLUME)
         try {
-            repeat(count) {
-                tone.startTone(ToneGenerator.TONE_PROP_BEEP2, BEEP_MS)
-                kotlinx.coroutines.delay(BEEP_GAP_MS)
+            repeat(pairs) {
+                tone.startTone(ToneGenerator.TONE_PROP_ACK)
+                kotlinx.coroutines.delay(PIP_PAIR_MS)
             }
         } finally {
             tone.release()
@@ -215,11 +228,9 @@ class Ringer @Inject constructor(
     }
 
     private companion object {
-        const val SHORT_BEEPS = 2
-        const val SUPER_BEEPS = 5
+        const val SUPER_PIPS = 3
         const val TONE_VOLUME = 80
-        const val BEEP_MS = 200
-        const val BEEP_GAP_MS = 400L
+        const val PIP_PAIR_MS = 700L
         const val BUZZ_MS = 200L
         const val MAX_TONE_MS = 5_000L
     }
