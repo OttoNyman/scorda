@@ -135,6 +135,9 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     val isNotifyModeFive: Boolean
         get() = ringFlags == NOTIFY_MODE_FIVE
 
+    val isNotifyModeSilent: Boolean
+        get() = ringFlags == NOTIFY_MODE_SILENT
+
     val isNew: Boolean
         get() = id == NO_ID
 
@@ -319,6 +322,8 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
         const val NOTIFY_MODE_FIVE = 1 shl 4
 
         const val NOTIFY_AT_START = 1 shl 5
+
+        const val NOTIFY_MODE_SILENT = 1 shl 6
 
         /** urgency array index -> significance  */
         const val URGENCY_NONE = 0
