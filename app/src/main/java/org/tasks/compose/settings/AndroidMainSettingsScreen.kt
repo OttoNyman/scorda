@@ -22,6 +22,7 @@ fun AndroidMainSettingsScreen(
     onSettingsClick: (SettingsDestination) -> Unit,
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
+    showNavigationDrawer: Boolean = true,
     onLinkDesktopClick: () -> Unit = {},
 ) {
     MainSettingsScreen(
@@ -31,6 +32,7 @@ fun AndroidMainSettingsScreen(
         showBackupWarning = showBackupWarning,
         showWidgets = showWidgets,
         isDebug = isDebug,
+        showNavigationDrawer = showNavigationDrawer,
         onAccountClick = onAccountClick,
         onAddAccountClick = onAddAccountClick,
         onSettingsClick = onSettingsClick,

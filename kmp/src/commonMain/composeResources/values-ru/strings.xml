@@ -631,4 +631,64 @@
     <string name="name_your_price_blurb">Заплатите столько, сколько хотите, чтобы разблокировать темы, значки и эти расширенные функции синхронизации</string>
     <string name="upgrade">Улучшить</string>
     <string name="supporter_summary_no_price">Спасибо!</string>
+    <string name="constructor_title">Возможности</string>
+    <string name="constructor_simple">Простой</string>
+    <string name="constructor_reminders">Напоминания</string>
+    <string name="constructor_tasks">Дела</string>
+    <string name="constructor_full">Полный</string>
+    <string name="constructor_group_time">Время</string>
+    <string name="constructor_group_order">Порядок</string>
+    <string name="constructor_group_content">Содержимое</string>
+    <string name="constructor_group_links">Связи</string>
+    <string name="constructor_repeat">Повтор</string>
+    <string name="constructor_overdue">О просрочке</string>
+    <string name="constructor_notes">Заметка</string>
+    <string name="constructor_lists">Списки</string>
+    <string name="constructor_subtasks">Подзадачи</string>
+    <string name="constructor_tags">Метки</string>
+    <string name="constructor_filters">Фильтры</string>
+    <string name="constructor_priority">Приоритет</string>
+    <string name="constructor_geo">Места</string>
+    <string name="constructor_start">Дата начала</string>
+    <string name="constructor_extra">Ещё напоминания</string>
+    <string name="constructor_calendar">Календарь</string>
+    <string name="constructor_timer">Таймер</string>
+    <string name="constructor_files">Файлы</string>
+    <string name="constructor_lists_locked">Включено, пока есть синхронизация</string>
+    <plurals name="constructor_repeat_count">
+        <item quantity="one">%1$d задача перестанет повторяться</item>
+        <item quantity="few">%1$d задачи перестанут повторяться</item>
+        <item quantity="many">%1$d задач перестанут повторяться</item>
+        <item quantity="other">%1$d задач перестанут повторяться</item>
+    </plurals>
+    <plurals name="constructor_overdue_count">
+        <item quantity="one">%1$d задача перестанет названивать о просрочке</item>
+        <item quantity="few">%1$d задачи перестанут названивать о просрочке</item>
+        <item quantity="many">%1$d задач перестанут названивать о просрочке</item>
+        <item quantity="other">%1$d задач перестанут названивать о просрочке</item>
+    </plurals>
+    <plurals name="constructor_geo_count">
+        <item quantity="one">%1$d задача перестанет использовать место</item>
+        <item quantity="few">%1$d задачи перестанут использовать место</item>
+        <item quantity="many">%1$d задач перестанут использовать место</item>
+        <item quantity="other">%1$d задач перестанут использовать место</item>
+    </plurals>
+    <plurals name="constructor_calendar_count">
+        <item quantity="one">%1$d задача перестанет обновлять календарь</item>
+        <item quantity="few">%1$d задачи перестанут обновлять календарь</item>
+        <item quantity="many">%1$d задач перестанут обновлять календарь</item>
+        <item quantity="other">%1$d задач перестанут обновлять календарь</item>
+    </plurals>
+    <plurals name="constructor_extra_count">
+        <item quantity="one">%1$d задача потеряет дополнительные напоминания</item>
+        <item quantity="few">%1$d задачи потеряют дополнительные напоминания</item>
+        <item quantity="many">%1$d задач потеряют дополнительные напоминания</item>
+        <item quantity="other">%1$d задач потеряют дополнительные напоминания</item>
+    </plurals>
+    <plurals name="constructor_start_count">
+        <item quantity="one">%1$d задача снова появится в списке</item>
+        <item quantity="few">%1$d задачи снова появятся в списке</item>
+        <item quantity="many">%1$d задач снова появятся в списке</item>
+        <item quantity="other">%1$d задач снова появятся в списке</item>
+    </plurals>
 </resources>

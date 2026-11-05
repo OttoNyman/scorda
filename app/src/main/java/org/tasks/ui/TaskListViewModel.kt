@@ -71,6 +71,7 @@ class TaskListViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
     private val caldavDao: CaldavDao,
     headerFormatter: HeaderFormatter,
+    featureGate: org.tasks.constructor.FeatureGate,
 ) : org.tasks.viewmodel.TaskListViewModel(
     taskDao = taskDao,
     taskDeleter = taskDeleter,
@@ -85,6 +86,7 @@ class TaskListViewModel @Inject constructor(
         SearchFilter(applicationContext.getString(R.string.FLA_search_filter, query), query)
     },
     refreshFlow = composeRefreshBroadcaster.refreshes,
+    features = { featureGate.current },
 ) {
     private val _banner = MutableStateFlow<Banner?>(null)
     val banner = _banner.asStateFlow()

@@ -27,6 +27,7 @@ class ViewHolderFactory @Inject constructor(
     private val checkBoxProvider: CheckBoxProvider,
     private val linkify: Linkify,
     private val theme: Theme,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) {
     private val textColorOverdue: Int = context.getColor(R.color.overdue)
     private val fontSize: Int = preferences.fontSize
@@ -66,5 +67,6 @@ class ViewHolderFactory @Inject constructor(
                 markdown,
                 theme = theme,
                 dateFormatter = dateFormatter,
+                featureGate = featureGate,
             )
 }

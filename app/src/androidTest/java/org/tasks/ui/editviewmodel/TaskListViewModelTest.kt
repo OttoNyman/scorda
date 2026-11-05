@@ -1,5 +1,6 @@
 package org.tasks.ui.editviewmodel
 
+import org.tasks.constructor.flags
 import org.tasks.service.TaskDeleter
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -59,6 +60,9 @@ class TaskListViewModelTest : InjectingTestCase() {
             caldavDao = caldavDao,
             tasksPreferences = tasksPreferences,
             headerFormatter = headerFormatter,
+            featureGate = org.tasks.constructor.FeatureGate().apply {
+                current = org.tasks.constructor.Preset.Full.flags
+            },
         )
         viewModel.setFilter(runBlocking { MyTasksFilter.create() })
     }

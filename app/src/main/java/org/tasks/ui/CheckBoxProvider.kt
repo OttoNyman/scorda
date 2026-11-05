@@ -14,7 +14,10 @@ class CheckBoxProvider @Inject constructor(
     @param:ActivityContext private val context: Context,
     private val colorProvider: ColorProvider
 ) {
-    fun getCheckBox(task: Task) = getDrawable(task.getCheckboxRes(), task.priority)
+    fun getCheckBox(task: Task, features: org.tasks.constructor.Constructor) = getDrawable(
+        getCheckboxRes(task.isCompleted, task.isRecurring && features.repeat),
+        if (features.priority) task.priority else Task.Priority.NONE,
+    )
 
     private fun getDrawable(@DrawableRes resId: Int, priority: Int): Drawable {
         val original = AppCompatResources.getDrawable(context, resId)

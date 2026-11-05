@@ -156,7 +156,7 @@ class FilterProvider(
                 emptyList()
             } else {
                 val collapsed = !forceExpand && tasksPreferences.get(collapseTags, false)
-                val children = tagDataDao.getTagFilters()
+                val children = tagDataDao.getTagFilters(countUntil())
                     .filterIf(hideUnused && configuration.hideUnusedTags) {
                         it.count > 0
                     }
@@ -187,7 +187,7 @@ class FilterProvider(
                 emptyList()
             } else {
                 val collapsed = !forceExpand && tasksPreferences.get(collapsePlaces, false)
-                val children = locationDao.getPlaceFilters()
+                val children = locationDao.getPlaceFilters(countUntil())
                     .filterIf(hideUnused && configuration.hideUnusedPlaces) {
                         it.count > 0
                     }
@@ -235,6 +235,7 @@ class FilterProvider(
         forceExpand: Boolean,
         showSignIn: Boolean = false,
     ): List<FilterListItem> {
+        if (!configuration.listsEnabled) return emptyList()
         val accounts = caldavDao.getAccounts()
         val signIn = if (showSignIn) signInAccount(accounts) else emptyList()
         val multipleTypes = multipleTypes(accounts, signIn)
@@ -269,7 +270,7 @@ class FilterProvider(
     ): List<FilterListItem> {
         val collapsed = !forceExpand && account.isCollapsed
         val children = caldavDao
-            .getCaldavFilters(account.uuid!!)
+            .getCaldavFilters(account.uuid!!, countUntil())
             .map {
                 CaldavFilter(
                     calendar = it.caldavCalendar,
@@ -312,6 +313,9 @@ class FilterProvider(
             .plus(children)
     }
 
+    private fun countUntil(): Long =
+        if (configuration.startDateEnabled) org.tasks.time.DateTimeUtils2.currentTimeMillis() else Long.MAX_VALUE
+
     private suspend fun builtInFilters(): List<Filter> {
         val filters: MutableList<Filter> = ArrayList()
         if (configuration.todayFilter) {
@@ -323,7 +327,7 @@ class FilterProvider(
         if (taskDao.snoozedReminders() > 0) {
             filters.add(SnoozedFilter.create())
         }
-        if (taskDao.activeTimers() > 0) {
+        if (configuration.timerEnabled && taskDao.activeTimers() > 0) {
             filters.add(TimerFilter.create())
         }
         if (taskDao.hasNotifications() > 0) {

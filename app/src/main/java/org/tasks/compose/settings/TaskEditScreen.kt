@@ -25,8 +25,8 @@ fun TaskEditScreen(
     backButtonSaves: Boolean,
     multilineTitle: Boolean,
     showComments: Boolean,
+    showCommentsRow: Boolean,
     showWithoutUnlock: Boolean,
-    onCustomizeEditScreen: () -> Unit,
     onShowLinks: (Boolean) -> Unit,
     onBackButtonSaves: (Boolean) -> Unit,
     onMultilineTitle: (Boolean) -> Unit,
@@ -41,24 +41,12 @@ fun TaskEditScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Customize edit screen
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            PreferenceRow(
-                title = stringResource(R.string.customize_edit_screen),
-                summary = stringResource(R.string.customize_edit_screen_summary),
-                showChevron = true,
-                onClick = onCustomizeEditScreen,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
         // Options island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            val total = if (showWithoutUnlockVisible) 5 else 4
+            val total = (if (showWithoutUnlockVisible) 4 else 3) + if (showCommentsRow) 1 else 0
             var i = 0
 
             SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
@@ -87,12 +75,14 @@ fun TaskEditScreen(
                     onCheckedChange = onMultilineTitle,
                 )
             }
-            SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.EPr_show_task_edit_comments),
-                    checked = showComments,
-                    onCheckedChange = onShowComments,
-                )
+            if (showCommentsRow) {
+                SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
+                    SwitchPreferenceRow(
+                        title = stringResource(R.string.EPr_show_task_edit_comments),
+                        checked = showComments,
+                        onCheckedChange = onShowComments,
+                    )
+                }
             }
             if (showWithoutUnlockVisible) {
                 SettingsItemCard(position = CardPosition.forIndex(i, total)) {

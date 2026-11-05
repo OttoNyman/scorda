@@ -1,5 +1,6 @@
 package org.tasks.compose.settings
 
+import org.tasks.constructor.flags
 import org.tasks.themes.TasksIcons
 import org.tasks.compose.components.SymbolIcon
 import androidx.compose.foundation.background
@@ -144,6 +145,7 @@ fun TaskDefaultsScreen(
     hasDefaultLocation: Boolean,
     showCalendar: Boolean,
     showLocation: Boolean,
+    features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
     onAddToTop: (Boolean) -> Unit,
     onDefaultList: () -> Unit,
     onDefaultTags: () -> Unit,
@@ -167,25 +169,26 @@ fun TaskDefaultsScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            SwitchPreferenceRow(
-                title = stringResource(Res.string.google_tasks_add_to_top),
-                icon = TasksIcons.VERTICAL_ALIGN_TOP,
-                checked = settings.addTasksToTop,
-                onCheckedChange = onAddToTop,
-            )
+        if (features.lists) {
+            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.google_tasks_add_to_top),
+                    icon = TasksIcons.VERTICAL_ALIGN_TOP,
+                    checked = settings.addTasksToTop,
+                    onCheckedChange = onAddToTop,
+                )
+            }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
-
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         CardGroup(
             listOfNotNull(
-                DefaultRow.LIST,
-                DefaultRow.TAGS,
-                DefaultRow.IMPORTANCE,
-                DefaultRow.START_DATE,
+                DefaultRow.LIST.takeIf { features.lists },
+                DefaultRow.TAGS.takeIf { features.tags },
+                DefaultRow.IMPORTANCE.takeIf { features.priority },
+                DefaultRow.START_DATE.takeIf { features.startDate },
                 DefaultRow.DUE_DATE,
-                DefaultRow.CALENDAR.takeIf { showCalendar },
+                DefaultRow.CALENDAR.takeIf { showCalendar && features.calendar },
             )
         ) { row ->
             when (row) {
@@ -234,29 +237,31 @@ fun TaskDefaultsScreen(
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.TEA_control_repeat),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        CardGroup(listOf(RecurrenceRow.RECURRENCE, RecurrenceRow.REPEAT_FROM)) { row ->
-            when (row) {
-                RecurrenceRow.RECURRENCE ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.default_recurrence),
-                        icon = TasksIcons.REPEAT,
-                        summary = recurrenceSummary,
-                        onClick = onRecurrence,
-                    )
-                RecurrenceRow.REPEAT_FROM ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.repeats_from),
-                        summary = RepeatFromOptions.label(settings.defaultRecurrenceFrom),
-                        onClick = onRecurrenceFrom,
-                    )
+        if (features.repeat) {
+            SectionHeader(
+                stringResource(Res.string.TEA_control_repeat),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            CardGroup(listOf(RecurrenceRow.RECURRENCE, RecurrenceRow.REPEAT_FROM)) { row ->
+                when (row) {
+                    RecurrenceRow.RECURRENCE ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.default_recurrence),
+                            icon = TasksIcons.REPEAT,
+                            summary = recurrenceSummary,
+                            onClick = onRecurrence,
+                        )
+                    RecurrenceRow.REPEAT_FROM ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.repeats_from),
+                            summary = RepeatFromOptions.label(settings.defaultRecurrenceFrom),
+                            onClick = onRecurrenceFrom,
+                        )
+                }
             }
         }
 
-        if (showLocation) {
+        if (showLocation && features.geo) {
             SectionHeader(
                 stringResource(Res.string.TEA_control_location),
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),

@@ -45,6 +45,7 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
     private val taskCreator: TaskCreator,
     private val repeatTaskHelper: RepeatTaskHelper,
     private val taskCompleter: TaskCompleter,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) {
     private val defaultListProvider = object : DefaultListProvider {
         override suspend fun getDefaultList(): CaldavFilter =
@@ -70,6 +71,7 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
         repeatTaskHelper = repeatTaskHelper,
         taskCompleter = taskCompleter,
         createTask = { taskCreator.createWithValues("") },
+        featureGate = featureGate,
     )
 
     suspend fun sync(account: CaldavAccount) {

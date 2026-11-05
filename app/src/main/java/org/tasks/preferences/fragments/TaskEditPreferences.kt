@@ -1,6 +1,5 @@
 package org.tasks.preferences.fragments
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
 import com.todoroo.andlib.utility.AndroidUtilities.atLeastOreoMR1
-import com.todoroo.astrid.activity.BeastModePreferences
 import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
 import org.tasks.compose.settings.TaskEditScreen
@@ -22,6 +20,7 @@ import javax.inject.Inject
 class TaskEditPreferences : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: TaskEditPreferencesViewModel by viewModels()
 
@@ -40,12 +39,8 @@ class TaskEditPreferences : Fragment() {
                 backButtonSaves = viewModel.backButtonSaves,
                 multilineTitle = viewModel.multilineTitle,
                 showComments = viewModel.showComments,
+                showCommentsRow = featureGate.current.notes,
                 showWithoutUnlock = viewModel.showWithoutUnlock,
-                onCustomizeEditScreen = {
-                    startActivity(
-                        Intent(requireContext(), BeastModePreferences::class.java)
-                    )
-                },
                 onShowLinks = { viewModel.updateShowLinks(it) },
                 onBackButtonSaves = { viewModel.updateBackButtonSaves(it) },
                 onMultilineTitle = { viewModel.updateMultilineTitle(it) },

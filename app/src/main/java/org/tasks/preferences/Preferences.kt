@@ -504,6 +504,40 @@ class Preferences @JvmOverloads constructor(
         editor.apply()
     }
 
+    fun readConstructor(): org.tasks.constructor.Constructor = org.tasks.constructor.Constructor(
+        repeat = getBoolean("constructor_repeat", false),
+        overdue = getBoolean("constructor_overdue", false),
+        notes = getBoolean("constructor_notes", false),
+        lists = getBoolean("constructor_lists", false),
+        subtasks = getBoolean("constructor_subtasks", false),
+        tags = getBoolean("constructor_tags", false),
+        filters = getBoolean("constructor_filters", false),
+        priority = getBoolean("constructor_priority", false),
+        geo = getBoolean("constructor_geo", false),
+        startDate = getBoolean("constructor_start_date", false),
+        extraReminders = getBoolean("constructor_extra_reminders", false),
+        calendar = getBoolean("constructor_calendar", false),
+        timer = getBoolean("constructor_timer", false),
+        files = getBoolean("constructor_files", false),
+    )
+
+    fun writeConstructor(value: org.tasks.constructor.Constructor) {
+        setBoolean("constructor_repeat", value.repeat)
+        setBoolean("constructor_overdue", value.overdue)
+        setBoolean("constructor_notes", value.notes)
+        setBoolean("constructor_lists", value.lists)
+        setBoolean("constructor_subtasks", value.subtasks)
+        setBoolean("constructor_tags", value.tags)
+        setBoolean("constructor_filters", value.filters)
+        setBoolean("constructor_priority", value.priority)
+        setBoolean("constructor_geo", value.geo)
+        setBoolean("constructor_start_date", value.startDate)
+        setBoolean("constructor_extra_reminders", value.extraReminders)
+        setBoolean("constructor_calendar", value.calendar)
+        setBoolean("constructor_timer", value.timer)
+        setBoolean("constructor_files", value.files)
+    }
+
     fun getInt(resourceId: Int, defValue: Int): Int =
             getInt(context.getString(resourceId), defValue)
 

@@ -27,6 +27,7 @@ import tasks.kmp.generated.resources.caldav
 import tasks.kmp.generated.resources.etesync
 import tasks.kmp.generated.resources.gtasks_GPr_header
 import tasks.kmp.generated.resources.microsoft
+import tasks.kmp.generated.resources.constructor_title
 import tasks.kmp.generated.resources.date_and_time
 import tasks.kmp.generated.resources.debug
 import tasks.kmp.generated.resources.about
@@ -55,6 +56,7 @@ sealed class SettingsDestination(override val titleRes: StringResource) : Settin
     data object LookAndFeel : SettingsDestination(Res.string.preferences_look_and_feel)
     data object Notifications : SettingsDestination(Res.string.notifications)
     data object TaskDefaults : SettingsDestination(Res.string.task_defaults)
+    data object Constructor : SettingsDestination(Res.string.constructor_title)
     data object TaskList : SettingsDestination(Res.string.task_list_options)
     data object TaskEdit : SettingsDestination(Res.string.EPr_edit_screen_options)
     data object DateAndTime : SettingsDestination(Res.string.date_and_time)
@@ -119,6 +121,7 @@ fun MainSettingsScreen(
     showWidgets: Boolean,
     showNotifications: Boolean = true,
     showMcpServer: Boolean = false,
+    showNavigationDrawer: Boolean = true,
     isDebug: Boolean = false,
     onAccountClick: (CaldavAccount) -> Unit,
     onAddAccountClick: () -> Unit,
@@ -219,6 +222,7 @@ fun MainSettingsScreen(
             showWidgets = showWidgets,
             showNotifications = showNotifications,
             showMcpServer = showMcpServer,
+            showNavigationDrawer = showNavigationDrawer,
             isDebug = isDebug,
             onSettingsClick = onSettingsClick,
         )
@@ -233,6 +237,7 @@ fun SettingsCategories(
     showWidgets: Boolean,
     showNotifications: Boolean,
     showMcpServer: Boolean = false,
+    showNavigationDrawer: Boolean = true,
     isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
 ) {
@@ -270,6 +275,13 @@ fun SettingsCategories(
     ) {
         SettingsItemCard(position = CardPosition.First) {
             PreferenceRow(
+                title = stringResource(Res.string.constructor_title),
+                icon = TasksIcons.BUILD,
+                onClick = { onSettingsClick(SettingsDestination.Constructor) }
+            )
+        }
+        SettingsItemCard(position = CardPosition.Middle) {
+            PreferenceRow(
                 title = stringResource(Res.string.task_defaults),
                 icon = TasksIcons.ADD,
                 onClick = { onSettingsClick(SettingsDestination.TaskDefaults) }
@@ -305,12 +317,14 @@ fun SettingsCategories(
                 onClick = { onSettingsClick(SettingsDestination.DateAndTime) }
             )
         }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.navigation_drawer),
-                icon = TasksIcons.MENU,
-                onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) }
-            )
+        if (showNavigationDrawer) {
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(Res.string.navigation_drawer),
+                    icon = TasksIcons.MENU,
+                    onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) }
+                )
+            }
         }
         SettingsItemCard(position = CardPosition.Middle) {
             PreferenceRow(

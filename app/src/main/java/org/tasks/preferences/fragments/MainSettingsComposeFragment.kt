@@ -69,6 +69,7 @@ class MainSettingsComposeFragment : Fragment() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var configuration: PlatformConfiguration
     @Inject lateinit var inventory: Inventory
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: MainSettingsViewModel by viewModels()
     private val proCardViewModel: ProCardViewModel by viewModels()
@@ -104,6 +105,7 @@ class MainSettingsComposeFragment : Fragment() {
                 onAddAccountClick = { addAccount() },
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
+                showNavigationDrawer = featureGate.current.showsDrawer,
                 onLinkDesktopClick = { linkDesktop() },
                 onProCardClick = {
                     val type = when (proCardState) {
@@ -287,6 +289,7 @@ class MainSettingsComposeFragment : Fragment() {
             SettingsDestination.LookAndFeel -> LookAndFeel()
             SettingsDestination.Notifications -> Notifications()
             SettingsDestination.TaskDefaults -> TaskDefaults()
+            SettingsDestination.Constructor -> ConstructorPreferences()
             SettingsDestination.TaskList -> TaskListPreferences()
             SettingsDestination.TaskEdit -> TaskEditPreferences()
             SettingsDestination.DateAndTime -> DateAndTime()

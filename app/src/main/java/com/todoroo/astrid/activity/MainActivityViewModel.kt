@@ -24,6 +24,7 @@ import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.Task
 import org.tasks.data.getOrCreateLocalAccount
+import org.tasks.constructor.fits
 import org.tasks.filters.Filter
 import org.tasks.filters.SearchFilter
 import org.tasks.preferences.DefaultFilterProvider
@@ -43,6 +44,7 @@ class MainActivityViewModel @Inject constructor(
     private val accountDataRepository: TasksAccountDataRepository,
     private val firebase: Firebase,
     private val tasksPreferences: TasksPreferences,
+    private val featureGate: org.tasks.constructor.FeatureGate,
     val drawerViewModel: DrawerViewModel,
 ) : ViewModel() {
 
@@ -57,7 +59,10 @@ class MainActivityViewModel @Inject constructor(
                 ?: savedStateHandle.get<String>(LOAD_FILTER)?.let {
                     runBlocking { defaultFilterProvider.getFilterFromPreference(it) }
                 }
-                ?: runBlocking { defaultFilterProvider.getStartupFilter() },
+                ?: runBlocking {
+                    val startup = defaultFilterProvider.getStartupFilter()
+                    if (startup.fits(featureGate.current)) startup else org.tasks.filters.MyTasksFilter.create()
+                },
             task = savedStateHandle.get<Task>(EXTRA_TASK),
         )
     )
@@ -119,6 +124,7 @@ class MainActivityViewModel @Inject constructor(
     fun setFilter(
         filter: Filter,
         task: Task? = null,
+        remember: Boolean = true,
     ) {
         if (filter == _state.value.filter && task == null) {
             return
@@ -131,7 +137,7 @@ class MainActivityViewModel @Inject constructor(
             )
         }
         drawerViewModel.setSelectedFilter(filter)
-        if (filter !is SearchFilter) {
+        if (remember && filter !is SearchFilter) {
             defaultFilterProvider.setLastViewedFilter(filter)
         }
     }

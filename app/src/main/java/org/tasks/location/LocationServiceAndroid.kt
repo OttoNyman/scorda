@@ -24,6 +24,7 @@ class LocationServiceAndroid @Inject constructor(
         private val permissionChecker: PermissionChecker,
         override val locationDao: LocationDao,
         override val appPreferences: AppPreferences,
+        private val featureGate: org.tasks.constructor.FeatureGate,
 ) : LocationService {
 
     private var cached: Location? = null
@@ -45,6 +46,10 @@ class LocationServiceAndroid @Inject constructor(
 
     @SuppressLint("MissingPermission")
     override fun addGeofences(geofence: MergedGeofence) {
+        if (!featureGate.current.geo) {
+            removeGeofences(geofence.place)
+            return
+        }
         if (!permissionChecker.canAccessBackgroundLocation()) return
         Timber.d("Adding proximity alert for %s", geofence.uid)
         locationManager.addProximityAlert(
@@ -63,6 +68,10 @@ class LocationServiceAndroid @Inject constructor(
 
     @SuppressLint("MissingPermission")
     override fun startBackgroundLocationUpdates(intervalMinutes: Int) {
+        if (!featureGate.current.geo) {
+            stopBackgroundLocationUpdates()
+            return
+        }
         if (!permissionChecker.canAccessBackgroundLocation()) return
         val pendingIntent = LocationUpdateReceiver.pendingIntent(context)
         locationManager.removeLocationUpdates(pendingIntent)

@@ -1,5 +1,6 @@
 package org.tasks.compose.settings
 
+import org.tasks.constructor.flags
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import org.tasks.viewmodel.NavigationDrawerViewModel
 fun NavigationDrawerContent(
     viewModel: NavigationDrawerViewModel,
     onCustomizeDrawer: (() -> Unit)? = null,
+    features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
 ) {
     if (!viewModel.loaded) {
         Box(
@@ -43,5 +45,8 @@ fun NavigationDrawerContent(
         onHideUnusedTags = { viewModel.updateHideUnusedTags(it) },
         onPlacesEnabled = { viewModel.updatePlacesEnabled(it) },
         onHideUnusedPlaces = { viewModel.updateHideUnusedPlaces(it) },
+        showFilters = features.filters,
+        showTags = features.tags,
+        showPlaces = features.geo,
     )
 }

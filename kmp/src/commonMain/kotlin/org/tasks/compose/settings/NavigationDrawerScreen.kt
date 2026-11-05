@@ -45,6 +45,9 @@ fun NavigationDrawerScreen(
     onHideUnusedTags: (Boolean) -> Unit,
     onPlacesEnabled: (Boolean) -> Unit,
     onHideUnusedPlaces: (Boolean) -> Unit,
+    showFilters: Boolean = true,
+    showTags: Boolean = true,
+    showPlaces: Boolean = true,
 ) {
     Column(
         modifier = Modifier
@@ -66,89 +69,92 @@ fun NavigationDrawerScreen(
             }
         }
 
-        // Filters section
-        SectionHeader(
-            stringResource(Res.string.drawer_filters),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = filtersEnabled,
-                    onCheckedChange = onFiltersEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.today),
-                    checked = showToday,
-                    enabled = filtersEnabled,
-                    onCheckedChange = onShowToday,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.filter_recently_modified),
-                    checked = showRecentlyModified,
-                    enabled = filtersEnabled,
-                    onCheckedChange = onShowRecentlyModified,
-                )
-            }
-        }
-
-        // Tags section
-        SectionHeader(
-            stringResource(Res.string.drawer_tags),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = tagsEnabled,
-                    onCheckedChange = onTagsEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.hide_unused_tags),
-                    checked = hideUnusedTags,
-                    enabled = tagsEnabled,
-                    onCheckedChange = onHideUnusedTags,
-                )
+        if (showFilters) {
+            SectionHeader(
+                stringResource(Res.string.drawer_filters),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                SettingsItemCard(position = CardPosition.First) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.enabled),
+                        checked = filtersEnabled,
+                        onCheckedChange = onFiltersEnabled,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Middle) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.today),
+                        checked = showToday,
+                        enabled = filtersEnabled,
+                        onCheckedChange = onShowToday,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Last) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.filter_recently_modified),
+                        checked = showRecentlyModified,
+                        enabled = filtersEnabled,
+                        onCheckedChange = onShowRecentlyModified,
+                    )
+                }
             }
         }
 
-        // Places section
-        SectionHeader(
-            stringResource(Res.string.drawer_places),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = placesEnabled,
-                    onCheckedChange = onPlacesEnabled,
-                )
+        if (showTags) {
+            SectionHeader(
+                stringResource(Res.string.drawer_tags),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                SettingsItemCard(position = CardPosition.First) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.enabled),
+                        checked = tagsEnabled,
+                        onCheckedChange = onTagsEnabled,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Last) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.hide_unused_tags),
+                        checked = hideUnusedTags,
+                        enabled = tagsEnabled,
+                        onCheckedChange = onHideUnusedTags,
+                    )
+                }
             }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.hide_unused_places),
-                    checked = hideUnusedPlaces,
-                    enabled = placesEnabled,
-                    onCheckedChange = onHideUnusedPlaces,
-                )
+        }
+
+        if (showPlaces) {
+            SectionHeader(
+                stringResource(Res.string.drawer_places),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                SettingsItemCard(position = CardPosition.First) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.enabled),
+                        checked = placesEnabled,
+                        onCheckedChange = onPlacesEnabled,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Last) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.hide_unused_places),
+                        checked = hideUnusedPlaces,
+                        enabled = placesEnabled,
+                        onCheckedChange = onHideUnusedPlaces,
+                    )
+                }
             }
         }
 

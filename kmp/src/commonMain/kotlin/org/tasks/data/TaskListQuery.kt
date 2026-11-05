@@ -13,8 +13,11 @@ import org.tasks.data.entity.Task
 import org.tasks.data.sql.Criterion
 import org.tasks.data.sql.Field.Companion.field
 import org.tasks.data.sql.Join
+import org.tasks.constructor.Constructor
+import org.tasks.db.QueryUtils.showHidden
 import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.Filter
+import org.tasks.filters.SearchFilter
 import org.tasks.preferences.QueryPreferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 
@@ -43,9 +46,12 @@ object TaskListQuery {
         filter: Filter,
         limit: Int? = null,
         showCollapsed: Boolean = false,
+        features: Constructor? = null,
     ): String {
         val start = currentTimeMillis()
-        return when {
+        val flat = features?.subtasks == false
+        val sql = when {
+            flat -> getNonRecursiveQuery(filter, preferences, limit)
             filter.supportsManualSort() && preferences.isManualSort ->
                 getRecursiveQuery(filter, preferences, limit, showCollapsed)
 
@@ -56,6 +62,10 @@ object TaskListQuery {
                 getRecursiveQuery(filter, preferences, limit, showCollapsed)
 
             else -> getNonRecursiveQuery(filter, preferences, limit)
-        }.also { Logger.v("TaskListQuery") { "Building query took ${currentTimeMillis() - start}ms" } }
+        }
+        return sql
+            .let { if (flat) it.replace("(tasks.parent=0)", "(1)") else it }
+            .let { if (features?.startDate == false) showHidden(it) else it }
+            .also { Logger.v("TaskListQuery") { "Building query took ${currentTimeMillis() - start}ms" } }
     }
 }

@@ -1,5 +1,6 @@
 package com.todoroo.astrid.alarms
 
+import org.tasks.constructor.FeatureGate
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Notification
 import org.tasks.data.entity.Task
@@ -8,8 +9,12 @@ import org.tasks.time.withMillisOfDay
 
 class AlarmCalculator(
     private val random: Random,
+    private val gate: FeatureGate? = null,
 ) {
     fun toAlarmEntry(task: Task, alarm: Alarm, defaultDueTime: Int): Notification? {
+        if (gate != null && !gate.current.schedules(alarm)) {
+            return null
+        }
         val trigger = when (alarm.type) {
             Alarm.TYPE_SNOOZE,
             Alarm.TYPE_DATE_TIME ->

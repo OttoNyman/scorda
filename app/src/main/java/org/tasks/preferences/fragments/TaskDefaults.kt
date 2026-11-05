@@ -51,6 +51,7 @@ private const val FRAG_TAG_CALENDAR_PICKER = "frag_tag_calendar_picker"
 class TaskDefaults : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: TaskDefaultsHiltViewModel by viewModels()
 
@@ -136,6 +137,7 @@ class TaskDefaults : Fragment() {
                         Intent(context, LocationPickerActivity::class.java),
                     )
                 },
+                features = featureGate.current,
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },

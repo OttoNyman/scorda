@@ -49,6 +49,7 @@ class WidgetSettings : InjectingPreferenceFragment() {
     @Inject lateinit var defaultFilterProvider: DefaultFilterProvider
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var localBroadcastManager: LocalBroadcastManager
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private lateinit var widgetPreferences: WidgetPreferences
     private var appWidgetId = 0
@@ -137,6 +138,7 @@ class WidgetSettings : InjectingPreferenceFragment() {
         }
 
         findPreference(R.string.p_widget_filter)
+            .apply { isVisible = featureGate.current.showsDrawer }
             .setOnPreferenceClickListener {
                 lifecycleScope.launch {
                     listPickerLauncher.launch(requireContext(), selectedFilter = getFilter())

@@ -44,6 +44,7 @@ import javax.inject.Inject
 class LookAndFeel : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: LookAndFeelHiltViewModel by viewModels()
 
@@ -122,6 +123,7 @@ class LookAndFeel : Fragment() {
                 dynamicColorProOnly = viewModel.dynamicColorProOnly,
                 themeColor = viewModel.themeColor,
                 launcherColor = viewModel.launcherColor,
+                showMarkdown = featureGate.current.notes,
                 markdownEnabled = viewModel.settings.markdown,
                 openLastViewedList = viewModel.settings.openLastViewedList,
                 defaultFilterName = viewModel.defaultFilterName,

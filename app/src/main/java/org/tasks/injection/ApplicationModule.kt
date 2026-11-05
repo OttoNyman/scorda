@@ -245,8 +245,11 @@ class ApplicationModule {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     @Provides
-    fun providesDrawerConfiguration(preferences: Preferences): DrawerConfiguration =
-        PreferenceDrawerConfiguration(preferences)
+    fun providesDrawerConfiguration(
+        preferences: Preferences,
+        gate: org.tasks.constructor.FeatureGate,
+    ): DrawerConfiguration =
+        PreferenceDrawerConfiguration(preferences, gate)
 
     @Provides
     fun providesFilterProvider(
@@ -326,7 +329,8 @@ class ApplicationModule {
         calendarHelper: CalendarHelper,
         alarmService: AlarmService,
         taskSaver: TaskSaver,
-    ) = RepeatTaskHelper(calendarHelper, alarmService, taskSaver)
+        featureGate: org.tasks.constructor.FeatureGate,
+    ) = RepeatTaskHelper(calendarHelper, alarmService, taskSaver, featureGate)
 
     @Provides
     fun providesSoundPlayer(
@@ -474,8 +478,12 @@ class ApplicationModule {
         preferences
 
     @Provides
-    fun providesAlarmCalculator(): AlarmCalculator =
-        AlarmCalculator(Random())
+    @Singleton
+    fun providesFeatureGate(): org.tasks.constructor.FeatureGate = org.tasks.constructor.FeatureGate()
+
+    @Provides
+    fun providesAlarmCalculator(gate: org.tasks.constructor.FeatureGate): AlarmCalculator =
+        AlarmCalculator(Random(), gate)
 
     @Provides
     fun providesAlarmService(

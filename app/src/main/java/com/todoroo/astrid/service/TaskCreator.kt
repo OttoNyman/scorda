@@ -50,6 +50,7 @@ class TaskCreator @Inject constructor(
     private val caldavDao: CaldavDao,
     private val locationDao: LocationDao,
     private val alarmDao: AlarmDao,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) {
     suspend fun basicQuickAddTask(
         title: String,
@@ -61,7 +62,8 @@ class TaskCreator @Inject constructor(
         val task = createWithValues(filter, title.trim { it <= ' ' }, parseTitle, applyDefaults)
         configure(task)
         taskDao.createNew(task)
-        val gcalCreateEventEnabled = preferences.isDefaultCalendarSet && task.hasDueDate() // $NON-NLS-1$
+        val gcalCreateEventEnabled = featureGate.current.calendar &&
+            preferences.isDefaultCalendarSet && task.hasDueDate()
         if (!isNullOrEmpty(task.title)
                 && gcalCreateEventEnabled
                 && isNullOrEmpty(task.calendarURI)) {
@@ -121,7 +123,10 @@ class TaskCreator @Inject constructor(
             }
         }
         taskSaver.save(task, null)
-        alarmDao.insert(task.getDefaultAlarms(preferences.isDefaultDueTimeEnabled()))
+        alarmDao.insert(
+            task.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
+                .filter { featureGate.current.schedules(it) }
+        )
         return task
     }
 
@@ -187,13 +192,13 @@ class TaskCreator @Inject constructor(
                     preferences.getIntegerFromString(R.string.p_default_urgency_key, Task.URGENCY_NONE),
                     0)
         }
-        if (applyDefaults && values?.containsKey(HIDE_UNTIL.name) != true) {
+        if (applyDefaults && featureGate.current.startDate && values?.containsKey(HIDE_UNTIL.name) != true) {
             task.hideUntil = task.createHideUntil(
                     preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
                     0
             )
         }
-        if (applyDefaults && tags.isEmpty()) {
+        if (applyDefaults && featureGate.current.tags && tags.isEmpty()) {
             preferences.getStringValue(R.string.p_default_tags)
                     ?.split(",")
                     ?.map { tagDataDao.getByUuid(it) }
@@ -202,7 +207,7 @@ class TaskCreator @Inject constructor(
         }
         if (parseTitle) {
             try {
-                parse(tagDataDao, task, tags)
+                parse(tagDataDao, task, tags, featureGate.current)
             } catch (e: Throwable) {
                 Timber.e(e)
             }

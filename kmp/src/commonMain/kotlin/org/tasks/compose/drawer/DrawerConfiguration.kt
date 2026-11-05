@@ -23,6 +23,15 @@ interface DrawerConfiguration {
     val recentlyModifiedFilter: Boolean
         get() = true
 
+    val listsEnabled: Boolean
+        get() = true
+
+    val startDateEnabled: Boolean
+        get() = true
+
+    val timerEnabled: Boolean
+        get() = true
+
     val canCreateFilters: Boolean
         get() = true
 

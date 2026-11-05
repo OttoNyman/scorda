@@ -1,5 +1,6 @@
 package org.tasks.notifications
 
+import org.tasks.constructor.flags
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -62,6 +63,8 @@ class NotificationManager @Inject constructor(
     private val permissionChecker: PermissionChecker,
     private val workManager: WorkManager,
     private val ringer: Ringer,
+    private val featureGate: org.tasks.constructor.FeatureGate =
+        org.tasks.constructor.FeatureGate(org.tasks.constructor.Preset.Full.flags),
 ) : Notifier {
     @InterruptionFilter
     val currentInterruptionFilter: Int
@@ -453,7 +456,8 @@ class NotificationManager @Inject constructor(
         val localized = localeContext
         val markdown = markdownProvider.markdown(force = true)
         val taskTitle = markdown.toMarkdown(task.title)?.toString()
-        val taskDescription = markdown.toMarkdown(task.notes)?.toString()
+        val features = featureGate.current
+        val taskDescription = if (features.notes) markdown.toMarkdown(task.notes)?.toString() else null
         val channel = if (alertLevel(task.ringFlags) == AlertLevel.SILENT) {
             NOTIFICATION_CHANNEL_SILENT
         } else {
@@ -462,7 +466,7 @@ class NotificationManager @Inject constructor(
         val builder = NotificationCompat.Builder(context, channel)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setContentTitle(taskTitle)
-                .setColor(colorProvider.getPriorityColor(task.priority))
+                .setColor(colorProvider.getPriorityColor(if (features.priority) task.priority else org.tasks.data.entity.Task.Priority.NONE))
                 .setSmallIcon(R.drawable.ic_check_white_24dp)
                 .setWhen(`when`)
                 .setOnlyAlertOnce(false)

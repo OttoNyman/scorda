@@ -37,6 +37,7 @@ import org.tasks.compose.sort.SortSheetContent
 import org.tasks.compose.sort.completedOptions
 import org.tasks.compose.sort.groupOptions
 import org.tasks.compose.sort.subtaskOptions
+import org.tasks.constructor.allowsSort
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
 import javax.inject.Inject
@@ -45,6 +46,7 @@ import javax.inject.Inject
 class SortSettingsActivity : ComponentActivity() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: SortSettingsViewModel by viewModels()
 
@@ -147,7 +149,7 @@ class SortSettingsActivity : ComponentActivity() {
                             ) {
                                 SortPicker(
                                     selected = state.groupMode,
-                                    options = groupOptions,
+                                    options = groupOptions.filterValues { featureGate.current.allowsSort(it) },
                                     onClick = {
                                         viewModel.setGroupMode(it)
                                         closePicker()
@@ -177,6 +179,7 @@ class SortSettingsActivity : ComponentActivity() {
                         content = {
                             SortSheetContent(
                                 manualSortEnabled = manualEnabled,
+                                options = org.tasks.compose.sort.sortOptions.filterValues { featureGate.current.allowsSort(it) },
                                 astridSortEnabled = astridEnabled,
                                 setManualSort = {
                                     viewModel.setManual(true)
@@ -221,7 +224,7 @@ class SortSettingsActivity : ComponentActivity() {
                             ) {
                                 SortPicker(
                                     selected = state.completedMode,
-                                    options = completedOptions,
+                                    options = completedOptions.filterValues { featureGate.current.allowsSort(it) },
                                     onClick = {
                                         viewModel.setCompletedMode(it)
                                         closePicker()
@@ -256,7 +259,7 @@ class SortSettingsActivity : ComponentActivity() {
                             ) {
                                 SortPicker(
                                     selected = state.subtaskMode,
-                                    options = subtaskOptions,
+                                    options = subtaskOptions.filterValues { featureGate.current.allowsSort(it) },
                                     onClick = {
                                         viewModel.setSubtaskMode(it)
                                         closePicker()

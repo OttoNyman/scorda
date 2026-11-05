@@ -21,6 +21,7 @@ import javax.inject.Inject
 class NavigationDrawer : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: NavigationDrawerHiltViewModel by viewModels()
 
@@ -35,6 +36,7 @@ class NavigationDrawer : Fragment() {
         ) {
             NavigationDrawerContent(
                 viewModel = viewModel,
+                features = featureGate.current,
                 onCustomizeDrawer = {
                     startActivity(
                         Intent(requireContext(), NavigationDrawerCustomization::class.java)

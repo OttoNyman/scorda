@@ -12,6 +12,7 @@ import com.todoroo.astrid.core.SortHelper
 import com.todoroo.astrid.subtasks.SubtasksHelper
 import org.tasks.BuildConfig
 import org.tasks.R
+import org.tasks.constructor.Constructor
 import org.tasks.data.TaskContainer
 import org.tasks.data.TaskListQuery.getQuery
 import org.tasks.data.dao.TaskDao
@@ -52,6 +53,7 @@ internal class TasksWidgetBuilder(
     private val chipProvider: WidgetChipProvider,
     private val markdown: Markdown,
     private val headerFormatter: HeaderFormatter,
+    private val features: Constructor,
 ) {
     private val indentPadding = (20 * context.resources.displayMetrics.density).toInt()
     private val settings = widgetPreferences.getWidgetListSettings()
@@ -235,7 +237,7 @@ internal class TasksWidgetBuilder(
 
     private suspend fun getQuery(filter: Filter): String {
         subtasksHelper.applySubtasksToWidgetFilter(filter, widgetPreferences)
-        return getQuery(widgetPreferences, filter, MAX_ITEMS)
+        return getQuery(widgetPreferences, filter, MAX_ITEMS, features = features)
     }
 
     private fun formatDueDate(

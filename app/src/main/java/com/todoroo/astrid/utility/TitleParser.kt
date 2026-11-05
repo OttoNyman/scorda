@@ -5,6 +5,7 @@
  */
 package com.todoroo.astrid.utility
 
+import org.tasks.constructor.flags
 import com.mdimension.jchronic.AstridChronic
 import com.mdimension.jchronic.Chronic
 import org.tasks.repeats.Frequency
@@ -20,14 +21,22 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object TitleParser {
-    suspend fun parse(tagDataDao: TagDataDao, task: Task, tags: ArrayList<String>) {
-        repeatHelper(task)
-        listHelper(
-                tagDataDao,
-                task,
-                tags) // Don't need to know if tags affected things since we don't show alerts for them
+    suspend fun parse(
+        tagDataDao: TagDataDao,
+        task: Task,
+        tags: ArrayList<String>,
+        features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
+    ) {
+        if (features.repeat) {
+            repeatHelper(task)
+        }
+        if (features.tags) {
+            listHelper(tagDataDao, task, tags)
+        }
         dayHelper(task)
-        priorityHelper(task)
+        if (features.priority) {
+            priorityHelper(task)
+        }
     }
 
     fun trimParenthesis(pattern: String): String {

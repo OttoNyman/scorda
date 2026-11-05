@@ -143,6 +143,7 @@ import org.tasks.filters.CaldavFilter
 import org.tasks.filters.CustomFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterImpl
+import org.tasks.constructor.fits
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.SearchFilter
@@ -203,6 +204,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     @Inject lateinit var taskMover: TaskMover
     @Inject lateinit var taskAdapterProvider: TaskAdapterProvider
     @Inject lateinit var taskDao: TaskDao
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
     @Inject lateinit var taskSaver: TaskSaver
     @Inject lateinit var taskDuplicator: TaskDuplicator
     @Inject lateinit var tagDataDao: TagDataDao
@@ -494,6 +496,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         with (binding.bottomAppBar) {
             setOnMenuItemClickListener(this@TaskListFragment)
             setNavigationOnClickListener {
+                if (!featureGate.current.showsDrawer) return@setNavigationOnClickListener
                 activity?.hideKeyboard()
                 onClickMenu()
             }
@@ -887,7 +890,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             R.id.menu_share -> {
                 lifecycleScope.launch {
                     val tasks = withContext(Dispatchers.Default) {
-                        taskDao.fetchTasks(listViewModel.queryPreferences(filter), filter)
+                        taskDao.fetchTasks(listViewModel.queryPreferences(filter), filter, featureGate.current)
                     }
                     send(tasks)
                 }
@@ -935,6 +938,15 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
 
     override fun onResume() {
         super.onResume()
+        val features = featureGate.current
+        binding.bottomAppBar.navigationIcon = if (features.showsDrawer) {
+            androidx.core.content.ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_menu_24px)
+        } else {
+            null
+        }
+        if (!mainViewModel.state.value.filter.fits(features)) {
+            lifecycleScope.launch { mainViewModel.setFilter(MyTasksFilter.create(), remember = false) }
+        }
         listViewModel.invalidate()
         localBroadcastManager.registerTaskCompletedReceiver(repeatConfirmationReceiver)
         recyclerAdapter?.let { it.notifyItemRangeChanged(0, it.itemCount) }
@@ -1132,7 +1144,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                 logMultiSelect("select_all", selected.size)
                 lifecycleScope.launch {
                     val ids = withContext(Dispatchers.Default) {
-                        taskDao.fetchTasks(listViewModel.queryPreferences(filter), filter)
+                        taskDao.fetchTasks(listViewModel.queryPreferences(filter), filter, featureGate.current)
                             .map(TaskContainer::id)
                     }
                     setSelected(ids)
@@ -1152,7 +1164,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                                         sql = QueryTemplate()
                                             .where(Task.ID.`in`(it))
                                             .toString()
-                                    )
+                                    ),
+                                    featureGate.current,
                                 )
                             }
                     }

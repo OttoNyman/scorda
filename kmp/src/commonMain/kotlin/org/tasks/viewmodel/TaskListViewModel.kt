@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.tasks.compose.throttleLatest
 import org.tasks.data.TaskContainer
-import org.tasks.data.TaskListQuery.getQuery
 import org.tasks.data.TaskSaver
 import org.tasks.data.dao.DeletionDao
 import org.tasks.data.dao.TaskDao
@@ -86,6 +85,7 @@ open class TaskListViewModel(
         SearchFilter(title = query, query = query)
     },
     refreshFlow: Flow<Unit> = emptyFlow(),
+    private val features: () -> org.tasks.constructor.Constructor? = { null },
 ) : ViewModel() {
 
     data class State(
@@ -185,7 +185,7 @@ open class TaskListViewModel(
                     else -> createSearchFilter(queriedState.searchQuery)
                 }
                 val prefs = queryPreferences(filter)
-                Triple(taskDao.fetchTasks(getQuery(prefs, filter)), prefs, queriedState)
+                Triple(taskDao.fetchTasks(prefs, filter, features()), prefs, queriedState)
             }
             .onEach { (tasks, prefs, queriedState) ->
                 val dataSource = SectionedDataSource(

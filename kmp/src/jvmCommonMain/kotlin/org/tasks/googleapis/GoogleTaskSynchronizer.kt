@@ -54,6 +54,7 @@ class GoogleTaskSynchronizer(
     private val repeatTaskHelper: RepeatTaskHelper,
     private val taskCompleter: TaskCompleter,
     private val createTask: suspend () -> org.tasks.data.entity.Task,
+    private val featureGate: org.tasks.constructor.FeatureGate? = null,
 ) {
     suspend fun sync(
         account: CaldavAccount,
@@ -596,7 +597,10 @@ class GoogleTaskSynchronizer(
                 task.reminderLast = currentTimeMillis()
             }
             taskDao.createNew(task)
-            alarmDao.insert(task.getDefaultAlarms(appPreferences.isDefaultDueTimeEnabled()))
+            alarmDao.insert(
+                task.getDefaultAlarms(appPreferences.isDefaultDueTimeEnabled())
+                    .filter { featureGate?.current?.schedules(it) ?: true }
+            )
         }
         taskSaver.save(task, original, dirty = false)
         caldavDao.insertOrUpdateAndMarkSynced(googleTask.copy(task = task.id), markDirty = recreate)

@@ -73,6 +73,7 @@ class TasksApplication : Application(), Configuration.Provider {
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var pebbleService: PebbleService
     @Inject lateinit var pushTokenManager: Lazy<PushTokenManager>
+    @Inject lateinit var constructorRepository: org.tasks.constructor.ConstructorRepository
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 

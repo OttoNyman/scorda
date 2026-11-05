@@ -45,15 +45,23 @@ interface LocationDao {
             + " INNER JOIN tasks ON tasks._id = geofences.task"
             + " LEFT JOIN alarms ON tasks._id = alarms.task AND alarms.type == $TYPE_SNOOZE"
             + " WHERE place = :place AND arrival = 1 AND tasks.completed = 0"
-            + " AND tasks.deleted = 0 AND (alarms._id IS NULL OR alarms.time < :now) AND tasks.hideUntil < :now")
-    suspend fun getArrivalGeofences(place: String, now: Long = currentTimeMillis()): List<Geofence>
+            + " AND tasks.deleted = 0 AND (alarms._id IS NULL OR alarms.time < :now) AND tasks.hideUntil < :startedBefore")
+    suspend fun getArrivalGeofences(
+        place: String,
+        now: Long = currentTimeMillis(),
+        startedBefore: Long = now,
+    ): List<Geofence>
 
     @Query("SELECT geofences.* FROM geofences"
             + " INNER JOIN tasks ON tasks._id = geofences.task"
             + " LEFT JOIN alarms ON tasks._id = alarms.task AND alarms.type == $TYPE_SNOOZE"
             + " WHERE place = :place AND departure = 1 AND tasks.completed = 0"
-            + " AND tasks.deleted = 0 AND (alarms._id IS NULL OR alarms.time < :now) AND tasks.hideUntil < :now")
-    suspend fun getDepartureGeofences(place: String, now: Long = currentTimeMillis()): List<Geofence>
+            + " AND tasks.deleted = 0 AND (alarms._id IS NULL OR alarms.time < :now) AND tasks.hideUntil < :startedBefore")
+    suspend fun getDepartureGeofences(
+        place: String,
+        now: Long = currentTimeMillis(),
+        startedBefore: Long = now,
+    ): List<Geofence>
 
     @Query("SELECT * FROM geofences"
             + " INNER JOIN places ON geofences.place = places.uid"

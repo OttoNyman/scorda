@@ -33,6 +33,7 @@ class GCalHelper @Inject constructor(
     private val preferences: Preferences,
     private val permissionChecker: PermissionChecker,
     private val calendarEventProvider: CalendarEventProvider,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) : CalendarHelper {
     private val cr: ContentResolver = context.contentResolver
 
@@ -67,6 +68,7 @@ class GCalHelper @Inject constructor(
     }
 
     private suspend fun createTaskEvent(task: Task, values: ContentValues, deleteEventIfExists: Boolean): Uri? {
+        if (!featureGate.current.calendar) return null
         if (!permissionChecker.canAccessCalendars()) {
             return null
         }
@@ -98,6 +100,7 @@ class GCalHelper @Inject constructor(
     }
 
     override fun updateEvent(task: Task) {
+        if (!featureGate.current.calendar) return
         val uri = task.calendarURI?.takeIf { it.isNotBlank() } ?: return
         if (!permissionChecker.canAccessCalendars()) {
             return
@@ -118,6 +121,7 @@ class GCalHelper @Inject constructor(
     }
 
     override suspend fun rescheduleRepeatingTask(task: Task) {
+        if (!featureGate.current.calendar) return
         val taskUri = getTaskEventUri(task)
         if (taskUri.isNullOrBlank()) {
             return

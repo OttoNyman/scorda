@@ -1,16 +1,29 @@
 package org.tasks.data
 
 import com.todoroo.astrid.api.PermaSql
+import org.tasks.constructor.Constructor
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.db.SuspendDbUtils.eachChunk
 import org.tasks.data.entity.Task
 import org.tasks.data.sql.Field
 import org.tasks.data.sql.Query
 import org.tasks.filters.Filter
+import org.tasks.filters.SearchFilter
 import org.tasks.preferences.QueryPreferences
 
-suspend fun TaskDao.fetchTasks(preferences: QueryPreferences, filter: Filter): List<TaskContainer> =
-    fetchTasks(TaskListQuery.getQuery(preferences, filter))
+suspend fun TaskDao.fetchTasks(
+    preferences: QueryPreferences,
+    filter: Filter,
+    features: Constructor? = null,
+): List<TaskContainer> {
+    if (filter is SearchFilter && features != null) {
+        filter.includeNotes = features.notes
+        filter.includeTags = features.tags
+        filter.includePlaces = features.geo
+        filter.includeLists = features.lists
+    }
+    return fetchTasks(TaskListQuery.getQuery(preferences, filter, features = features))
+}
 
 suspend fun TaskDao.setCollapsed(preferences: QueryPreferences, filter: Filter, collapsed: Boolean) {
     fetchTasks(preferences, filter)

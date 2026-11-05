@@ -19,6 +19,7 @@ class AndroidGeofenceTransitionWork @AssistedInject constructor(
     firebase: Firebase,
     private val locationDao: LocationDao,
     private val notifier: Notifier,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) : BaseWorker(context, workerParams, firebase) {
 
     override suspend fun run(): Result {
@@ -30,10 +31,13 @@ class AndroidGeofenceTransitionWork @AssistedInject constructor(
             return Result.failure()
         }
         try {
+            val now = currentTimeMillis()
+            // Start date off: an old start date must not block the place reminder.
+            val startedBefore = if (featureGate.current.startDate) now else Long.MAX_VALUE
             val geofences = if (arrival) {
-                locationDao.getArrivalGeofences(place.uid!!, currentTimeMillis())
+                locationDao.getArrivalGeofences(place.uid!!, now, startedBefore)
             } else {
-                locationDao.getDepartureGeofences(place.uid!!, currentTimeMillis())
+                locationDao.getDepartureGeofences(place.uid!!, now, startedBefore)
             }
             notifier.triggerNotifications(place.id, geofences, arrival)
         } catch (e: Exception) {

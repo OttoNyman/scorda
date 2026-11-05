@@ -23,6 +23,8 @@ import org.tasks.extensions.estimateParcelSize
 import org.tasks.extensions.setBackgroundColor
 import org.tasks.extensions.setColorFilter
 import org.tasks.extensions.setRipple
+import org.tasks.constructor.Constructor
+import org.tasks.constructor.fits
 import org.tasks.filters.Filter
 import org.tasks.intents.TaskIntents
 import org.tasks.markdown.MarkdownProvider
@@ -37,6 +39,7 @@ import javax.inject.Inject
 class TasksWidget : AppWidgetProvider() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var defaultFilterProvider: DefaultFilterProvider
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
     @Inject @ApplicationContext lateinit var context: Context
     @Inject lateinit var subtasksHelper: SubtasksHelper
     @Inject lateinit var taskDao: TaskDao
@@ -103,16 +106,22 @@ class TasksWidget : AppWidgetProvider() {
             setPendingIntentTemplate(R.id.list_view, getPendingIntentTemplate(context))
         }
 
+        val visible = if (filter.fits(featureGate.current)) {
+            filter
+        } else {
+            runBlocking { org.tasks.filters.MyTasksFilter.create() }
+        }
         val builder = TasksWidgetBuilder(
             subtasksHelper = subtasksHelper,
             widgetPreferences = widgetPreferences,
-            filter = filter,
+            filter = visible,
             context = context,
             widgetId = id,
             taskDao = taskDao,
             chipProvider = chipProvider,
             markdown = markdownProvider.markdown(false),
             headerFormatter = headerFormatter,
+            features = featureGate.current,
         )
         val items = runBlocking { builder.buildItems() }
         RemoteViewsCompat.setRemoteAdapter(

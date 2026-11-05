@@ -117,6 +117,7 @@ class TaskEditViewModel @Inject constructor(
     private val alarmDao: AlarmDao,
     private val taskAttachmentDao: TaskAttachmentDao,
     private val defaultFilterProvider: DefaultFilterProvider,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) : ViewModel() {
     private val resources = context.resources
     private var cleared = false
@@ -143,8 +144,9 @@ class TaskEditViewModel @Inject constructor(
     private val _originalState = MutableStateFlow(
         TaskEditViewState(
             task = task,
-            showBeastModeHint = !preferences.shownBeastModeHint,
-            showComments = preferences.getBoolean(R.string.p_show_task_edit_comments, false),
+            showBeastModeHint = false,
+            showComments = featureGate.current.notes &&
+                preferences.getBoolean(R.string.p_show_task_edit_comments, false),
             showKeyboard = task.isNew && task.title.isNullOrBlank(),
             backButtonSavesTask = preferences.backButtonSavesTask(),
             isReadOnly = task.readOnly,
@@ -156,24 +158,10 @@ class TaskEditViewModel @Inject constructor(
             } else {
                 null
             },
-            displayOrder = TASK_EDIT_CONTROL_SET_FRAGMENTS
-                .associateBy(context::getString) { it }
-                .let { controlSetStrings ->
-                    BeastModePreferences
-                        .constructOrderedControlList(preferences, context)
-                        .let { items ->
-                            items
-                                .subList(
-                                    0,
-                                    items.indexOf(context.getString(R.string.TEA_ctrl_hide_section_pref))
-                                )
-                                .also { it.add(0, context.getString(R.string.TEA_ctrl_title)) }
-                        }
-                        .mapNotNull { controlSetStrings[it] }
-                        .toPersistentList()
-                },
+            displayOrder = displayOrder(featureGate.current),
             alarms = if (task.isNew) {
                 task.getDefaultAlarms(runBlocking { preferences.isDefaultDueTimeEnabled() })
+                    .filter { featureGate.current.schedules(it) }
             } else {
                 emptyList()
             }.toPersistentSet(),
@@ -316,6 +304,7 @@ class TaskEditViewModel @Inject constructor(
                 task.elapsedSeconds != elapsedSeconds.value ||
                 task.estimatedSeconds != estimatedSeconds.value ||
                 getRingFlags() != when {
+            task.isNotifyModeSilent -> NOTIFY_MODE_SILENT
             task.isNotifyModeFive -> NOTIFY_MODE_FIVE
             task.isNotifyModeNonstop -> NOTIFY_MODE_NONSTOP
             else -> 0
@@ -418,7 +407,10 @@ class TaskEditViewModel @Inject constructor(
                 subtask.completionDate = task.completionDate
             }
             taskDao.createNew(subtask)
-            alarmDao.insert(subtask.getDefaultAlarms(preferences.isDefaultDueTimeEnabled()))
+            alarmDao.insert(
+                subtask.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
+                    .filter { featureGate.current.schedules(it) }
+            )
             firebase?.addTask("subtasks")
             when {
                 selectedList.isGoogleTasks -> {
@@ -718,6 +710,23 @@ class TaskEditViewModel @Inject constructor(
         val TAG_LIST = R.string.TEA_ctrl_google_task_list
         val TAG_PRIORITY = R.string.TEA_ctrl_importance_pref
         val TAG_DUE_DATE = R.string.TEA_ctrl_when_pref
+
+        private fun displayOrder(features: org.tasks.constructor.Constructor) = listOf(
+            TAG_TITLE to true,
+            TAG_DUE_DATE to true,
+            com.todoroo.astrid.repeats.RepeatControlSet.TAG to features.repeat,
+            TAG_DESCRIPTION to features.notes,
+            TAG_LIST to features.lists,
+            org.tasks.ui.SubtaskControlSet.TAG to features.subtasks,
+            com.todoroo.astrid.tags.TagsControlSet.TAG to features.tags,
+            TAG_PRIORITY to features.priority,
+            com.todoroo.astrid.ui.StartDateControlSet.TAG to features.startDate,
+            com.todoroo.astrid.ui.ReminderControlSet.TAG to features.extraReminders,
+            org.tasks.ui.LocationControlSet.TAG to features.geo,
+            org.tasks.ui.CalendarControlSet.TAG to features.calendar,
+            com.todoroo.astrid.timers.TimerControlSet.TAG to features.timer,
+            com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
+        ).filter { it.second }.map { it.first }.toPersistentList()
 
         val TASK_EDIT_CONTROL_SET_FRAGMENTS = intArrayOf(
             TAG_TITLE,

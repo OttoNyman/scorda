@@ -120,6 +120,7 @@ fun SortSheetContent(
     setManualSort: (Boolean) -> Unit,
     setAstridSort: (Boolean) -> Unit,
     onSelected: (Int) -> Unit,
+    options: Map<StringResource, Int> = sortOptions,
 ) {
     Column(
         modifier = Modifier
@@ -128,7 +129,7 @@ fun SortSheetContent(
     ) {
         SortPicker(
             selected = if (manualSortSelected) -1 else selected,
-            options = sortOptions,
+            options = options,
             onClick = { onSelected(it) },
         )
         if (astridSortEnabled) {

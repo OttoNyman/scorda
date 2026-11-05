@@ -56,6 +56,9 @@ FROM (
     @Query("SELECT * FROM tasks WHERE _id IN (:ids)")
     internal abstract suspend fun fetchInternal(ids: List<Long>): List<Task>
 
+    @Query("SELECT * FROM tasks WHERE timerStart > 0 AND deleted = 0")
+    abstract suspend fun runningTimers(): List<Task>
+
     @Query("SELECT COUNT(1) FROM tasks WHERE timerStart > 0 AND deleted = 0")
     abstract suspend fun activeTimers(): Int
 

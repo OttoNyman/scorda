@@ -752,4 +752,52 @@
     <string name="reset_trusted_certificates">Reset trusted certificates</string>
     <string name="reset_trusted_certificates_summary">Forget certificates and certificate authorities you accepted for servers</string>
     <string name="trusted_certificates_reset">Trusted certificates reset</string>
+    <string name="constructor_title">Capabilities</string>
+    <string name="constructor_simple">Simple</string>
+    <string name="constructor_reminders">Reminders</string>
+    <string name="constructor_tasks">Tasks</string>
+    <string name="constructor_full">Full</string>
+    <string name="constructor_group_time">Time</string>
+    <string name="constructor_group_order">Order</string>
+    <string name="constructor_group_content">Content</string>
+    <string name="constructor_group_links">Links</string>
+    <string name="constructor_repeat">Repeat</string>
+    <string name="constructor_overdue">When overdue</string>
+    <string name="constructor_notes">Note</string>
+    <string name="constructor_lists">Lists</string>
+    <string name="constructor_subtasks">Subtasks</string>
+    <string name="constructor_tags">Tags</string>
+    <string name="constructor_filters">Filters</string>
+    <string name="constructor_priority">Priority</string>
+    <string name="constructor_geo">Places</string>
+    <string name="constructor_start">Start date</string>
+    <string name="constructor_extra">More reminders</string>
+    <string name="constructor_calendar">Calendar</string>
+    <string name="constructor_timer">Timer</string>
+    <string name="constructor_files">Files</string>
+    <string name="constructor_lists_locked">On while an account is connected</string>
+    <plurals name="constructor_repeat_count">
+        <item quantity="one">%1$d task will stop repeating</item>
+        <item quantity="other">%1$d tasks will stop repeating</item>
+    </plurals>
+    <plurals name="constructor_overdue_count">
+        <item quantity="one">%1$d task will stop nagging when overdue</item>
+        <item quantity="other">%1$d tasks will stop nagging when overdue</item>
+    </plurals>
+    <plurals name="constructor_geo_count">
+        <item quantity="one">%1$d task will stop using a place</item>
+        <item quantity="other">%1$d tasks will stop using a place</item>
+    </plurals>
+    <plurals name="constructor_calendar_count">
+        <item quantity="one">%1$d task will stop updating the calendar</item>
+        <item quantity="other">%1$d tasks will stop updating the calendar</item>
+    </plurals>
+    <plurals name="constructor_extra_count">
+        <item quantity="one">%1$d task will lose its extra reminders</item>
+        <item quantity="other">%1$d tasks will lose their extra reminders</item>
+    </plurals>
+    <plurals name="constructor_start_count">
+        <item quantity="one">%1$d task will show up in the list</item>
+        <item quantity="other">%1$d tasks will show up in the list</item>
+    </plurals>
 </resources>

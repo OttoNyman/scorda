@@ -37,8 +37,12 @@ class RepeatTaskHelper(
     private val calendarHelper: CalendarHelper,
     private val alarmService: AlarmService,
     private val taskSaver: TaskSaver,
+    private val featureGate: org.tasks.constructor.FeatureGate? = null,
 ) {
     suspend fun handleRepeat(task: Task): Boolean {
+        if (featureGate?.current?.repeat == false) {
+            return false
+        }
         val recurrence = task.recurrence
         if (recurrence.isNullOrBlank()) {
             return false

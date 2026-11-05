@@ -1,5 +1,6 @@
 package org.tasks.compose.settings
 
+import org.tasks.constructor.flags
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ fun TaskDefaultsContent(
     onCalendar: () -> Unit,
     onRecurrence: () -> Unit,
     onLocation: () -> Unit,
+    features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
     bottomInsets: @Composable () -> Unit = {},
 ) {
     if (!viewModel.loaded) {
@@ -58,6 +60,7 @@ fun TaskDefaultsContent(
         hasDefaultLocation = viewModel.hasDefaultLocation,
         showCalendar = viewModel.showCalendar,
         showLocation = viewModel.showLocation,
+        features = features,
         onAddToTop = { viewModel.updateAddToTop(it) },
         onDefaultList = onDefaultList,
         onDefaultTags = onDefaultTags,

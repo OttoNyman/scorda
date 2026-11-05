@@ -68,6 +68,7 @@ class TaskViewHolder internal constructor(
     private val markdown: Markdown,
     private val theme: Theme,
     private val dateFormatter: DateFormatter,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) : RecyclerView.ViewHolder(binding.root) {
     private val row: ViewGroup = binding.row
     private val dueDate: TextView = binding.dueDate.apply {
@@ -159,7 +160,7 @@ class TaskViewHolder internal constructor(
         } else {
             debugDirty.visibility = View.GONE
         }
-        indent = task.indent
+        indent = if (featureGate.current.subtasks) task.indent else 0
         markdown.setMarkdown(nameView, task.title)
         setupTitleAndCheckbox()
         setupDueDate(sortMode == SORT_DUE)
@@ -211,11 +212,11 @@ class TaskViewHolder internal constructor(
             nameView.setTextColor(onSurfaceDim)
             nameView.paintFlags = nameView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
-            nameView.setTextColor(if (task.task.isHidden) onSurfaceDim else onSurface)
+            nameView.setTextColor(if (featureGate.current.startDate && task.task.isHidden) onSurfaceDim else onSurface)
             nameView.paintFlags = nameView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
         completeBox.isChecked = task.isCompleted
-        completeBox.setImageDrawable(checkBoxProvider.getCheckBox(task.task))
+        completeBox.setImageDrawable(checkBoxProvider.getCheckBox(task.task, featureGate.current))
         completeBox.invalidate()
     }
 
@@ -272,7 +273,8 @@ class TaskViewHolder internal constructor(
                         bottom = rowPaddingDp.dp
                     )
                 ) {
-                    if (children > 0 && remember { preferences.showSubtaskChip }) {
+                    val features = featureGate.current
+                    if (features.subtasks && children > 0 && remember { preferences.showSubtaskChip }) {
                         SubtaskChip(
                             collapsed = collapsed,
                             children = chipCount,
@@ -280,6 +282,7 @@ class TaskViewHolder internal constructor(
                         )
                     }
                     if (
+                        features.startDate &&
                         isHidden &&
                         remember { preferences.showStartDateChip } &&
                         startDate != task.dueDate &&
@@ -294,7 +297,7 @@ class TaskViewHolder internal constructor(
                             dateFormatter = dateFormatter,
                         )
                     }
-                    if (place != null && filter !is PlaceFilter && remember { preferences.showPlaceChip }) {
+                    if (features.geo && place != null && filter !is PlaceFilter && remember { preferences.showPlaceChip }) {
                         FilterChip(
                             filter = PlaceFilter(place),
                             defaultIcon = TasksIcons.PLACE,
@@ -306,6 +309,7 @@ class TaskViewHolder internal constructor(
                     }
 
                     if (
+                        features.lists &&
                         indent == 0 &&
                         !sortByList &&
                         preferences.showListChip &&
@@ -324,7 +328,7 @@ class TaskViewHolder internal constructor(
                             )
                         }
                     }
-                    if (!tagsString.isNullOrBlank() && remember { preferences.showTagChip }) {
+                    if (features.tags && !tagsString.isNullOrBlank() && remember { preferences.showTagChip }) {
                         remember(tagsString, filter, chipProvider.lists.tagsVersion) {
                             val tags = tagsString.split(",").toHashSet()
                             if (filter is TagFilter) {
