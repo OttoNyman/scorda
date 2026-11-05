@@ -645,6 +645,14 @@
     </receiver>
 
     <receiver android:name="org.tasks.jobs.NotificationReceiver" />
+    <receiver android:name="org.tasks.notifications.ReminderTestReceiver" />
+    <receiver android:name="org.tasks.notifications.RingReceiver" />
+    <receiver android:name="org.tasks.notifications.InsistentSilenceReceiver" />
+
+    <service
+      android:name="org.tasks.notifications.RingerService"
+      android:exported="false"
+      android:foregroundServiceType="shortService" />
 
     <activity
         android:name="com.todoroo.astrid.activity.MainActivity"

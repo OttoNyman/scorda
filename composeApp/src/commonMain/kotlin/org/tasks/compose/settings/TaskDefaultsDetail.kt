@@ -98,7 +98,6 @@ fun TaskDefaultsDetail(
                 onDefaultTags = { showTagPicker = true },
                 onCalendar = {},
                 onRecurrence = { showRecurrencePicker = true },
-                onReminders = { showDefaultReminders = true },
                 onLocation = {},
             )
         }

@@ -105,6 +105,7 @@ class NotificationManagerCharacterizationTest {
             markdownProvider = markdownProvider,
             permissionChecker = permissionChecker,
             workManager = workManager,
+            ringer = mock(),
         )
     }
 
@@ -113,7 +114,7 @@ class NotificationManagerCharacterizationTest {
         whenever(permissionChecker.canNotify()) doReturn false
         givenTask(1L, "water the plants")
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         assertEquals(emptyList<String>(), shade)
         verifyBlocking(notificationDao, never()) { insertAll(any()) }
@@ -128,8 +129,6 @@ class NotificationManagerCharacterizationTest {
         notificationManager.notifyTasks(
             listOf(notification(1L, TIMESTAMP), notification(2L, TIMESTAMP)),
             alert = true,
-            nonstop = false,
-            fiveTimes = false,
         )
 
         assertEquals(listOf("notify:1", "notify:2"), shade)
@@ -140,7 +139,7 @@ class NotificationManagerCharacterizationTest {
 
     @Test
     fun aNotificationForAMissingTaskIsCancelledAndItsRowDeleted() = runTest {
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         assertEquals(listOf("cancel:1"), shade)
         verifyBlocking(notificationDao) { delete(1L) }
@@ -151,7 +150,7 @@ class NotificationManagerCharacterizationTest {
     fun aNotificationForACompletedTaskIsCancelledAndItsRowDeleted() = runTest {
         givenTask(1L, "done already", completionDate = TIMESTAMP)
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         assertEquals(listOf("cancel:1"), shade)
         verifyBlocking(notificationDao) { delete(1L) }
@@ -166,8 +165,6 @@ class NotificationManagerCharacterizationTest {
         notificationManager.notifyTasks(
             listOf(notification(1L), notification(2L), notification(3L)),
             alert = true,
-            nonstop = false,
-            fiveTimes = false,
         )
 
         assertEquals(NotificationCompat.GROUP_ALERT_CHILDREN, alertBehaviour(1))
@@ -182,8 +179,6 @@ class NotificationManagerCharacterizationTest {
         notificationManager.notifyTasks(
             listOf(notification(1L), notification(2L)),
             alert = true,
-            nonstop = false,
-            fiveTimes = false,
         )
 
         assertEquals(listOf("cancel:1", "notify:2"), shade)
@@ -194,7 +189,7 @@ class NotificationManagerCharacterizationTest {
     fun postingDoesNotDeleteRows() = runTest {
         givenTask(1L, "one")
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         verifyBlocking(notificationDao, never()) { deleteAll(any()) }
         verify(refreshBroadcaster).broadcastRefresh()
@@ -263,7 +258,7 @@ class NotificationManagerCharacterizationTest {
     fun theNotificationCarriesTheTasksTitle() = runTest {
         givenTask(1L, "water the plants")
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         val posted = built.getValue(1)
         assertEquals(
@@ -280,7 +275,7 @@ class NotificationManagerCharacterizationTest {
     fun aReadOnlyTaskIsNotOfferedComplete() = runTest {
         givenTask(1L, "someone else's", readOnly = true)
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         assertEquals(
             listOf(getString(Res.string.rmd_NoA_snooze)),
@@ -292,7 +287,7 @@ class NotificationManagerCharacterizationTest {
     fun theWearableExtenderCarriesSnoozeOptions() = runTest {
         givenTask(1L, "one")
 
-        notificationManager.notifyTasks(listOf(notification(1L)), alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notifyTasks(listOf(notification(1L)), alert = true)
 
         val wearable = NotificationCompat.WearableExtender(built.getValue(1))
         assertTrue(wearable.actions.size > 1)

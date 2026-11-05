@@ -15,14 +15,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.runBlocking
 import org.tasks.PlatformConfiguration
 import org.tasks.R
 import org.tasks.injection.ApplicationScope
 import org.tasks.extensions.Context.getResourceUri
+import org.tasks.notifications.AndroidReminderHealth
+import org.tasks.notifications.ReminderCheckId
+import org.tasks.notifications.modeLine
+import org.tasks.notifications.visibleChecks
 import org.tasks.preferences.Preferences
+import org.tasks.resources.getString
 import org.tasks.scheduling.NotificationSchedulerWork
 import org.tasks.viewmodel.NotificationsViewModel
 import org.tasks.viewmodel.ReminderChange
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.reminder_sound_system
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,6 +55,7 @@ class NotificationsHiltViewModel @Inject constructor(
 
     private val ttsChecks = Channel<Unit>(Channel.CONFLATED)
     val ttsCheckRequests: Flow<Unit> = ttsChecks.receiveAsFlow()
+    private val health = AndroidReminderHealth(context)
 
     init {
         refreshAndroidState()
@@ -62,6 +71,47 @@ class NotificationsHiltViewModel @Inject constructor(
         showBatteryOptimization =
             !powerManager.isIgnoringBatteryOptimizations(context.packageName)
         refreshCompletionSoundName()
+        refreshReminderSoundName()
+        superBypassSilent = preferences.getBoolean(R.string.p_super_bypass_silent, false)
+        val facts = health.facts()
+        setHealth(health.openable(visibleChecks(facts)), modeLine(facts))
+    }
+
+    override fun openHealthCheck(id: ReminderCheckId) = health.open(id)
+
+    override fun scheduleReminderTest() {
+        health.scheduleTest()
+        markTestPending()
+    }
+
+    override fun updateSuperBypass(enabled: Boolean) {
+        super.updateSuperBypass(enabled)
+        preferences.setBoolean(R.string.p_super_bypass_silent, enabled)
+    }
+
+    fun reminderRingtoneValue(): String? =
+        preferences.getStringValue(R.string.p_reminder_ringtone)
+
+    fun handleReminderSoundResult(resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK && data != null) {
+            val ringtone: Uri? = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+            preferences.setString(R.string.p_reminder_ringtone, ringtone?.toString() ?: "")
+            refreshReminderSoundName()
+        }
+    }
+
+    private fun refreshReminderSoundName() {
+        val value = preferences.getStringValue(R.string.p_reminder_ringtone)
+        reminderSoundName = if (value.isNullOrEmpty()) {
+            runBlocking { getString(Res.string.reminder_sound_system) }
+        } else {
+            try {
+                RingtoneManager.getRingtone(context, value.toUri())?.getTitle(context) ?: value
+            } catch (e: SecurityException) {
+                Timber.e(e)
+                value
+            }
+        }
     }
 
     override fun updateVoice(enabled: Boolean) {

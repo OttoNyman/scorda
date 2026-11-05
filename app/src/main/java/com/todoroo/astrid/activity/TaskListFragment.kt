@@ -583,7 +583,9 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                                 AlarmsDisabledBanner(
                                     settings = {
                                         listViewModel.dismissBanner(tookAction = true)
-                                        context.openReminderSettings()
+                                        context.startActivity(
+                                            Intent(context, org.tasks.preferences.NotificationPreferences::class.java)
+                                        )
                                     },
                                     dismiss = { listViewModel.dismissBanner() },
                                 )

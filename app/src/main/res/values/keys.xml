@@ -71,6 +71,8 @@
 
   <!-- ringtone to use for notifications -->
   <string name="p_completion_ringtone">completion_ringtone</string>
+  <string name="p_reminder_ringtone">reminder_ringtone</string>
+  <string name="p_super_bypass_silent">super_bypass_silent</string>
 
   <!-- filters to show -->
   <string name="p_filters_enabled">drawer_filters_enabled</string>

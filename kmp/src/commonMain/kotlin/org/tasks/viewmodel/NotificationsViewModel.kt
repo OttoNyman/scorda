@@ -12,6 +12,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.tasks.PlatformConfiguration
+import org.tasks.data.entity.Alarm
+import org.tasks.notifications.ModeLine
+import org.tasks.notifications.ReminderCheck
+import org.tasks.notifications.ReminderCheckId
 import org.tasks.preferences.AppPreferences
 import org.tasks.preferences.NotificationSettings
 import org.tasks.preferences.isCurrentlyQuietHours
@@ -74,6 +78,38 @@ open class NotificationsViewModel(
     var timePickerTarget by mutableStateOf<TimePickerTarget?>(null)
         private set
 
+    var healthChecks by mutableStateOf<List<ReminderCheck>>(emptyList())
+        private set
+
+    var modeLine by mutableStateOf(ModeLine.ON_TIME)
+        private set
+
+    var healthExpanded by mutableStateOf(false)
+        private set
+
+    var moreExpanded by mutableStateOf(false)
+        private set
+
+    var testPending by mutableStateOf(false)
+        private set
+
+    var defaultAlarms by mutableStateOf<List<Alarm>>(emptyList())
+        private set
+
+    var defaultRingMode by mutableStateOf(0)
+        private set
+
+    var showRingDialog by mutableStateOf(false)
+        private set
+
+    var superBypassSilent by mutableStateOf(false)
+        protected set
+
+    var reminderSoundName by mutableStateOf("")
+        protected set
+
+    private var healthTouched = false
+
     private var quietHoursRefreshJob: Job? = null
 
     private val writes = PreferenceWriteQueue(
@@ -91,6 +127,8 @@ open class NotificationsViewModel(
 
     protected suspend fun reload() {
         settings = appPreferences.notificationSettings()
+        defaultAlarms = appPreferences.defaultAlarms()
+        defaultRingMode = appPreferences.defaultRingMode()
         timePickerInputMode = appPreferences.datePickerPreferences().timePickerInputMode
         isCurrentlyQuietHours = settings.isCurrentlyQuietHours()
         loaded = true
@@ -239,6 +277,59 @@ open class NotificationsViewModel(
     fun updateTimePickerInputMode(inputMode: Boolean) {
         timePickerInputMode = inputMode
         persist { appPreferences.setTimePickerInputMode(inputMode) }
+    }
+
+    fun setHealth(checks: List<ReminderCheck>, line: ModeLine) {
+        healthChecks = checks
+        modeLine = line
+        if (!healthTouched) {
+            healthExpanded = checks.any { it.state == org.tasks.notifications.CheckState.PROBLEM } ||
+                line != ModeLine.ON_TIME
+        }
+    }
+
+    fun toggleHealth() {
+        healthTouched = true
+        healthExpanded = !healthExpanded
+    }
+
+    fun toggleMore() {
+        moreExpanded = !moreExpanded
+    }
+
+    fun markTestPending() {
+        testPending = true
+        viewModelScope.launch {
+            delay(10_000)
+            testPending = false
+        }
+    }
+
+    open fun openHealthCheck(id: ReminderCheckId) = Unit
+
+    open fun scheduleReminderTest() = Unit
+
+    fun updateDefaultAlarms(alarms: List<Alarm>) {
+        defaultAlarms = alarms
+        persist { appPreferences.setDefaultAlarms(alarms) }
+    }
+
+    fun openRingDialog() {
+        showRingDialog = true
+    }
+
+    fun dismissRingDialog() {
+        showRingDialog = false
+    }
+
+    fun updateDefaultRingMode(mode: Int) {
+        defaultRingMode = mode
+        showRingDialog = false
+        persist { appPreferences.setDefaultRingMode(mode) }
+    }
+
+    open fun updateSuperBypass(enabled: Boolean) {
+        superBypassSilent = enabled
     }
 
     private fun scheduleQuietHoursRefresh() {

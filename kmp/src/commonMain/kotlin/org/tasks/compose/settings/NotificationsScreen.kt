@@ -1,4 +1,4 @@
-package org.tasks.compose.settings
+﻿package org.tasks.compose.settings
 
 import org.tasks.themes.TasksIcons
 import androidx.compose.foundation.background
@@ -18,6 +18,36 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import org.tasks.notifications.CheckState
+import org.tasks.notifications.ModeLine
+import org.tasks.notifications.ReminderCheck
+import org.tasks.notifications.ReminderCheckId
+import tasks.kmp.generated.resources.EPr_default_reminders_title
+import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
+import tasks.kmp.generated.resources.alert_super_bypass
+import tasks.kmp.generated.resources.alert_super_bypass_summary
+import tasks.kmp.generated.resources.alarms_can_be_late
+import tasks.kmp.generated.resources.more_reminder_settings
+import tasks.kmp.generated.resources.reminder_check_autostart
+import tasks.kmp.generated.resources.reminder_check_background
+import tasks.kmp.generated.resources.reminder_check_battery
+import tasks.kmp.generated.resources.reminder_check_exact
+import tasks.kmp.generated.resources.reminder_check_notifications
+import tasks.kmp.generated.resources.reminder_check_popups
+import tasks.kmp.generated.resources.reminder_check_power_save
+import tasks.kmp.generated.resources.reminder_check_recents
+import tasks.kmp.generated.resources.reminder_check_recents_hint
+import tasks.kmp.generated.resources.reminder_sound
+import tasks.kmp.generated.resources.reminder_test_button
+import tasks.kmp.generated.resources.reminder_test_pending
+import tasks.kmp.generated.resources.reminders_are_on
+import tasks.kmp.generated.resources.reminders_delay_subtitle
+import tasks.kmp.generated.resources.reminders_mode_inexact
+import tasks.kmp.generated.resources.reminders_mode_oem
+import tasks.kmp.generated.resources.reminders_mode_oem_inexact
+import tasks.kmp.generated.resources.reminders_mode_on_time
+import tasks.kmp.generated.resources.reminders_not_working
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
@@ -122,6 +152,24 @@ fun NotificationsScreen(
     onQuietHours: (Boolean) -> Unit,
     onQuietStart: () -> Unit,
     onQuietEnd: () -> Unit,
+    showHealth: Boolean = false,
+    healthChecks: List<ReminderCheck> = emptyList(),
+    modeLine: ModeLine = ModeLine.ON_TIME,
+    healthExpanded: Boolean = false,
+    testPending: Boolean = false,
+    onToggleHealth: () -> Unit = {},
+    onHealthCheck: (ReminderCheckId) -> Unit = {},
+    onReminderTest: () -> Unit = {},
+    moreExpanded: Boolean = false,
+    onToggleMore: () -> Unit = {},
+    defaultAlarmsSummary: String = "",
+    onDefaultAlarms: () -> Unit = {},
+    defaultRingMode: Int = 0,
+    onRingMode: () -> Unit = {},
+    superBypassSilent: Boolean = false,
+    onSuperBypass: (Boolean) -> Unit = {},
+    reminderSoundName: String = "",
+    onReminderSound: () -> Unit = {},
     bottomInsets: @Composable () -> Unit = {},
 ) {
     Column(
@@ -131,6 +179,18 @@ fun NotificationsScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        if (showHealth) {
+            ReminderHealthCard(
+                checks = healthChecks,
+                modeLine = modeLine,
+                expanded = healthExpanded,
+                testPending = testPending,
+                onToggle = onToggleHealth,
+                onCheck = onHealthCheck,
+                onTest = onReminderTest,
+            )
+        }
 
         if (isCurrentlyQuietHours) {
             DangerCard(
@@ -142,94 +202,19 @@ fun NotificationsScreen(
             Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
-        CardGroup(
-            listOfNotNull(
-                TroubleshootingRow.TROUBLESHOOTING.takeIf { showTroubleshooting },
-                TroubleshootingRow.BATTERY_OPTIMIZATION.takeIf { showBatteryOptimization },
-            )
-        ) { row ->
-            when (row) {
-                TroubleshootingRow.TROUBLESHOOTING ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.troubleshooting),
-                        summary = stringResource(Res.string.notification_troubleshooting_summary),
-                        icon = TasksIcons.OPEN_IN_NEW,
-                        onClick = onTroubleshooting,
-                    )
-                TroubleshootingRow.BATTERY_OPTIMIZATION ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.disable_battery_optimizations),
-                        summary = stringResource(Res.string.notification_disable_battery_optimizations_description),
-                        icon = TasksIcons.OPEN_IN_NEW,
-                        onClick = onBatteryOptimization,
-                    )
-            }
-        }
-
-        CardGroup(
-            listOfNotNull(
-                NotificationRow.ENABLED.takeIf { showNotificationsEnabled },
-                NotificationRow.COMPLETION_SOUND.takeIf { showCompletionSound },
-                NotificationRow.PERSISTENT.takeIf { showOngoingNotifications },
-                NotificationRow.WEARABLE.takeIf { showOngoingNotifications },
-                NotificationRow.BUNDLE.takeIf { showBundleNotifications },
-                NotificationRow.VOICE.takeIf { showVoiceReminders },
-            )
-        ) { row ->
-            when (row) {
-                NotificationRow.ENABLED ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.notifications),
-                        checked = notificationsEnabled,
-                        onCheckedChange = onNotificationsEnabled,
-                    )
-                NotificationRow.COMPLETION_SOUND ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.completion_sound),
-                        summary = completionSoundName,
-                        onClick = onCompletionSound,
-                    )
-                NotificationRow.PERSISTENT ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.persistent_notifications),
-                        summary = stringResource(Res.string.persistent_notifications_description),
-                        checked = persistentEnabled,
-                        onCheckedChange = onPersistent,
-                    )
-                NotificationRow.WEARABLE ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.wearable_notifications),
-                        summary = stringResource(Res.string.wearable_notifications_summary),
-                        checked = wearableEnabled,
-                        onCheckedChange = onWearable,
-                    )
-                NotificationRow.BUNDLE ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.bundle_notifications),
-                        summary = stringResource(Res.string.bundle_notifications_summary),
-                        checked = bundleEnabled,
-                        onCheckedChange = onBundle,
-                    )
-                NotificationRow.VOICE ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.EPr_voiceRemindersEnabled_title),
-                        summary = stringResource(Res.string.EPr_voiceRemindersEnabled_desc_enabled),
-                        checked = voiceEnabled,
-                        onCheckedChange = onVoice,
-                    )
-            }
-        }
-
-        if (showSystemNotificationSettings) {
-            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-                PreferenceRow(
-                    title = stringResource(Res.string.more_settings),
-                    summary = moreSettingsSummary,
-                    icon = TasksIcons.OPEN_IN_NEW,
-                    onClick = onMoreSettings,
-                )
-            }
-        }
+        SectionHeader(
+            stringResource(Res.string.quiet_hours),
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
+        QuietHoursBlock(
+            is24HourFormat = is24HourFormat,
+            quietHoursEnabled = quietHoursEnabled,
+            quietHoursStart = quietHoursStart,
+            quietHoursEnd = quietHoursEnd,
+            onQuietHours = onQuietHours,
+            onQuietStart = onQuietStart,
+            onQuietEnd = onQuietEnd,
+        )
 
         SectionHeader(
             stringResource(Res.string.default_reminder),
@@ -242,10 +227,11 @@ fun NotificationsScreen(
             SettingsItemCard(position = CardPosition.First) {
                 SwitchPreferenceRow(
                     title = stringResource(Res.string.add_default_reminders),
-                    summary = if (defaultRemindersEnabled)
+                    summary = if (defaultRemindersEnabled) {
                         stringResource(Res.string.rmd_time_enabled_on)
-                    else
-                        stringResource(Res.string.rmd_time_enabled_off),
+                    } else {
+                        stringResource(Res.string.rmd_time_enabled_off)
+                    },
                     checked = defaultRemindersEnabled,
                     onCheckedChange = onDefaultReminders,
                 )
@@ -259,67 +245,140 @@ fun NotificationsScreen(
             }
         }
 
-        if (showSwipeToSnooze) {
-            SectionHeader(
-                stringResource(Res.string.swipe_to_snooze_title),
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                SettingsItemCard(position = CardPosition.First) {
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
-                        checked = swipeToSnoozeEnabled,
-                        onCheckedChange = onSwipeToSnooze,
-                    )
-                }
-                SettingsItemCard(position = CardPosition.Last) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.swipe_to_snooze_description),
-                        summary = stringResource(
-                            Res.string.swipe_to_snooze_time_description,
-                            stringResource(snoozeLabel(swipeToSnoozeMinutes)),
-                        ),
-                        enabled = swipeToSnoozeEnabled,
-                        onClick = onSnoozeTime,
-                    )
-                }
-            }
-        }
-
-        SectionHeader(
-            stringResource(Res.string.quiet_hours),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    summary = stringResource(Res.string.quiet_hours_summary),
-                    checked = quietHoursEnabled,
-                    onCheckedChange = onQuietHours,
+                PreferenceRow(
+                    title = stringResource(Res.string.EPr_default_reminders_title),
+                    summary = defaultAlarmsSummary,
+                    onClick = onDefaultAlarms,
                 )
             }
             SettingsItemCard(position = CardPosition.Middle) {
                 PreferenceRow(
-                    title = stringResource(Res.string.rmd_EPr_quiet_hours_start_title),
-                    summary = timeSummary(quietHoursStart, is24HourFormat),
-                    enabled = quietHoursEnabled,
-                    onClick = onQuietStart,
+                    title = stringResource(Res.string.EPr_default_reminders_mode_title),
+                    summary = ringSummary(defaultRingMode),
+                    onClick = onRingMode,
                 )
             }
             SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.rmd_EPr_quiet_hours_end_title),
-                    summary = timeSummary(quietHoursEnd, is24HourFormat),
-                    enabled = quietHoursEnabled,
-                    onClick = onQuietEnd,
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.alert_super_bypass),
+                    summary = stringResource(Res.string.alert_super_bypass_summary),
+                    checked = superBypassSilent,
+                    onCheckedChange = onSuperBypass,
                 )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = stringResource(Res.string.more_reminder_settings),
+                onClick = onToggleMore,
+            )
+        }
+        if (moreExpanded) {
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            CardGroup(
+                listOfNotNull(
+                    NotificationRow.ENABLED.takeIf { showNotificationsEnabled },
+                    NotificationRow.COMPLETION_SOUND.takeIf { showCompletionSound },
+                    NotificationRow.PERSISTENT.takeIf { showOngoingNotifications },
+                    NotificationRow.WEARABLE.takeIf { showOngoingNotifications },
+                    NotificationRow.BUNDLE.takeIf { showBundleNotifications },
+                    NotificationRow.VOICE.takeIf { showVoiceReminders },
+                    NotificationRow.REMINDER_SOUND,
+                    NotificationRow.SYSTEM.takeIf { showSystemNotificationSettings },
+                )
+            ) { row ->
+                when (row) {
+                    NotificationRow.ENABLED ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.notifications),
+                            checked = notificationsEnabled,
+                            onCheckedChange = onNotificationsEnabled,
+                        )
+                    NotificationRow.COMPLETION_SOUND ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.completion_sound),
+                            summary = completionSoundName,
+                            onClick = onCompletionSound,
+                        )
+                    NotificationRow.PERSISTENT ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.persistent_notifications),
+                            summary = stringResource(Res.string.persistent_notifications_description),
+                            checked = persistentEnabled,
+                            onCheckedChange = onPersistent,
+                        )
+                    NotificationRow.WEARABLE ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.wearable_notifications),
+                            summary = stringResource(Res.string.wearable_notifications_summary),
+                            checked = wearableEnabled,
+                            onCheckedChange = onWearable,
+                        )
+                    NotificationRow.BUNDLE ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.bundle_notifications),
+                            summary = stringResource(Res.string.bundle_notifications_summary),
+                            checked = bundleEnabled,
+                            onCheckedChange = onBundle,
+                        )
+                    NotificationRow.VOICE ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.EPr_voiceRemindersEnabled_title),
+                            summary = stringResource(Res.string.EPr_voiceRemindersEnabled_desc_enabled),
+                            checked = voiceEnabled,
+                            onCheckedChange = onVoice,
+                        )
+                    NotificationRow.REMINDER_SOUND ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.reminder_sound),
+                            summary = reminderSoundName,
+                            onClick = onReminderSound,
+                        )
+                    NotificationRow.SYSTEM ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.more_settings),
+                            summary = moreSettingsSummary,
+                            icon = TasksIcons.OPEN_IN_NEW,
+                            onClick = onMoreSettings,
+                        )
+                }
+            }
+            if (showSwipeToSnooze) {
+                SectionHeader(
+                    stringResource(Res.string.swipe_to_snooze_title),
+                    modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                )
+                Column(
+                    modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                    verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+                ) {
+                    SettingsItemCard(position = CardPosition.First) {
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.enabled),
+                            checked = swipeToSnoozeEnabled,
+                            onCheckedChange = onSwipeToSnooze,
+                        )
+                    }
+                    SettingsItemCard(position = CardPosition.Last) {
+                        PreferenceRow(
+                            title = stringResource(Res.string.swipe_to_snooze_description),
+                            summary = stringResource(
+                                Res.string.swipe_to_snooze_time_description,
+                                stringResource(snoozeLabel(swipeToSnoozeMinutes)),
+                            ),
+                            enabled = swipeToSnoozeEnabled,
+                            onClick = onSnoozeTime,
+                        )
+                    }
+                }
             }
         }
 
@@ -340,6 +399,8 @@ private enum class NotificationRow {
     WEARABLE,
     BUNDLE,
     VOICE,
+    REMINDER_SOUND,
+    SYSTEM,
 }
 
 @Composable
@@ -398,4 +459,166 @@ fun SnoozeTimeDialog(
         },
         confirmButton = {},
     )
+}
+
+@Composable
+fun RingLevelDialog(
+    selected: Int,
+    onSelect: (Int) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.EPr_default_reminders_mode_title)) },
+        text = {
+            Column {
+                RingModeOptions.forEach { (mode, label) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = mode == selected,
+                                role = Role.RadioButton,
+                                onClick = { onSelect(mode) },
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = mode == selected, onClick = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(label),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+    )
+}
+
+@Composable
+private fun ringSummary(mode: Int): String {
+    val label = RingModeOptions.firstOrNull { it.first == mode }?.second
+        ?: RingModeOptions.first { it.first == 0 }.second
+    return stringResource(label)
+}
+
+@Composable
+private fun QuietHoursBlock(
+    is24HourFormat: Boolean,
+    quietHoursEnabled: Boolean,
+    quietHoursStart: Int,
+    quietHoursEnd: Int,
+    onQuietHours: (Boolean) -> Unit,
+    onQuietStart: () -> Unit,
+    onQuietEnd: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+    ) {
+        SettingsItemCard(position = CardPosition.First) {
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.enabled),
+                summary = stringResource(Res.string.quiet_hours_summary),
+                checked = quietHoursEnabled,
+                onCheckedChange = onQuietHours,
+            )
+        }
+        SettingsItemCard(position = CardPosition.Middle) {
+            PreferenceRow(
+                title = stringResource(Res.string.rmd_EPr_quiet_hours_start_title),
+                summary = timeSummary(quietHoursStart, is24HourFormat),
+                enabled = quietHoursEnabled,
+                onClick = onQuietStart,
+            )
+        }
+        SettingsItemCard(position = CardPosition.Last) {
+            PreferenceRow(
+                title = stringResource(Res.string.rmd_EPr_quiet_hours_end_title),
+                summary = timeSummary(quietHoursEnd, is24HourFormat),
+                enabled = quietHoursEnabled,
+                onClick = onQuietEnd,
+            )
+        }
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+}
+
+@Composable
+private fun ReminderHealthCard(
+    checks: List<ReminderCheck>,
+    modeLine: ModeLine,
+    expanded: Boolean,
+    testPending: Boolean,
+    onToggle: () -> Unit,
+    onCheck: (ReminderCheckId) -> Unit,
+    onTest: () -> Unit,
+) {
+    val problem = checks.any { it.state == CheckState.PROBLEM } || modeLine != ModeLine.ON_TIME
+    Column(
+        modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+    ) {
+        SettingsItemCard {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                PreferenceRow(
+                    title = stringResource(
+                        if (problem) Res.string.reminders_not_working else Res.string.reminders_are_on
+                    ),
+                    summary = stringResource(Res.string.reminders_delay_subtitle),
+                    onClick = onToggle,
+                )
+                Text(
+                    text = stringResource(modeText(modeLine)),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                )
+                TextButton(onClick = onTest, enabled = !testPending, modifier = Modifier.padding(start = 8.dp)) {
+                    Text(
+                        stringResource(
+                            if (testPending) Res.string.reminder_test_pending else Res.string.reminder_test_button
+                        )
+                    )
+                }
+            }
+        }
+        if (expanded) {
+            checks.forEach { check ->
+                SettingsItemCard {
+                    PreferenceRow(
+                        title = stringResource(checkTitle(check.id)),
+                        summary = if (check.id == ReminderCheckId.RECENTS_LOCK) {
+                            stringResource(Res.string.reminder_check_recents_hint)
+                        } else {
+                            null
+                        },
+                        onClick = if (check.state == CheckState.MANUAL) null else ({ onCheck(check.id) }),
+                    )
+                }
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+}
+
+private fun modeText(modeLine: ModeLine) = when (modeLine) {
+    ModeLine.ON_TIME -> Res.string.reminders_mode_on_time
+    ModeLine.INEXACT -> Res.string.reminders_mode_inexact
+    ModeLine.OEM_SAFETY -> Res.string.reminders_mode_oem
+    ModeLine.OEM_AND_INEXACT -> Res.string.reminders_mode_oem_inexact
+}
+
+private fun checkTitle(id: ReminderCheckId) = when (id) {
+    ReminderCheckId.NOTIFICATIONS -> Res.string.reminder_check_notifications
+    ReminderCheckId.EXACT_ALARMS -> Res.string.reminder_check_exact
+    ReminderCheckId.BATTERY -> Res.string.reminder_check_battery
+    ReminderCheckId.POWER_SAVE -> Res.string.reminder_check_power_save
+    ReminderCheckId.AUTOSTART -> Res.string.reminder_check_autostart
+    ReminderCheckId.BACKGROUND -> Res.string.reminder_check_background
+    ReminderCheckId.POPUPS -> Res.string.reminder_check_popups
+    ReminderCheckId.RECENTS_LOCK -> Res.string.reminder_check_recents
 }

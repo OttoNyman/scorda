@@ -12,8 +12,11 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
+import org.mockito.kotlin.verifyBlocking
 import org.robolectric.RobolectricTestRunner
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
@@ -21,6 +24,7 @@ import org.tasks.data.entity.Notification
 import org.tasks.data.entity.Task
 import org.tasks.notifications.AudioManager
 import org.tasks.notifications.NotificationManager
+import org.tasks.notifications.Ringer
 import org.tasks.notifications.TelephonyManager
 import org.tasks.preferences.Preferences
 
@@ -33,6 +37,7 @@ class NotifierCharacterizationTest {
     private val audioManager: AudioManager = mock()
     private val voiceOutputAssistant: VoiceOutputAssistant = mock()
     private val preferences: Preferences = mock()
+    private val ringer: Ringer = mock()
 
     private val tasks = mutableMapOf<Long, Task>()
 
@@ -54,6 +59,7 @@ class NotifierCharacterizationTest {
             audioManager = audioManager,
             voiceOutputAssistant = voiceOutputAssistant,
             preferences = preferences,
+            ringer = ringer,
         )
     }
 
@@ -68,6 +74,7 @@ class NotifierCharacterizationTest {
         val reported = notifier.triggerNotifications(listOf(notification(1L), notification(2L)))
 
         assertEquals(listOf(1L, 2L), reported.toList())
+        verifyBlocking(ringer, never()) { playEpisode(any(), any()) }
     }
 
     @Test
@@ -77,12 +84,28 @@ class NotifierCharacterizationTest {
         val builder = NotificationCompat.Builder(context, "channel")
         notificationManager.stub {
             onBlocking { getTaskNotification(any()) } doReturn builder
-            onBlocking { notifyTasks(any(), any(), any(), any()) } doReturn emptyList()
+            onBlocking { notifyTasks(any(), any()) } doReturn emptyList()
         }
 
         val reported = notifier.triggerNotifications(listOf(notification(1L), notification(2L)))
 
         assertEquals(listOf(1L, 2L), reported.toList())
+        verifyBlocking(ringer, never()) { playEpisode(any(), any()) }
+    }
+
+    @Test
+    fun soundPlaysOnlyForTasksThatWerePosted() = runTest {
+        givenTask(1L)
+        givenTask(2L)
+        val builder = NotificationCompat.Builder(context, "channel")
+        notificationManager.stub {
+            onBlocking { getTaskNotification(any()) } doReturn builder
+            onBlocking { notifyTasks(any(), any()) } doReturn listOf(1L)
+        }
+
+        notifier.triggerNotifications(listOf(notification(1L), notification(2L)))
+
+        verifyBlocking(ringer) { playEpisode(any(), eq(listOf(1L))) }
     }
 
     private fun givenTask(id: Long) {

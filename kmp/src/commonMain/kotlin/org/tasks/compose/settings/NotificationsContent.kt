@@ -25,6 +25,8 @@ fun NotificationsContent(
     openUri: (String) -> Unit,
     onBatteryOptimization: (() -> Unit)? = null,
     onCompletionSound: (() -> Unit)? = null,
+    onReminderSound: (() -> Unit)? = null,
+    onDefaultAlarms: () -> Unit = {},
     onMoreSettings: (() -> Unit)? = null,
     moreSettingsSummary: String? = null,
     bottomInsets: @Composable () -> Unit = {},
@@ -83,6 +85,24 @@ fun NotificationsContent(
         onQuietHours = { viewModel.updateQuietHours(it) },
         onQuietStart = { viewModel.openTimePicker(TimePickerTarget.QUIET_HOURS_START) },
         onQuietEnd = { viewModel.openTimePicker(TimePickerTarget.QUIET_HOURS_END) },
+        showHealth = viewModel.showTroubleshooting,
+        healthChecks = viewModel.healthChecks,
+        modeLine = viewModel.modeLine,
+        healthExpanded = viewModel.healthExpanded,
+        testPending = viewModel.testPending,
+        onToggleHealth = { viewModel.toggleHealth() },
+        onHealthCheck = { viewModel.openHealthCheck(it) },
+        onReminderTest = { viewModel.scheduleReminderTest() },
+        moreExpanded = viewModel.moreExpanded,
+        onToggleMore = { viewModel.toggleMore() },
+        defaultAlarmsSummary = remindersSummary(viewModel.defaultAlarms, is24HourFormat),
+        onDefaultAlarms = onDefaultAlarms,
+        defaultRingMode = viewModel.defaultRingMode,
+        onRingMode = { viewModel.openRingDialog() },
+        superBypassSilent = viewModel.superBypassSilent,
+        onSuperBypass = { viewModel.updateSuperBypass(it) },
+        reminderSoundName = viewModel.reminderSoundName,
+        onReminderSound = { onReminderSound?.invoke() },
         bottomInsets = bottomInsets,
     )
 
@@ -91,6 +111,14 @@ fun NotificationsContent(
             selected = settings.swipeToSnoozeMinutes,
             onSelect = { viewModel.setSnoozeTime(it) },
             onDismiss = { viewModel.dismissSnoozeDialog() },
+        )
+    }
+
+    if (viewModel.showRingDialog) {
+        RingLevelDialog(
+            selected = viewModel.defaultRingMode,
+            onSelect = { viewModel.updateDefaultRingMode(it) },
+            onDismiss = { viewModel.dismissRingDialog() },
         )
     }
 

@@ -15,8 +15,14 @@ import org.tasks.data.entity.Notification
 import org.tasks.data.fetchFiltered
 import org.tasks.filters.Filter
 import org.tasks.intents.TaskIntents
+import org.tasks.notifications.AlertLevel
 import org.tasks.notifications.AudioManager
 import org.tasks.notifications.NotificationManager
+import org.tasks.notifications.Ringer
+import org.tasks.notifications.alertLevel
+import org.tasks.notifications.maxAlertLevel
+import org.tasks.notifications.nextBatchDelay
+import org.tasks.notifications.nextEpisodeDelay
 import org.tasks.notifications.TelephonyManager
 import org.tasks.preferences.Preferences
 import org.tasks.themes.ColorProvider
@@ -32,7 +38,9 @@ class Notifier @Inject constructor(
     private val telephonyManager: TelephonyManager,
     private val audioManager: AudioManager,
     private val voiceOutputAssistant: VoiceOutputAssistant,
-    private val preferences: Preferences) {
+    private val preferences: Preferences,
+    private val ringer: Ringer,
+) {
 
     private val colorProvider: ColorProvider = ColorProvider(context)
 
@@ -70,7 +78,7 @@ class Notifier @Inject constructor(
                 .setGroupSummary(true)
                 .setGroup(filter.title)
                 .setStyle(style)
-        notificationManager.notify(filter.title.hashCode().toLong(), builder, alert = true, nonstop = false, fiveTimes = false)
+        notificationManager.notify(filter.title.hashCode().toLong(), builder, alert = true)
     }
 
     suspend fun triggerNotifications(place: Long, geofences: List<Geofence>, arrival: Boolean) =
@@ -88,18 +96,10 @@ class Notifier @Inject constructor(
 
     suspend fun triggerNotifications(entries: List<Notification>): Collection<Long> {
         val handled = entries.map { it.taskId }
-        var ringFiveTimes = false
-        var ringNonstop = false
         val notifications = entries
                 .filter {
                     taskDao.fetch(it.taskId)
-                            ?.let { task ->
-                                if (it.type != Alarm.TYPE_RANDOM) {
-                                    ringFiveTimes = ringFiveTimes or task.isNotifyModeFive
-                                    ringNonstop = ringNonstop or task.isNotifyModeNonstop
-                                }
-                                notificationManager.getTaskNotification(it) != null
-                            }
+                            ?.let { task -> notificationManager.getTaskNotification(it) != null }
                             ?: false
                 }
 
@@ -109,20 +109,46 @@ class Notifier @Inject constructor(
 
         Timber.d("Triggering $notifications")
 
-        notificationManager.notifyTasks(notifications, true, ringNonstop, ringFiveTimes)
+        val posted = notificationManager.notifyTasks(notifications, true).toSet()
+        val audible = notifications.filter { it.taskId in posted }
+        if (audible.isNotEmpty()) {
+            val owned = audible.mapNotNull { notification ->
+                val task = taskDao.fetch(notification.taskId) ?: return@mapNotNull null
+                val own = if (notification.type == Alarm.TYPE_RANDOM) {
+                    AlertLevel.ONCE
+                } else {
+                    alertLevel(task.ringFlags)
+                }
+                notification to own
+            }
+            val level = maxAlertLevel(owned.map { it.second })
+            val sounding = owned
+                .filter { it.second != AlertLevel.SILENT }
+                .map { it.first.taskId }
+            if (sounding.isNotEmpty()) {
+                ringer.playEpisode(level, sounding)
+            }
+            val delay = nextBatchDelay(owned.map { it.second }, 0)
+            if (delay != null) {
+                val repeating = owned
+                    .filter { nextEpisodeDelay(it.second, 0) != null }
+                    .map { it.first.taskId }
+                ringer.scheduleNext(repeating, 1, delay)
+            }
 
-        if (preferences.getBoolean(R.string.p_voiceRemindersEnabled, false)
-                && !ringNonstop
-                && !audioManager.notificationsMuted()
-                && telephonyManager.callStateIdle()) {
-            notifications
-                    .mapNotNull {
-                        notificationManager.getTaskNotification(it)?.build()?.tickerText?.toString()
-                    }
-                    .forEach {
-                        delay(2000)
-                        voiceOutputAssistant.speak(it)
-                    }
+            if (preferences.getBoolean(R.string.p_voiceRemindersEnabled, false)
+                    && level != AlertLevel.SUPER
+                    && !audioManager.notificationsMuted()
+                    && telephonyManager.callStateIdle()) {
+                owned
+                        .mapNotNull {
+                            notificationManager.getTaskNotification(it.first)?.build()?.tickerText?.toString()
+                        }
+                        .forEach {
+                            delay(2000)
+                            voiceOutputAssistant.speak(it)
+                        }
+            }
         }
         return handled
     }

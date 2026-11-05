@@ -21,8 +21,9 @@ import org.tasks.compose.edit.ringModeString
 const val RING_ONCE = 0
 const val RING_FIVE_TIMES = 1
 const val RING_NONSTOP = 2
+const val RING_SILENT = 3
 
-val RING_MODES = listOf(RING_ONCE, RING_FIVE_TIMES, RING_NONSTOP)
+val RING_MODES = listOf(RING_SILENT, RING_ONCE, RING_FIVE_TIMES, RING_NONSTOP)
 
 @Composable
 fun RingModeDialog(

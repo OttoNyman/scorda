@@ -69,6 +69,7 @@ import org.tasks.data.entity.TagData
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_FIVE
 import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_NONSTOP
+import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_SILENT
 import org.tasks.data.entity.Task.Companion.hasDueTime
 import org.tasks.data.entity.TaskAttachment
 import org.tasks.data.entity.UserActivity
@@ -263,21 +264,43 @@ class TaskEditViewModel @Inject constructor(
         }
     }
 
-    var ringNonstop: Boolean = task.isNotifyModeNonstop
-        set(value) {
-            field = value
-            if (value) {
-                ringFiveTimes = false
-            }
-        }
+    private var ringsReady = false
 
-    var ringFiveTimes:Boolean = task.isNotifyModeFive
+    var ringSilent: Boolean = false
         set(value) {
             field = value
-            if (value) {
+            if (ringsReady && value) {
+                ringFiveTimes = false
                 ringNonstop = false
             }
         }
+
+    var ringNonstop: Boolean = false
+        set(value) {
+            field = value
+            if (ringsReady && value) {
+                ringFiveTimes = false
+                ringSilent = false
+            }
+        }
+
+    var ringFiveTimes: Boolean = false
+        set(value) {
+            field = value
+            if (ringsReady && value) {
+                ringNonstop = false
+                ringSilent = false
+            }
+        }
+
+    init {
+        when {
+            task.isNotifyModeSilent -> ringSilent = true
+            task.isNotifyModeNonstop -> ringNonstop = true
+            task.isNotifyModeFive -> ringFiveTimes = true
+        }
+        ringsReady = true
+    }
 
     fun hasChanges(): Boolean {
         val viewState = _viewState.value
@@ -485,6 +508,7 @@ class TaskEditViewModel @Inject constructor(
     }
 
     private fun getRingFlags() = when {
+        ringSilent -> NOTIFY_MODE_SILENT
         ringNonstop -> NOTIFY_MODE_NONSTOP
         ringFiveTimes -> NOTIFY_MODE_FIVE
         else -> 0

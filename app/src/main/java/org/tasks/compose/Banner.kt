@@ -13,6 +13,7 @@ import org.tasks.compose.components.AnimatedBanner
 import org.tasks.compose.components.Banner
 import org.tasks.themes.TasksTheme
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.alarms_can_be_late
 import tasks.kmp.generated.resources.davx5
 import tasks.kmp.generated.resources.enable_reminders
 import tasks.kmp.generated.resources.enable_reminders_description
@@ -42,7 +43,7 @@ fun AlarmsDisabledBanner(
 ) {
     Banner(
         title = stringResource(id = R.string.enable_alarms),
-        body = stringResource(id = R.string.enable_alarms_description),
+        body = composeStringResource(Res.string.alarms_can_be_late),
         dismissText = stringResource(id = R.string.dismiss),
         onDismiss = dismiss,
         action = stringResource(id = R.string.TLA_menu_settings),

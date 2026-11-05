@@ -20,7 +20,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkRequest
 import androidx.work.Worker
 import androidx.work.workDataOf
-import com.todoroo.andlib.utility.AndroidUtilities.atLeastS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.tasks.BuildConfig
@@ -43,12 +42,16 @@ import org.tasks.jobs.WorkManager.Companion.TAG_BACKGROUND_SYNC
 import org.tasks.jobs.WorkManager.Companion.TAG_BACKUP
 import org.tasks.jobs.WorkManager.Companion.TAG_MIGRATE_LOCAL
 import org.tasks.jobs.WorkManager.Companion.TAG_NOTIFICATIONS
+import org.tasks.jobs.WorkManager.Companion.TAG_NOTIFICATION_SAFETY
 import org.tasks.jobs.WorkManager.Companion.TAG_REFRESH
 import org.tasks.jobs.WorkManager.Companion.TAG_REMOTE_CONFIG
 import org.tasks.jobs.WorkManager.Companion.TAG_BLOG_FEED
 import org.tasks.jobs.WorkManager.Companion.TAG_SYNC
 import org.tasks.jobs.WorkManager.Companion.TAG_UPDATE_PURCHASES
+import org.tasks.notifications.AndroidReminderHealth
+import org.tasks.notifications.ScheduleMode
 import org.tasks.notifications.Throttle
+import org.tasks.notifications.schedulePlan
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -56,7 +59,6 @@ import org.tasks.time.printTimestamp
 import timber.log.Timber
 import java.util.Random
 import java.util.concurrent.TimeUnit
-import kotlin.math.max
 
 class WorkManagerImpl(
     private val context: Context,
@@ -151,14 +153,28 @@ class WorkManagerImpl(
     }
 
     override fun scheduleNotification(scheduledTime: Long) {
-        val time = max(currentTimeMillis(), scheduledTime)
-        if (time < currentTimeMillis()) {
+        if (scheduledTime <= currentTimeMillis()) {
             triggerNotifications(expedited = true)
+            return
+        }
+        val pendingIntent = notificationPendingIntent
+        val exact = schedulePlan(AndroidReminderHealth(context).facts()).mode == ScheduleMode.EXACT
+        if (exact) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, scheduledTime, pendingIntent)
         } else {
-            val pendingIntent = notificationPendingIntent
-            if (!atLeastS() || alarmManager.canScheduleExactAlarms()) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
-            }
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, scheduledTime, pendingIntent)
+        }
+    }
+
+    override fun updateNotificationSafety(enabled: Boolean) {
+        if (enabled) {
+            workManager.enqueueUniquePeriodicWork(
+                TAG_NOTIFICATION_SAFETY,
+                ExistingPeriodicWorkPolicy.UPDATE,
+                PeriodicWorkRequest.Builder(NotificationWork::class.java, 15, TimeUnit.MINUTES).build(),
+            )
+        } else {
+            workManager.cancelUniqueWork(TAG_NOTIFICATION_SAFETY)
         }
     }
 

@@ -96,7 +96,6 @@ class TaskDefaults : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            var showDefaultReminders by rememberSaveable { mutableStateOf(false) }
             val is24HourFormat = LocalContext.current.is24HourFormat
 
             TaskDefaultsContent(
@@ -132,7 +131,6 @@ class TaskDefaults : Fragment() {
                         )
                         .show(parentFragmentManager, FRAG_TAG_BASIC_RECURRENCE)
                 },
-                onReminders = { showDefaultReminders = true },
                 onLocation = {
                     locationLauncher.launch(
                         Intent(context, LocationPickerActivity::class.java),
@@ -142,16 +140,6 @@ class TaskDefaults : Fragment() {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },
             )
-
-            if (showDefaultReminders && viewModel.loaded) {
-                DefaultRemindersDialog(
-                    vm = viewModel(),
-                    initialAlarms = viewModel.settings.defaultAlarms,
-                    is24HourFormat = is24HourFormat,
-                    onAlarmsChanged = { viewModel.setDefaultAlarms(it) },
-                    onDismiss = { showDefaultReminders = false },
-                )
-            }
         }
     }
 

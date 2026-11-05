@@ -21,13 +21,16 @@ import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.ClearButton
 import org.tasks.compose.pickers.RING_FIVE_TIMES
 import org.tasks.compose.pickers.RING_NONSTOP
+import org.tasks.compose.pickers.RING_ONCE
+import org.tasks.compose.pickers.RING_SILENT
 import org.tasks.data.entity.Alarm
 import org.tasks.reminders.alarmText
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.add_reminder
-import tasks.kmp.generated.resources.ring_five_times
-import tasks.kmp.generated.resources.ring_nonstop
-import tasks.kmp.generated.resources.ring_once
+import tasks.kmp.generated.resources.alert_once
+import tasks.kmp.generated.resources.alert_persistent
+import tasks.kmp.generated.resources.alert_silent
+import tasks.kmp.generated.resources.alert_super
 
 private const val DisabledAlpha = 0.38f
 
@@ -89,9 +92,10 @@ fun AlarmList(
 }
 
 fun ringModeString(ringMode: Int) = when (ringMode) {
-    RING_NONSTOP -> Res.string.ring_nonstop
-    RING_FIVE_TIMES -> Res.string.ring_five_times
-    else -> Res.string.ring_once
+    RING_SILENT -> Res.string.alert_silent
+    RING_NONSTOP -> Res.string.alert_super
+    RING_FIVE_TIMES -> Res.string.alert_persistent
+    else -> Res.string.alert_once
 }
 
 fun ImmutableSet<Alarm>.missingReminder(

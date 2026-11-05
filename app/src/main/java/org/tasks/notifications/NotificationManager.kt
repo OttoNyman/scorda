@@ -61,6 +61,7 @@ class NotificationManager @Inject constructor(
     private val markdownProvider: MarkdownProvider,
     private val permissionChecker: PermissionChecker,
     private val workManager: WorkManager,
+    private val ringer: Ringer,
 ) : Notifier {
     @InterruptionFilter
     val currentInterruptionFilter: Int
@@ -111,9 +112,12 @@ class NotificationManager @Inject constructor(
         }
         queue.remove(ids)
         notificationDao.deleteAll(ids)
+        if (reason != CancelReason.EDIT) {
+            ringer.stop(ids)
+        }
         coroutineScope {
             launch {
-                notifyTasks(emptyList(), alert = false, nonstop = false, fiveTimes = false)
+                notifyTasks(emptyList(), alert = false)
             }
         }
     }
@@ -141,21 +145,15 @@ class NotificationManager @Inject constructor(
         if (preferences.bundleNotifications() && notifications.size > 1) {
             updateSummary(
                     notify = false,
-                    nonStop = false,
-                    fiveTimes = false,
                     newNotifications = emptyList(),
                 )
             val posted = createNotifications(
                     notifications = notifications,
                     alert = false,
-                    nonstop = false,
-                    fiveTimes = false,
             )
             if (posted.size != notifications.size) {
                 updateSummary(
                         notify = false,
-                        nonStop = false,
-                        fiveTimes = false,
                         newNotifications = emptyList(),
                     )
             }
@@ -163,8 +161,6 @@ class NotificationManager @Inject constructor(
             createNotifications(
                     notifications = notifications,
                     alert = false,
-                    nonstop = false,
-                    fiveTimes = false,
                     useGroupKey = false,
                 )
             cancelSummaryNotification()
@@ -175,8 +171,6 @@ class NotificationManager @Inject constructor(
     suspend fun notifyTasks(
         newNotifications: List<Notification>,
         alert: Boolean,
-        nonstop: Boolean,
-        fiveTimes: Boolean
     ): Collection<Long> {
         if (!permissionChecker.canNotify()) {
             Timber.w("Notifications disabled, holding ${newNotifications.size}")
@@ -194,30 +188,22 @@ class NotificationManager @Inject constructor(
             preferences.bundleNotifications() -> {
                 updateSummary(
                         notify = false,
-                        nonStop = false,
-                        fiveTimes = false,
                         newNotifications = emptyList(),
                 )
                 if (existingNotifications.size == 1) {
                     createNotifications(
                             notifications = existingNotifications,
                             alert = false,
-                            nonstop = false,
-                            fiveTimes = false,
                     )
                 }
                 when {
                     newNotifications.size == 1 -> createNotifications(
                         notifications = newNotifications,
                         alert = alert,
-                        nonstop = nonstop,
-                        fiveTimes = fiveTimes,
                     )
                     newNotifications.size > 1 -> createNotifications(
                             notifications = newNotifications,
                             alert = false,
-                            nonstop = false,
-                            fiveTimes = false,
                         ).also { summariseAfterCleanup = true }
                     else -> emptyList()
                 }
@@ -225,8 +211,6 @@ class NotificationManager @Inject constructor(
             else -> createNotifications(
                 notifications = newNotifications,
                 alert = alert,
-                nonstop = nonstop,
-                fiveTimes = fiveTimes,
                 useGroupKey = false,
             )
         }
@@ -240,12 +224,10 @@ class NotificationManager @Inject constructor(
             notificationDao.deleteAll(discarded)
         }
         if (summariseAfterCleanup && posted.isNotEmpty()) {
-            updateSummary(alert, nonstop, fiveTimes, newNotifications)
+            updateSummary(alert, newNotifications)
         } else if (discarded.isNotEmpty() && preferences.bundleNotifications()) {
             updateSummary(
                 notify = false,
-                nonStop = false,
-                fiveTimes = false,
                 newNotifications = emptyList(),
             )
         }
@@ -257,8 +239,6 @@ class NotificationManager @Inject constructor(
     private suspend fun createNotifications(
         notifications: List<Notification>,
         alert: Boolean,
-        nonstop: Boolean,
-        fiveTimes: Boolean,
         useGroupKey: Boolean = true,
     ): List<Long> {
         if (permissionChecker.canNotify()) {
@@ -271,7 +251,7 @@ class NotificationManager @Inject constructor(
             Timber.d("No notifications to post")
             return emptyList()
         }
-        Timber.d("Posting notifications alert=$alert nonstop=$nonstop fiveTimes=$fiveTimes useGroupKey=$useGroupKey\n${notifications.joinToString("\n")}")
+        Timber.d("Posting notifications alert=$alert useGroupKey=$useGroupKey\n${notifications.joinToString("\n")}")
         var alert = alert
         val posted = mutableListOf<Long>()
         for (notification in notifications) {
@@ -291,8 +271,6 @@ class NotificationManager @Inject constructor(
                         notification.taskId,
                         builder,
                         alert,
-                        nonstop,
-                        fiveTimes,
                         notification.type,
                     )
                     if (notifyResult.posted) {
@@ -317,8 +295,6 @@ class NotificationManager @Inject constructor(
             notificationId: Long,
             builder: NotificationCompat.Builder,
             alert: Boolean,
-            nonstop: Boolean,
-            fiveTimes: Boolean,
             type: Int? = null,
     ): NotifyResult {
         if (!permissionChecker.canNotify()) {
@@ -327,12 +303,10 @@ class NotificationManager @Inject constructor(
         if (preUpsideDownCake()) {
             builder.setLocalOnly(!preferences.getBoolean(R.string.p_wearable_notifications, true))
         }
-        val notification = builder.build()
-        var ringTimes = if (fiveTimes) 5 else 1
-        if (alert && nonstop) {
-            notification.flags = notification.flags or NotificationCompat.FLAG_INSISTENT
-            ringTimes = 1
+        if (!alert) {
+            builder.setSilent(true)
         }
+        val notification = builder.build()
         if (preferences.usePersistentReminders()) {
             notification.flags = notification.flags or
                     NotificationCompat.FLAG_NO_CLEAR or
@@ -351,20 +325,13 @@ class NotificationManager @Inject constructor(
         if (evicted.size > 0) {
             cancel(evicted, CancelReason.EVICTED)
         }
-        for (i in 0 until ringTimes) {
-            if (i > 0) {
-                notificationManager.pause(2000)
-            }
-            notificationManager.notify(notificationId.toInt(), notification)
-        }
+        notificationManager.notify(notificationId.toInt(), notification)
         return NotifyResult(posted = true, evicted = evicted)
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun updateSummary(
             notify: Boolean,
-            nonStop: Boolean,
-            fiveTimes: Boolean,
             newNotifications: List<Notification>,
     ) {
         val tasks = taskDao.activeNotifications()
@@ -373,7 +340,7 @@ class NotificationManager @Inject constructor(
             cancelSummaryNotification()
             return
         }
-        Timber.d("Updating summary taskCount=$taskCount notify=$notify nonStop=$nonStop fiveTimes=$fiveTimes newNotifications=$newNotifications")
+        Timber.d("Updating summary taskCount=$taskCount notify=$notify newNotifications=$newNotifications")
         val taskIds = tasks.map { it.id }
         var maxPriority = 3
         val localized = localeContext
@@ -426,7 +393,7 @@ class NotificationManager @Inject constructor(
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
                 )
         )
-        notify(SUMMARY_NOTIFICATION_ID.toLong(), builder, notify, nonStop, fiveTimes)
+        notify(SUMMARY_NOTIFICATION_ID.toLong(), builder, notify)
     }
 
     data class ActionLabels(
@@ -487,8 +454,12 @@ class NotificationManager @Inject constructor(
         val markdown = markdownProvider.markdown(force = true)
         val taskTitle = markdown.toMarkdown(task.title)?.toString()
         val taskDescription = markdown.toMarkdown(task.notes)?.toString()
-
-        val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_DEFAULT)
+        val channel = if (alertLevel(task.ringFlags) == AlertLevel.SILENT) {
+            NOTIFICATION_CHANNEL_SILENT
+        } else {
+            NOTIFICATION_CHANNEL_DEFAULT
+        }
+        val builder = NotificationCompat.Builder(context, channel)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setContentTitle(taskTitle)
                 .setColor(colorProvider.getPriorityColor(task.priority))
@@ -614,8 +585,6 @@ class NotificationManager @Inject constructor(
                 Constants.NOTIFICATION_TIMER.toLong(),
                 builder,
                 alert = false,
-                nonstop = false,
-                fiveTimes = false
             )
         }
     }
@@ -626,7 +595,9 @@ class NotificationManager @Inject constructor(
     }
 
     companion object {
-        const val NOTIFICATION_CHANNEL_DEFAULT = "notifications"
+        const val NOTIFICATION_CHANNEL_DEFAULT = "reminders"
+        const val NOTIFICATION_CHANNEL_SILENT = "reminders_silent"
+        const val NOTIFICATION_CHANNEL_INSISTENT = "reminders_insistent"
         const val NOTIFICATION_CHANNEL_TASKER = "notifications_tasker"
         const val NOTIFICATION_CHANNEL_TIMERS = "notifications_timers"
         const val NOTIFICATION_CHANNEL_MISCELLANEOUS = "notifications_miscellaneous"

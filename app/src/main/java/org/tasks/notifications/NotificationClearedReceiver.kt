@@ -27,6 +27,10 @@ class NotificationClearedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getLongExtra(NotificationManager.EXTRA_NOTIFICATION_ID, -1L)
         Timber.d("cleared $notificationId")
+        if (notificationId == TEST_NOTIFICATION_ID.toLong()) {
+            scope.launch { notificationManager.cancel(notificationId, CancelReason.DISMISS) }
+            return
+        }
         if (notificationId <= 0L) return
         val isLocationReminder =
             when (intent.getIntExtra(NotificationManager.EXTRA_NOTIFICATION_TYPE, UNKNOWN_TYPE)) {

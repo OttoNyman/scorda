@@ -33,6 +33,7 @@ import org.tasks.compose.edit.ringModeString
 import org.tasks.compose.pickers.RING_FIVE_TIMES
 import org.tasks.compose.pickers.RING_NONSTOP
 import org.tasks.compose.pickers.RING_ONCE
+import org.tasks.compose.pickers.RING_SILENT
 import org.tasks.data.entity.Task
 import org.tasks.preferences.TaskDefaultSettings
 import tasks.kmp.generated.resources.EPr_default_importance_title
@@ -107,6 +108,7 @@ val RepeatFromOptions: List<Pair<Int, StringResource>> = listOf(
 )
 
 val RingModeOptions: List<Pair<Int, StringResource>> = listOf(
+    Task.NOTIFY_MODE_SILENT to ringModeString(RING_SILENT),
     0 to ringModeString(RING_ONCE),
     Task.NOTIFY_MODE_FIVE to ringModeString(RING_FIVE_TIMES),
     Task.NOTIFY_MODE_NONSTOP to ringModeString(RING_NONSTOP),
@@ -138,11 +140,9 @@ fun TaskDefaultsScreen(
     defaultTagsSummary: String,
     calendarName: String,
     recurrenceSummary: String,
-    remindersSummary: String,
     locationName: String,
     hasDefaultLocation: Boolean,
     showCalendar: Boolean,
-    showRingMode: Boolean,
     showLocation: Boolean,
     onAddToTop: (Boolean) -> Unit,
     onDefaultList: () -> Unit,
@@ -153,8 +153,6 @@ fun TaskDefaultsScreen(
     onCalendar: () -> Unit,
     onRecurrence: () -> Unit,
     onRecurrenceFrom: () -> Unit,
-    onReminders: () -> Unit,
-    onRemindersMode: () -> Unit,
     onLocation: () -> Unit,
     onDeleteLocation: () -> Unit,
     onLocationReminder: () -> Unit,
@@ -232,34 +230,6 @@ fun TaskDefaultsScreen(
                         icon = TasksIcons.EVENT,
                         summary = calendarName,
                         onClick = onCalendar,
-                    )
-            }
-        }
-
-        SectionHeader(
-            stringResource(Res.string.TEA_control_reminders),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        CardGroup(
-            listOfNotNull(
-                ReminderRow.REMINDERS,
-                ReminderRow.RING_MODE.takeIf { showRingMode },
-            )
-        ) { row ->
-            when (row) {
-                ReminderRow.REMINDERS ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.EPr_default_reminders_title),
-                        icon = TasksIcons.NOTIFICATIONS,
-                        summary = remindersSummary,
-                        summaryMaxLines = Int.MAX_VALUE,
-                        onClick = onReminders,
-                    )
-                ReminderRow.RING_MODE ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.EPr_default_reminders_mode_title),
-                        summary = RingModeOptions.label(settings.defaultRingMode),
-                        onClick = onRemindersMode,
                     )
             }
         }
@@ -349,11 +319,6 @@ private enum class DefaultRow {
     START_DATE,
     DUE_DATE,
     CALENDAR,
-}
-
-private enum class ReminderRow {
-    REMINDERS,
-    RING_MODE,
 }
 
 private enum class RecurrenceRow {

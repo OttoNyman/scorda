@@ -40,6 +40,7 @@ class ReminderControlSet : TaskEditControlFragment() {
     private val ringMode = mutableIntStateOf(0)
 
     private fun setRingMode(ringMode: Int) {
+        viewModel.ringSilent = ringMode == 3
         viewModel.ringNonstop = ringMode == 2
         viewModel.ringFiveTimes = ringMode == 1
         this.ringMode.intValue = ringMode
@@ -50,6 +51,7 @@ class ReminderControlSet : TaskEditControlFragment() {
     override fun Content() {
         LaunchedEffect(Unit) {
             when {
+                viewModel.ringSilent -> setRingMode(3)
                 viewModel.ringNonstop -> setRingMode(2)
                 viewModel.ringFiveTimes -> setRingMode(1)
                 else -> setRingMode(0)

@@ -24,6 +24,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.R
 import org.tasks.compose.settings.NotificationsContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.tasks.compose.settings.DefaultRemindersDialog
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.extensions.Context.openChannelNotificationSettings
 import org.tasks.extensions.Context.openUri
@@ -44,6 +51,10 @@ class Notifications : Fragment() {
 
     private val completionSoundLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         viewModel.handleCompletionSoundResult(result.resultCode, result.data)
+    }
+
+    private val reminderSoundLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        viewModel.handleReminderSoundResult(result.resultCode, result.data)
     }
 
     private val ttsCheckLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -76,33 +87,53 @@ class Notifications : Fragment() {
                 }
             }
 
+            var showDefaultReminders by rememberSaveable { mutableStateOf(false) }
+            val is24HourFormat = LocalContext.current.is24HourFormat
+
             NotificationsContent(
                 viewModel = viewModel,
-                is24HourFormat = requireContext().is24HourFormat,
+                is24HourFormat = is24HourFormat,
                 openUri = { context?.openUri(it) },
                 onBatteryOptimization = {
                     startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
                 },
-                onCompletionSound = { launchRingtonePicker() },
+                onCompletionSound = { launchRingtonePicker(completion = true) },
+                onReminderSound = { launchRingtonePicker(completion = false) },
+                onDefaultAlarms = { showDefaultReminders = true },
                 onMoreSettings = { requireContext().openChannelNotificationSettings() },
                 moreSettingsSummary = stringResource(Res.string.more_notification_settings_summary),
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },
             )
+
+            if (showDefaultReminders && viewModel.loaded) {
+                DefaultRemindersDialog(
+                    vm = viewModel(),
+                    initialAlarms = viewModel.defaultAlarms,
+                    is24HourFormat = is24HourFormat,
+                    onAlarmsChanged = { viewModel.updateDefaultAlarms(it) },
+                    onDismiss = { showDefaultReminders = false },
+                )
+            }
         }
     }
 
-    private fun launchRingtonePicker() {
+    private fun launchRingtonePicker(completion: Boolean) {
+        val existingValue = if (completion) {
+            viewModel.getCompletionRingtoneValue()
+        } else {
+            viewModel.reminderRingtoneValue()
+        }
         val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
             putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
             putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-            putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+            putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
             putExtra(
                 RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
                 Settings.System.DEFAULT_NOTIFICATION_URI
             )
-            when (val existingValue = viewModel.getCompletionRingtoneValue()) {
+            when (existingValue) {
                 null -> putExtra(
                     RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
                     Settings.System.DEFAULT_NOTIFICATION_URI
@@ -114,7 +145,11 @@ class Notifications : Fragment() {
                 )
             }
         }
-        completionSoundLauncher.launch(intent)
+        if (completion) {
+            completionSoundLauncher.launch(intent)
+        } else {
+            reminderSoundLauncher.launch(intent)
+        }
     }
 
     override fun onResume() {

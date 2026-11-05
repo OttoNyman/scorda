@@ -8,6 +8,8 @@ import androidx.work.WorkerParameters
 import com.todoroo.astrid.alarms.AlarmService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.tasks.Notifier
 import org.tasks.R
 import org.tasks.analytics.Firebase
@@ -27,8 +29,10 @@ class NotificationWork @AssistedInject constructor(
     private var nextAlarm: Long = 0
 
     override suspend fun run(): Result {
-        nextAlarm = alarmService.triggerAlarms {
-            notifier.triggerNotifications(it)
+        gate.withLock {
+            nextAlarm = alarmService.triggerAlarms {
+                notifier.triggerNotifications(it)
+            }
         }
         return Result.success()
     }
@@ -51,4 +55,8 @@ class NotificationWork @AssistedInject constructor(
             .setContentText(context.getString(R.string.building_notifications))
             .build()
     )
+
+    private companion object {
+        val gate = Mutex()
+    }
 }

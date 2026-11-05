@@ -33,7 +33,6 @@ fun TaskDefaultsContent(
     onDefaultTags: () -> Unit,
     onCalendar: () -> Unit,
     onRecurrence: () -> Unit,
-    onReminders: () -> Unit,
     onLocation: () -> Unit,
     bottomInsets: @Composable () -> Unit = {},
 ) {
@@ -55,11 +54,9 @@ fun TaskDefaultsContent(
         defaultTagsSummary = viewModel.defaultTagsSummary,
         calendarName = viewModel.calendarName,
         recurrenceSummary = viewModel.recurrenceSummary,
-        remindersSummary = remindersSummary(settings.defaultAlarms, is24HourFormat),
         locationName = viewModel.locationName,
         hasDefaultLocation = viewModel.hasDefaultLocation,
         showCalendar = viewModel.showCalendar,
-        showRingMode = viewModel.showRingMode,
         showLocation = viewModel.showLocation,
         onAddToTop = { viewModel.updateAddToTop(it) },
         onDefaultList = onDefaultList,
@@ -70,8 +67,6 @@ fun TaskDefaultsContent(
         onCalendar = onCalendar,
         onRecurrence = onRecurrence,
         onRecurrenceFrom = { viewModel.openListPicker(ListPickerTarget.REPEAT_FROM) },
-        onReminders = onReminders,
-        onRemindersMode = { viewModel.openListPicker(ListPickerTarget.RING_MODE) },
         onLocation = onLocation,
         onDeleteLocation = { viewModel.setDefaultLocation(null) },
         onLocationReminder = { viewModel.openListPicker(ListPickerTarget.LOCATION_REMINDER) },
@@ -95,7 +90,7 @@ fun TaskDefaultsContent(
 }
 
 @Composable
-private fun remindersSummary(alarms: List<Alarm>, is24HourFormat: Boolean): String {
+internal fun remindersSummary(alarms: List<Alarm>, is24HourFormat: Boolean): String {
     if (alarms.isEmpty()) {
         return stringResource(Res.string.no_reminders)
     }
