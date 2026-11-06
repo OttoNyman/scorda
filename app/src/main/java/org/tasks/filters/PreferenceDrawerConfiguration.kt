@@ -37,6 +37,12 @@ class PreferenceDrawerConfiguration(
     override val startDateEnabled: Boolean
         get() = features.startDate
 
+    override val localListsEnabled: Boolean
+        get() = features.localLists
+
+    override val googleTasksSyncing: Boolean
+        get() = gate.sync
+
     override val timerEnabled: Boolean
         get() = features.timer
 }

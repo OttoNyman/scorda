@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.StringResource
@@ -35,7 +38,12 @@ import tasks.kmp.generated.resources.constructor_group_links
 import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
 import tasks.kmp.generated.resources.constructor_lists
-import tasks.kmp.generated.resources.constructor_lists_locked
+import tasks.kmp.generated.resources.constructor_local_lists
+import tasks.kmp.generated.resources.constructor_local_lists_summary
+import tasks.kmp.generated.resources.move_lists_keep
+import tasks.kmp.generated.resources.move_lists_move
+import tasks.kmp.generated.resources.move_lists_text
+import tasks.kmp.generated.resources.move_lists_title
 import tasks.kmp.generated.resources.constructor_notes
 import tasks.kmp.generated.resources.constructor_overdue
 import tasks.kmp.generated.resources.constructor_overdue_count
@@ -55,14 +63,14 @@ import tasks.kmp.generated.resources.constructor_timer
 fun ConstructorScreen(
     raw: Constructor,
     effective: Constructor,
-    hasSyncAccount: Boolean,
+    sync: Boolean,
     geofences: Boolean,
     calendarEvents: Boolean,
     counts: ConstructorCounts,
     onPreset: (Preset) -> Unit,
     onChange: (Constructor) -> Unit,
 ) {
-    val selected = matchingPreset(raw, hasSyncAccount, geofences, calendarEvents)
+    val selected = matchingPreset(raw, geofences, calendarEvents)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -98,16 +106,15 @@ fun ConstructorScreen(
             summary = count(counts.startDate, Res.plurals.constructor_start_count),
         ) { onChange(raw.copy(startDate = it)) }
         Group(Res.string.constructor_group_order)
-        Toggle(
-            title = Res.string.constructor_lists,
-            checked = effective.lists,
-            enabled = !hasSyncAccount,
-            summary = if (hasSyncAccount && !raw.lists) {
-                stringResource(Res.string.constructor_lists_locked)
-            } else {
-                null
-            },
-        ) { onChange(raw.copy(lists = it)) }
+        Toggle(Res.string.constructor_lists, effective.lists) { onChange(raw.copy(lists = it)) }
+        if (sync && raw.lists) {
+            Toggle(
+                title = Res.string.constructor_local_lists,
+                checked = raw.localLists,
+                summary = stringResource(Res.string.constructor_local_lists_summary),
+                summaryWhenOff = true,
+            ) { onChange(raw.copy(localLists = it)) }
+        }
         Toggle(Res.string.constructor_tags, effective.tags) { onChange(raw.copy(tags = it)) }
         Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
         Toggle(Res.string.constructor_subtasks, effective.subtasks) { onChange(raw.copy(subtasks = it)) }
@@ -169,6 +176,7 @@ private fun Toggle(
     checked: Boolean,
     enabled: Boolean = true,
     summary: String? = null,
+    summaryWhenOff: Boolean = false,
     onChange: (Boolean) -> Unit,
 ) {
     SettingsItemCard {
@@ -176,7 +184,7 @@ private fun Toggle(
             title = stringResource(title),
             checked = checked,
             enabled = enabled,
-            summary = summary.takeIf { checked },
+            summary = summary.takeIf { checked || summaryWhenOff },
             onCheckedChange = onChange,
         )
     }
@@ -185,3 +193,29 @@ private fun Toggle(
 @Composable
 private fun count(value: Int, resource: org.jetbrains.compose.resources.PluralStringResource): String? =
     if (value > 0) pluralStringResource(resource, value, value) else null
+
+/** Warns that local lists move to Google. [onKeep] adds a "keep on this phone" choice. */
+@Composable
+fun MoveListsDialog(
+    lists: Int,
+    onMove: () -> Unit,
+    onDismiss: () -> Unit,
+    onKeep: (() -> Unit)? = null,
+    dismissText: String,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.move_lists_title)) },
+        text = { Text(stringResource(Res.string.move_lists_text, lists)) },
+        confirmButton = {
+            TextButton(onClick = onMove) { Text(stringResource(Res.string.move_lists_move)) }
+        },
+        dismissButton = {
+            if (onKeep != null) {
+                TextButton(onClick = onKeep) { Text(stringResource(Res.string.move_lists_keep)) }
+            } else {
+                TextButton(onClick = onDismiss) { Text(dismissText) }
+            }
+        },
+    )
+}

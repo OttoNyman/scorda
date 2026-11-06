@@ -47,6 +47,7 @@
   <string name="p_google_tasks_force_create">p_google_tasks_force_create</string>
   <string name="p_google_tasks_ambiguous">p_google_tasks_ambiguous</string>
   <string name="p_google_tasks_list_problem">p_google_tasks_list_problem</string>
+  <string name="p_google_tasks_move_local">p_google_tasks_move_local</string>
   <string name="p_google_access_expired">p_google_access_expired</string>
   <string name="p_google_drive_backup_account">p_google_drive_backup_account</string>
   <string name="p_google_drive_backup_folder">p_google_drive_backup_folder</string>

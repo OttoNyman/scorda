@@ -13,11 +13,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.tasks.LocalBroadcastManager
 import org.tasks.PlatformConfiguration
+import org.tasks.R
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.TaskDao
+import org.tasks.data.entity.CaldavAccount
 import org.tasks.jobs.WorkManager
 import org.tasks.location.LocationService
 import org.tasks.preferences.Preferences
+import org.tasks.sync.SyncSource
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,15 +45,18 @@ class ConstructorRepository @Inject constructor(
     val effective: StateFlow<Constructor> = effectiveFlow.asStateFlow()
 
     @Volatile
-    var hasSyncAccount: Boolean = false
-        private set
+    private var hasGoogleAccount: Boolean = false
+
+    /** Google Tasks account present and not paused. */
+    val sync: Boolean
+        get() = hasGoogleAccount && !preferences.getBoolean(R.string.p_google_tasks_paused, false)
 
     init {
         // Before the first account read: anything scheduled at startup already sees the saved flags.
         gate.current = effectiveFlow.value
         caldavDao.watchAccounts()
             .onEach { accounts ->
-                hasSyncAccount = accounts.any { !it.isLocalList }
+                hasGoogleAccount = accounts.any { it.accountType == CaldavAccount.TYPE_GOOGLE_TASKS }
                 publish(rawFlow.value)
             }
             .launchIn(scope)
@@ -60,6 +66,23 @@ class ConstructorRepository @Inject constructor(
         preferences.writeConstructor(value)
         rawFlow.value = value
         scope.launch { publish(value) }
+    }
+
+    /** Pause or resume changed: re-read [sync]. */
+    fun refreshSync() {
+        scope.launch { publish(rawFlow.value) }
+    }
+
+    /** The next Google sync moves every local list to Google. */
+    fun moveLocalListsToGoogle() {
+        preferences.setBoolean(R.string.p_google_tasks_move_local, true)
+        scope.launch {
+            try {
+                workManager.get().sync(SyncSource.USER_INITIATED)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
     }
 
     suspend fun counts(now: Long): ConstructorCounts {
@@ -95,11 +118,18 @@ class ConstructorRepository @Inject constructor(
                 """.trimIndent()
             ),
             startDate = taskDao.count(open("hideUntil > $now")),
+            localLists = taskDao.count(
+                """
+                SELECT COUNT(1) FROM caldav_lists
+                INNER JOIN caldav_accounts ON cda_uuid = cdl_account
+                WHERE cda_account_type = ${CaldavAccount.TYPE_LOCAL}
+                """.trimIndent()
+            ),
         )
     }
 
     private fun compute(raw: Constructor) = raw.effective(
-        hasSyncAccount = hasSyncAccount,
+        sync = sync,
         geofences = configuration.supportsGeofences,
         calendarEvents = configuration.supportsCalendarEvents,
     )
@@ -108,6 +138,7 @@ class ConstructorRepository @Inject constructor(
     private fun apply(raw: Constructor): Pair<Constructor, Constructor>? {
         val previous = effectiveFlow.value
         val value = compute(raw)
+        gate.sync = sync
         if (value == previous) return null
         effectiveFlow.value = value
         gate.current = value

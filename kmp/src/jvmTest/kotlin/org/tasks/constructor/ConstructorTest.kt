@@ -11,29 +11,52 @@ import org.tasks.time.ONE_DAY
 class ConstructorTest {
     @Test
     fun presetsMatchTheirFlags() {
-        assertEquals(Preset.Simple, matchingPreset(Preset.Simple.flags, false, true, true))
-        assertEquals(Preset.Reminders, matchingPreset(Preset.Reminders.flags, false, true, true))
-        assertEquals(Preset.Tasks, matchingPreset(Preset.Tasks.flags, false, true, true))
-        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, false, true, true))
+        assertEquals(Preset.Simple, matchingPreset(Preset.Simple.flags, true, true))
+        assertEquals(Preset.Reminders, matchingPreset(Preset.Reminders.flags, true, true))
+        assertEquals(Preset.Tasks, matchingPreset(Preset.Tasks.flags, true, true))
+        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, true, true))
     }
 
     @Test
     fun repeatAloneMatchesNothing() {
-        assertNull(matchingPreset(Constructor(repeat = true), false, true, true))
+        assertNull(matchingPreset(Constructor(repeat = true), true, true))
     }
 
     @Test
     fun fullStillMatchesWhenThePlatformHasNoGeofences() {
-        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, false, geofences = false, calendarEvents = true))
+        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, geofences = false, calendarEvents = true))
     }
 
     @Test
-    fun anAccountTurnsListsOnWithoutWritingTheRawFlag() {
-        val raw = Constructor()
-        val effective = raw.effective(hasSyncAccount = true, geofences = true, calendarEvents = true)
-        assertFalse(raw.lists)
-        assertTrue(effective.lists)
-        assertNull(matchingPreset(raw, hasSyncAccount = true, geofences = true, calendarEvents = true))
+    fun syncNeverChangesTheSelectedSetup() {
+        val raw = Constructor(localLists = true)
+        assertEquals(Preset.Simple, matchingPreset(raw, geofences = true, calendarEvents = true))
+        assertFalse(raw.effective(sync = true, geofences = true, calendarEvents = true).lists)
+    }
+
+    @Test
+    fun theLocalBlockNeedsListsAndEitherNoSyncOrTheToggle() {
+        fun shown(lists: Boolean, local: Boolean, sync: Boolean) =
+            Constructor(lists = lists, localLists = local).effective(sync, true, true).localLists
+        assertFalse(shown(lists = false, local = true, sync = false))
+        assertTrue(shown(lists = true, local = false, sync = false))
+        assertFalse(shown(lists = true, local = false, sync = true))
+        assertTrue(shown(lists = true, local = true, sync = true))
+    }
+
+    @Test
+    fun withoutTheLocalBlockASyncedStateKeepsEverythingInGoogle() {
+        assertFalse(Constructor().keepsEverythingInGoogle(sync = false))
+        assertTrue(Constructor().keepsEverythingInGoogle(sync = true))
+        assertTrue(Constructor(lists = true).keepsEverythingInGoogle(sync = true))
+        assertFalse(Constructor(lists = true, localLists = true).keepsEverythingInGoogle(sync = true))
+        assertTrue(Constructor(localLists = true).keepsEverythingInGoogle(sync = true))
+    }
+
+    @Test
+    fun aSetupKeepsTheLocalListsToggle() {
+        assertTrue(Constructor(localLists = true).withPreset(Preset.Full).localLists)
+        assertFalse(Constructor().withPreset(Preset.Full).localLists)
     }
 
     @Test

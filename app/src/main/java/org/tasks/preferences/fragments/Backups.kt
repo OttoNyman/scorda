@@ -36,6 +36,8 @@ import com.google.api.services.tasks.TasksScopes
 import com.todoroo.astrid.gtasks.auth.GtasksLoginActivity
 import kotlinx.coroutines.launch
 import org.tasks.compose.settings.BackupsScreen
+import org.tasks.compose.settings.MoveListsDialog
+import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.dialogs.ExportTasksDialog
 import org.tasks.dialogs.ImportTasksDialog
 import org.tasks.drive.DriveLoginActivity
@@ -57,6 +59,7 @@ class Backups : Fragment() {
 
     @Inject lateinit var theme: Theme
     @Inject lateinit var workManager: WorkManager
+    @Inject lateinit var constructorRepository: org.tasks.constructor.ConstructorRepository
 
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val viewModel: BackupsViewModel by viewModels()
@@ -95,6 +98,7 @@ class Backups : Fragment() {
                 ?.let { context?.toast(it) }
         }
         afterLogin = null
+        constructorRepository.refreshSync()
         viewModel.refreshTasks()
         viewModel.refreshDriveState(preferencesViewModel)
     }
@@ -125,6 +129,7 @@ class Backups : Fragment() {
     ) = content {
         var showHelp by remember { mutableStateOf(false) }
         var driveFiles by remember { mutableStateOf<List<Pair<String, String>>?>(null) }
+        var moveLists by remember { mutableStateOf(0) }
         TasksSettingsTheme(
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
@@ -190,9 +195,22 @@ class Backups : Fragment() {
                 driveDailyEnabled = viewModel.driveBackupEnabled,
                 onTasksEnabled = { enabled ->
                     if (enabled) {
-                        signIn(arrayListOf(TasksScopes.TASKS), daily = false)
+                        lifecycleScope.launch {
+                            val lists = constructorRepository.counts(currentTimeMillis()).localLists
+                            val raw = constructorRepository.raw.value
+                            when {
+                                raw.lists && raw.localLists ->
+                                    signIn(arrayListOf(TasksScopes.TASKS), daily = false)
+                                raw.lists && lists > 0 -> moveLists = lists
+                                // Nothing to choose: whatever lands locally before the first sync moves too.
+                                else -> signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
+                                    constructorRepository.moveLocalListsToGoogle()
+                                }
+                            }
+                        }
                     } else {
                         viewModel.pauseTasks()
+                        constructorRepository.refreshSync()
                     }
                 },
                 onDriveDaily = { enabled ->
@@ -251,6 +269,25 @@ class Backups : Fragment() {
                         Text(text = stringResource(R.string.sync_help_tasks), modifier = Modifier.padding(top = 12.dp))
                     }
                 }
+            }
+            if (moveLists > 0) {
+                MoveListsDialog(
+                    lists = moveLists,
+                    onMove = {
+                        moveLists = 0
+                        signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
+                            constructorRepository.moveLocalListsToGoogle()
+                        }
+                    },
+                    onKeep = {
+                        moveLists = 0
+                        signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
+                            constructorRepository.write(constructorRepository.raw.value.copy(localLists = true))
+                        }
+                    },
+                    onDismiss = { moveLists = 0 },
+                    dismissText = stringResource(android.R.string.cancel),
+                )
             }
             driveFiles?.let { files ->
                 AlertDialog(

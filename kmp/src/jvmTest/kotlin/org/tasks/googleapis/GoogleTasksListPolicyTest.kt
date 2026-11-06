@@ -47,4 +47,26 @@ class GoogleTasksListPolicyTest {
         )
         assertTrue(choice is ScordaListChoice.Ambiguous)
     }
+
+    @Test
+    fun theDefaultAndAScordaNamedListMoveIntoScorda() {
+        val plan = planLocalMove(
+            local = listOf(LocalList("d", "Default"), LocalList("s", SCORDA_LIST_NAME)),
+            localDefault = "d",
+            scordaId = "scorda",
+            known = emptyList(),
+        )
+        assertEquals(listOf("scorda", "scorda"), plan.map { it.second })
+    }
+
+    @Test
+    fun aListMergesIntoAKnownGoogleListWithItsNameOrGetsANewOne() {
+        val plan = planLocalMove(
+            local = listOf(LocalList("w", "Work"), LocalList("h", "Home")),
+            localDefault = null,
+            scordaId = "scorda",
+            known = listOf(LocalList("gw", "Work")),
+        )
+        assertEquals(listOf("gw", null), plan.map { it.second })
+    }
 }

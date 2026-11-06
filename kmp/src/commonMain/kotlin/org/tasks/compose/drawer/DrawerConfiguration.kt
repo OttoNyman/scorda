@@ -29,6 +29,14 @@ interface DrawerConfiguration {
     val startDateEnabled: Boolean
         get() = true
 
+    /** Local lists block, hidden while syncing unless the local-lists toggle is on. */
+    val localListsEnabled: Boolean
+        get() = true
+
+    /** Google Tasks is syncing, not paused: its block offers a new list. */
+    val googleTasksSyncing: Boolean
+        get() = true
+
     val timerEnabled: Boolean
         get() = true
 

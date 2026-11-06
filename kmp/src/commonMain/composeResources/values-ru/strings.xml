@@ -653,6 +653,12 @@
     <string name="constructor_overdue">О просрочке</string>
     <string name="constructor_notes">Заметка</string>
     <string name="constructor_lists">Списки</string>
+    <string name="constructor_local_lists">Локальные списки</string>
+    <string name="constructor_local_lists_summary">Только на этом телефоне, в Google не уходят</string>
+    <string name="move_lists_title">Перенести списки в Google Tasks?</string>
+    <string name="move_lists_text">Локальных списков: %1$d. Они переедут в Google Tasks вместе с задачами. Метки, напоминания и места останутся на телефоне.</string>
+    <string name="move_lists_move">Перенести</string>
+    <string name="move_lists_keep">Оставить на телефоне</string>
     <string name="constructor_subtasks">Подзадачи</string>
     <string name="constructor_tags">Метки</string>
     <string name="constructor_filters">Фильтры</string>
@@ -663,7 +669,6 @@
     <string name="constructor_calendar">Календарь</string>
     <string name="constructor_timer">Таймер</string>
     <string name="constructor_files">Файлы</string>
-    <string name="constructor_lists_locked">Включено, пока есть синхронизация</string>
     <plurals name="constructor_repeat_count">
         <item quantity="one">%1$d задача перестанет повторяться</item>
         <item quantity="few">%1$d задачи перестанут повторяться</item>

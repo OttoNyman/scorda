@@ -17,16 +17,23 @@ data class Constructor(
     val calendar: Boolean = false,
     val timer: Boolean = false,
     val files: Boolean = false,
+    /** Raw: keep local lists next to synced ones. Effective: the local block is shown. */
+    val localLists: Boolean = false,
 ) {
     fun effective(
-        hasSyncAccount: Boolean,
+        sync: Boolean,
         geofences: Boolean,
         calendarEvents: Boolean,
     ): Constructor = copy(
-        lists = lists || hasSyncAccount,
+        localLists = lists && (!sync || localLists),
         geo = geo && geofences,
         calendar = calendar && calendarEvents,
     )
+
+    /** While syncing, a state without the local block keeps every task in Google. */
+    fun keepsEverythingInGoogle(sync: Boolean): Boolean = sync && !(lists && localLists)
+
+    fun withPreset(preset: Preset): Constructor = preset.flags.copy(localLists = localLists)
 
     fun schedules(alarm: Alarm): Boolean = when (alarm.type) {
         Alarm.TYPE_SNOOZE -> true
@@ -54,6 +61,8 @@ data class ConstructorCounts(
     val calendar: Int = 0,
     val extraReminders: Int = 0,
     val startDate: Int = 0,
+    /** Local lists that would move to Google. */
+    val localLists: Int = 0,
 )
 
 enum class Preset { Simple, Reminders, Tasks, Full }
@@ -91,13 +100,12 @@ val Preset.flags: Constructor
 
 fun matchingPreset(
     raw: Constructor,
-    hasSyncAccount: Boolean,
     geofences: Boolean,
     calendarEvents: Boolean,
 ): Preset? = Preset.entries.firstOrNull { preset ->
-    // An account forces lists on the raw side only: Simple must not look selected while lists are on.
-    preset.flags.effective(hasSyncAccount = false, geofences, calendarEvents) ==
-        raw.effective(hasSyncAccount, geofences, calendarEvents)
+    // Sync and the local-lists toggle never decide which setup is selected.
+    raw.withPreset(preset).effective(sync = false, geofences, calendarEvents) ==
+        raw.effective(sync = false, geofences, calendarEvents)
 }
 
 fun Constructor.allowsSort(mode: Int): Boolean = when (mode) {

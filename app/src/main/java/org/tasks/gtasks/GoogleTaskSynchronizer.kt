@@ -82,6 +82,7 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
             return
         }
         val invoker = invokerFactory.getGtasksInvoker(account.username!!)
+        val moveLocal = preferences.getBoolean(R.string.p_google_tasks_move_local, false)
         synchronizer.sync(
             account,
             invoker,
@@ -106,6 +107,11 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
             },
             clearPreviousListId = {
                 preferences.setString(R.string.p_google_tasks_previous_list_id, null)
+            },
+            moveLocal = moveLocal,
+            localDefaultList = if (moveLocal) defaultFilterProvider.getLocalDefaultListUuid() else null,
+            onMovedLocal = {
+                preferences.setBoolean(R.string.p_google_tasks_move_local, false)
             },
         )
     }

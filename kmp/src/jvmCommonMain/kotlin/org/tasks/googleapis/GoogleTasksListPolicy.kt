@@ -46,3 +46,22 @@ internal fun shouldDeleteLocalList(
 ): Boolean = !localRemoteId.isNullOrBlank() &&
         localRemoteId != protectedId &&
         localRemoteId !in keptRemoteIds
+
+internal data class LocalList(val uuid: String, val name: String?)
+
+/**
+ * Where each local list goes when everything moves to Google: the default one and one named
+ * Scorda into Scorda, one sharing a name with a known Google list into it, the rest into a new
+ * list (null target).
+ */
+internal fun planLocalMove(
+    local: List<LocalList>,
+    localDefault: String?,
+    scordaId: String,
+    known: List<LocalList>,
+): List<Pair<LocalList, String?>> = local.map { list ->
+    list to when {
+        list.uuid == localDefault || list.name == SCORDA_LIST_NAME -> scordaId
+        else -> known.firstOrNull { it.name == list.name }?.uuid
+    }
+}

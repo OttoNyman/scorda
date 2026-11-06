@@ -53,7 +53,7 @@ class FilterProvider(
     private val purchaseState: PurchaseState,
 ) {
     suspend fun listPickerItems(): List<FilterListItem> {
-        val accounts = caldavDao.getAccounts()
+        val accounts = visibleAccounts()
         val singleAccount = accounts.size == 1
         val signIn = signInAccount(accounts)
         val multipleTypes = multipleTypes(accounts, signIn)
@@ -236,7 +236,7 @@ class FilterProvider(
         showSignIn: Boolean = false,
     ): List<FilterListItem> {
         if (!configuration.listsEnabled) return emptyList()
-        val accounts = caldavDao.getAccounts()
+        val accounts = visibleAccounts()
         val signIn = if (showSignIn) signInAccount(accounts) else emptyList()
         val multipleTypes = multipleTypes(accounts, signIn)
         return signIn + accounts.flatMap { account ->
@@ -248,6 +248,9 @@ class FilterProvider(
             )
         }
     }
+
+    private suspend fun visibleAccounts(): List<CaldavAccount> =
+        caldavDao.getAccounts().filter { !it.isLocalList || configuration.localListsEnabled }
 
     private fun signInAccount(accounts: List<CaldavAccount>): List<FilterListItem> =
             if (purchaseState.hasTasksSubscription && accounts.none { it.isTasksOrg }) {
@@ -301,6 +304,7 @@ class FilterProvider(
                 account.id.toString(),
                 if (showCreate
                     && (account.isLocalList || (account.lastSync > 0 && account.error.isNullOrBlank()))
+                    && (!account.isGoogleTasks || configuration.googleTasksSyncing)
                 ) REQUEST_NEW_LIST else 0,
                 accountIcon = account.composeIcon,
                 childCount = children.size,

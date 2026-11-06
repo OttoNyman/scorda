@@ -1,10 +1,10 @@
 package org.tasks.preferences.fragments
 
-import org.tasks.constructor.flags
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.PlatformConfiguration
 import org.tasks.R
 import org.tasks.compose.settings.ConstructorScreen
+import org.tasks.compose.settings.MoveListsDialog
+import org.tasks.constructor.Constructor
 import org.tasks.constructor.ConstructorCounts
 import org.tasks.constructor.ConstructorRepository
 import org.tasks.preferences.BasePreferences
@@ -40,23 +42,45 @@ class ConstructorPreferences : Fragment() {
         val raw by repository.raw.collectAsState()
         val effective by repository.effective.collectAsState()
         var counts by remember { mutableStateOf(ConstructorCounts()) }
-        androidx.compose.runtime.LaunchedEffect(Unit) {
+        var pending by remember { mutableStateOf<Constructor?>(null) }
+        LaunchedEffect(raw) {
             counts = repository.counts(currentTimeMillis())
         }
         TasksSettingsTheme(
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            val change = { next: Constructor ->
+                val sync = repository.sync
+                // Leaving the local block while syncing moves the local lists: ask first.
+                if (counts.localLists > 0 && next.keepsEverythingInGoogle(sync) && !raw.keepsEverythingInGoogle(sync)) {
+                    pending = next
+                } else {
+                    repository.write(next)
+                }
+            }
             ConstructorScreen(
                 raw = raw,
                 effective = effective,
-                hasSyncAccount = repository.hasSyncAccount,
+                sync = repository.sync,
                 geofences = configuration.supportsGeofences,
                 calendarEvents = configuration.supportsCalendarEvents,
                 counts = counts,
-                onPreset = { repository.write(it.flags) },
-                onChange = { repository.write(it) },
+                onPreset = { change(raw.withPreset(it)) },
+                onChange = { change(it) },
             )
+            pending?.let { next ->
+                MoveListsDialog(
+                    lists = counts.localLists,
+                    onMove = {
+                        pending = null
+                        repository.write(next.copy(localLists = false))
+                        repository.moveLocalListsToGoogle()
+                    },
+                    onDismiss = { pending = null },
+                    dismissText = getString(android.R.string.cancel),
+                )
+            }
         }
     }
 

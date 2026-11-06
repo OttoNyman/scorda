@@ -774,6 +774,12 @@
     <string name="constructor_overdue">When overdue</string>
     <string name="constructor_notes">Note</string>
     <string name="constructor_lists">Lists</string>
+    <string name="constructor_local_lists">Local lists</string>
+    <string name="constructor_local_lists_summary">Only on this phone, not sent to Google</string>
+    <string name="move_lists_title">Move lists to Google Tasks?</string>
+    <string name="move_lists_text">Local lists: %1$d. They move to Google Tasks with their tasks. Tags, reminders, and places stay on this phone.</string>
+    <string name="move_lists_move">Move</string>
+    <string name="move_lists_keep">Keep on this phone</string>
     <string name="constructor_subtasks">Subtasks</string>
     <string name="constructor_tags">Tags</string>
     <string name="constructor_filters">Filters</string>
@@ -784,7 +790,6 @@
     <string name="constructor_calendar">Calendar</string>
     <string name="constructor_timer">Timer</string>
     <string name="constructor_files">Files</string>
-    <string name="constructor_lists_locked">On while an account is connected</string>
     <plurals name="constructor_repeat_count">
         <item quantity="one">%1$d task will stop repeating</item>
         <item quantity="other">%1$d tasks will stop repeating</item>

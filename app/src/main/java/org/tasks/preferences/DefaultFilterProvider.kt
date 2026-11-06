@@ -19,6 +19,7 @@ class DefaultFilterProvider @Inject constructor(
     private val preferences: Preferences,
     private val caldavDao: CaldavDao,
     private val codec: FilterPreferenceCodec,
+    private val gate: org.tasks.constructor.FeatureGate,
 ) {
 
     var dashclockFilter: Filter
@@ -37,11 +38,36 @@ class DefaultFilterProvider @Inject constructor(
 
     suspend fun getBadgeFilter() = getFilterFromPreference(R.string.p_badge_list)
 
-    suspend fun getDefaultList(): CaldavFilter =
-            getFilterFromPreference(preferences.getStringValue(R.string.p_default_list), null)
-                ?.let { it as? CaldavFilter }
-                ?.takeIf { it.isWritable }
-                ?: getAnyList()
+    suspend fun getDefaultList(): CaldavFilter {
+        val stored = getStoredDefaultList()
+        // While syncing, a hidden list or a hidden local block means the task goes to Scorda.
+        val features = gate.current
+        if (gate.sync && (!features.lists || (stored?.account?.isLocalList != false && !features.localLists))) {
+            scordaList()?.let { return it }
+        }
+        return stored ?: getAnyList()
+    }
+
+    /** The saved default when it is a local list: the one that moves into Scorda. */
+    suspend fun getLocalDefaultListUuid(): String? =
+        (getStoredDefaultList() ?: getAnyList())
+            .takeIf { it.account.isLocalList }
+            ?.calendar
+            ?.uuid
+
+    private suspend fun getStoredDefaultList(): CaldavFilter? =
+        getFilterFromPreference(preferences.getStringValue(R.string.p_default_list), null)
+            ?.let { it as? CaldavFilter }
+            ?.takeIf { it.isWritable }
+
+    private suspend fun scordaList(): CaldavFilter? {
+        val calendar = preferences.getStringValue(R.string.p_google_tasks_list_id)
+            ?.takeIf { it.isNotBlank() }
+            ?.let { caldavDao.getCalendarByUuid(it) }
+            ?: return null
+        val account = calendar.account?.let { caldavDao.getAccountByUuid(it) } ?: return null
+        return CaldavFilter(calendar = calendar, account = account)
+    }
 
     fun setLastViewedFilter(filter: Filter) = setFilterPreference(filter, R.string.p_last_viewed_list)
 

@@ -516,6 +516,7 @@ class Preferences @JvmOverloads constructor(
         calendar = getBoolean("constructor_calendar", false),
         timer = getBoolean("constructor_timer", false),
         files = getBoolean("constructor_files", false),
+        localLists = getBoolean("constructor_local_lists", false),
     )
 
     fun writeConstructor(value: org.tasks.constructor.Constructor) {
@@ -533,6 +534,7 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_calendar", value.calendar)
         setBoolean("constructor_timer", value.timer)
         setBoolean("constructor_files", value.files)
+        setBoolean("constructor_local_lists", value.localLists)
     }
 
     fun getInt(resourceId: Int, defValue: Int): Int =

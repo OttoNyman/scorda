@@ -66,12 +66,16 @@ class GoogleTaskSynchronizer(
         onAmbiguous: suspend (List<Pair<String, String>>) -> Unit = {},
         onMissing: suspend () -> Unit = {},
         clearPreviousListId: suspend () -> Unit = {},
+        moveLocal: Boolean = false,
+        localDefaultList: String? = null,
+        onMovedLocal: suspend () -> Unit = {},
     ) {
         Logger.d(TAG) { "$account: start sync" }
         try {
             synchronize(
                 account, invoker, savedListId, previousListId, forceCreate,
                 saveListId, onAmbiguous, onMissing, clearPreviousListId,
+                moveLocal, localDefaultList, onMovedLocal,
             )
         } catch (e: GoogleJsonResponseException) {
             account.error = if (e.statusCode == 401) {
@@ -167,10 +171,70 @@ class GoogleTaskSynchronizer(
         val fromList = previousListId?.takeIf { it.isNotBlank() } ?: savedListId
         moveLocalTasksToList(caldavDao, fromList, id)
         clearPreviousListId()
-        val selected = gtaskLists.find { it.id == id }
-            ?: TaskList().setId(id).setTitle(SCORDA_LIST_NAME)
-        gtasksListService.updateLists(account, listOf(selected), id)
         return id
+    }
+
+    /**
+     * Own lists are Scorda and every list this account has a local row for: only the app creates
+     * those rows. One missing on the site is created again with its tasks; foreign lists are ignored.
+     */
+    @Throws(IOException::class)
+    private suspend fun prepareOwnLists(
+        account: CaldavAccount,
+        gtasksInvoker: GtasksInvoker,
+        gtaskLists: List<TaskList>,
+        scordaId: String,
+        moveLocal: Boolean,
+        localDefaultList: String?,
+        onMovedLocal: suspend () -> Unit,
+    ) {
+        val keep = mutableListOf<TaskList>()
+        for (calendar in caldavDao.getCalendarsByAccount(account.uuid!!)) {
+            val uuid = calendar.uuid?.takeIf { it.isNotBlank() } ?: continue
+            val remote = gtaskLists.find { it.id == uuid }
+            keep += when {
+                remote != null -> remote
+                uuid == scordaId -> TaskList().setId(uuid).setTitle(SCORDA_LIST_NAME)
+                // A replaced Scorda: its tasks already moved, updateLists drops the row.
+                calendar.name == SCORDA_LIST_NAME -> continue
+                else -> recreate(account, gtasksInvoker, calendar)
+            }
+        }
+        if (moveLocal) {
+            val known = keep.map { LocalList(it.id, it.title) }
+            val local = caldavDao.getAccounts(CaldavAccount.TYPE_LOCAL)
+                .flatMap { caldavDao.getCalendarsByAccount(it.uuid!!) }
+            val plan = planLocalMove(
+                local = local.mapNotNull { c -> c.uuid?.let { LocalList(it, c.name) } },
+                localDefault = localDefaultList,
+                scordaId = scordaId,
+                known = known,
+            )
+            for ((list, target) in plan) {
+                val targetId = target ?: gtasksInvoker.createGtaskList(list.name.orEmpty()).let {
+                    caldavDao.insert(CaldavCalendar(account = account.uuid, uuid = it.id, name = it.title))
+                    keep += TaskList().setId(it.id).setTitle(it.title)
+                    it.id
+                }
+                moveLocalTasksToList(caldavDao, list.uuid, targetId)
+                local.firstOrNull { it.uuid == list.uuid }?.let { taskDeleter.delete(it) }
+            }
+            onMovedLocal()
+        }
+        gtasksListService.updateLists(account, keep, scordaId)
+    }
+
+    @Throws(IOException::class)
+    private suspend fun recreate(
+        account: CaldavAccount,
+        gtasksInvoker: GtasksInvoker,
+        calendar: CaldavCalendar,
+    ): TaskList {
+        val created = gtasksInvoker.createGtaskList(calendar.name.orEmpty())
+        caldavDao.insert(CaldavCalendar(account = account.uuid, uuid = created.id, name = created.title))
+        moveLocalTasksToList(caldavDao, calendar.uuid, created.id)
+        taskDeleter.delete(calendar)
+        return TaskList().setId(created.id).setTitle(created.title)
     }
 
     private suspend fun synchronize(
@@ -183,6 +247,9 @@ class GoogleTaskSynchronizer(
         onAmbiguous: suspend (List<Pair<String, String>>) -> Unit,
         onMissing: suspend () -> Unit,
         clearPreviousListId: suspend () -> Unit,
+        moveLocal: Boolean,
+        localDefaultList: String?,
+        onMovedLocal: suspend () -> Unit,
     ) {
         val gtaskLists: MutableList<TaskList> = ArrayList()
         var nextPageToken: String? = null
@@ -199,6 +266,9 @@ class GoogleTaskSynchronizer(
             account, gtasksInvoker, gtaskLists, savedListId, previousListId, forceCreate,
             saveListId, onAmbiguous, onMissing, clearPreviousListId,
         ) ?: return
+        prepareOwnLists(
+            account, gtasksInvoker, gtaskLists, scordaId, moveLocal, localDefaultList, onMovedLocal,
+        )
         val defaultRemoteList = defaultListProvider.getDefaultList()
         if (defaultRemoteList.isGoogleTasks) {
             val list = caldavDao.getCalendarByUuid(defaultRemoteList.uuid)
@@ -207,7 +277,6 @@ class GoogleTaskSynchronizer(
             }
         }
         val calendars = caldavDao.getCalendarsByAccount(account.uuid!!)
-            .filter { it.uuid == scordaId }
             .onEach {
                 if (it.uuid.isNullOrEmpty()) {
                     reporting.reportException(RuntimeException("Empty remote id"))
