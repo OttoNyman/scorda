@@ -12,8 +12,6 @@ interface BackgroundWork {
 
     suspend fun sync(source: SyncSource)
 
-    suspend fun scheduleBlogFeedCheck()
-
     fun updateBackgroundSync() {}
 
     fun migrateLocalTasks(localAccount: CaldavAccount, tasksAccount: CaldavAccount) {}

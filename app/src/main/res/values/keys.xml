@@ -22,9 +22,7 @@
   <string name="url_caldav">https://github.com/OttoNyman/scorda</string>
   <string name="url_etesync">https://github.com/OttoNyman/scorda</string>
   <string name="url_tasker">https://github.com/OttoNyman/scorda</string>
-  <string name="url_donate">https://github.com/OttoNyman/scorda</string>
   <string name="url_filters">https://github.com/OttoNyman/scorda</string>
-  <string name="url_backups">https://github.com/OttoNyman/scorda</string>
   <string name="url_notifications">https://github.com/OttoNyman/scorda</string>
   <string name="url_troubleshoot_intents">https://github.com/OttoNyman/scorda</string>
   <string name="url_google_tasks">https://github.com/OttoNyman/scorda</string>
@@ -48,18 +46,11 @@
   <string name="p_google_tasks_ambiguous">p_google_tasks_ambiguous</string>
   <string name="p_google_tasks_list_problem">p_google_tasks_list_problem</string>
   <string name="p_google_tasks_move_local">p_google_tasks_move_local</string>
+  <string name="p_google_tasks_move_target">p_google_tasks_move_target</string>
+  <string name="p_date_format">p_date_format</string>
   <string name="p_google_access_expired">p_google_access_expired</string>
   <string name="p_google_drive_backup_account">p_google_drive_backup_account</string>
   <string name="p_google_drive_backup_folder">p_google_drive_backup_folder</string>
-  <!-- boolean : whether to enable quiet hours or not -->
-  <string name="p_rmd_enable_quiet">enable_qhours</string>
-
-  <!-- hour to start quiet hours (inclusive) -->
-  <string name="p_rmd_quietStart">notif_qstart_new</string>
-
-  <!-- hour to end quiet hours (non-inclusive) -->
-  <string name="p_rmd_quietEnd">notif_qend_new</string>
-
   <!-- reminder time when task doesn't have a due time (hour of day) -->
   <string name="p_rmd_time_enabled">reminder_time_new_enabled</string>
   <string name="p_rmd_time">reminder_time_new</string>
@@ -311,7 +302,6 @@
   <string name="p_auto_dismiss_datetime_widget">auto_dismiss_datetime_widget</string>
   <string name="p_just_updated">just_updated</string>
   <string name="p_last_review_request">last_review_request</string>
-  <string name="p_last_subscribe_request">last_subscribe_request</string>
   <string name="p_backups_enabled">backups_enabled</string>
   <string name="p_backups_ignore_warnings">backups_ignore_warnings</string>
   <string name="p_backups_android_backup_enabled">backups_android_backup_enabled</string>

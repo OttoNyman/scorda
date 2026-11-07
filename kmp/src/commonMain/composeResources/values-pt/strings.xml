@@ -92,7 +92,6 @@
     <string name="display_name">Mostrar nome</string>
     <string name="price_per_month_with_currency">%1$s/mês</string>
     <string name="price_per_year_with_currency">%1$s/ano</string>
-    <string name="donate_nag">Considere mostrar seu apoio com uma doação!</string>
     <string name="manage_subscription">Alterar subscrição</string>
     <string name="button_unsubscribe">Cancelar subscrição</string>
     <string name="local_lists">Listas locais</string>
@@ -156,14 +155,10 @@
     <string name="etesync_account_description">Precisa de uma conta no EteSync.com ou de um servidor auto-alojado</string>
     <string name="show_advanced_settings">Mostrar configurações avançadas</string>
     <string name="app_settings">Configurações da aplicação</string>
-    <string name="whats_new">Novidades</string>
-    <string name="version_string">Versão %1$s</string>
     <string name="rate_tasks">Avaliar o Tasks</string>
     <string name="documentation">Documentação</string>
-    <string name="issue_tracker">Reportar problemas</string>
     <string name="contact_developer">Contactar o programador</string>
     <string name="send_application_logs">Enviar logs da aplicação</string>
-    <string name="follow_reddit">Entrar em r/tasks</string>
     <string name="source_code">Código-fonte</string>
     <string name="third_party_licenses">Licenças de terceiros</string>
     <string name="privacy_policy">Política de privacidade</string>
@@ -171,12 +166,10 @@
     <string name="send_anonymous_statistics_summary">Envie estatísticas de uso anónimo e relatórios de falhas para ajudar a melhorar o Tasks. Não serão recolhidos dados pessoais.</string>
     <string name="license_summary">O Tasks é um programa livre e de código-aberto disponibilizado sob a GNU General Public License v3.0</string>
     <string name="support">Suporte</string>
-    <string name="social">Social</string>
     <string name="open_source">Código-fonte aberto</string>
     <string name="restart_required">Reinicie o Tasks para que esta alteração tenha efeito</string>
     <string name="restart_now">Reiniciar agora</string>
     <string name="restart_later">Mais tarde</string>
-    <string name="blog_feed_none">Nenhum</string>
     <string name="cannot_access_account">Não é possível aceder à conta</string>
     <string name="new_list">Criar nova lista</string>
     <string name="list_members">Lista de membros</string>
@@ -229,7 +222,6 @@
     <string name="supporter_summary">%1$s • Obrigado!</string>
     <string name="sign_in_to_connect">Faça login para conectar a sua conta Scorda</string>
     <string name="guest">Convidado</string>
-    <string name="donate">Doar</string>
     <string name="migrate_to_cloud">Migrar para Scorda Cloud</string>
     <string name="this_device_only">Apenas este dispositivo</string>
     <string name="email_to_task_calendar">Lista de destino</string>
@@ -277,9 +269,6 @@
     <string name="already_subscribed">Já tem inscrição?</string>
     <string name="sign_in_subtitle">Já tem inscrição ou é um convidado?</string>
     <string name="upgrade_subscription_banner">Obrigado pelo apoio! Atualize a sua inscrição para ativar sincronização em nuvem Scorda</string>
-    <string name="blog_notifications">Notificações do blog</string>
-    <string name="blog_feed_announcements">Apenas anúncios</string>
-    <string name="blog_feed_all">Todos posts</string>
     <string name="terms_of_service">Termos de serviço</string>
     <string name="legal">Legal</string>
     <string name="share_list">Partilhar %1$s</string>
@@ -302,13 +291,6 @@
     <string name="due_time">Hora da tarefa</string>
     <string name="day_before_due">Um dia antes</string>
     <string name="week_before_due">Semana anterior</string>
-    <string name="next_sunday">Próximo domingo</string>
-    <string name="next_monday">Próxima 2ª-feira</string>
-    <string name="next_tuesday">Próxima 3ª-feira</string>
-    <string name="next_wednesday">Próxima 4ª-feira</string>
-    <string name="next_thursday">Próxima 5ª-feira</string>
-    <string name="next_friday">Próxima 6ª-feira</string>
-    <string name="next_saturday">Próximo sábado</string>
     <string name="shortcut_pick_time">Escolher hora</string>
     <string name="no_time">Sem hora</string>
     <string name="TEA_note_label">Descrição</string>
@@ -458,7 +440,6 @@
     <string name="delete_task">Eliminar tarefa</string>
     <string name="menu_discard_changes">Descartar alterações</string>
     <string name="more_options">Mais opções</string>
-    <string name="quiet_hours_in_effect">O horário de silêncio está em vigor</string>
     <string name="troubleshooting">Soluções de problemas</string>
     <string name="notification_troubleshooting_summary">Toque aqui se está a ter problemas com notificações</string>
     <string name="disable_battery_optimizations">Desativar otimizações da bateria</string>
@@ -483,10 +464,6 @@
     <string name="enabled">Ativo</string>
     <string name="swipe_to_snooze_description">Tempo de adiamento</string>
     <string name="swipe_to_snooze_time_description">Uma notificação desmarcada será adiada e recriada em %1$s</string>
-    <string name="quiet_hours">Horas de silêncio</string>
-    <string name="quiet_hours_summary">Sem lembretes nas horas de silêncio</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Início da hora de silêncio</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Fim das horas de silêncio</string>
     <string name="swipe_to_snooze_time_immediately">Imediatamente</string>
     <string name="swipe_to_snooze_time_15_minutes">após 15 minutos</string>
     <string name="swipe_to_snooze_time_30_minutes">após 30 minutos</string>
@@ -549,7 +526,6 @@
     <string name="settings_localization">Tradução</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dinâmico</string>
-    <string name="translations">Contribuir nas traduções</string>
     <string name="widget_open_list">Abrir lista</string>
     <string name="theme_light">Claro</string>
     <string name="theme_black">Preto</string>

@@ -35,11 +35,8 @@ class BackupWork @AssistedInject constructor(
 
     override suspend fun scheduleNext() = workManager.scheduleBackup()
 
+    // Always on: it feeds the Android backup service and Drive, and has no switch any more.
     private suspend fun startBackup(context: Context?) {
-        if (!preferences.getBoolean(R.string.p_backups_enabled, true)) {
-            Timber.d("Automatic backups disabled")
-            return
-        }
         try {
             deleteOldLocalBackups()
         } catch (e: Exception) {

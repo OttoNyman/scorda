@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,10 +35,15 @@ import tasks.kmp.generated.resources.constructor_full
 import tasks.kmp.generated.resources.constructor_geo
 import tasks.kmp.generated.resources.constructor_geo_count
 import tasks.kmp.generated.resources.constructor_group_content
-import tasks.kmp.generated.resources.constructor_group_links
 import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
+import tasks.kmp.generated.resources.constructor_comments
 import tasks.kmp.generated.resources.constructor_lists
+import tasks.kmp.generated.resources.constructor_markdown
+import tasks.kmp.generated.resources.constructor_markdown_summary
+import tasks.kmp.generated.resources.move_target_same
+import tasks.kmp.generated.resources.move_target_same_summary
+import tasks.kmp.generated.resources.move_target_title
 import tasks.kmp.generated.resources.constructor_local_lists
 import tasks.kmp.generated.resources.constructor_local_lists_summary
 import tasks.kmp.generated.resources.move_lists_keep
@@ -67,8 +73,12 @@ fun ConstructorScreen(
     geofences: Boolean,
     calendarEvents: Boolean,
     counts: ConstructorCounts,
+    markdown: Boolean,
+    comments: Boolean,
     onPreset: (Preset) -> Unit,
     onChange: (Constructor) -> Unit,
+    onMarkdown: (Boolean) -> Unit,
+    onComments: (Boolean) -> Unit,
 ) {
     val selected = matchingPreset(raw, geofences, calendarEvents)
     Column(
@@ -80,10 +90,47 @@ fun ConstructorScreen(
         verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
-        PresetRow(Preset.Simple, selected, onPreset)
-        PresetRow(Preset.Reminders, selected, onPreset)
-        PresetRow(Preset.Tasks, selected, onPreset)
-        PresetRow(Preset.Full, selected, onPreset)
+        Preset.entries.forEachIndexed { index, preset ->
+            PresetRow(preset, selected, CardPosition.forIndex(index, Preset.entries.size), onPreset)
+        }
+        // What a task can carry: everything below lives inside one task.
+        Group(Res.string.constructor_group_content)
+        Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
+        if (effective.notes) {
+            Toggle(
+                title = Res.string.constructor_markdown,
+                checked = markdown,
+                summary = stringResource(Res.string.constructor_markdown_summary),
+                summaryWhenOff = true,
+                nested = true,
+                onChange = onMarkdown,
+            )
+            Toggle(
+                title = Res.string.constructor_comments,
+                checked = comments,
+                nested = true,
+                onChange = onComments,
+            )
+        }
+        Toggle(Res.string.constructor_subtasks, effective.subtasks) { onChange(raw.copy(subtasks = it)) }
+        Toggle(Res.string.constructor_priority, effective.priority) { onChange(raw.copy(priority = it)) }
+        Toggle(Res.string.constructor_tags, effective.tags) { onChange(raw.copy(tags = it)) }
+        Toggle(Res.string.constructor_files, effective.files) { onChange(raw.copy(files = it)) }
+        Toggle(Res.string.constructor_timer, effective.timer) { onChange(raw.copy(timer = it)) }
+        if (geofences) {
+            Toggle(
+                title = Res.string.constructor_geo,
+                checked = effective.geo,
+                summary = count(counts.geo, Res.plurals.constructor_geo_count),
+            ) { onChange(raw.copy(geo = it)) }
+        }
+        if (calendarEvents) {
+            Toggle(
+                title = Res.string.constructor_calendar,
+                checked = effective.calendar,
+                summary = count(counts.calendar, Res.plurals.constructor_calendar_count),
+            ) { onChange(raw.copy(calendar = it)) }
+        }
         Group(Res.string.constructor_group_time)
         Toggle(
             title = Res.string.constructor_repeat,
@@ -105,6 +152,7 @@ fun ConstructorScreen(
             checked = effective.startDate,
             summary = count(counts.startDate, Res.plurals.constructor_start_count),
         ) { onChange(raw.copy(startDate = it)) }
+        // How tasks are organised. Later: notes, Eisenhower matrix — each as its own group.
         Group(Res.string.constructor_group_order)
         Toggle(Res.string.constructor_lists, effective.lists) { onChange(raw.copy(lists = it)) }
         if (sync && raw.lists) {
@@ -113,31 +161,10 @@ fun ConstructorScreen(
                 checked = raw.localLists,
                 summary = stringResource(Res.string.constructor_local_lists_summary),
                 summaryWhenOff = true,
+                nested = true,
             ) { onChange(raw.copy(localLists = it)) }
         }
-        Toggle(Res.string.constructor_tags, effective.tags) { onChange(raw.copy(tags = it)) }
         Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
-        Toggle(Res.string.constructor_subtasks, effective.subtasks) { onChange(raw.copy(subtasks = it)) }
-        Toggle(Res.string.constructor_priority, effective.priority) { onChange(raw.copy(priority = it)) }
-        Group(Res.string.constructor_group_content)
-        Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
-        Toggle(Res.string.constructor_files, effective.files) { onChange(raw.copy(files = it)) }
-        Group(Res.string.constructor_group_links)
-        if (geofences) {
-            Toggle(
-                title = Res.string.constructor_geo,
-                checked = effective.geo,
-                summary = count(counts.geo, Res.plurals.constructor_geo_count),
-            ) { onChange(raw.copy(geo = it)) }
-        }
-        if (calendarEvents) {
-            Toggle(
-                title = Res.string.constructor_calendar,
-                checked = effective.calendar,
-                summary = count(counts.calendar, Res.plurals.constructor_calendar_count),
-            ) { onChange(raw.copy(calendar = it)) }
-        }
-        Toggle(Res.string.constructor_timer, effective.timer) { onChange(raw.copy(timer = it)) }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }
 }
@@ -146,13 +173,14 @@ fun ConstructorScreen(
 private fun PresetRow(
     preset: Preset,
     selected: Preset?,
+    position: CardPosition,
     onPreset: (Preset) -> Unit,
 ) {
-    SettingsItemCard {
-        SwitchPreferenceRow(
+    SettingsItemCard(position = position) {
+        PreferenceRow(
             title = stringResource(preset.label),
-            checked = selected == preset,
-            onCheckedChange = { if (it) onPreset(preset) },
+            onClick = { onPreset(preset) },
+            trailing = { RadioButton(selected = selected == preset, onClick = null) },
         )
     }
 }
@@ -177,9 +205,10 @@ private fun Toggle(
     enabled: Boolean = true,
     summary: String? = null,
     summaryWhenOff: Boolean = false,
+    nested: Boolean = false,
     onChange: (Boolean) -> Unit,
 ) {
-    SettingsItemCard {
+    SettingsItemCard(modifier = if (nested) Modifier.padding(start = SettingsContentPadding) else Modifier) {
         SwitchPreferenceRow(
             title = stringResource(title),
             checked = checked,
@@ -193,6 +222,41 @@ private fun Toggle(
 @Composable
 private fun count(value: Int, resource: org.jetbrains.compose.resources.PluralStringResource): String? =
     if (value > 0) pluralStringResource(resource, value, value) else null
+
+/**
+ * Asks where local lists go when the local block is turned off while syncing.
+ * [targets] are Google lists as uuid to name; picking null keeps each list under its own name.
+ */
+@Composable
+fun MoveTargetDialog(
+    lists: Int,
+    targets: List<Pair<String, String>>,
+    onPick: (String?) -> Unit,
+    onDismiss: () -> Unit,
+    dismissText: String,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(Res.string.move_target_title)) },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Text(stringResource(Res.string.move_lists_text, lists))
+                Spacer(modifier = Modifier.height(SettingsContentPadding))
+                targets.forEach { (uuid, name) ->
+                    PreferenceRow(title = name, onClick = { onPick(uuid) })
+                }
+                PreferenceRow(
+                    title = stringResource(Res.string.move_target_same),
+                    summary = stringResource(Res.string.move_target_same_summary),
+                    onClick = { onPick(null) },
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(dismissText) }
+        },
+    )
+}
 
 /** Warns that local lists move to Google. [onKeep] adds a "keep on this phone" choice. */
 @Composable

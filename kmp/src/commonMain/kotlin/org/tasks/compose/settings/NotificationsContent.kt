@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberTimePickerState
@@ -45,7 +44,6 @@ fun NotificationsContent(
     val settings = viewModel.settings
     NotificationsScreen(
         is24HourFormat = is24HourFormat,
-        isCurrentlyQuietHours = viewModel.isCurrentlyQuietHours,
         showTroubleshooting = viewModel.showTroubleshooting,
         showBatteryOptimization = viewModel.showBatteryOptimization,
         showNotificationsEnabled = viewModel.showNotificationsEnabled,
@@ -66,9 +64,6 @@ fun NotificationsContent(
         swipeToSnoozeMinutes = settings.swipeToSnoozeMinutes,
         defaultRemindersEnabled = settings.defaultRemindersEnabled,
         defaultReminderTime = settings.defaultReminderTime,
-        quietHoursEnabled = settings.quietHoursEnabled,
-        quietHoursStart = settings.quietHoursStart,
-        quietHoursEnd = settings.quietHoursEnd,
         onTroubleshooting = { openUri(TasksUrls.NOTIFICATIONS) },
         onBatteryOptimization = { onBatteryOptimization?.invoke() },
         onNotificationsEnabled = { viewModel.updateNotificationsEnabled(it) },
@@ -83,9 +78,6 @@ fun NotificationsContent(
         onSnoozeTime = { viewModel.openSnoozeDialog() },
         onDefaultReminders = { viewModel.updateDefaultReminders(it) },
         onReminderTime = { viewModel.openTimePicker(TimePickerTarget.DEFAULT_REMINDER) },
-        onQuietHours = { viewModel.updateQuietHours(it) },
-        onQuietStart = { viewModel.openTimePicker(TimePickerTarget.QUIET_HOURS_START) },
-        onQuietEnd = { viewModel.openTimePicker(TimePickerTarget.QUIET_HOURS_END) },
         showHealth = viewModel.showTroubleshooting,
         healthChecks = viewModel.healthChecks,
         modeLine = viewModel.modeLine,
@@ -144,12 +136,6 @@ fun NotificationsContent(
                     initialMinute = (initial / 60_000) % 60,
                     is24Hour = is24HourFormat,
                 ),
-                initialDisplayMode = if (viewModel.timePickerInputMode) {
-                    DisplayMode.Input
-                } else {
-                    DisplayMode.Picker
-                },
-                setDisplayMode = { viewModel.updateTimePickerInputMode(it == DisplayMode.Input) },
                 selected = { viewModel.setTime(target, it) },
                 dismiss = { viewModel.dismissTimePicker() },
             )

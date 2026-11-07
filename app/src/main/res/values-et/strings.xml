@@ -211,9 +211,6 @@
     <string name="auto_dismiss_datetime_widget">Vidin</string>
     <string name="add_tags">Lisa sildid</string>
     <string name="filter_low_priority">Madal prioriteet</string>
-    <string name="enjoying_tasks">Kas Tasks meeldib?</string>
-    <string name="donate_today">Anneta täna</string>
-    <string name="donate_maybe_later">Võibolla hiljem</string>
     <string name="automatic_backups">Automaatvarundus</string>
     <string name="backups_ignore_warnings">Eira hoiatusi</string>
     <string name="github_sponsor">Sponsor</string>
@@ -261,7 +258,6 @@
     <string name="cancel">Tühista</string>
     <string name="now">Kohe</string>
     <string name="sort_created_group">Loodud %s</string>
-    <string name="always_display_full_date">Näita pikka kuupäeva</string>
     <string name="no_start_date">Alguskuupäev puudub</string>
     <string name="SSD_sort_start">Alguskuupäeva alusel</string>
     <string name="tasks_org_account_required">Vajalik on Scorda-i konto</string>
@@ -342,8 +338,6 @@
     <string name="sync_warning_microsoft_title">Teave Microsoft To Do sünkroniseerimise kohta</string>
     <string name="sync_warning_microsoft">Ülesannete kõikide üksikasjade sünkroniseerimine ei toimi Microsoft To Do liidestusega.</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="astrid_sort_order">Astridi käsitsi järjestamine</string>
-    <string name="astrid_sort_order_summary">Kasuta Astridi käsitsi järjestamist „Minu ülesanded“, „Täna“ ja siltide puhul. Tulevases rakenduse uuenduses see järjestuse viis asendub vaatega „Minu järjestus“</string>
     <string name="dont_add_to_calendar">Ära lisa kalendrisse</string>
     <string name="sync_warning_google_tasks_title">Teave Google Tasksi sünkroniseerimise kohta</string>
     <string name="sync_warning_google_tasks">Ülesannete kõikide üksikasjade sünkroniseerimine ei toimi Google Tasksi liidestusega</string>
@@ -368,7 +362,6 @@
     <string name="github_sponsors">Sponsorid GitHubis</string>
     <string name="your_subscription_expired">Sinu tellimus on aegunud. Teenuse jätkamiseks uuenda tellimust.</string>
     <string name="filter_eisenhower_box_4">Mittetähtis ja mittekiire</string>
-    <string name="donate_nag">Rahalise toetusega saad edendada meie arendust!</string>
     <string name="auto_dismiss_datetime_widget_summary">Vidinast valimisel sulge automaatselt</string>
     <string name="auto_dismiss_datetime_summary">Peale kuupäeva ja/või aja valimist, sulge kuupäevavalija automaatselt</string>
     <string name="permission_read_tasks">Täismahuline ligipääs Tasksi andmekogule</string>
@@ -387,7 +380,6 @@
     <string name="filter_any_due_date">Igal tähtajal</string>
     <string name="chip_appearance">Infosiltide välimus</string>
     <string name="filter_eisenhower_box_3">Mittetähtis ja kiire</string>
-    <string name="support_development_subscribe">Sellega muutuvad kasutatavaks mõned lisafunktsionaalsused ja sa toetad avatud lähtekoodil põhinevat tarvaraarendust</string>
     <string name="filter_eisenhower_box_1">Tähtis ja kiire</string>
     <string name="no_google_play_subscription">Ühtegi sobivat Google Play tellimust ei leidunud</string>
     <string name="price_per_month_with_currency">%s kuus</string>
@@ -427,7 +419,6 @@
     <string name="upgrade_desktop_app_description">Varajane ligipääs töölauarakendusele</string>
     <string name="upgrade_friends_and_family">Sõbrad ja pere</string>
     <string name="upgrade_friends_and_family_description">5 tasuta külalist jagatud loendites. Töötab ka „Apple Reminders“ rakendusega</string>
-    <string name="read_more">Loe lisaks</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="legal_disclosure_prefix_using">Scorda-i kasutamisel</string>
     <string name="sort_options">Järjestuse valikud</string>

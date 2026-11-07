@@ -4,7 +4,6 @@
     <string name="url_sponsor" translatable="false">https://github.com/sponsors/abaker</string>
     <string name="url_app_passwords" translatable="false">https://github.com/OttoNyman/scorda</string>
     <string name="url_donate" translatable="false">https://github.com/OttoNyman/scorda</string>
-    <string name="url_translations" translatable="false">https://github.com/OttoNyman/scorda</string>
     <string name="caldav" translatable="false">CalDAV</string>
     <string name="davx5" translatable="false">DAVx⁵</string>
     <string name="ksync" translatable="false">kSync</string>

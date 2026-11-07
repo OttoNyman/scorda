@@ -13,6 +13,11 @@ import org.tasks.kmp.formatTime
 import org.tasks.preferences.Preferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.withMillisOfDay
+import org.tasks.kmp.org.tasks.time.DateFormats
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +26,23 @@ class DateAndTimeViewModel @Inject constructor(
     private val preferences: Preferences,
 ) : ViewModel() {
 
-    var fullDateEnabled by mutableStateOf(false)
+    var dateFormat by mutableStateOf(DateFormats.AUTO)
         private set
+
+    /** Every offered format with how today looks in it. */
+    val dateFormatOptions: List<Pair<String, String>>
+        get() {
+            val today = LocalDate.now()
+            val locale = Locale.getDefault()
+            val system = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale).format(today)
+            return listOf(
+                DateFormats.AUTO to context.getString(R.string.date_format_auto),
+                DateFormats.SYSTEM to context.getString(R.string.date_format_system, system),
+            ) + DateFormats.patterns.map { it to DateTimeFormatter.ofPattern(it, locale).format(today) }
+        }
+
+    val dateFormatLabel: String
+        get() = dateFormatOptions.firstOrNull { it.first == dateFormat }?.second.orEmpty()
     var morningSummary by mutableStateOf("")
         private set
     var afternoonSummary by mutableStateOf("")
@@ -45,7 +65,7 @@ class DateAndTimeViewModel @Inject constructor(
     }
 
     fun refreshState() {
-        fullDateEnabled = preferences.getBoolean(R.string.p_always_display_full_date, false)
+        dateFormat = preferences.dateFormat
         refreshMorning()
         refreshAfternoon()
         refreshEvening()
@@ -61,9 +81,9 @@ class DateAndTimeViewModel @Inject constructor(
         )
     }
 
-    fun updateFullDate(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_always_display_full_date, enabled)
-        fullDateEnabled = enabled
+    fun updateDateFormat(value: String) {
+        preferences.dateFormat = value
+        dateFormat = value
     }
 
     fun updateAutoDismissList(enabled: Boolean) {

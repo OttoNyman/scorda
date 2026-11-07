@@ -5,8 +5,6 @@ object TasksUrls {
     const val CHANGELOG = SOURCE_CODE
     const val DOCUMENTATION = SOURCE_CODE
     const val NOTIFICATIONS = SOURCE_CODE
-    const val ISSUE_TRACKER = "https://github.com/tasks/tasks/issues"
-    const val REDDIT = "https://reddit.com/r/tasks"
     const val PEBBLE_LISTING = "https://apps.repebble.com/13e39c547aee442eb19a4755"
     const val CONTENT_PROVIDER =
         "https://github.com/tasks/tasks/blob/main/CONTENT_PROVIDER.md"
@@ -23,7 +21,7 @@ object TasksUrls {
     const val TOS = SOURCE_CODE
     const val PRIVACY_POLICY = SOURCE_CODE
     const val LICENSE = "https://github.com/OttoNyman/scorda/blob/main/LICENSE"
-    const val SUPPORT_EMAIL = ""
+    const val SUPPORT_EMAIL = "7716116@gmail.com"
     const val GOOGLE_PLAY_LISTING = SOURCE_CODE
     const val GOOGLE_PLAY_SUBSCRIPTIONS = SOURCE_CODE
 }

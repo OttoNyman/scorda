@@ -302,14 +302,10 @@
     <string name="sort_created_group">Opprettet %s</string>
     <string name="reset_sort_order">Tilbakestill sorteringsrekkefølge</string>
     <string name="lists">Lister</string>
-    <string name="enjoying_tasks">Liker du Tasks\?</string>
     <string name="whats_new">Hva er nytt</string>
     <string name="CFC_list_name">På listen…</string>
     <string name="action_new_task">Nytt gjøremål</string>
     <string name="permission_read_tasks">Full tilgang til Tasks-database</string>
-    <string name="support_development_subscribe">Lås opp ytterligere funksjoner og støtt fri programvare</string>
-    <string name="astrid_sort_order_summary">Skru på Astrids manuelle sorteringsmodus for \"Mine gjøremål\", \"I dag\", og tagger. Denne sorteringsmodusen erstattes av \"Min rekkefølge\" i en fremtidig oppdatering</string>
-    <string name="astrid_sort_order">Astrids manuelle sorteringsmodus</string>
     <string name="davx5_selection_description">Synkroniser dine gjøremål med DAVx⁵-programmet</string>
     <string name="account">Konto</string>
     <string name="device_settings">Enhetsinnstillinger</string>
@@ -328,7 +324,6 @@
     <string name="custom_filter_is_subtask">Er et gjøremålssteg</string>
     <string name="custom_filter_has_subtask">Har gjøremålssteg</string>
     <string name="multi_select_reschedule">Planlegge</string>
-    <string name="always_display_full_date">Vis full dato</string>
     <string name="cancel">Avbryt</string>
     <string name="ok">OK</string>
     <string name="current_subscription">Nåværende abonnement: %s</string>
@@ -378,9 +373,6 @@
     <string name="hint_customize_edit_title">For mye informasjon?</string>
     <string name="hint_customize_edit_body">Du kan tilpasse skjermen ved å endre rekkefølgen på eller fjerne felter</string>
     <string name="dismiss">Avvis</string>
-    <string name="donate_nag">Vurder å vis din støtte med en donasjon!</string>
-    <string name="donate_today">Donér i dag</string>
-    <string name="donate_maybe_later">Kanskje senere</string>
     <string name="customize_drawer">Tilpass meny</string>
     <string name="show_edit_screen_without_unlock">Vis redigeringsskjerm uten opplåsning</string>
     <string name="show_edit_screen_without_unlock_summary">Aktiverer bruken av knapp i hurtiginnstillinger uten å låse opp enheten</string>

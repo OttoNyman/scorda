@@ -117,8 +117,6 @@
     <string name="supporter_summary">%1$s •さん、ありがとうございます！</string>
     <string name="sign_in_to_connect">サインインしてScordaアカウントに接続する</string>
     <string name="guest">ゲスト</string>
-    <string name="donate">寄付</string>
-    <string name="donate_nag">寄付による支援をご検討ください！</string>
     <string name="manage_subscription">サブスクリプションの変更</string>
     <string name="button_unsubscribe">サブスクリプションのキャンセル</string>
     <string name="local_lists">ローカルリスト</string>
@@ -207,18 +205,10 @@
     <string name="sign_in_subtitle">すでに購読しているか、招待されたゲストですか？</string>
     <string name="show_advanced_settings">詳細な設定を表示</string>
     <string name="app_settings">アプリ設定</string>
-    <string name="whats_new">更新情報</string>
-    <string name="version_string">バージョン %1$s</string>
-    <string name="blog_notifications">ブログ通知</string>
-    <string name="blog_feed_none">なし</string>
-    <string name="blog_feed_announcements">お知らせのみ</string>
-    <string name="blog_feed_all">すべての投稿</string>
     <string name="rate_tasks">Tasks を評価</string>
     <string name="documentation">ドキュメント</string>
-    <string name="issue_tracker">Issue tracker / 問題追跡</string>
     <string name="contact_developer">開発者に連絡</string>
     <string name="send_application_logs">アプリケーションのログを送信</string>
-    <string name="follow_reddit">参加: r/tasks</string>
     <string name="source_code">ソースコード</string>
     <string name="third_party_licenses">サードパーティライセンス</string>
     <string name="terms_of_service">サービス規約</string>
@@ -227,7 +217,6 @@
     <string name="send_anonymous_statistics_summary">Tasks を改善するために、匿名で使用状況データとクラッシュレポートを送信します。個人情報は収集されません。</string>
     <string name="license_summary">Tasksは、GNU General Public Licenseバージョン3.0でライセンスされた自由かつオープンソースのソフトウェアです</string>
     <string name="support">サポート</string>
-    <string name="social">ソーシャルサービス</string>
     <string name="open_source">オープンソース</string>
     <string name="legal">法的事項</string>
     <string name="restart_required">変更を反映するために Tasks を再起動します</string>
@@ -301,13 +290,6 @@
     <string name="due_time">締切時刻</string>
     <string name="day_before_due">締切の前日</string>
     <string name="week_before_due">締切の 1 週間前</string>
-    <string name="next_sunday">次の日曜日</string>
-    <string name="next_monday">次の月曜日</string>
-    <string name="next_tuesday">次の火曜日</string>
-    <string name="next_wednesday">次の水曜日</string>
-    <string name="next_thursday">次の木曜日</string>
-    <string name="next_friday">次の金曜日</string>
-    <string name="next_saturday">次の土曜日</string>
     <string name="shortcut_pick_time">時間を選択</string>
     <string name="no_time">時間なし</string>
     <string name="TEA_note_label">説明</string>
@@ -457,7 +439,6 @@
     <string name="delete_task">タスクを削除</string>
     <string name="menu_discard_changes">変更を破棄</string>
     <string name="more_options">その他のオプション</string>
-    <string name="quiet_hours_in_effect">お休みモードが有効です</string>
     <string name="troubleshooting">トラブルシューティング</string>
     <string name="notification_troubleshooting_summary">通知に問題がある場合はこちらをタップ</string>
     <string name="disable_battery_optimizations">バッテリー最適化を無効にする</string>
@@ -482,10 +463,6 @@
     <string name="enabled">有効</string>
     <string name="swipe_to_snooze_description">スヌーズ間隔</string>
     <string name="swipe_to_snooze_time_description">クリアされた通知は%1$sにスヌーズ及び再通知されます</string>
-    <string name="quiet_hours">おやすみモード</string>
-    <string name="quiet_hours_summary">おやすみモードの間はリマインダーを停止します</string>
-    <string name="rmd_EPr_quiet_hours_start_title">おやすみモードの開始時刻</string>
-    <string name="rmd_EPr_quiet_hours_end_title">おやすみモードの終了時刻</string>
     <string name="swipe_to_snooze_time_immediately">今すぐ</string>
     <string name="swipe_to_snooze_time_15_minutes">15分後</string>
     <string name="swipe_to_snooze_time_30_minutes">30分後</string>
@@ -547,7 +524,6 @@
     <string name="settings_localization">ローカライズ</string>
     <string name="theme">テーマ</string>
     <string name="theme_dynamic">ダイナミック</string>
-    <string name="translations">翻訳に協力する</string>
     <string name="widget_open_list">開くリスト</string>
     <string name="theme_light">ライト</string>
     <string name="theme_black">黒</string>

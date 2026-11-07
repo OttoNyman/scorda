@@ -23,8 +23,6 @@
     <string name="customize_drawer">Personalizar caxón</string>
     <string name="action_call">Llamar</string>
     <string name="SSD_sort_my_order">El mio orden</string>
-    <string name="astrid_sort_order">Ordenación manual d\'Astrid</string>
-    <string name="astrid_sort_order_summary">Activar el mou d\'ordenación manual d\'Astris pa \'Les mis xeres\', \'Güei\', y etiquetes. Esti mou d\'ordenación sedrá sustituyíu por \'El mio orden\' nun anovamientu futuru</string>
     <string name="SSD_sort_auto">Orden intelixente</string>
     <string name="SSD_sort_alpha">Por títulu</string>
     <string name="SSD_sort_start">Por data d\'entamu</string>
@@ -66,7 +64,6 @@
     <string name="EPr_cal_end_or_start_at_due_time">Momentu del eventu nel calendariu</string>
     <string name="EPr_cal_end_at_due_time">Acabar eventos del calendariu al vencimientu</string>
     <string name="EPr_cal_start_at_due_time">Entamar eventos del calendariu nel momentu oportunu</string>
-    <string name="always_display_full_date">Amosar la data completa</string>
     <string name="EPr_reset_preferences">Reaniciar preferencies</string>
     <string name="EPr_reset_preferences_warning">Les preferencies sedrán reaniciaes a valores predeterminaos</string>
     <string name="EPr_delete_task_data">Esborriar datos de la xera</string>

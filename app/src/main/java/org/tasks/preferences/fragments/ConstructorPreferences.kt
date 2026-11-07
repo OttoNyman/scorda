@@ -9,19 +9,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.compose.content
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.tasks.PlatformConfiguration
 import org.tasks.R
 import org.tasks.compose.settings.ConstructorScreen
-import org.tasks.compose.settings.MoveListsDialog
+import org.tasks.compose.settings.MoveTargetDialog
 import org.tasks.constructor.Constructor
 import org.tasks.constructor.ConstructorCounts
 import org.tasks.constructor.ConstructorRepository
 import org.tasks.preferences.BasePreferences
+import org.tasks.preferences.Preferences
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -33,6 +36,7 @@ class ConstructorPreferences : Fragment() {
     @Inject lateinit var theme: Theme
     @Inject lateinit var repository: ConstructorRepository
     @Inject lateinit var configuration: PlatformConfiguration
+    @Inject lateinit var preferences: Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +47,12 @@ class ConstructorPreferences : Fragment() {
         val effective by repository.effective.collectAsState()
         var counts by remember { mutableStateOf(ConstructorCounts()) }
         var pending by remember { mutableStateOf<Constructor?>(null) }
+        var targets by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+        var markdown by remember { mutableStateOf(preferences.getBoolean(R.string.p_markdown, false)) }
+        var comments by remember {
+            mutableStateOf(preferences.getBoolean(R.string.p_show_task_edit_comments, false))
+        }
+        val scope = rememberCoroutineScope()
         LaunchedEffect(raw) {
             counts = repository.counts(currentTimeMillis())
         }
@@ -52,9 +62,12 @@ class ConstructorPreferences : Fragment() {
         ) {
             val change = { next: Constructor ->
                 val sync = repository.sync
-                // Leaving the local block while syncing moves the local lists: ask first.
+                // Leaving the local block while syncing moves the local lists: ask where.
                 if (counts.localLists > 0 && next.keepsEverythingInGoogle(sync) && !raw.keepsEverythingInGoogle(sync)) {
-                    pending = next
+                    scope.launch {
+                        targets = repository.googleLists()
+                        pending = next
+                    }
                 } else {
                     repository.write(next)
                 }
@@ -66,16 +79,27 @@ class ConstructorPreferences : Fragment() {
                 geofences = configuration.supportsGeofences,
                 calendarEvents = configuration.supportsCalendarEvents,
                 counts = counts,
+                markdown = markdown,
+                comments = comments,
                 onPreset = { change(raw.withPreset(it)) },
                 onChange = { change(it) },
+                onMarkdown = {
+                    preferences.setBoolean(R.string.p_markdown, it)
+                    markdown = it
+                },
+                onComments = {
+                    preferences.setBoolean(R.string.p_show_task_edit_comments, it)
+                    comments = it
+                },
             )
             pending?.let { next ->
-                MoveListsDialog(
+                MoveTargetDialog(
                     lists = counts.localLists,
-                    onMove = {
+                    targets = targets,
+                    onPick = { target ->
                         pending = null
                         repository.write(next.copy(localLists = false))
-                        repository.moveLocalListsToGoogle()
+                        repository.moveLocalListsToGoogle(target)
                     },
                     onDismiss = { pending = null },
                     dismissText = getString(android.R.string.cancel),

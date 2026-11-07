@@ -8,7 +8,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.stub
 import org.tasks.DatabaseTest
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Alarm.Companion.TYPE_DATE_TIME
@@ -27,7 +26,6 @@ class AlarmServiceTriggerCharacterizationTest : DatabaseTest() {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val preferences: AppPreferences = mock {
-        onBlocking { isCurrentlyQuietHours() } doReturn false
         onBlocking { defaultDueTime() } doReturn 0
     }
 
@@ -84,26 +82,6 @@ class AlarmServiceTriggerCharacterizationTest : DatabaseTest() {
         val next = alarmService.triggerAlarms { it.handled() }
 
         assertEquals(future, next)
-    }
-
-    @Test
-    fun quietHoursTriggerNothingAndReturnTheEndOfTheQuietPeriod() = runTest(testDispatcher) {
-        val wakeUp = currentTimeMillis() + 8 * ONE_HOUR
-        preferences.stub {
-            onBlocking { isCurrentlyQuietHours() } doReturn true
-            onBlocking { adjustForQuietHours(org.mockito.kotlin.any()) } doReturn wakeUp
-        }
-        val task = createTask()
-        alarmDao.insert(
-            Alarm(task = task.id, time = currentTimeMillis() - ONE_HOUR, type = TYPE_SNOOZE)
-        )
-        var triggered = false
-
-        val next = alarmService.triggerAlarms { triggered = true; it.handled() }
-
-        assertEquals(wakeUp, next)
-        assertTrue(!triggered)
-        assertTrue(alarmDao.getAlarms(task.id).any { it.type == TYPE_SNOOZE })
     }
 
     private fun List<Notification>.handled(): Collection<Long> = map { it.taskId }

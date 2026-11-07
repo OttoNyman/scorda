@@ -1,6 +1,5 @@
 package com.todoroo.astrid.ui
 
-import androidx.compose.material3.DisplayMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -93,14 +92,6 @@ class StartDateControlSet : TaskEditControlFragment() {
                 ),
                 showDueDate = !viewState.list.account.isOpenTasks,
                 times = remember { preferences.quickPickTimes },
-                initialDateInputMode = preferences.calendarDisplayMode == DisplayMode.Input,
-                onDateInputModeChange = {
-                    preferences.calendarDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
-                initialTimeInputMode = preferences.timeDisplayMode == DisplayMode.Input,
-                onTimeInputModeChange = {
-                    preferences.timeDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
                 onSelected = { day, time ->
                     vm.setSelected(day, time)
                     applySelected()

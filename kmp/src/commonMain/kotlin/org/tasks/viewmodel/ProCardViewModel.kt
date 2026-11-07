@@ -43,7 +43,7 @@ open class ProCardViewModel(
     private val _formattedPrice = MutableStateFlow<String?>(null)
     val environmentLabel: StateFlow<String?> = _environmentLabel
 
-    val proCardState: StateFlow<ProCardState> = combine(
+    val proCardState: StateFlow<ProCardState?> = combine(
         accounts,
         subscriptionProvider.subscription,
         _accountData,
@@ -137,7 +137,7 @@ open class ProCardViewModel(
         accountData: AccountData?,
         isLoading: Boolean,
         formattedPrice: String?,
-    ): ProCardState {
+    ): ProCardState? {
         val tasksOrgAccount = accountList.firstOrNull { it.isTasksOrg }
         val credit = creditToShow(sub, accountData)
         return when {
@@ -154,7 +154,7 @@ open class ProCardViewModel(
                 credit = credit,
             )
             hasBilling -> ProCardState.Upgrade
-            else -> ProCardState.Donate
+            else -> null
         }
     }
 

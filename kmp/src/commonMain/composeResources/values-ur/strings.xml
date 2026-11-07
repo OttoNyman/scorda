@@ -92,8 +92,6 @@
     <string name="url_invalid_scheme">http(s):// کے ساتھ شروع ہونا ضروری ہے</string>
     <string name="url_required">یو آر ایل مطلوب ہے</string>
     <string name="username_required">صارف کا نام مطلوب ہے</string>
-    <string name="whats_new">نیا کیا ہے</string>
-    <string name="version_string">%1$s ورژن</string>
     <string name="rate_tasks">ٹاسکس کو ریٹ کریں</string>
     <string name="contact_developer">ڈیویلپر سے رابطہ</string>
     <string name="source_code">سورس کوڈ</string>
@@ -105,7 +103,6 @@
     <string name="restart_required">اس تبدیلی کو اثردار بنانے کیلئے ایپ ری سٹارٹ کریں</string>
     <string name="restart_now">ابھی ری سٹارٹ کریں</string>
     <string name="restart_later">بعد میں</string>
-    <string name="blog_feed_none">کوئی نہیں</string>
     <string name="cannot_access_account">اکاونٹ تک رسائی نہیں ہو سکتی</string>
     <string name="new_list">نئی فہرست بنائیں</string>
     <string name="color">رنگ</string>
@@ -125,13 +122,6 @@
     <string name="due_time">وقت مقرر</string>
     <string name="day_before_due">مقررہ دن سے ایک دن قبل</string>
     <string name="week_before_due">وقت مقررہ سے ہفتہ قبل</string>
-    <string name="next_sunday">اگلے اتوار</string>
-    <string name="next_monday">اگلے پیر</string>
-    <string name="next_tuesday">اگلے منگل</string>
-    <string name="next_wednesday">اگلے بدھ</string>
-    <string name="next_thursday">اگلے جمعرات</string>
-    <string name="next_friday">اگلے جمعے</string>
-    <string name="next_saturday">اگلے ہفتے</string>
     <string name="no_time">کوئی وقت نہیں</string>
     <string name="TEA_note_label">تفصیل</string>
     <string name="start_date">تاریخ آغاز</string>
@@ -242,10 +232,6 @@
     <string name="EPr_voiceRemindersEnabled_desc_enabled">ٹاسکس یاد دہانیوں کے دوران ٹاسکس کے نام بولیں گے</string>
     <string name="rmd_EPr_rmd_time_title">ڈیفالٹ یاددہانی</string>
     <string name="enabled">فعال</string>
-    <string name="quiet_hours">خاموش گھنٹے</string>
-    <string name="quiet_hours_summary">خاموش گھنٹوں کے دوران کوئی یاد دہانی نہیں</string>
-    <string name="rmd_EPr_quiet_hours_start_title">خاموش گھنٹہ شروع کریں</string>
-    <string name="rmd_EPr_quiet_hours_end_title">خاموش گھنٹہ ختم کریں</string>
     <string name="rmd_NoA_done">مکمل</string>
     <string name="rmd_NoA_snooze">اسنوز کریں</string>
     <string name="action_open">کھولیں</string>
@@ -287,7 +273,6 @@
     <string name="launcher_icon">لانچر آئیکن</string>
     <string name="settings_localization">لوکلائزیشن</string>
     <string name="theme">تھیم</string>
-    <string name="translations">ترجمہ کریں</string>
     <string name="widget_open_list">فہرست کھولیں</string>
     <string name="theme_light">سفید</string>
     <string name="theme_black">سیاہ</string>

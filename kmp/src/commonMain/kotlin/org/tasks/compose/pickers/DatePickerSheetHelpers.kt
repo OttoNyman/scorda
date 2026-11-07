@@ -2,7 +2,6 @@ package org.tasks.compose.pickers
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberDatePickerState
@@ -23,8 +22,6 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
 import org.tasks.data.entity.Task
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
-import org.tasks.time.millisOfDay
-import org.tasks.time.noon
 import org.tasks.time.plusDays
 import org.tasks.time.toLocalDateMillis
 import org.tasks.time.toUtcDateMillis
@@ -35,8 +32,19 @@ internal fun dayForNewTime(today: Long, millisOfDay: Int): Long =
 
 internal fun demoteDueTime(day: Long): Long = if (day == DUE_TIME) DUE_DATE else day
 
-internal fun showKeyboardDateInput(initialDateInputMode: Boolean, autoClose: Boolean): Boolean =
-    initialDateInputMode && !autoClose
+private const val MINUTE = 60_000
+private const val HOUR = 60 * MINUTE
+
+/** Hour and minute the clock dial shows for [selectedTime]; noon when there is no time. */
+internal fun dialTime(selectedTime: Int): Pair<Int, Int> =
+    if (Task.hasDueTime(selectedTime.toLong())) {
+        selectedTime / HOUR to selectedTime / MINUTE % 60
+    } else {
+        12 to 0
+    }
+
+/** Selection value for a time picked on the dial, carrying the [TIME_MARKER]. */
+internal fun dialSelection(hour: Int, minute: Int): Int = hour * HOUR + minute * MINUTE + TIME_MARKER
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,8 +52,6 @@ internal fun DatePickerSheet(
     sheetState: SheetState,
     selectedDay: Long,
     moveDisplayedMonth: Boolean,
-    initialDateInputMode: Boolean,
-    onDateInputModeChange: (Boolean) -> Unit,
     onDaySelected: (Long) -> Unit,
     onAccept: () -> Unit,
     onDismiss: () -> Unit,
@@ -56,22 +62,20 @@ internal fun DatePickerSheet(
     val datePickerState = rememberSyncedDatePickerState(
         selectedDay = selectedDay,
         moveDisplayedMonth = moveDisplayedMonth,
-        initialDisplayMode = if (showKeyboardDateInput(initialDateInputMode, autoClose)) {
-            DisplayMode.Input
-        } else {
-            DisplayMode.Picker
-        },
         onDaySelected = onDaySelected,
     )
     DatePickerBottomSheet(
         sheetState = sheetState,
         state = datePickerState,
         showButtons = !autoClose,
-        setDisplayMode = { onDateInputModeChange(it == DisplayMode.Input) },
         cancel = onDismiss,
         accept = onAccept,
-        dateShortcuts = dateShortcuts,
-        timeShortcuts = timeShortcuts,
+        headline = {
+            DatePickerShortcuts(
+                dateShortcuts = dateShortcuts,
+                timeShortcuts = timeShortcuts,
+            )
+        },
     )
 }
 
@@ -168,11 +172,8 @@ internal fun rememberDateSheetState(
 internal fun SheetTimeShortcuts(
     day: Long,
     selectedTime: Int,
-    today: Long,
     is24Hour: Boolean,
     times: QuickPickTimes,
-    initialTimeInputMode: Boolean,
-    onTimeInputModeChange: (Boolean) -> Unit,
     applyTime: (Int) -> Unit,
     clearTime: () -> Unit,
     showNoTime: Boolean = true,
@@ -181,10 +182,7 @@ internal fun SheetTimeShortcuts(
     QuickTimePicker(
         visible = showTimePicker,
         selectedTime = selectedTime,
-        today = today,
         is24Hour = is24Hour,
-        initialDisplayMode = if (initialTimeInputMode) DisplayMode.Input else DisplayMode.Picker,
-        setDisplayMode = { onTimeInputModeChange(it == DisplayMode.Input) },
         onSelected = { applyTime(it + TIME_MARKER) },
         onDismiss = { showTimePicker = false },
     )
@@ -208,10 +206,9 @@ internal fun SheetTimeShortcuts(
 internal fun rememberSyncedDatePickerState(
     selectedDay: Long,
     moveDisplayedMonth: Boolean,
-    initialDisplayMode: DisplayMode,
     onDaySelected: (Long) -> Unit,
 ): DatePickerState {
-    val datePickerState = rememberDatePickerState(initialDisplayMode = initialDisplayMode)
+    val datePickerState = rememberDatePickerState()
     LaunchedEffect(selectedDay) {
         if (selectedDay > 0) {
             val utc = selectedDay.toUtcDateMillis()
@@ -234,27 +231,18 @@ internal fun rememberSyncedDatePickerState(
 internal fun QuickTimePicker(
     visible: Boolean,
     selectedTime: Int,
-    today: Long,
     is24Hour: Boolean,
-    initialDisplayMode: DisplayMode,
-    setDisplayMode: (DisplayMode) -> Unit,
     onSelected: (Int) -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (!visible) return
-    val time = if (selectedTime <= NO_TIME || !Task.hasDueTime(today.withMillisOfDay(selectedTime))) {
-        today.noon().millisOfDay
-    } else {
-        selectedTime
-    }
+    val (hour, minute) = dialTime(selectedTime)
     TimePickerDialog(
         state = rememberTimePickerState(
-            initialHour = time / (60 * 60_000),
-            initialMinute = (time / 60_000) % 60,
+            initialHour = hour,
+            initialMinute = minute,
             is24Hour = is24Hour,
         ),
-        initialDisplayMode = initialDisplayMode,
-        setDisplayMode = setDisplayMode,
         selected = onSelected,
         dismiss = onDismiss,
     )

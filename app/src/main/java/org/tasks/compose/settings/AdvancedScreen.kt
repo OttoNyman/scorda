@@ -25,12 +25,10 @@ import tasks.kmp.generated.resources.reset_trusted_certificates_summary
 
 @Composable
 fun AdvancedScreen(
-    astridSortEnabled: Boolean,
     attachmentDirSummary: String,
     calendarEndAtDueTime: Boolean,
     badgesEnabled: Boolean,
     badgeFilterName: String,
-    onAstridSort: (Boolean) -> Unit,
     onAttachmentDir: () -> Unit,
     onCalendarEndAtDueTime: (Boolean) -> Unit,
     onBadges: (Boolean) -> Unit,
@@ -49,27 +47,13 @@ fun AdvancedScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Astrid sort & attachment dir island
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.astrid_sort_order),
-                    summary = stringResource(R.string.astrid_sort_order_summary),
-                    checked = astridSortEnabled,
-                    onCheckedChange = onAstridSort,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.attachment_directory),
-                    icon = TasksIcons.ATTACHMENT,
-                    summary = attachmentDirSummary,
-                    onClick = onAttachmentDir,
-                )
-            }
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = stringResource(R.string.attachment_directory),
+                icon = TasksIcons.ATTACHMENT,
+                summary = attachmentDirSummary,
+                onClick = onAttachmentDir,
+            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

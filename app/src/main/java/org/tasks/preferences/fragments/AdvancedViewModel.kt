@@ -39,8 +39,6 @@ class AdvancedViewModel @Inject constructor(
     private val refreshBroadcaster: RefreshBroadcaster,
 ) : ViewModel() {
 
-    var astridSortEnabled by mutableStateOf(false)
-        private set
     var attachmentDirSummary by mutableStateOf("")
         private set
     var calendarEndAtDueTime by mutableStateOf(true)
@@ -67,7 +65,6 @@ class AdvancedViewModel @Inject constructor(
     }
 
     fun refreshState() {
-        astridSortEnabled = preferences.getBoolean(R.string.p_astrid_sort_enabled, false)
         refreshAttachmentDirectory()
         calendarEndAtDueTime = preferences.getBoolean(R.string.p_end_at_deadline, true)
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
@@ -75,11 +72,6 @@ class AdvancedViewModel @Inject constructor(
             val filter = defaultFilterProvider.getBadgeFilter()
             badgeFilterName = filter.title ?: ""
         }
-    }
-
-    fun updateAstridSort(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_astrid_sort_enabled, enabled)
-        astridSortEnabled = enabled
     }
 
     val attachmentsDirectory: Uri?

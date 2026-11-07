@@ -1,7 +1,13 @@
 package org.tasks.preferences.fragments
 
 import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
 import android.content.Intent
+import android.net.Uri
+import androidx.core.content.FileProvider
+import androidx.core.os.BundleCompat
+import com.todoroo.astrid.utility.Constants
+import java.io.File
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -38,11 +44,11 @@ import kotlinx.coroutines.launch
 import org.tasks.compose.settings.BackupsScreen
 import org.tasks.compose.settings.MoveListsDialog
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
+import org.jetbrains.compose.resources.stringResource as composeStringResource
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.logout_warning
 import org.tasks.dialogs.ExportTasksDialog
 import org.tasks.dialogs.ImportTasksDialog
-import org.tasks.drive.DriveLoginActivity
-import org.tasks.extensions.Context.openUri
-import org.tasks.extensions.Context.takePersistableUriPermission
 import org.tasks.extensions.Context.toast
 import org.tasks.files.FileHelper
 import org.tasks.preferences.BasePreferences
@@ -64,14 +70,8 @@ class Backups : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val viewModel: BackupsViewModel by viewModels()
 
-    private val backupDirLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            result.data?.data?.let { uri ->
-                requireContext().takePersistableUriPermission(uri)
-                viewModel.handleBackupDirResult(uri, preferencesViewModel)
-            }
-        }
-    }
+    // A manual export just finished: offer to send the file.
+    private var shareFile by mutableStateOf<Uri?>(null)
 
     private val importPickerLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
@@ -106,18 +106,19 @@ class Backups : Fragment() {
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         preferencesViewModel.lastBackup.observe(this) {
-            viewModel.refreshLocalBackupSummary(it, preferencesViewModel)
+            viewModel.refreshLocalBackupSummary(it)
         }
         preferencesViewModel.lastDriveBackup.observe(this) {
-            viewModel.refreshDriveBackupSummary(it, preferencesViewModel)
+            viewModel.refreshDriveBackupSummary(it)
         }
         preferencesViewModel.lastAndroidBackup.observe(this) {
-            viewModel.refreshAndroidBackupSummary(it, preferencesViewModel)
+            viewModel.refreshAndroidBackupSummary(it)
         }
         parentFragmentManager.setFragmentResultListener(
             ExportTasksDialog.REQUEST_KEY, this
-        ) { _, _ ->
+        ) { _, bundle ->
             preferencesViewModel.updateLocalBackup()
+            shareFile = BundleCompat.getParcelable(bundle, ExportTasksDialog.EXTRA_FILE, Uri::class.java)
         }
     }
 
@@ -130,37 +131,17 @@ class Backups : Fragment() {
         var showHelp by remember { mutableStateOf(false) }
         var driveFiles by remember { mutableStateOf<List<Pair<String, String>>?>(null) }
         var moveLists by remember { mutableStateOf(0) }
+        var confirmLogout by remember { mutableStateOf(false) }
+        var showBackupHelp by remember { mutableStateOf(false) }
         TasksSettingsTheme(
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
             BackupsScreen(
-                backupDirSummary = viewModel.backupDirSummary,
-                showBackupDirWarning = viewModel.showBackupDirWarning,
                 lastBackupSummary = viewModel.lastBackupSummary,
-                showLocalBackupWarning = viewModel.showLocalBackupWarning,
-                backupsEnabled = viewModel.backupsEnabled,
-                driveBackupEnabled = viewModel.driveBackupEnabled,
-                driveAccountSummary = viewModel.driveAccountSummary,
-                driveAccountEnabled = viewModel.driveAccountEnabled,
                 lastDriveBackupSummary = viewModel.lastDriveBackupSummary,
-                showDriveBackupWarning = viewModel.showDriveBackupWarning,
-                androidBackupEnabled = viewModel.androidBackupEnabled,
                 lastAndroidBackupSummary = viewModel.lastAndroidBackupSummary,
-                showAndroidBackupWarning = viewModel.showAndroidBackupWarning,
-                ignoreWarnings = viewModel.ignoreWarnings,
-                onDocumentation = {
-                    requireContext().openUri(R.string.url_backups)
-                },
-                onBackupDir = {
-                    backupDirLauncher.launch(
-                        FileHelper.newDirectoryPickerIntent(
-                            context,
-                            viewModel.backupDirectory,
-                        )
-                    )
-                },
-                onBackupNow = {
+                onSaveFile = {
                     viewModel.logEvent("backup_now")
                     ExportTasksDialog.newExportTasksDialog()
                         .show(parentFragmentManager, FRAG_TAG_EXPORT_TASKS)
@@ -171,26 +152,10 @@ class Backups : Fragment() {
                         FileHelper.newFilePickerIntent(activity, viewModel.backupDirectory),
                     )
                 },
-                onBackupsEnabled = { viewModel.updateBackupsEnabled(it) },
-                onDriveBackup = { enabled ->
-                    if (enabled) {
-                        requestGoogleDriveLogin()
-                    } else {
-                        viewModel.disableDriveBackup(preferencesViewModel)
-                    }
-                },
-                onDriveAccount = {
-                    requestGoogleDriveLogin()
-                },
-                onAndroidBackup = { enabled ->
-                    viewModel.updateAndroidBackup(enabled, preferencesViewModel)
-                },
-                onDeviceSettings = {
-                    startActivity(Intent(Settings.ACTION_SETTINGS))
-                },
-                onIgnoreWarnings = { enabled ->
-                    viewModel.updateIgnoreWarnings(enabled, preferencesViewModel)
-                },
+                onBackupHelp = { showBackupHelp = true },
+                accountEmail = viewModel.googleAccount?.name ?: preferencesViewModel.driveAccount?.takeIf { it.isNotBlank() },
+                accountError = viewModel.googleAccount?.error?.takeIf { it.isNotBlank() },
+                onLogout = { confirmLogout = true },
                 tasksEnabled = viewModel.tasksSyncEnabled,
                 driveDailyEnabled = viewModel.driveBackupEnabled,
                 onTasksEnabled = { enabled ->
@@ -289,6 +254,70 @@ class Backups : Fragment() {
                     dismissText = stringResource(android.R.string.cancel),
                 )
             }
+            if (showBackupHelp) {
+                AlertDialog(
+                    onDismissRequest = { showBackupHelp = false },
+                    title = { Text(stringResource(R.string.backup_help_title)) },
+                    text = {
+                        Column {
+                            Text(stringResource(R.string.backup_help_android))
+                            Text(
+                                stringResource(R.string.backup_help_file),
+                                modifier = Modifier.padding(top = 12.dp),
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(onClick = { showBackupHelp = false }) {
+                            Text(stringResource(android.R.string.ok))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showBackupHelp = false
+                            startActivity(Intent(Settings.ACTION_SETTINGS))
+                        }) { Text(stringResource(R.string.device_settings)) }
+                    },
+                )
+            }
+            shareFile?.let { file ->
+                AlertDialog(
+                    onDismissRequest = { shareFile = null },
+                    title = { Text(stringResource(R.string.share_backup_title)) },
+                    text = { Text(stringResource(R.string.share_backup_text)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            shareFile = null
+                            share(file)
+                        }) { Text(stringResource(R.string.share_backup_send)) }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { shareFile = null }) {
+                            Text(stringResource(R.string.share_backup_skip))
+                        }
+                    },
+                )
+            }
+            if (confirmLogout) {
+                AlertDialog(
+                    onDismissRequest = { confirmLogout = false },
+                    title = { Text(stringResource(R.string.logout)) },
+                    text = { Text(composeStringResource(Res.string.logout_warning)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            confirmLogout = false
+                            viewModel.logout(preferencesViewModel) {
+                                constructorRepository.refreshSync()
+                            }
+                        }) { Text(stringResource(R.string.logout)) }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { confirmLogout = false }) {
+                            Text(stringResource(android.R.string.cancel))
+                        }
+                    },
+                )
+            }
             driveFiles?.let { files ->
                 AlertDialog(
                     onDismissRequest = { driveFiles = null },
@@ -321,12 +350,29 @@ class Backups : Fragment() {
         }
     }
 
+    private fun share(file: Uri) {
+        val content = if (file.scheme == ContentResolver.SCHEME_FILE) {
+            FileProvider.getUriForFile(requireContext(), Constants.FILE_PROVIDER_AUTHORITY, File(file.path!!))
+        } else {
+            file
+        }
+        val send = Intent(Intent.ACTION_SEND)
+            .setType("application/json")
+            .putExtra(Intent.EXTRA_STREAM, content)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(Intent.createChooser(send, null))
+    }
+
     private fun signIn(scopes: ArrayList<String>, daily: Boolean, after: (() -> Unit)? = null) {
         afterLogin = after
         driveLauncher.launch(
             Intent(requireContext(), GtasksLoginActivity::class.java)
                 .putStringArrayListExtra(GtasksLoginActivity.EXTRA_SCOPES, scopes)
                 .putExtra(GtasksLoginActivity.EXTRA_DAILY_DRIVE, daily)
+                .putExtra(
+                    GtasksLoginActivity.EXTRA_ACCOUNT,
+                    viewModel.googleAccount?.name ?: preferencesViewModel.driveAccount,
+                )
         )
     }
 
@@ -347,11 +393,5 @@ class Backups : Fragment() {
             toolbar.setBackgroundColor(defaultColor)
             (toolbar.parent as? View)?.setBackgroundColor(defaultColor)
         }
-    }
-
-    private fun requestGoogleDriveLogin() {
-        driveLauncher.launch(
-            Intent(context, DriveLoginActivity::class.java),
-        )
     }
 }

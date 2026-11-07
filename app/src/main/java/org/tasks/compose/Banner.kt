@@ -8,7 +8,6 @@ import org.jetbrains.compose.resources.stringResource as composeStringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.tasks.BuildConfig
 import org.tasks.R
-import org.tasks.TasksApplication
 import org.tasks.compose.components.AnimatedBanner
 import org.tasks.compose.components.Banner
 import org.tasks.themes.TasksTheme
@@ -70,29 +69,6 @@ fun SubscriptionRequiredBanner(
         onDismiss = dismiss,
         action = composeStringResource(Res.string.upgrade),
         onAction = subscribe,
-    )
-}
-
-@Composable
-fun SubscriptionNagBanner(
-    subscribe: () -> Unit,
-    dismiss: () -> Unit,
-) {
-    Banner(
-        title = stringResource(id = R.string.enjoying_tasks),
-        body = stringResource(id = if (TasksApplication.IS_GENERIC) {
-            R.string.donate_nag
-        } else {
-            R.string.support_development_subscribe
-        }),
-        dismissText = stringResource(id = R.string.donate_maybe_later),
-        onDismiss = dismiss,
-        action = if (TasksApplication.IS_GENERIC) {
-            stringResource(id = R.string.donate_today)
-        } else {
-            composeStringResource(Res.string.upgrade)
-        },
-        onAction = subscribe
     )
 }
 
@@ -170,13 +146,6 @@ private fun NotificationsDisabledPreview() = TasksTheme {
 @Composable
 private fun BeastModePreview() = TasksTheme {
     BeastModeBanner(visible = true, showSettings = {}, dismiss = {})
-}
-
-@Preview(showBackground = true)
-@Preview(showBackground = true, backgroundColor = 0x202124, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun SubscriptionNagPreview() = TasksTheme {
-    SubscriptionNagBanner(subscribe = {}, dismiss = {})
 }
 
 @Preview(showBackground = true)

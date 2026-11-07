@@ -36,10 +36,8 @@
     <string name="url_invalid_scheme">http(s):// ସହ ଆରମ୍ଭ ହେବା ଦରକାର</string>
     <string name="url_required">URL ଆଵଶ୍ୟକ</string>
     <string name="username_required">ଉପଭୋକ୍ତା ନାମ ଆଵଶ୍ୟକ</string>
-    <string name="version_string">ସଂସ୍କରଣ %1$s</string>
     <string name="privacy_policy">ଗୋପନୀୟତା ନୀତି</string>
     <string name="support">ସମର୍ଥନ</string>
-    <string name="social">ସାମାଜିକ</string>
     <string name="open_source">ଖୋଲା ଉତ୍ସ</string>
     <string name="restart_later">ପରେ</string>
     <string name="invite_declined">ନିମନ୍ତ୍ରଣ ପ୍ରତ୍ୟାଖ୍ୟାନ ହୋଇଛି</string>
@@ -47,13 +45,6 @@
     <string name="invite_invalid">ନିମନ୍ତ୍ରଣ ଅମାନ୍ୟ ଅଟେ</string>
     <string name="email">ଇମେଲ୍</string>
     <string name="color">ରଙ୍ଗ</string>
-    <string name="next_sunday">ଆସନ୍ତା ରଵି</string>
-    <string name="next_monday">ଆସନ୍ତା ସୋମ</string>
-    <string name="next_tuesday">ଆସନ୍ତା ମଙ୍ଗଳ</string>
-    <string name="next_wednesday">ଆସନ୍ତା ବୁଧ</string>
-    <string name="next_thursday">ଆସନ୍ତା ଗୁରୁ</string>
-    <string name="next_friday">ଆସନ୍ତା ଶୁକ୍ର</string>
-    <string name="next_saturday">ଆସନ୍ତା ଶନି</string>
     <string name="TEA_note_label">ଵର୍ଣ୍ଣନା</string>
     <string name="repeat_monthly_first_week">ପ୍ରଥମ</string>
     <string name="repeat_monthly_second_week">ଦ୍ୱିତୀୟ</string>
@@ -147,7 +138,6 @@
     <string name="date_shortcut_tomorrow_night">ଆସନ୍ତାକାଲି ରାତି</string>
     <string name="language">ଭାଷା</string>
     <string name="theme">ଥିମ୍</string>
-    <string name="translations">ଅନୁଵାଦରେ ଯୋଗଦାନ କରନ୍ତୁ</string>
     <string name="theme_light">ହାଲୁକା</string>
     <string name="theme_black">କଳା</string>
     <string name="theme_dark">ଗାଢ଼</string>

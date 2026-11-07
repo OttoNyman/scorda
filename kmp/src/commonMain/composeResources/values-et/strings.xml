@@ -106,8 +106,6 @@
     <string name="price_per_year_with_currency">%1$s aastas</string>
     <string name="supporter_summary">%1$s • Suur tänu!</string>
     <string name="sign_in_to_connect">Ühendamaks oma Scorda-i kontot palun logi sisse</string>
-    <string name="donate">Toeta meid rahaliselt</string>
-    <string name="donate_nag">Rahalise toetusega saad edendada meie arendust!</string>
     <string name="manage_subscription">Muuda tellimust</string>
     <string name="button_unsubscribe">Tühista tellimus</string>
     <string name="local_lists">Seadme loendid</string>
@@ -192,18 +190,10 @@
     <string name="sign_in_subtitle">Kas oled juba tellija või kutsud külaline?</string>
     <string name="show_advanced_settings">Näita üksikasjalikke seadistusi</string>
     <string name="app_settings">Rakenduse seadistused</string>
-    <string name="whats_new">Mida on uut?</string>
-    <string name="version_string">Versioon %1$s</string>
-    <string name="blog_notifications">Ajaveebi teavitused</string>
-    <string name="blog_feed_none">Puudub</string>
-    <string name="blog_feed_announcements">Vaid teated</string>
-    <string name="blog_feed_all">Kõik postitused</string>
     <string name="rate_tasks">Hinda rakendust Tasks</string>
     <string name="documentation">Dokumentatsioon</string>
-    <string name="issue_tracker">Probleemijälgija</string>
     <string name="contact_developer">Võta ühendust arendajaga</string>
     <string name="send_application_logs">Saada rakenduste logid</string>
-    <string name="follow_reddit">Liitu grupiga r/tasks</string>
     <string name="source_code">Lähtekood</string>
     <string name="third_party_licenses">Kolmandate osapoolte litsentsid</string>
     <string name="terms_of_service">Kasutustingimused</string>
@@ -212,7 +202,6 @@
     <string name="send_anonymous_statistics_summary">Tasksi parandamiseks saada meile anonüümset kasutusstatistikat ja võimalikke vigade logisid. Isiklikke andmeid me ei kogu.</string>
     <string name="license_summary">Tasks on avatud lähtekoodil põhinev tarkvara, mis on litsentseeritud GNU Üldise Avaliku Litsentsi versiooni 3.0 alusel</string>
     <string name="support">Tugi</string>
-    <string name="social">Sotsiaalmeedia</string>
     <string name="open_source">Avatud lähtekood</string>
     <string name="legal">Juriidiline teave</string>
     <string name="restart_required">Selle muudatuse jõustamiseks käivita Tasks uuesti</string>
@@ -334,13 +323,6 @@
     <string name="due_time">Tähtaeg</string>
     <string name="day_before_due">Päev enne tähtaega</string>
     <string name="week_before_due">Nädal enne tähtaega</string>
-    <string name="next_sunday">Järgmine P</string>
-    <string name="next_monday">Järgmine E</string>
-    <string name="next_tuesday">Järgmine T</string>
-    <string name="next_wednesday">Järgkmine K</string>
-    <string name="next_thursday">Järgmine N</string>
-    <string name="next_friday">Järgmine R</string>
-    <string name="next_saturday">Järgmine L</string>
     <string name="shortcut_pick_time">Vali aeg</string>
     <string name="no_time">Aega pole</string>
     <string name="sync_metadata">Salvesta sildi metaandmed siia</string>
@@ -498,7 +480,6 @@
     <string name="delete_task">Kustuta ülesanne</string>
     <string name="menu_discard_changes">Loobu muudatustest</string>
     <string name="more_options">Rohkem valikuid</string>
-    <string name="quiet_hours_in_effect">Vaiksed tunnid on kasutusel</string>
     <string name="troubleshooting">Veaotsing</string>
     <string name="notification_troubleshooting_summary">Vajuta siia, kui sul on teavitustega probleeme</string>
     <string name="disable_battery_optimizations">Lülita akukasutuse optimeerimine välja</string>
@@ -523,10 +504,6 @@
     <string name="enabled">Sisse lülitatud</string>
     <string name="swipe_to_snooze_description">Edasilükkamise aeg</string>
     <string name="swipe_to_snooze_time_description">Eemaldatud teavitus on edasilükatud ja luuakse uuesti %1$s</string>
-    <string name="quiet_hours">Vaiksed tunnid</string>
-    <string name="quiet_hours_summary">Vaigistatud perioodil meeldetuletusi ei ole</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Vaiksed tunnid algavad</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Vaiksed tunnid lõpevad</string>
     <string name="swipe_to_snooze_time_immediately">kohe</string>
     <string name="swipe_to_snooze_time_15_minutes">15 minuti pärast</string>
     <string name="swipe_to_snooze_time_30_minutes">30 minuti pärast</string>
@@ -600,7 +577,6 @@
     <string name="settings_localization">Kohalikustamine</string>
     <string name="theme">Teema</string>
     <string name="theme_dynamic">Dünaamiline</string>
-    <string name="translations">Aita tõlkida</string>
     <string name="widget_open_list">Ava loend</string>
     <string name="theme_light">Hele</string>
     <string name="theme_black">Must</string>

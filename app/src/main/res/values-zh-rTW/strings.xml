@@ -130,8 +130,6 @@
     <string name="filter_after_today">今天之後</string>
     <string name="filter_any_due_date">任何到期日</string>
     <string name="sort_created">依照建立時間</string>
-    <string name="astrid_sort_order_summary">在我的工作、今天與和標籤畫面啟用來自 Astrid 的手動排序模式。這種排序模式未來將被「我的順序」取代</string>
-    <string name="astrid_sort_order">Astrid 手動排序</string>
     <string name="cancel">取消</string>
     <string name="ok">確定</string>
     <string name="name_cannot_be_empty">名稱不能為空白</string>
@@ -174,7 +172,6 @@
     <string name="CFC_tag_text">標籤: \?</string>
     <string name="CFC_importance_name">優先級…</string>
     <string name="CFC_importance_text">優先級至少是？</string>
-    <string name="always_display_full_date">顯示完整日期</string>
     <string name="copied_to_clipboard">%s 已複製至剪貼簿</string>
     <string name="app_password">應用程式密碼</string>
     <string name="migrate_count">移動 %s 至 Task.org</string>
@@ -196,8 +193,6 @@
     <string name="automatic_backups">自動備份</string>
     <string name="reset_sort_order">重設排序次序</string>
     <string name="lists">清單</string>
-    <string name="support_development_subscribe">解鎖附加功能和支持開源軟體</string>
-    <string name="enjoying_tasks">喜歡 Tasks 嗎？</string>
     <string name="filter_eisenhower_box_4">不重要不急迫</string>
     <string name="filter_eisenhower_box_3">不重要急迫</string>
     <string name="filter_eisenhower_box_1">重要急迫</string>
@@ -371,10 +366,7 @@
     <string name="change_priority">更改優先順序</string>
     <string name="theme_dynamic">動態</string>
     <string name="show_edit_screen_without_unlock">無需解除鎖定即可顯示編輯螢幕</string>
-    <string name="donate_today">今天捐贈</string>
-    <string name="donate_maybe_later">也許稍後</string>
     <string name="customize_drawer">自訂抽屜</string>
-    <string name="donate_nag">考慮透過捐款來表達您的支持！</string>
     <string name="show_edit_screen_without_unlock_summary">啟用在未解鎖裝置的情況下使用快速設定磁貼</string>
     <string name="import_failed">匯入失敗</string>
     <string name="import_failed_message">無法讀取備份檔案</string>

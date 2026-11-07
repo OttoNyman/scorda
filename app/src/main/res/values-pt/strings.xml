@@ -229,8 +229,6 @@
     <string name="TEA_control_location">Localização</string>
     <string name="CFC_list_name">Na lista…</string>
     <string name="lists">Listas</string>
-    <string name="astrid_sort_order_summary">Ativar ordenação manual do Astrid para \'Minhas tarefas\', \'Hoje\' e etiquetas. Este modo de ordenação eventualmente será substituído por \'Minha ordenação\' numa futura atualização</string>
-    <string name="astrid_sort_order">Ordenação manual do Astrid</string>
     <string name="sort_modified_group">Alterado %s</string>
     <string name="sort_created_group">Criado %s</string>
     <string name="action_new_task">Nova tarefa</string>
@@ -293,8 +291,6 @@
     <string name="davx5_selection_description">Sincronize as suas tarefas com a aplicação DAVx⁵</string>
     <string name="permission_read_tasks">Acesso completo à base de dados do Tasks</string>
     <string name="reset_sort_order">Repor ordenação</string>
-    <string name="support_development_subscribe">Desbloqueie funcionalidades adicionais e apoie programas de código-fonte aberto</string>
-    <string name="enjoying_tasks">Gosta do Tasks\?</string>
     <string name="filter_eisenhower_box_4">Não é importante e não é urgente</string>
     <string name="filter_eisenhower_box_3">Não é importante e urgente</string>
     <string name="filter_eisenhower_box_2">Importante e não urgente</string>
@@ -323,7 +319,6 @@
     <string name="background_location_permission_required">O Tarefas recolhe dados de localização para permitir lembretes baseados em localização, mesmo quando a aplicação está fechada ou não estiver a ser usada.</string>
     <string name="header_spacing">Espaçamento</string>
     <string name="ok">OK</string>
-    <string name="always_display_full_date">Mostrar data completa</string>
     <string name="upgrade_open_source_description">A sua subscrição ajuda a continuar o desenvolvimento</string>
     <string name="upgrade_tasks_org_account_description">Sincronize com o Scorda e colabore com outros utilizadores</string>
     <string name="upgrade_more_customization_description">Desbloqueie todos os temas, cores e ícones</string>
@@ -379,7 +374,6 @@
     <string name="theme_dynamic">Dinâmico</string>
     <string name="enable_alarms_description">Para garantir que você seja notificado na hora certa, conceda permissão para configurar alarmes e lembretes nas Configurações</string>
     <string name="yesterday">Ontem</string>
-    <string name="donate_maybe_later">Talvez depois</string>
     <string name="multiline_title_off">Pressione Concluído para salvar a tarefa</string>
     <string name="customize_drawer">Personalizar menu</string>
     <string name="show_edit_screen_without_unlock_summary">Permite o uso do bloco de Configurações Rápidas sem desbloquear o dispositivo</string>
@@ -395,12 +389,10 @@
     <string name="cost_money">Custo: R$</string>
     <string name="multiline_title">Permitir títulos em várias linhas</string>
     <string name="multiline_title_on">Pressione a tecla Enter para adicionar quebras de linha</string>
-    <string name="donate_nag">Considere mostrar seu apoio com uma doação!</string>
     <string name="cost_more_money">Custo:R$$$</string>
     <string name="show_edit_screen_without_unlock">Mostrar tela de edição sem desbloquear</string>
     <string name="banner_app_updated_description">O Tasks foi atualizado para a versão %s. Gostaria de ver as notas de lançamento?</string>
     <string name="sync_warning_microsoft">Nem todos os detalhes das tarefas são sincronizados com o Microsoft To Do.</string>
-    <string name="donate_today">Doe hoje</string>
     <string name="app_settings">Configurações da aplicação</string>
     <string name="comment">Comentário</string>
     <string name="delete_tasks_warning">%s será apagado. Isso não poderá ser desfeito!</string>
@@ -430,5 +422,4 @@
     <string name="accept">Aceitar</string>
     <string name="exit">Sair</string>
     <string name="returning_user">Utilizador a retornar?</string>
-    <string name="read_more">Ler mais</string>
 </resources>

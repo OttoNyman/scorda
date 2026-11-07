@@ -9,7 +9,7 @@ import org.tasks.data.entity.CaldavCalendar
 import org.tasks.filters.CaldavFilter
 import org.tasks.resources.getString
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.default_list
+import tasks.kmp.generated.resources.inbox_list
 
 private val mutex = Mutex()
 
@@ -60,7 +60,7 @@ private suspend fun CaldavDao.newLocalAccountUnsafe(): CaldavAccount {
 private suspend fun CaldavDao.getLocalList(account: CaldavAccount): CaldavCalendar =
     getCalendarsByAccount(account.uuid!!).getOrNull(0)
         ?: CaldavCalendar(
-            name = getString(Res.string.default_list),
+            name = getString(Res.string.inbox_list),
             uuid = UUIDHelper.newUUID(),
             account = account.uuid,
         ).apply {

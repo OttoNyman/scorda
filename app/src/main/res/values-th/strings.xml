@@ -72,8 +72,6 @@
     <string name="local_lists">รายการท้องถิ่น</string>
     <string name="sort_modified_group">แก้ไข %s</string>
     <string name="sort_created_group">สร้าง %s แล้ว</string>
-    <string name="support_development_subscribe">ปลดล็อกคุณสมบัติเพิ่มเติมและสนับสนุนซอฟต์แวร์โอเพ่นซอร์ส</string>
-    <string name="enjoying_tasks">สนุกกับงาน\?</string>
     <string name="filter_eisenhower_box_4">ไม่สําคัญและไม่เร่งด่วน</string>
     <string name="filter_eisenhower_box_3">ไม่สําคัญและเร่งด่วน</string>
     <string name="filter_eisenhower_box_2">สําคัญและไม่เร่งด่วน</string>
@@ -303,7 +301,6 @@
     <string name="place_settings">การตั้งค่าสถานที่</string>
     <string name="EPr_reset_preferences_warning">การกําหนดลักษณะจะถูกรีเซ็ตเป็นค่าเริ่มต้น</string>
     <string name="EPr_reset_preferences">รีเซ็ตการกําหนดลักษณะ</string>
-    <string name="always_display_full_date">แสดงวันที่เต็ม</string>
     <string name="EPr_cal_start_at_due_time">เริ่มกิจกรรมในปฏิทินเมื่อถึงกําหนด</string>
     <string name="EPr_cal_end_at_due_time">สิ้นสุดกิจกรรมในปฏิทินเมื่อถึงกําหนด</string>
     <string name="EPr_cal_end_or_start_at_due_time">เวลากิจกรรมในปฏิทิน</string>
@@ -337,8 +334,6 @@
     <string name="sort_created">โดยเวลาการสร้าง</string>
     <string name="SSD_sort_due">โดยเรียงตามวันที่ครบกําหนด</string>
     <string name="SSD_sort_start">ตามวันที่เริ่มต้น</string>
-    <string name="astrid_sort_order_summary">เปิดใช้งานโหมดการเรียงลําดับด้วยตนเองของ Astrid สําหรับ \'งานของฉัน\', \'วันนี้\' และแท็ก โหมดการเรียงลําดับนี้จะถูกแทนที่ด้วย \'ใบสั่งของฉัน\' ในการอัปเดตในอนาคต</string>
-    <string name="astrid_sort_order">การเรียงลําดับด้วยตนเองของ Astrid</string>
     <string name="SSD_sort_my_order">ใบสั่งของฉัน</string>
     <string name="action_call">โทร</string>
     <string name="TLA_menu_settings">การตั้งค่า</string>

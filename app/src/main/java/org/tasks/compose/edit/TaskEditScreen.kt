@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
@@ -365,14 +364,6 @@ fun TaskEditScreen(
                 autoClose = preferences.getBoolean(R.string.p_auto_dismiss_datetime_edit_screen, false),
                 showNoDate = !viewState.task.isRecurring,
                 times = remember { preferences.quickPickTimes },
-                initialDateInputMode = preferences.calendarDisplayMode == DisplayMode.Input,
-                onDateInputModeChange = {
-                    preferences.calendarDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
-                initialTimeInputMode = preferences.timeDisplayMode == DisplayMode.Input,
-                onTimeInputModeChange = {
-                    preferences.timeDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
                 onSelected = { day, time ->
                     editViewModel.setDueDate(dueDateFromSelection(day, time))
                     showDueDatePicker = false

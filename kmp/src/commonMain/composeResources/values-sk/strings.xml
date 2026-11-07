@@ -91,7 +91,6 @@
     <string name="display_name">Zobrazované meno</string>
     <string name="price_per_month_with_currency">%1$s mesačne</string>
     <string name="price_per_year_with_currency">%1$s ročne</string>
-    <string name="donate_nag">Zvážte podporenie projektu dobrovoľným príspevkom!</string>
     <string name="manage_subscription">Upraviť predplatné</string>
     <string name="button_unsubscribe">Zrušiť predplatné</string>
     <string name="local_lists">Zoznamy iba na tomto zariadení</string>
@@ -156,14 +155,10 @@
     <string name="etesync_account_description">Vyžaduje účet na EteSync.com alebo vlastný server</string>
     <string name="show_advanced_settings">Zobraziť pokročilé možnosti</string>
     <string name="app_settings">Nastavenia aplikácie</string>
-    <string name="whats_new">Čo je nové</string>
-    <string name="version_string">Verzia %1$s</string>
     <string name="rate_tasks">Ohodnotiť Úlohy</string>
     <string name="documentation">Dokumentácia</string>
-    <string name="issue_tracker">Hlásenie problémov</string>
     <string name="contact_developer">Spojiť sa s vývojárom</string>
     <string name="send_application_logs">Odoslať záznamy z aplikácie</string>
-    <string name="follow_reddit">Pripojte sa k r/tasks</string>
     <string name="source_code">Zdrojový kód</string>
     <string name="third_party_licenses">Licencie tretích strán</string>
     <string name="privacy_policy">Ochrana súkromia</string>
@@ -171,12 +166,10 @@
     <string name="send_anonymous_statistics_summary">Zasielať anonymné štatistiky používania a správy o zlyhaní aplikácie pre zlepšenia Úloh. Žiadne osobné údaje nebudú zhromažďované.</string>
     <string name="license_summary">Tasks je slobodný softvér s otvoreným zdrojovým kódom uvoľnený pod licenciou GNU Public Licence v3.0</string>
     <string name="support">Podpora</string>
-    <string name="social">Sociálne siete</string>
     <string name="open_source">Otvorený zdrojový kód</string>
     <string name="restart_required">Reštartujte aplikáciu, aby sa zmena prejavila</string>
     <string name="restart_now">Reštartovať teraz</string>
     <string name="restart_later">Neskôr</string>
-    <string name="blog_feed_none">Žiadna</string>
     <string name="cannot_access_account">Chyba v prístupe k účtu</string>
     <string name="new_list">Vytvoriť nový zoznam</string>
     <string name="list_members">Členovia zoznamu</string>
@@ -208,13 +201,6 @@
     <string name="due_time">Čas dokončenia</string>
     <string name="day_before_due">Deň pre ukončením</string>
     <string name="week_before_due">Týždeň pred ukončením</string>
-    <string name="next_sunday">Budúca nedeľa</string>
-    <string name="next_monday">Budúci pondelok</string>
-    <string name="next_tuesday">Budúci utorok</string>
-    <string name="next_wednesday">Budúca streda</string>
-    <string name="next_thursday">Budúci štvrtok</string>
-    <string name="next_friday">Budúci piatok</string>
-    <string name="next_saturday">Budúca sobota</string>
     <string name="shortcut_pick_time">Vyberte čas</string>
     <string name="no_time">Bez času</string>
     <string name="TEA_note_label">Popis</string>
@@ -377,7 +363,6 @@
     <string name="delete_task">Zmazať úlohu</string>
     <string name="menu_discard_changes">Zahodiť zmeny</string>
     <string name="more_options">Viac možností</string>
-    <string name="quiet_hours_in_effect">Režim nerušiť je zapnutý</string>
     <string name="troubleshooting">Riešenie problémov</string>
     <string name="notification_troubleshooting_summary">Kliknite sem, ak máte problémy so zobrazovaním upozornení</string>
     <string name="disable_battery_optimizations">Vypnúť šetrenie batérie</string>
@@ -398,10 +383,6 @@
     <string name="enabled">Povolené</string>
     <string name="swipe_to_snooze_description">Čas odloženia</string>
     <string name="swipe_to_snooze_time_description">Zrušené oznámenie bude odložené a opätovne vytvorené %1$s</string>
-    <string name="quiet_hours">Čas ticha</string>
-    <string name="quiet_hours_summary">Žiadne upozornenia počas obdobia ticha</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Čas ticha sa začne</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Čas ticha skončí</string>
     <string name="swipe_to_snooze_time_immediately">okamžite</string>
     <string name="swipe_to_snooze_time_15_minutes">po 15 minútach</string>
     <string name="swipe_to_snooze_time_30_minutes">po 30 minútach</string>
@@ -458,7 +439,6 @@
     <string name="settings_localization">Preklad</string>
     <string name="theme">Téma</string>
     <string name="theme_dynamic">Dynamické</string>
-    <string name="translations">Prispieť prekladom</string>
     <string name="widget_open_list">Otvoriť zoznam</string>
     <string name="theme_light">Svetlá</string>
     <string name="theme_black">Čierna</string>

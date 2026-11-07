@@ -68,6 +68,7 @@ class GoogleTaskSynchronizer(
         clearPreviousListId: suspend () -> Unit = {},
         moveLocal: Boolean = false,
         localDefaultList: String? = null,
+        moveTarget: String? = null,
         onMovedLocal: suspend () -> Unit = {},
     ) {
         Logger.d(TAG) { "$account: start sync" }
@@ -75,7 +76,7 @@ class GoogleTaskSynchronizer(
             synchronize(
                 account, invoker, savedListId, previousListId, forceCreate,
                 saveListId, onAmbiguous, onMissing, clearPreviousListId,
-                moveLocal, localDefaultList, onMovedLocal,
+                moveLocal, localDefaultList, moveTarget, onMovedLocal,
             )
         } catch (e: GoogleJsonResponseException) {
             account.error = if (e.statusCode == 401) {
@@ -186,6 +187,7 @@ class GoogleTaskSynchronizer(
         scordaId: String,
         moveLocal: Boolean,
         localDefaultList: String?,
+        moveTarget: String?,
         onMovedLocal: suspend () -> Unit,
     ) {
         val keep = mutableListOf<TaskList>()
@@ -209,6 +211,7 @@ class GoogleTaskSynchronizer(
                 localDefault = localDefaultList,
                 scordaId = scordaId,
                 known = known,
+                target = moveTarget,
             )
             for ((list, target) in plan) {
                 val targetId = target ?: gtasksInvoker.createGtaskList(list.name.orEmpty()).let {
@@ -249,6 +252,7 @@ class GoogleTaskSynchronizer(
         clearPreviousListId: suspend () -> Unit,
         moveLocal: Boolean,
         localDefaultList: String?,
+        moveTarget: String?,
         onMovedLocal: suspend () -> Unit,
     ) {
         val gtaskLists: MutableList<TaskList> = ArrayList()
@@ -267,7 +271,7 @@ class GoogleTaskSynchronizer(
             saveListId, onAmbiguous, onMissing, clearPreviousListId,
         ) ?: return
         prepareOwnLists(
-            account, gtasksInvoker, gtaskLists, scordaId, moveLocal, localDefaultList, onMovedLocal,
+            account, gtasksInvoker, gtaskLists, scordaId, moveLocal, localDefaultList, moveTarget, onMovedLocal,
         )
         val defaultRemoteList = defaultListProvider.getDefaultList()
         if (defaultRemoteList.isGoogleTasks) {

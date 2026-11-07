@@ -39,7 +39,6 @@ import org.tasks.viewmodel.LookAndFeelViewModel
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.back
 import tasks.kmp.generated.resources.preferences_look_and_feel
-import tasks.kmp.generated.resources.url_translations
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +48,6 @@ fun LookAndFeelDetail(
 ) {
     val viewModel = koinViewModel<LookAndFeelViewModel>()
     val uriHandler = LocalUriHandler.current
-    val translationsUrl = stringResource(Res.string.url_translations)
     val refreshBroadcaster = koinInject<ComposeRefreshBroadcaster>()
     var showColorPicker by rememberSaveable { mutableStateOf(false) }
     var showFilterPicker by rememberSaveable { mutableStateOf(false) }
@@ -82,7 +80,6 @@ fun LookAndFeelDetail(
                 viewModel = viewModel,
                 onColor = { showColorPicker = true },
                 onDefaultFilter = { showFilterPicker = true },
-                onTranslations = { uriHandler.openUri(translationsUrl) },
                 onRestartApplication = { restartApplication() },
             )
         }

@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -108,8 +107,6 @@ fun CustomRecurrence(
     setOccurrences: (Int) -> Unit,
     toggleDay: (DayOfWeek) -> Unit,
     setMonthSelection: (Int) -> Unit,
-    calendarDisplayMode: DisplayMode,
-    setDisplayMode: (DisplayMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PlatformBackHandler(enabled = true, onBack = discard)
@@ -201,8 +198,6 @@ fun CustomRecurrence(
                         setEndDate = setEndDate,
                         setSelection = setSelectedEndType,
                         setOccurrences = setOccurrences,
-                        calendarDisplayMode = calendarDisplayMode,
-                        setDisplayMode = setDisplayMode,
                     )
                 }
             }
@@ -359,8 +354,6 @@ private fun EndsPicker(
     selection: Int,
     endDate: Long,
     endOccurrences: Int,
-    calendarDisplayMode: DisplayMode,
-    setDisplayMode: (DisplayMode) -> Unit,
     setOccurrences: (Int) -> Unit,
     setEndDate: (Long) -> Unit,
     setSelection: (Int) -> Unit,
@@ -390,8 +383,6 @@ private fun EndsPicker(
         if (showDatePicker) {
             DatePickerDialog(
                 initialDate = endDate,
-                displayMode = calendarDisplayMode,
-                setDisplayMode = setDisplayMode,
                 selected = {
                     setEndDate(it)
                     showDatePicker = false

@@ -401,10 +401,6 @@ fun TaskEditScreen(
                             is24Hour = is24Hour,
                             showNoDate = !state.task.isRecurring,
                             times = state.datePickerPreferences.quickPickTimes,
-                            initialDateInputMode = state.datePickerPreferences.datePickerInputMode,
-                            onDateInputModeChange = viewModel::setDatePickerInputMode,
-                            initialTimeInputMode = state.datePickerPreferences.timePickerInputMode,
-                            onTimeInputModeChange = viewModel::setTimePickerInputMode,
                             onSelected = { day, time ->
                                 viewModel.setDueDate(dueDateFromSelection(day, time))
                                 showDueDatePicker = false
@@ -420,10 +416,6 @@ fun TaskEditScreen(
                             autoClose = false,
                             showDueDate = state.list?.account?.isOpenTasks != true,
                             times = state.datePickerPreferences.quickPickTimes,
-                            initialDateInputMode = state.datePickerPreferences.datePickerInputMode,
-                            onDateInputModeChange = viewModel::setDatePickerInputMode,
-                            initialTimeInputMode = state.datePickerPreferences.timePickerInputMode,
-                            onTimeInputModeChange = viewModel::setTimePickerInputMode,
                             onSelected = { day, time ->
                                 viewModel.setStartDate(day, time)
                                 showStartDatePicker = false
@@ -436,8 +428,6 @@ fun TaskEditScreen(
                             recurrence = state.task.recurrence,
                             dueDate = state.task.dueDate,
                             accountType = list.account.accountType,
-                            calendarInputMode = state.datePickerPreferences.datePickerInputMode,
-                            onCalendarInputModeChange = viewModel::setDatePickerInputMode,
                             onSelected = { recurrence ->
                                 viewModel.setRecurrence(recurrence)
                                 showRecurrencePicker = false
@@ -458,10 +448,6 @@ fun TaskEditScreen(
                             showNoDate = false,
                             showNoTime = false,
                             times = state.datePickerPreferences.quickPickTimes,
-                            initialDateInputMode = state.datePickerPreferences.datePickerInputMode,
-                            onDateInputModeChange = viewModel::setDatePickerInputMode,
-                            initialTimeInputMode = state.datePickerPreferences.timePickerInputMode,
-                            onTimeInputModeChange = viewModel::setTimePickerInputMode,
                             onSelected = { day, time ->
                                 val timestamp = alarmFromSelection(day, time)
                                 if (timestamp > 0) {

@@ -6,7 +6,7 @@
   <string name="TVA_add_comment">Add a comment…</string>
   <string name="display_name">Display name</string>
   <string name="backup_BAc_export">Backup now</string>
-  <string name="backup_BAc_import">Import backup</string>
+  <string name="backup_BAc_import">Restore from a file</string>
   <string name="export_toast">Backed up %1$s to %2$s.</string>
   <string name="import_summary_title">Restore summary</string>
   <string name="import_summary_message">
@@ -33,8 +33,6 @@ File %1$s contained %2$s.\n\n
   <string name="customize_drawer">Customize drawer</string>
   <string name="action_call">Call</string>
   <string name="SSD_sort_my_order">My order</string>
-  <string name="astrid_sort_order">Astrid manual sorting</string>
-  <string name="astrid_sort_order_summary">Enable Astrid\'s manual sort mode for \'My Tasks\', \'Today\', and tags. This sort mode will be replaced by \'My order\' in a future update</string>
   <string name="SSD_sort_auto">Smart sort</string>
   <string name="SSD_sort_alpha">By title</string>
   <string name="SSD_sort_start">By start date</string>
@@ -75,7 +73,9 @@ File %1$s contained %2$s.\n\n
   <string name="EPr_cal_end_or_start_at_due_time">Calendar event time</string>
   <string name="EPr_cal_end_at_due_time">End calendar events at due time</string>
   <string name="EPr_cal_start_at_due_time">Start calendar events at due time</string>
-  <string name="always_display_full_date">Show full date</string>
+  <string name="date_format">Date format</string>
+  <string name="date_format_auto">Today, tomorrow, Mon… then as in the system</string>
+  <string name="date_format_system">As in the system: %s</string>
   <string name="EPr_reset_preferences">Reset preferences</string>
   <string name="EPr_reset_preferences_warning">Preferences will be reset to default values</string>
   <string name="EPr_delete_task_data">Delete task data</string>
@@ -195,6 +195,16 @@ File %1$s contained %2$s.\n\n
   <string name="sync_help_tasks">Google Tasks sign-in. The list stays up to date on tasks.google.com. Tags, reminders, places, the timer, attachments, and subtasks deeper than one level are not copied. Time, priority, start, and repeat ride in a note line.</string>
   <string name="sync_help_title">How to move your tasks</string>
   <string name="sync_and_backup">Sync and backup</string>
+  <string name="google_account">Google account</string>
+  <string name="backup_section">Backup</string>
+  <string name="save_to_file">Save to a file</string>
+  <string name="backup_help_title">How backups work</string>
+  <string name="backup_help_android">Android backup is the standard system copy. The phone saves your tasks to its Google account on its own and brings them back when you install Scorda on a new phone or reinstall it with the same account. Nothing to press. Backup has to be on in the phone settings; it usually is.</string>
+  <string name="backup_help_file">Save to a file makes one file with all tasks. Right after saving you can send it wherever you like: a messenger, email, a cloud drive. To bring it back, use Restore from a file.</string>
+  <string name="share_backup_title">Backup saved</string>
+  <string name="share_backup_text">Send the file somewhere safe, for example to another device or a cloud drive?</string>
+  <string name="share_backup_send">Send</string>
+  <string name="share_backup_skip">Not now</string>
   <string name="miscellaneous">Miscellaneous</string>
   <string name="subtasks">Subtasks</string>
   <string name="enabled">Enabled</string>
@@ -360,11 +370,6 @@ File %1$s contained %2$s.\n\n
   <string name="filter_eisenhower_box_3">Not important and urgent</string>
   <string name="filter_eisenhower_box_4">Not important and not urgent</string>
   <string name="banner_subscription_required_body">Pay whatever you want to unlock %s synchronization</string>
-  <string name="enjoying_tasks">Enjoying Tasks?</string>
-  <string name="donate_nag">Consider showing your support with a donation!</string>
-  <string name="donate_today">Donate today</string>
-  <string name="donate_maybe_later">Maybe later</string>
-  <string name="support_development_subscribe">Unlock additional features and support open source software</string>
   <string name="p_per_list_sort">per_list_sort</string>
   <string name="per_list_sort_title">Per-list sorting</string>
   <string name="per_list_sort_summary">Remember sort and group settings for each list independently</string>
@@ -377,7 +382,7 @@ File %1$s contained %2$s.\n\n
   <string name="permission_read_tasks">Full access to Tasks database</string>
   <string name="permission_write_tasks">Add, change and delete your tasks, lists, tags and places</string>
   <string name="automatic_backups">Automatic backups</string>
-  <string name="android_auto_backup">Android Backup Service</string>
+  <string name="android_auto_backup">Android backup</string>
   <string name="android_auto_backup_device_summary">You must also opt in to backup service through your device settings. Not all devices provide backup service.</string>
   <string name="last_backup">Last backup: %s</string>
   <string name="last_backup_never">never</string>
@@ -454,5 +459,4 @@ File %1$s contained %2$s.\n\n
   <string name="sync_warning_google_tasks">Not all task details sync with Google Tasks</string>
   <string name="button_learn_more">Learn more</string>
   <string name="widget_view_more_tasks">View more tasks</string>
-  <string name="read_more">Read more</string>
 </resources>

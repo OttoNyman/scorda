@@ -293,14 +293,10 @@
     <string name="filter_today_only">Alleen vandaag</string>
     <string name="filter_overdue">Vervallen</string>
     <string name="sort_created">Op aanmaaktijd</string>
-    <string name="support_development_subscribe">Ontgrendel extra mogelijkheden en ondersteun opensource software</string>
     <string name="whats_new">Wat is nieuw</string>
-    <string name="enjoying_tasks">Gebruik je Tasks graag\?</string>
     <string name="action_new_task">Nieuwe taak</string>
     <string name="sort_created_group">Gemaakt %s</string>
     <string name="sort_modified_group">%s gewijzigd</string>
-    <string name="astrid_sort_order_summary">Schakel Astrids handmatige sorteermodus in voor \'Mijn taken\', \'Vandaag\' en labels. Deze sorteermodus wordt in een toekomstige update vervangen door \'Mijn volgorde\'</string>
-    <string name="astrid_sort_order">Astrid\'s handmatig sorteren</string>
     <string name="lists">Lijsten</string>
     <string name="CFC_list_name">In de lijst…</string>
     <string name="reset_sort_order">Sorteervolgorde terugzetten</string>
@@ -323,7 +319,6 @@
     <string name="multi_select_reschedule">Opnieuw inplannen</string>
     <string name="cancel">Annuleren</string>
     <string name="ok">OK</string>
-    <string name="always_display_full_date">Volledige datum tonen</string>
     <string name="custom_filter_is_subtask">Is subtaak</string>
     <string name="custom_filter_has_subtask">Heeft subtaken</string>
     <string name="current_subscription">Huidig abonnement: %s</string>
@@ -377,9 +372,6 @@
     <string name="change_priority">Prioriteit veranderen</string>
     <string name="theme_dynamic">Dynamisch</string>
     <string name="show_edit_screen_without_unlock">Toon het bewerkingscherm zonder ontsluiting</string>
-    <string name="donate_nag">Overweeg om ons te steunen met een schenking!</string>
-    <string name="donate_today">Doe vandaag een schenking</string>
-    <string name="donate_maybe_later">Misschien later</string>
     <string name="customize_drawer">Lade personaliseren</string>
     <string name="show_edit_screen_without_unlock_summary">Laat gebruik van Snelle Bewerkingstegel toe zonder ontgrendeling toestel</string>
     <string name="yesterday">Gisteren</string>
@@ -432,5 +424,4 @@
     <string name="upgrade_friends_and_family_description">5 gratis gasten op gedeelde lijsten. Werkt met Apple Reminders</string>
     <string name="advanced_tools">Geavanceerde tools</string>
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync en meer!</string>
-    <string name="read_more">Meer informatie</string>
 </resources>

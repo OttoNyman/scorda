@@ -116,7 +116,6 @@
     <string name="read_permission_label">مجوز وظایف</string>
     <string name="display_name">نام نمایشی</string>
     <string name="DLG_hour_minutes">وقت</string>
-    <string name="astrid_sort_order">راهنمای خودی آسترید</string>
     <string name="SSD_sort_my_order">خرید من</string>
     <string name="action_call">زنگ</string>
     <string name="TEA_control_location">مکان</string>
@@ -125,7 +124,6 @@
     <string name="EPr_show_task_edit_comments">نمایش نظرات در ویرایش وظیفه</string>
     <string name="EPr_reset_preferences_warning">ترجیحات به مقادیر پیشفرض برخواهند گشت</string>
     <string name="sort_list">براساس لیست</string>
-    <string name="always_display_full_date">نمایش تاریخ کامل</string>
     <string name="SSD_sort_start">براساس زمان شروع</string>
     <string name="sort_created">براساس زمان ساخت</string>
     <string name="EPr_reset_preferences">بازنشانی ترجیحات</string>
@@ -158,7 +156,6 @@
     <string name="import_failed_message">نتوانست فایل پشتیبان را بخواند</string>
     <string name="write_permission_label">اصلاح وظایف</string>
     <string name="sort_options">گزینه‌های مرتب‌سازی</string>
-    <string name="astrid_sort_order_summary">حالت مرتب‌سازی دستی آسترید را برای «وظایف من»، «امروز» و برچسب‌ها فعال کنید. این حالت مرتب‌سازی در به‌روزرسانی‌های آینده با «مرتب‌سازی من» جایگزین خواهد شد</string>
     <string name="FLA_search_filter">مطابق \'%s\'</string>
     <string name="TEA_timer_est">تخمین %s</string>
     <string name="location_update_interval_summary">به‌روزرسانی دوره‌ای موقعیت مکانی، قابلیت اطمینان محدوده جغرافیایی را بهبود می‌دهد</string>

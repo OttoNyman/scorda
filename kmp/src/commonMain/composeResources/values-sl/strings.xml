@@ -35,8 +35,6 @@
     <string name="EPr_voiceRemindersEnabled_title">Glasovni opomniki</string>
     <string name="EPr_voiceRemindersEnabled_desc_enabled">Aplikacija Opravki bo med opominjanjem glede opravkov izgovarjala nazive opravkov</string>
     <string name="rmd_EPr_rmd_time_title">Privzeti opomnik ob</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Tihe ure se začnejo ob</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Tihe ure se končajo ob</string>
     <string name="rmd_NoA_done">Končano</string>
     <string name="rmd_NoA_snooze">Dremež</string>
     <string name="EPr_default_importance_title">Privzeta dospelost</string>

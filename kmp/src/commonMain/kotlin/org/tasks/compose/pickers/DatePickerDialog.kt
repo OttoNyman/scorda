@@ -1,13 +1,11 @@
 package org.tasks.compose.pickers
 
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -22,8 +20,6 @@ import tasks.kmp.generated.resources.ok
 @Composable
 fun DatePickerDialog(
     initialDate: Long,
-    displayMode: DisplayMode,
-    setDisplayMode: (DisplayMode) -> Unit,
     selected: (Long) -> Unit,
     dismiss: () -> Unit,
 ) {
@@ -34,11 +30,7 @@ fun DatePickerDialog(
     }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = initialDateUTC,
-        initialDisplayMode = displayMode,
     )
-    LaunchedEffect(datePickerState.displayMode) {
-        setDisplayMode(datePickerState.displayMode)
-    }
     androidx.compose.material3.DatePickerDialog(
         onDismissRequest = { dismiss() },
         dismissButton = {
@@ -58,6 +50,6 @@ fun DatePickerDialog(
                 }
             }
     ) {
-        DatePicker(state = datePickerState)
+        DatePicker(state = datePickerState, showModeToggle = false)
     }
 }

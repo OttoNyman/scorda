@@ -90,7 +90,6 @@
     <string name="tomorrow">Αύριο</string>
     <string name="remove">Αφαίρεση</string>
     <string name="add_location">Προσθήκη τοποθεσίας</string>
-    <string name="astrid_sort_order">Μη αυτόματη ταξινόμηση Astrid</string>
     <string name="SSD_sort_my_order">Η παραγγελία μου</string>
     <string name="action_call">Καλέστε</string>
     <string name="TLA_no_items">Δεν υπάρχουν καθήκοντα.</string>
@@ -100,7 +99,6 @@
     <string name="help_and_feedback">Βοήθεια &amp; Καταχώρηση απόψεων</string>
     <string name="app_settings">Ρυθμίσεις Εφαρμογής</string>
     <string name="customize_drawer">Προσαρμογή συρταριού</string>
-    <string name="astrid_sort_order_summary">Ενεργοποιήστε τη χειροκίνητη λειτουργία ταξινόμησης του Astrid για τις κατηγορίες \'Οι Εργασίες μου\', \'Σήμερα\', και τις ετικέτες. Αυτή η μέθοδος ταξινόμησης θα αντικατασταθεί από την \'Η σειρά μου\' σε μελλοντική ενημέρωση της εφαρμογής</string>
     <string name="SSD_sort_start">Ανά ημερομηνία έναρξης</string>
     <string name="sort_created">Ανά ώρα δημιουργίας</string>
     <string name="sort_list">Ανά λίστα</string>
@@ -112,7 +110,6 @@
     <string name="TEA_control_location">Τοποθεσία</string>
     <string name="TEA_creation_date">Ημερομηνία Δημιουργίας</string>
     <string name="none">Κανένα</string>
-    <string name="always_display_full_date">Εμφάνιση Πλήρους Ημερομηνίας</string>
     <string name="EPr_reset_preferences">Επαναφορά προτιμήσεων</string>
     <string name="EPr_reset_preferences_warning">Θα γίνει επαναφορά των προτιμήσεων στις προεπιλεγμένες τιμές</string>
     <string name="EPr_delete_task_data">Διαγραφή δεδομένων εργασίας</string>
@@ -290,11 +287,6 @@
     <string name="filter_eisenhower_box_2">Σημαντικό , αλλά όχι επείγον</string>
     <string name="filter_eisenhower_box_3">Όχι σημαντικό , αλλά επείγον</string>
     <string name="filter_eisenhower_box_4">Όχι σημαντικό και όχι επείγον</string>
-    <string name="enjoying_tasks">Σας αρέσει η εφαρμογή Tasks;</string>
-    <string name="donate_nag">Σκεφτείτε να δείξετε την υποστήριξη σας με μια δωρεά!</string>
-    <string name="donate_today">Κάντε δωρεά σήμερα</string>
-    <string name="donate_maybe_later">Ίσως αργότερα</string>
-    <string name="support_development_subscribe">Ξεκλειδώστε πρόσθετες λειτουργίες και υποστηρίξτε λογισμικό ανοιχτού κώδικα</string>
     <string name="sort_created_group">Δημιουργήθηκε %s</string>
     <string name="sort_modified_group">Τροποποιήθηκε %s</string>
     <string name="sort_completion_group">Ολοκλήρωση %s</string>

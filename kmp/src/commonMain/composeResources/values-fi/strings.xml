@@ -104,7 +104,6 @@
     <string name="upgrade_to_pro_card_description">Avaa Scorda-pilvisynkronointi, perhe- ja ystäväjako sekä sähköpostista tehtäväksi -toiminto</string>
     <string name="price_per_month_with_currency">%1$s/kuukausi</string>
     <string name="price_per_year_with_currency">%1$s/vuosi</string>
-    <string name="donate_nag">Harkitse tuen osoittamista lahjoituksella!</string>
     <string name="manage_subscription">Muokkaa tilausta</string>
     <string name="button_unsubscribe">Peruuta tilaus</string>
     <string name="local_lists">Paikalliset luettelot</string>
@@ -168,14 +167,10 @@
     <string name="etesync_account_description">Vaatii tilin Etesync.com :ssa tai itsehallinnoidun serverin</string>
     <string name="show_advanced_settings">Näytä lisäasetukset</string>
     <string name="app_settings">Sovellusasetukset</string>
-    <string name="whats_new">Mitä uutta</string>
-    <string name="version_string">Versio %1$s</string>
     <string name="rate_tasks">Arvostele Tasks</string>
     <string name="documentation">Dokumentaatio</string>
-    <string name="issue_tracker">Ongelmien seuranta</string>
     <string name="contact_developer">Ota yhteyttä kehittäjään</string>
     <string name="send_application_logs">Lähetä sovelluksen lokitiedot</string>
-    <string name="follow_reddit">Liity r/tasks</string>
     <string name="source_code">Lähdekoodi</string>
     <string name="third_party_licenses">Kolmannen osapuolen lisenssit</string>
     <string name="privacy_policy">Rekisteriseloste</string>
@@ -183,12 +178,10 @@
     <string name="send_anonymous_statistics_summary">Lähetä nimettömästi käyttäjätilastoja ja virheilmoituksia Tasks -ohjelman parantamiseksi. Mitään henkilökohtaisia tietoja ei kerätä.</string>
     <string name="license_summary">Tasks on vapaa avoimen ohjelmakoodin ohjelmisto lisensöity GNU General Public License v3.0 -lisenssillä</string>
     <string name="support">Tuki</string>
-    <string name="social">Sosiaalinen</string>
     <string name="open_source">Avoin lähdekoodi</string>
     <string name="restart_required">Käynnistä Tasks uusiksi jotta muutos tulee voimaan</string>
     <string name="restart_now">Käynnistä uudelleen nyt</string>
     <string name="restart_later">Myöhemmin</string>
-    <string name="blog_feed_none">Ei mitään</string>
     <string name="cannot_access_account">Tiliin ei päästä käsiksi</string>
     <string name="new_list">Luo uusi lista</string>
     <string name="list_members">Luettelo jäsenistä</string>
@@ -222,13 +215,6 @@
     <string name="due_time">Määräaika</string>
     <string name="day_before_due">Päivä ennen määräpäivää</string>
     <string name="week_before_due">Viikko ennen määräpäivää</string>
-    <string name="next_sunday">Seuraava su</string>
-    <string name="next_monday">Seuraava ma</string>
-    <string name="next_tuesday">Seuraava ti</string>
-    <string name="next_wednesday">Seuraava ke</string>
-    <string name="next_thursday">Seuraava to</string>
-    <string name="next_friday">Seuraava pe</string>
-    <string name="next_saturday">Seuraava la</string>
     <string name="shortcut_pick_time">Aseta kellonaika</string>
     <string name="no_time">Ei kellonaikaa</string>
     <string name="TEA_note_label">Kuvaus</string>
@@ -373,7 +359,6 @@
     <string name="delete_task">Poista tehtävä</string>
     <string name="menu_discard_changes">Hylkää muutokset</string>
     <string name="more_options">Lisää asetuksia</string>
-    <string name="quiet_hours_in_effect">Hiljaiset tunnit käytössä</string>
     <string name="troubleshooting">Ongelmien ratkaisu</string>
     <string name="notification_troubleshooting_summary">Paina tästä jos ilmoitusten kanssa on ongelmia</string>
     <string name="disable_battery_optimizations">Älä säästä virtaa</string>
@@ -398,10 +383,6 @@
     <string name="enabled">Sallittu</string>
     <string name="swipe_to_snooze_description">Torkutusaika</string>
     <string name="swipe_to_snooze_time_description">Kuitattu ilmoitus torkutetaan ja luodaan uudelleen %1$s</string>
-    <string name="quiet_hours">Hiljainen aika</string>
-    <string name="quiet_hours_summary">Ei ilmoituksia hiljaisena aikana</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Hiljainen aika alkaa</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Hiljainen aika loppuu</string>
     <string name="swipe_to_snooze_time_immediately">välittömästi</string>
     <string name="swipe_to_snooze_time_15_minutes">15 minuutin jälkeen</string>
     <string name="swipe_to_snooze_time_30_minutes">30 minuutin jälkeen</string>
@@ -458,7 +439,6 @@
     <string name="settings_localization">Paikallistaminen</string>
     <string name="theme">Teema</string>
     <string name="theme_dynamic">Dynaaminen</string>
-    <string name="translations">Osallistu kääntämiseen</string>
     <string name="widget_open_list">Avaa lista</string>
     <string name="theme_light">Vaalea</string>
     <string name="theme_black">Musta</string>

@@ -26,6 +26,8 @@ import org.tasks.data.entity.Task
 import org.tasks.data.entity.TaskAttachment
 import org.tasks.extensions.Context.getResourceUri
 import org.tasks.kmp.org.tasks.themes.ColorProvider.BLUE_500
+import org.tasks.kmp.org.tasks.time.DateFormats
+import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.themes.ThemeBase
 import org.tasks.time.DateTime
 import timber.log.Timber
@@ -45,6 +47,10 @@ class Preferences @JvmOverloads constructor(
 
     private val lookAndFeelDefaults = LookAndFeelSettings()
 
+    init {
+        DateFormatter.datePattern = DateFormats.patternOf(dateFormat)
+    }
+
     fun registerOnSharedPreferenceChangeListener(
         listener: SharedPreferences.OnSharedPreferenceChangeListener
     ) {
@@ -57,7 +63,6 @@ class Preferences @JvmOverloads constructor(
         prefs.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
-    fun androidBackupServiceEnabled() = getBoolean(R.string.p_backups_android_backup_enabled, true)
 
     fun showBackupWarnings() = !getBoolean(R.string.p_backups_ignore_warnings, false)
 
@@ -65,25 +70,11 @@ class Preferences @JvmOverloads constructor(
 
     fun backButtonSavesTask(): Boolean = getBoolean(R.string.p_back_button_saves_task, false)
 
-    override suspend fun isCurrentlyQuietHours(): Boolean =
-        notificationSettings().isCurrentlyQuietHours()
-
-    override suspend fun adjustForQuietHours(time: Long): Long =
-        notificationSettings().adjustForQuietHours(time)
-
-    private fun quietHoursEnabled(): Boolean = getBoolean(R.string.p_rmd_enable_quiet, false)
-
     override suspend fun isDefaultDueTimeEnabled(): Boolean =
         getBoolean(R.string.p_rmd_time_enabled, true)
 
     override suspend fun defaultDueTime(): Int =
         getInt(R.string.p_rmd_time, notificationDefaults.defaultReminderTime)
-
-    private val quietHoursStart: Int
-        get() = getMillisOfDayPref(R.string.p_rmd_quietStart, notificationDefaults.quietHoursStart)
-
-    private val quietHoursEnd: Int
-        get() = getMillisOfDayPref(R.string.p_rmd_quietEnd, notificationDefaults.quietHoursEnd)
 
     override suspend fun notificationSettings() = NotificationSettings(
         persistentNotifications = getBoolean(
@@ -115,9 +106,6 @@ class Preferences @JvmOverloads constructor(
             R.string.p_rmd_time,
             notificationDefaults.defaultReminderTime
         ),
-        quietHoursEnabled = quietHoursEnabled(),
-        quietHoursStart = quietHoursStart,
-        quietHoursEnd = quietHoursEnd,
     )
 
     override suspend fun setNotificationsEnabled(value: Boolean) {
@@ -146,13 +134,6 @@ class Preferences @JvmOverloads constructor(
         setBoolean(R.string.p_rmd_time_enabled, value)
 
     override suspend fun setDefaultReminderTime(value: Int) = setInt(R.string.p_rmd_time, value)
-
-    override suspend fun setQuietHoursEnabled(value: Boolean) =
-        setBoolean(R.string.p_rmd_enable_quiet, value)
-
-    override suspend fun setQuietHoursStart(value: Int) = setInt(R.string.p_rmd_quietStart, value)
-
-    override suspend fun setQuietHoursEnd(value: Int) = setInt(R.string.p_rmd_quietEnd, value)
 
     override suspend fun drawerSettings() = DrawerSettings(
         filtersEnabled = getBoolean(R.string.p_filters_enabled, drawerDefaults.filtersEnabled),
@@ -640,9 +621,18 @@ class Preferences @JvmOverloads constructor(
         get() = getBoolean(R.string.p_show_completed_subtasks, true)
         set(value) { setBoolean(R.string.p_show_completed_subtasks, value) }
 
+    /** [DateFormats.AUTO], [DateFormats.SYSTEM] or a pattern. Replaces the old "always full date" switch. */
+    var dateFormat: String
+        get() = getStringValue(R.string.p_date_format)
+            ?: if (getBoolean(R.string.p_always_display_full_date, false)) DateFormats.SYSTEM else DateFormats.AUTO
+        set(value) {
+            setString(R.string.p_date_format, value)
+            DateFormatter.datePattern = DateFormats.patternOf(value)
+        }
+
     override var alwaysDisplayFullDate: Boolean
-        get() = getBoolean(R.string.p_always_display_full_date, false)
-        set(value) { setBoolean(R.string.p_always_display_full_date, value)}
+        get() = dateFormat != DateFormats.AUTO
+        set(value) { dateFormat = if (value) DateFormats.SYSTEM else DateFormats.AUTO }
 
     override var completedTasksAtBottom: Boolean
         get() = getBoolean(R.string.p_completed_tasks_at_bottom, true)
@@ -749,8 +739,9 @@ class Preferences @JvmOverloads constructor(
         get() = getBoolean(R.string.p_manual_sort, false)
         set(value) { setBoolean(R.string.p_manual_sort, value) }
 
+    // Legacy Astrid manual order is retired in Scorda: "My order" covers manual sorting.
     val isAstridSortEnabled: Boolean
-        get() = getBoolean(R.string.p_astrid_sort_enabled, false)
+        get() = false
 
     override var isAstridSort: Boolean
         get() = isAstridSortEnabled && getBoolean(R.string.p_astrid_sort, false)
@@ -830,10 +821,6 @@ class Preferences @JvmOverloads constructor(
     var warnGoogleTasks: Boolean
         get() = getBoolean(R.string.p_warn_google_tasks, true)
         set(value) = setBoolean(R.string.p_warn_google_tasks, value)
-
-    var lastSubscribeRequest: Long
-        get() = getLong(R.string.p_last_subscribe_request, 0L)
-        set(value) = setLong(R.string.p_last_subscribe_request, value)
 
     var shownBeastModeHint: Boolean
         get() = getBoolean(R.string.p_shown_beast_mode_hint, false)

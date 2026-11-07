@@ -270,16 +270,12 @@
     <string name="location_remind_departure">Připomenout při odchodu</string>
     <string name="location_remind_arrival">Připomenout při příchodu</string>
     <string name="CFC_list_name">V seznamu…</string>
-    <string name="astrid_sort_order_summary">Zapněte ruční řazení Astrid pro „Moje úkoly“, „Dnes“ a štítky. Tento režim řazení bude v budoucnu nahrazen režimem „Vlastní řazení“</string>
-    <string name="astrid_sort_order">Ruční řazení Astrid</string>
     <string name="lists">Seznamy</string>
     <string name="upgrade_blurb_2">Strávil jsem tisíce hodin prací na Tasks a bezplatně zveřejňuji veškerý zdrojový kód online. Za účelem podpory mé práce některé funkce vyžadují předplatné</string>
     <string name="upgrade_blurb_1">Ahoj! Jmenuji se Alex a jsem nezávislý vývojář aplikace Tasks</string>
     <string name="color_wheel">Více barev</string>
     <string name="davx5_selection_description">Synchronizujte své úkoly pomocí aplikace DAVx⁵</string>
     <string name="building_notifications">Vytvářejí se oznámení</string>
-    <string name="support_development_subscribe">Odemkněte si další funkce a podpořte software s otevřeným zdrojovým kódem</string>
-    <string name="enjoying_tasks">Líbí se vám Tasks\?</string>
     <string name="filter_eisenhower_box_4">Ani naléhavé, ani důležité</string>
     <string name="filter_eisenhower_box_3">Naléhavé, ale ne důležité</string>
     <string name="filter_eisenhower_box_2">Důležité, ale ne naléhavé</string>
@@ -306,7 +302,6 @@
     <string name="back">Zpět</string>
     <string name="decsync_selection_description">Synchronizace založená na souborech</string>
     <string name="header_spacing">Mezery</string>
-    <string name="always_display_full_date">Zobrazit celé datum</string>
     <string name="no_app_found">Nenalezena žádná vhodná aplikace</string>
     <string name="widget_show_title">Zobrazit název</string>
     <string name="cancel">Zrušit</string>
@@ -383,9 +378,6 @@
     <string name="sort_list">Podle seznamu</string>
     <string name="change_priority">Změnit prioritu</string>
     <string name="theme_dynamic">Dynamické</string>
-    <string name="donate_nag">Zvažte podpoření projektu dobrovolným příspěvkem!</string>
-    <string name="donate_today">Přispějte dnes</string>
-    <string name="donate_maybe_later">Možná později</string>
     <string name="show_edit_screen_without_unlock">Umožnit úpravy bez odemčení zařízení</string>
     <string name="show_edit_screen_without_unlock_summary">Umožňuje použití dlaždice rychlého nastavení bez odemykání zařízení</string>
     <string name="customize_drawer">Upravit šuplík</string>
@@ -434,7 +426,6 @@
     <string name="per_list_sort_title">Řazení dle seznamu</string>
     <string name="per_list_sort_summary">Zapamatovat si nastavení řazení a skupin zvlášť pro každý seznam</string>
     <string name="location_update_interval_summary">Pravidelné aktualizace polohy zvyšují spolehlivost geofence</string>
-    <string name="read_more">Více informací</string>
     <string name="upgrade_desktop_app">Scorda pro počítače</string>
     <string name="upgrade_desktop_app_description">Předběžný přístup k nové aplikaci pro počítače</string>
     <string name="sort_options">Předvolby řazení</string>

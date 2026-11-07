@@ -16,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.compose.pickers.DatePickerDialog
 import org.tasks.compose.pickers.TimePickerDialog
 import org.tasks.extensions.Context.is24HourFormat
-import org.tasks.preferences.Preferences
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
 import org.tasks.time.DateTime
@@ -29,7 +28,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DateAndTimePickerActivity : AppCompatActivity() {
-    @Inject lateinit var preferences: Preferences
     @Inject lateinit var theme: Theme
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -51,8 +49,6 @@ class DateAndTimePickerActivity : AppCompatActivity() {
                             initialMinute = dateSelected.minuteOfHour,
                             is24Hour = is24HourFormat
                         ),
-                        initialDisplayMode = remember { preferences.timeDisplayMode },
-                        setDisplayMode = { preferences.timeDisplayMode = it },
                         selected = {
                             val data = Intent()
                             data.putExtras(intent)
@@ -72,10 +68,6 @@ class DateAndTimePickerActivity : AppCompatActivity() {
                                 EXTRA_TIMESTAMP,
                                 currentTimeMillis()
                             )
-                        },
-                        displayMode = remember { preferences.calendarDisplayMode },
-                        setDisplayMode = {
-                            preferences.calendarDisplayMode = it
                         },
                         selected = {
                             dateSelected = it.withMillisOfDay(dateSelected.millisOfDay)

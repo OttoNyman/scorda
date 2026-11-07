@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.tasks.PlatformConfiguration
@@ -19,10 +18,6 @@ import org.tasks.notifications.ReminderCheckId
 import org.tasks.preferences.AppPreferences
 import org.tasks.preferences.NotificationSettings
 import org.tasks.preferences.SwipeAction
-import org.tasks.preferences.isCurrentlyQuietHours
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
-import org.tasks.time.plusDays
-import org.tasks.time.withMillisOfDay
 
 enum class ReminderChange {
     PENDING,
@@ -41,8 +36,6 @@ open class NotificationsViewModel(
 
     enum class TimePickerTarget {
         DEFAULT_REMINDER,
-        QUIET_HOURS_START,
-        QUIET_HOURS_END,
     }
 
     val showTroubleshooting: Boolean = platformConfiguration.supportsNotificationTroubleshooting
@@ -62,9 +55,6 @@ open class NotificationsViewModel(
         private set
 
     var timePickerInputMode by mutableStateOf(false)
-        private set
-
-    var isCurrentlyQuietHours by mutableStateOf(false)
         private set
 
     var showBatteryOptimization by mutableStateOf(false)
@@ -115,8 +105,6 @@ open class NotificationsViewModel(
 
     private var healthTouched = false
 
-    private var quietHoursRefreshJob: Job? = null
-
     private val writes = PreferenceWriteQueue(
         viewModelScope = viewModelScope,
         persistenceScope = persistenceScope,
@@ -135,9 +123,7 @@ open class NotificationsViewModel(
         defaultAlarms = appPreferences.defaultAlarms()
         defaultRingMode = appPreferences.defaultRingMode()
         timePickerInputMode = appPreferences.datePickerPreferences().timePickerInputMode
-        isCurrentlyQuietHours = settings.isCurrentlyQuietHours()
         loaded = true
-        scheduleQuietHoursRefresh()
     }
 
     private suspend fun reloadSafely() {
@@ -228,16 +214,6 @@ open class NotificationsViewModel(
         persist { appPreferences.setDefaultRemindersEnabled(enabled) }
     }
 
-    fun updateQuietHours(enabled: Boolean) {
-        settings = settings.copy(quietHoursEnabled = enabled)
-        isCurrentlyQuietHours = settings.isCurrentlyQuietHours()
-        persist {
-            appPreferences.setQuietHoursEnabled(enabled)
-            rescheduleNotifications(ReminderChange.PENDING)
-        }
-        scheduleQuietHoursRefresh()
-    }
-
     fun openTimePicker(target: TimePickerTarget) {
         timePickerTarget = target
     }
@@ -248,8 +224,6 @@ open class NotificationsViewModel(
 
     fun timePickerInitialValue(target: TimePickerTarget): Int = when (target) {
         TimePickerTarget.DEFAULT_REMINDER -> settings.defaultReminderTime
-        TimePickerTarget.QUIET_HOURS_START -> settings.quietHoursStart
-        TimePickerTarget.QUIET_HOURS_END -> settings.quietHoursEnd
     }
 
     fun setTime(target: TimePickerTarget, millisOfDay: Int) {
@@ -261,23 +235,7 @@ open class NotificationsViewModel(
                     rescheduleNotifications(ReminderChange.PENDING)
                 }
             }
-            TimePickerTarget.QUIET_HOURS_START -> {
-                settings = settings.copy(quietHoursStart = millisOfDay)
-                persist {
-                    appPreferences.setQuietHoursStart(millisOfDay)
-                    rescheduleNotifications(ReminderChange.PENDING)
-                }
-            }
-            TimePickerTarget.QUIET_HOURS_END -> {
-                settings = settings.copy(quietHoursEnd = millisOfDay)
-                persist {
-                    appPreferences.setQuietHoursEnd(millisOfDay)
-                    rescheduleNotifications(ReminderChange.PENDING)
-                }
-            }
         }
-        isCurrentlyQuietHours = settings.isCurrentlyQuietHours()
-        scheduleQuietHoursRefresh()
     }
 
     fun updateTimePickerInputMode(inputMode: Boolean) {
@@ -337,26 +295,6 @@ open class NotificationsViewModel(
     open fun updateSuperBypass(enabled: Boolean) {
         superBypassSilent = enabled
     }
-
-    private fun scheduleQuietHoursRefresh() {
-        quietHoursRefreshJob?.cancel()
-        if (!settings.quietHoursEnabled) {
-            return
-        }
-        quietHoursRefreshJob = viewModelScope.launch {
-            while (true) {
-                val now = currentTimeMillis()
-                delay(settings.nextQuietHoursBoundary(now) - now + 1000)
-                isCurrentlyQuietHours = settings.isCurrentlyQuietHours()
-            }
-        }
-    }
 }
 
 private const val TAG = "NotificationsViewModel"
-
-private fun NotificationSettings.nextQuietHoursBoundary(now: Long): Long =
-    listOf(quietHoursStart, quietHoursEnd)
-        .map { now.withMillisOfDay(it) }
-        .map { if (it <= now) it.plusDays(1) else it }
-        .min()

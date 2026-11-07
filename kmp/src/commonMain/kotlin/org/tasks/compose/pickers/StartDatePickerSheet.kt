@@ -17,10 +17,6 @@ fun StartDatePickerSheet(
     autoClose: Boolean = false,
     showDueDate: Boolean = true,
     times: QuickPickTimes = QuickPickTimes(),
-    initialDateInputMode: Boolean = false,
-    onDateInputModeChange: (Boolean) -> Unit = {},
-    initialTimeInputMode: Boolean = false,
-    onTimeInputModeChange: (Boolean) -> Unit = {},
     onSelected: (day: Long, time: Int) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -49,8 +45,6 @@ fun StartDatePickerSheet(
         selectedDay = state.selectedDay,
         moveDisplayedMonth = false,
         autoClose = autoClose,
-        initialDateInputMode = initialDateInputMode,
-        onDateInputModeChange = onDateInputModeChange,
         onDaySelected = { state.setDay(it) },
         onAccept = { state.commit() },
         onDismiss = { dismiss(onDismiss) },
@@ -67,11 +61,8 @@ fun StartDatePickerSheet(
             SheetTimeShortcuts(
                 day = state.selectedDay,
                 selectedTime = state.selectedTime,
-                today = today,
                 is24Hour = is24Hour,
                 times = times,
-                initialTimeInputMode = initialTimeInputMode,
-                onTimeInputModeChange = onTimeInputModeChange,
                 applyTime = { applyTime(it) },
                 clearTime = {
                     state.selectedDay = demoteDueTime(state.selectedDay)

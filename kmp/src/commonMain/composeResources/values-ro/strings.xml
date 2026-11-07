@@ -92,7 +92,6 @@
     <string name="display_name">Afișează numele</string>
     <string name="price_per_month_with_currency">%1$s/lună</string>
     <string name="price_per_year_with_currency">%1$s/an</string>
-    <string name="donate_nag">Exprimă-ți sprijinul cu ajutorul unei donații!</string>
     <string name="manage_subscription">Modificarea abonamentului</string>
     <string name="button_unsubscribe">Anulare abonament</string>
     <string name="local_lists">Liste locale</string>
@@ -158,14 +157,10 @@
     <string name="etesync_account_description">Necesită un cont cu EteSync.com sau un server auto-găzduit</string>
     <string name="show_advanced_settings">Afișează setările avansate</string>
     <string name="app_settings">Setările aplicației</string>
-    <string name="whats_new">Ce este nou</string>
-    <string name="version_string">Versiunea %1$s</string>
     <string name="rate_tasks">Evaluează Tasks (sarcini)</string>
     <string name="documentation">Documentație</string>
-    <string name="issue_tracker">Urmărirea problemelor</string>
     <string name="contact_developer">Contactează dezvoltatorul</string>
     <string name="send_application_logs">Trimite jurnalele aplicației</string>
-    <string name="follow_reddit">Alătură-te la r/tasks</string>
     <string name="source_code">Codul sursă</string>
     <string name="third_party_licenses">Licențe de la terți</string>
     <string name="privacy_policy">Politica de confidențialitate</string>
@@ -173,12 +168,10 @@
     <string name="send_anonymous_statistics_summary">Se trimit statistici anonime de utilizare și rapoarte de accident pentru a ajuta la îmbunătățirea Tasks. Nu vor fi colectate date cu caracter personal.</string>
     <string name="license_summary">Tasks este un software libre open-source, licențiat sub licența GNU General Public License v3.0</string>
     <string name="support">Suport</string>
-    <string name="social">Social</string>
     <string name="open_source">Sursă deschisă</string>
     <string name="restart_required">Repornește Tasks pentru ca această modificare să intre în vigoare</string>
     <string name="restart_now">Repornește acum</string>
     <string name="restart_later">Mai târziu</string>
-    <string name="blog_feed_none">Niciuna</string>
     <string name="cannot_access_account">Nu se poate accesa contul</string>
     <string name="email_to_task_address">Adresa ta de e-mail</string>
     <string name="legal_disclosure_prefix_using">Prin utilizarea Scorda</string>
@@ -221,13 +214,6 @@
     <string name="due_time">Timpul completării</string>
     <string name="day_before_due">O zi înainte de termen</string>
     <string name="week_before_due">O săptămâna înainte de termen</string>
-    <string name="next_sunday">Următoarea duminică</string>
-    <string name="next_monday">Lunea viitoare</string>
-    <string name="next_tuesday">Marțea viitoare</string>
-    <string name="next_wednesday">Miercurea viitoare</string>
-    <string name="next_thursday">Joia viitoare</string>
-    <string name="next_friday">Vinerea viitoare</string>
-    <string name="next_saturday">Sâmbăta viitoare</string>
     <string name="shortcut_pick_time">Ora de preluare</string>
     <string name="no_time">Fără timp</string>
     <string name="TEA_note_label">Descriere</string>
@@ -394,7 +380,6 @@
     <string name="delete_task">Șterge sarcina</string>
     <string name="menu_discard_changes">Renunță la modificări</string>
     <string name="more_options">Mai multe opțiuni</string>
-    <string name="quiet_hours_in_effect">Orele liniștite sunt activate</string>
     <string name="troubleshooting">Depanare</string>
     <string name="notification_troubleshooting_summary">Atinge aici dacă ai probleme cu notificările</string>
     <string name="disable_battery_optimizations">Dezactivează optimizările pentru baterie</string>
@@ -419,10 +404,6 @@
     <string name="enabled">Activat</string>
     <string name="swipe_to_snooze_description">Timp de amânare</string>
     <string name="swipe_to_snooze_time_description">O notificare eliminată va fi amânată și recreată %1$s</string>
-    <string name="quiet_hours">Ore de liniște</string>
-    <string name="quiet_hours_summary">Nu există memento-uri în timpul orelor de liniște</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Începutul orelor de liniște</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Sfârșitul orelor de liniște</string>
     <string name="swipe_to_snooze_time_immediately">imediat</string>
     <string name="swipe_to_snooze_time_15_minutes">după 15 minute</string>
     <string name="swipe_to_snooze_time_30_minutes">după 30 de minute</string>
@@ -485,7 +466,6 @@
     <string name="settings_localization">Localizare</string>
     <string name="theme">Temă</string>
     <string name="theme_dynamic">Dinamic</string>
-    <string name="translations">Contribuie la traduceri</string>
     <string name="widget_open_list">Listă deschisă</string>
     <string name="theme_light">Luminoasă</string>
     <string name="theme_black">Neagră</string>

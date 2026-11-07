@@ -39,7 +39,6 @@ import org.tasks.caldav.CaldavClientProvider
 import org.tasks.etebase.EtebaseClientProvider
 import org.tasks.etebase.EtebaseSynchronizer
 import org.tasks.caldav.TasksBasicAuth
-import org.tasks.feed.BlogFeedChecker
 import org.tasks.http.HttpClientFactory
 import org.tasks.http.OkHttpKtorClientFactory
 import org.tasks.caldav.FileStorage
@@ -500,15 +499,6 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun providesBackgroundWork(workManager: WorkManager): BackgroundWork = workManager
-
-    @Provides
-    @Singleton
-    fun providesBlogFeedChecker(
-        httpClientFactory: HttpClientFactory,
-        tasksPreferences: TasksPreferences,
-        appPreferences: AppPreferences,
-        crashReporting: CrashReporting,
-    ) = BlogFeedChecker(httpClientFactory, tasksPreferences, appPreferences, crashReporting)
 
     @Provides
     fun providesTaskMover(

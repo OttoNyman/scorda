@@ -92,7 +92,6 @@
     <string name="display_name">Εμφανιζόμενο όνομα</string>
     <string name="price_per_month_with_currency">%1$s/μήνα</string>
     <string name="price_per_year_with_currency">%1$s/χρόνο</string>
-    <string name="donate_nag">Σκεφτείτε να δείξετε την υποστήριξη σας με μια δωρεά!</string>
     <string name="manage_subscription">Τροποποίηση συνδρομής</string>
     <string name="button_unsubscribe">Ακύρωση συνδρομής</string>
     <string name="local_lists">Τοπικές λίστες</string>
@@ -156,14 +155,10 @@
     <string name="etesync_account_description">Απαιτείται λογαριασμός στο EteSync.com ή σε αυτο-φιλοξενούμενο διακομιστή</string>
     <string name="show_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
     <string name="app_settings">Ρυθμίσεις Εφαρμογής</string>
-    <string name="whats_new">Τι καινούργιο υπάρχει</string>
-    <string name="version_string">Έκδοση %1$s</string>
     <string name="rate_tasks">Βαθμολογήστε το Tasks</string>
     <string name="documentation">Έγγραφα</string>
-    <string name="issue_tracker">Παρακολούθηση ζητημάτων</string>
     <string name="contact_developer">Επικοινωνία με τον προγραμματιστή</string>
     <string name="send_application_logs">Αποστολή αρχείων καταγραφής εφαρμογών</string>
-    <string name="follow_reddit">Γίνετε μέλος του r/tasks</string>
     <string name="source_code">Πηγαίος κώδικας</string>
     <string name="third_party_licenses">Άδειες τρίτων</string>
     <string name="privacy_policy">Πολιτική απορρήτου</string>
@@ -171,12 +166,10 @@
     <string name="send_anonymous_statistics_summary">Στείλτε ανώνυμα στατιστικά στοιχεία χρήσης και αναφορές σφαλμάτων για να συμβάλετε στη βελτίωση του Tasks. Δεν θα συλλεχθούν προσωπικά δεδομένα.</string>
     <string name="license_summary">Η εφαρμογή Tasks είναι ελεύθερο λογισμικό ανοιχτού κώδικα, με άδεια χρήσης GNU General Public License v3.0</string>
     <string name="support">Υποστήριξη</string>
-    <string name="social">Κοινωνικά δίκτυα</string>
     <string name="open_source">Ανοιχτός κώδικας</string>
     <string name="restart_required">Επανεκκινήστε τις Εργασίες για να εφαρμοστεί αυτή η αλλαγή</string>
     <string name="restart_now">Επανεκκίνηση τώρα</string>
     <string name="restart_later">Αργότερα</string>
-    <string name="blog_feed_none">Κανένα</string>
     <string name="cannot_access_account">Δεν υπάρχει πρόσβαση στο λογαριασμό</string>
     <string name="new_list">Δημιουργία νέας λίστας</string>
     <string name="list_members">Μέλη λίστας</string>
@@ -208,13 +201,6 @@
     <string name="due_time">Ώρα λήξης</string>
     <string name="day_before_due">Μια ημέρα πριν τη λήξη</string>
     <string name="week_before_due">Εβδομάδα πριν τη λήξη</string>
-    <string name="next_sunday">Επόμενη Κυρ</string>
-    <string name="next_monday">Επόμενη Δευτ</string>
-    <string name="next_tuesday">Επόμενη Τρι</string>
-    <string name="next_wednesday">Επόμενη Τετ</string>
-    <string name="next_thursday">Επόμενη Πεμ</string>
-    <string name="next_friday">Επόμενη Παρ</string>
-    <string name="next_saturday">Επόμενο Σαβ</string>
     <string name="shortcut_pick_time">Επιλογή ώρας</string>
     <string name="no_time">Χωρίς ώρα</string>
     <string name="TEA_note_label">Περιγραφή</string>
@@ -359,7 +345,6 @@
     <string name="delete_task">Διαγραφή καθήκοντος</string>
     <string name="menu_discard_changes">Απόρριψη αλλαγών</string>
     <string name="more_options">Περισσότερες επιλογές</string>
-    <string name="quiet_hours_in_effect">Οι ώρες ησυχίας είναι ενεργές</string>
     <string name="troubleshooting">Αντιμετώπιση προβλημάτων</string>
     <string name="notification_troubleshooting_summary">Πατήστε εδώ αν έχετε πρόβλημα με τις ειδοποιήσεις</string>
     <string name="disable_battery_optimizations">Απενεργοποίηση βελτιστοποιήσεων μπαταρίας</string>
@@ -380,10 +365,6 @@
     <string name="enabled">Ενεργοποιημένο</string>
     <string name="swipe_to_snooze_description">Ώρα αναβολής</string>
     <string name="swipe_to_snooze_time_description">Μια διαγραμμένη ειδοποίηση θα αναβληθεί και δημιουργηθεί εκ νέου %1$s</string>
-    <string name="quiet_hours">Ώρες ησυχίας</string>
-    <string name="quiet_hours_summary">Καθόλου υπενθυμίσεις κατά τη διάρκεια των ωρών ησυχίας</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Ξεκίνησε η ώρα ησυχίας </string>
-    <string name="rmd_EPr_quiet_hours_end_title">Τέλος ώρας κοινής ησυχίας</string>
     <string name="swipe_to_snooze_time_immediately">κατευθείαν</string>
     <string name="swipe_to_snooze_time_15_minutes">μετά από 15 λεπτά</string>
     <string name="swipe_to_snooze_time_30_minutes">μετά από 30 λεπτά</string>
@@ -440,7 +421,6 @@
     <string name="settings_localization">Εντοπισμός</string>
     <string name="theme">Θέμα</string>
     <string name="theme_dynamic">Δυναμικό</string>
-    <string name="translations">Συνεισφέρετε μεταφράσεις</string>
     <string name="widget_open_list">Άνοιγμα λίστας</string>
     <string name="theme_light">Λευκό</string>
     <string name="theme_black">Μαύρο</string>

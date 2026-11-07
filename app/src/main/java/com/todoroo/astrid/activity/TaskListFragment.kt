@@ -103,11 +103,9 @@ import org.tasks.caldav.LocalListSettingsActivity
 import org.tasks.caldav.TasksAccountDataRepository
 import org.tasks.compose.AlarmsDisabledBanner
 import org.tasks.compose.AppUpdatedBanner
-import org.tasks.compose.BlogBanner
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.FilterSelectionActivity.Companion.registerForListPickerResult
 import org.tasks.compose.NotificationsDisabledBanner
-import org.tasks.compose.SubscriptionNagBanner
 import org.tasks.compose.SubscriptionRequiredBanner
 import org.tasks.compose.SyncWarningGoogleTasks
 import org.tasks.compose.SyncWarningMicrosoft
@@ -619,28 +617,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                                     dismiss = { listViewModel.dismissBanner() },
                                 )
 
-                            Banner.BegForMoney ->
-                                SubscriptionNagBanner(
-                                    subscribe = {
-                                        listViewModel.dismissBanner(tookAction = true)
-                                        if (TasksApplication.IS_GOOGLE_PLAY) {
-                                            context.startActivity(
-                                                Intent(
-                                                    context,
-                                                    PurchaseActivity::class.java
-                                                ).putExtra(
-                                                    PurchaseActivityViewModel.EXTRA_SOURCE,
-                                                    "nag"
-                                                )
-                                            )
-                                        } else {
-                                            preferences.lastSubscribeRequest = currentTimeMillis()
-                                            context.openUri(R.string.url_donate)
-                                        }
-                                    },
-                                    dismiss = { listViewModel.dismissBanner() },
-                                )
-
                             Banner.WarnGoogleTasks ->
                                 SyncWarningGoogleTasks(
                                     moreInfo = {
@@ -664,17 +640,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                                     whatsNew = {
                                         listViewModel.dismissBanner(tookAction = true)
                                         context.openUri(TasksUrls.CHANGELOG)
-                                    },
-                                    dismiss = { listViewModel.dismissBanner() },
-                                )
-
-                            is Banner.BlogAnnouncement ->
-                                BlogBanner(
-                                    title = banner.post.title,
-                                    body = banner.post.description,
-                                    readMore = {
-                                        listViewModel.dismissBanner(tookAction = true)
-                                        context.openUri(banner.post.link)
                                     },
                                     dismiss = { listViewModel.dismissBanner() },
                                 )

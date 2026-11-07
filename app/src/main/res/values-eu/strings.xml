@@ -298,15 +298,11 @@
     <string name="widget_show_dividers">Erakutsi banatzaileak</string>
     <string name="widget_show_menu">Erakutsi menua</string>
     <string name="sort_created">Sorrera dataren arabera</string>
-    <string name="support_development_subscribe">Desblokeatu ezaugarri gehigarriak eta babestu software librea</string>
-    <string name="enjoying_tasks">Tasks gogoko\?</string>
     <string name="whats_new">Zer dago berri</string>
     <string name="action_new_task">Zeregin berria</string>
     <string name="sort_modified_group">Aldaketa %s</string>
     <string name="sort_created_group">Sorrera %s</string>
     <string name="lists">Zerrendak</string>
-    <string name="astrid_sort_order">Eskuzko Astrid ordenatzea</string>
-    <string name="astrid_sort_order_summary">Gaitu Astrid-eko eskuzko ordenatze modua \'Nire zereginak\', \'Gaur\', eta etiketentzako. Ordenatze modu honek \'Nire ordena\'-rekin ordezkatuko da etorkizuneko bertsio batean</string>
     <string name="reset_sort_order">Berrezarri ordenatze irizpidea</string>
     <string name="CFC_list_name">Zerrendan…</string>
     <string name="permission_read_tasks">Tasks datu-basera sarbide osoa</string>
@@ -333,7 +329,6 @@
     <string name="background_location_permission_required">Aplikazio honek kokapen datuak jasotzen ditu aplikazioa itxita dagoenean kokapenean oinarritutako oroigarriak gaitu ahal izateko.</string>
     <string name="no_app_found">Ez dago eskaera bete dezakeen aplikaziorik</string>
     <string name="header_spacing">Espazioa</string>
-    <string name="always_display_full_date">Erakutsi data osoa</string>
     <string name="start_date">Hasiera data</string>
     <string name="SSD_sort_start">Hasiera dataren arabera</string>
     <string name="github_sponsor">Babeslea</string>

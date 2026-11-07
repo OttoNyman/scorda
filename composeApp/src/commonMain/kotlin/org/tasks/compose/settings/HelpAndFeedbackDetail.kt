@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -34,8 +37,10 @@ fun HelpAndFeedbackDetail(
     val tasksPreferences = koinInject<TasksPreferences>()
     val logExporter = if (viewModel.showSendLogs) koinInject<LogExporter>() else null
     val scope = rememberCoroutineScope()
+    val snackbar = remember { SnackbarHostState() }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(Res.string.about)) },
@@ -59,6 +64,7 @@ fun HelpAndFeedbackDetail(
                 viewModel = viewModel,
                 openUri = { uriHandler.openUri(it) },
                 onRestartApplication = { restartApplication() },
+                showMessage = { scope.launch { snackbar.showSnackbar(it) } },
                 onSendLogs = logExporter?.let { exporter -> { scope.launch { exporter.export() } } },
                 onCollectStatisticsChanged = { enabled ->
                     scope.launch {

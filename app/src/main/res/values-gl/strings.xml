@@ -276,7 +276,6 @@
     <string name="back">Atrás</string>
     <string name="auto_dismiss_datetime_list">Lista de tarefas</string>
     <string name="cancel">Cancelar</string>
-    <string name="always_display_full_date">Amosar data completa</string>
     <string name="no_start_date">Sen data de inicio</string>
     <string name="snooze_all">Pospoñer todo</string>
     <string name="google_drive_backup">Seguranza en Google Drive</string>
@@ -327,8 +326,6 @@
     <string name="filter_any_start_date">Calquera data de inicio</string>
     <string name="app_settings">Configuración da aplicación</string>
     <string name="customize_drawer">Personalizar caixón</string>
-    <string name="astrid_sort_order">Ordenación manual de Astrid</string>
-    <string name="astrid_sort_order_summary">Activar o modo de ordenación manual de Astrid para \'As miñas tarefas\', \'Hoxe\' e as etiquetas. Este modo de ordenación será substituído por \'O meu pedido\' nunha actualización futura</string>
     <string name="sort_list">Por lista</string>
     <string name="TEA_creation_date">Data de creación</string>
     <string name="delete_comment">comentario</string>
@@ -348,11 +345,6 @@
     <string name="chip_appearance">Apariencia dos distintivos</string>
     <string name="widget_id">ID do Widget: %d</string>
     <string name="filter_overdue">Atrasada</string>
-    <string name="enjoying_tasks">Gústache Tasks?</string>
-    <string name="donate_nag">Considera mostrar o teu apoio cunha doazón!</string>
-    <string name="donate_today">Doa hoxe</string>
-    <string name="donate_maybe_later">Quizais máis tarde</string>
-    <string name="support_development_subscribe">Desbloquea funcións adicionais e apoia software de código aberto</string>
     <string name="sort_completion_group">Completado %s</string>
     <string name="permission_read_tasks">Acceso completo á base de datos de Tasks</string>
     <string name="android_auto_backup">Servicio de Copias de Seguridade de Android</string>

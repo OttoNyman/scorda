@@ -64,7 +64,7 @@ import org.tasks.auth.TasksServerEnvironment
 fun WelcomeScreenLayout(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean = true,
-    onSignIn: () -> Unit,
+    onSignIn: (() -> Unit)?,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit = {},
     openLegalUrl: (String) -> Unit,
@@ -238,7 +238,7 @@ private fun EnvironmentSelectorDialog(
 private fun WelcomeContent(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean,
-    onSignIn: () -> Unit,
+    onSignIn: (() -> Unit)?,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit,
     openLegalUrl: (String) -> Unit,
@@ -262,18 +262,20 @@ private fun WelcomeContent(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Button(
-            onClick = onSignIn,
-            modifier = buttonModifier
-        ) {
-            Text(
-                text = stringResource(Res.string.add_account),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-            )
-        }
+        if (onSignIn != null) {
+            Button(
+                onClick = onSignIn,
+                modifier = buttonModifier
+            ) {
+                Text(
+                    text = stringResource(Res.string.add_account),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+            }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         OutlinedButton(
             onClick = onContinueWithoutSync,

@@ -268,14 +268,11 @@
     <string name="filter_criteria_unstarted">Nespustené</string>
     <string name="opacity_footer">Priehľadnosť päty</string>
     <string name="customize_edit_screen_summary">Preorganizujte alebo odstráňte polia</string>
-    <string name="always_display_full_date">Zobraziť celý dátum</string>
     <string name="CFC_startBefore_name">Spustenie pred…</string>
     <string name="no_start_date">Bez dátumu spustenia</string>
     <string name="filter_any_start_date">Akýkoľvek dátum spustenia</string>
-    <string name="astrid_sort_order">Ručné triedenie Astrid</string>
     <string name="start_date">Dátum spustenia</string>
     <string name="theme_system_default">Podľa systému</string>
-    <string name="astrid_sort_order_summary">Zapne ručné triedenie Astrid pre „Moje úlohy“, „Dnes“ a štítky. Tento režim triedenia bude v budúcnosti nahradený režimom „Vlastné triedenie“</string>
     <string name="display_name">Zobrazované meno</string>
     <string name="sort_completion_group">Dokončené %s</string>
     <string name="reset_sort_order">Obnoviť triedenie</string>
@@ -306,7 +303,6 @@
     <string name="davx5_selection_description">Synchronizujte svoje úlohy pomocou aplikácie DAVx⁵</string>
     <string name="show_advanced_settings">Zobraziť pokročilé možnosti</string>
     <string name="filter_eisenhower_box_2">Dôležité, ale nie naliehavé</string>
-    <string name="support_development_subscribe">Odomknite si ďalšie funkcie a podporte softvér s otvoreným kódom</string>
     <string name="android_auto_backup_device_summary">Službu zálohovania musíte tiež zapnúť v nastaveniach. Nie všetky zariadenia to však umožňujú.</string>
     <string name="backups_ignore_warnings">Ignorovať varovania</string>
     <string name="custom_filter_is_subtask">Je podúloha</string>
@@ -317,10 +313,6 @@
     <string name="whats_new">Čo je nové</string>
     <string name="list_separator_with_space">", "</string>
     <string name="filter_eisenhower_box_4">Ani naliehavé, ani dôležité</string>
-    <string name="enjoying_tasks">Páči sa vám Tasks?</string>
-    <string name="donate_nag">Zvážte podporenie projektu dobrovoľným príspevkom!</string>
-    <string name="donate_today">Prispejte dnes</string>
-    <string name="donate_maybe_later">Možno neskôr</string>
     <string name="sort_modified_group">Zmenené %s</string>
     <string name="android_auto_backup">Android služba zálohovania</string>
     <string name="last_backup_never">nikdy</string>

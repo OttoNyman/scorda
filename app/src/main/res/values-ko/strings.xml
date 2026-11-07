@@ -250,12 +250,10 @@
     <string name="preferences_advanced">고급</string>
     <string name="help_and_feedback">도움말 및 피드백</string>
     <string name="theme_system_default">시스템 기본설정</string>
-    <string name="support_development_subscribe">부가 기능을 해제하고 오픈소스 소프트웨어를 지원하십시오</string>
     <string name="compact">촘촘하게</string>
     <string name="settings_default">기본값</string>
     <string name="sort_modified_group">%s 변경</string>
     <string name="sort_created_group">%s 생성</string>
-    <string name="enjoying_tasks">Tasks 잘 쓰고 계십니까\?</string>
     <string name="filter_eisenhower_box_4">중요하지 않고 급하지 않은 일</string>
     <string name="filter_eisenhower_box_3">중요하지 않지만 긴급한 일</string>
     <string name="filter_eisenhower_box_2">중요하지만 급하지 않은 일</string>
@@ -314,8 +312,6 @@
     <string name="davx5_selection_description">DAVx⁵ 앱과 내 할일 동기화</string>
     <string name="no_app_found">이 요청을 처리할 앱이 없습니다</string>
     <string name="header_spacing">줄 간격</string>
-    <string name="astrid_sort_order_summary">\'나의 할일\', \'오늘\', 태그 화면에서 Astrid 수동 정렬을 사용할 수 있습니다. 추후 업데이트 시 \'순서 직접 정렬\' 을 이 방식으로 대체할 예정입니다</string>
-    <string name="astrid_sort_order">Astrid 수동 정렬</string>
     <string name="authorization_cancelled">인증 취소됨</string>
     <string name="current_subscription">현재 구독: %s</string>
     <string name="your_subscription_expired">구독이 만료되었습니다. 서비스를 재개하려면 지금 구독하세요.</string>
@@ -331,7 +327,6 @@
     <string name="no_google_play_subscription">적합한 구글 플레이 구독을 찾을 수 없습니다</string>
     <string name="custom_filter_is_subtask">하위할일</string>
     <string name="custom_filter_has_subtask">하위할일 있음</string>
-    <string name="always_display_full_date">일시 간략화하지 않고 그대로 표시</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="start_date">시작일</string>
@@ -373,9 +368,6 @@
     <string name="completed">완료</string>
     <string name="snackbar_task_completed">할일 완료</string>
     <string name="sort_list">목록 기준</string>
-    <string name="donate_today">오늘 기부하기</string>
-    <string name="donate_maybe_later">나중에</string>
-    <string name="donate_nag">기부를 통해 여러분의 지지를 보여주세요!</string>
     <string name="change_priority">우선순위 변경</string>
     <string name="show_edit_screen_without_unlock">잠금해제 없이 편집 화면 보이기</string>
     <string name="customize_drawer">서랍 정렬</string>
@@ -414,7 +406,6 @@
     <string name="tos_updated_title">이용약관을 변경함</string>
     <string name="accept">동의</string>
     <string name="exit">종료</string>
-    <string name="read_more">더 알아보기</string>
     <string name="write_permission_label">할일 편집</string>
     <string name="returning_user">기존 사용자이신가요?</string>
     <string name="widget_view_more_tasks">할일 더보기</string>

@@ -16,7 +16,7 @@ fun WelcomeScreen(
     importViewModel: ImportTasksViewModel,
     filePickerIntent: Intent,
     onBack: () -> Unit,
-    onSignIn: () -> Unit,
+    onSignIn: (() -> Unit)?,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit,
     openLegalUrl: (String) -> Unit,

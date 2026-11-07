@@ -17,9 +17,6 @@ class AndroidSoundPlayer(
         if (notificationManager.currentInterruptionFilter != INTERRUPTION_FILTER_ALL) {
             return
         }
-        if (preferences.isCurrentlyQuietHours()) {
-            return
-        }
         preferences.completionSound?.let { uri ->
             RingtoneManager.getRingtone(context, uri)
                 ?.apply {

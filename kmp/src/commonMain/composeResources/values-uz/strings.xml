@@ -79,7 +79,6 @@
     <string name="theme_dark">Qorongʻu</string>
     <string name="logout">Chiqish</string>
     <string name="reinitialize_account">Qayta boshlash</string>
-    <string name="whats_new">Yangiliklar</string>
     <string name="caldav_selection_description">Ochiq internet standartlariga asoslangan sinxronlash</string>
     <string name="etesync_selection_description">Oxiridan oxirigacha shifrlangan sinxronlash</string>
     <string name="decsync_selection_description">Fayllarga asoslangan sinxronlash</string>
@@ -104,7 +103,6 @@
     <string name="filter_medium_priority">O‘rta ustuvorlik</string>
     <string name="filter_low_priority">Past ustuvorlik</string>
     <string name="filter_no_priority">Ustuvorlik belgilanmagan</string>
-    <string name="donate_nag">Xayriya orqali loyihani qo‘llab-quvvatlashni o‘ylab ko‘ring!</string>
     <string name="email_to_task">Vazifaga aylantirish uchun e-pochta</string>
     <string name="email_to_task_address">E-pochta manzilingiz</string>
     <string name="completed">Bajarildi</string>
@@ -167,6 +165,5 @@
     <string name="mcp_copy">Koʻchirma</string>
     <string name="metadata_move">Ko‘chirish</string>
     <string name="works_with_desktop">Kompyuter uchun Scorda</string>
-    <string name="blog_feed_none">Yo\'q</string>
     <string name="new_filter">Yangi filtr yaratish</string>
 </resources>

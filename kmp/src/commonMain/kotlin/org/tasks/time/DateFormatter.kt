@@ -66,10 +66,12 @@ class DateFormatter internal constructor(
         }
 
     fun fullDate(date: Long, style: DateStyle = DateStyle.LONG): String =
-        stripYear(platform.date(date, style), currentTimeMillis().year)
+        datePattern?.let { platform.pattern(date, it) }
+            ?: stripYear(platform.date(date, style), currentTimeMillis().year)
 
     fun fullDateTime(date: Long, style: DateStyle = DateStyle.LONG): String =
-        stripYear(platform.fullDateTime(date, is24HourFormat, style), currentTimeMillis().year)
+        datePattern?.let { "${platform.pattern(date, it)} ${time(date)}" }
+            ?: stripYear(platform.fullDateTime(date, is24HourFormat, style), currentTimeMillis().year)
 
     fun time(date: Long): String = platform.time(date, is24HourFormat)
 
@@ -137,6 +139,10 @@ class DateFormatter internal constructor(
         @Volatile
         private var cache: Cache? = null
 
+        /** The date format chosen in settings, or null for the system one. See [DateFormats]. */
+        @Volatile
+        var datePattern: String? = null
+
         fun cachedOrNull(is24HourFormat: Boolean): DateFormatter? =
             cache
                 ?.takeIf { it.localeTag == currentLocaleTag() }
@@ -181,4 +187,31 @@ internal data class RelativeDayStrings(
             yesterdayAbbrevLowercase = getString(Res.string.yesterday_abbrev_lowercase),
         )
     }
+}
+
+/** Date formats offered in settings. Stored as one string: [AUTO], [SYSTEM] or a pattern. */
+object DateFormats {
+    /** Today, tomorrow and weekday names for the coming week, the system format further out. */
+    const val AUTO = ""
+
+    /** Always the system format, never "today". */
+    const val SYSTEM = "system"
+
+    val patterns = listOf(
+        "dd.MM.yyyy",
+        "dd.MM.yy",
+        "d.M.yyyy",
+        "dd/MM/yyyy",
+        "MM/dd/yyyy",
+        "M/d/yy",
+        "yyyy-MM-dd",
+        "d MMM yyyy",
+        "d MMMM yyyy",
+        "MMM d, yyyy",
+        "EEE, d MMM yyyy",
+        "EEEE, d MMMM yyyy",
+    )
+
+    /** The pattern [DateFormatter] should use for [format], null for the system one. */
+    fun patternOf(format: String): String? = format.takeIf { it != AUTO && it != SYSTEM }
 }

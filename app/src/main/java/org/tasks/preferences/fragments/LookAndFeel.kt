@@ -20,7 +20,6 @@ import org.tasks.billing.PurchaseActivity
 import org.tasks.billing.PurchaseActivityViewModel
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.FilterSelectionActivity.Companion.registerForFilterPickerResult
-import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.settings.LookAndFeelScreen
 import org.tasks.compose.settings.baseThemeName
 import org.tasks.dialogs.ColorPalettePicker
@@ -29,14 +28,11 @@ import org.tasks.dialogs.ColorPickerAdapter
 import org.tasks.dialogs.ColorWheelPicker
 import org.tasks.dialogs.ThemePickerDialog
 import org.tasks.dialogs.ThemePickerDialog.Companion.newThemePickerDialog
-import org.tasks.extensions.Context.openUri
 import org.tasks.locale.LocalePickerDialog
 import org.tasks.preferences.BasePreferences
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import org.tasks.themes.ThemeBase
-import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.url_translations
 import org.tasks.themes.ThemeBase.EXTRA_THEME_OVERRIDE
 import javax.inject.Inject
 
@@ -44,7 +40,6 @@ import javax.inject.Inject
 class LookAndFeel : Fragment() {
 
     @Inject lateinit var theme: Theme
-    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: LookAndFeelHiltViewModel by viewModels()
 
@@ -115,7 +110,6 @@ class LookAndFeel : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            val translationsUrl = stringResource(Res.string.url_translations)
             LookAndFeelScreen(
                 themeName = baseThemeName(viewModel.themeIndex),
                 dynamicColorAvailable = viewModel.dynamicColorAvailable,
@@ -123,8 +117,6 @@ class LookAndFeel : Fragment() {
                 dynamicColorProOnly = viewModel.dynamicColorProOnly,
                 themeColor = viewModel.themeColor,
                 launcherColor = viewModel.launcherColor,
-                showMarkdown = featureGate.current.notes,
-                markdownEnabled = viewModel.settings.markdown,
                 openLastViewedList = viewModel.settings.openLastViewedList,
                 defaultFilterName = viewModel.defaultFilterName,
                 localeName = viewModel.localeName,
@@ -148,9 +140,6 @@ class LookAndFeel : Fragment() {
                         viewModel.launcherColor,
                         ColorPickerAdapter.Palette.LAUNCHERS,
                     ).show(parentFragmentManager, FRAG_TAG_COLOR_PICKER)
-                },
-                onMarkdown = { enabled ->
-                    viewModel.setMarkdown(enabled)
                 },
                 onOpenLastViewedList = { enabled ->
                     viewModel.setOpenLastViewedList(enabled)
@@ -177,9 +166,6 @@ class LookAndFeel : Fragment() {
                         LocalePickerDialog.newLocalePickerDialog()
                             .show(parentFragmentManager, FRAG_TAG_LOCALE_PICKER)
                     }
-                },
-                onTranslations = {
-                    context?.openUri(translationsUrl)
                 },
             )
         }

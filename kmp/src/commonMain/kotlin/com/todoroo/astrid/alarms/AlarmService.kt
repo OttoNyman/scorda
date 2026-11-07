@@ -93,9 +93,6 @@ class AlarmService(
     suspend fun triggerAlarms(
         trigger: suspend (List<Notification>) -> Collection<Long>,
     ): Long {
-        if (preferences.isCurrentlyQuietHours()) {
-            return preferences.adjustForQuietHours(currentTimeMillis())
-        }
         val cutoff = currentTimeMillis().startOfMinute() + ONE_MINUTE
         val (overdue, upcoming) = alarmsDueBefore(cutoff)
         val snoozed = overdue

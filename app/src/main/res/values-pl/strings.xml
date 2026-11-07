@@ -300,8 +300,6 @@
     <string name="custom_filter_and">ORAZ</string>
     <string name="custom_filter_criteria">Kryteria filtrowania</string>
     <string name="sort_created">Wg czasu utworzenia</string>
-    <string name="support_development_subscribe">Odblokuj dodatkowe funkcje i wesprzyj oprogramowanie open source</string>
-    <string name="enjoying_tasks">Podoba Ci się Tasks\?</string>
     <string name="whats_new">Co nowego</string>
     <string name="sort_modified_group">Zmienione %s</string>
     <string name="sort_created_group">Stworzone %s</string>
@@ -310,8 +308,6 @@
     <string name="reset_sort_order">Resetuj porządek sortowania</string>
     <string name="lists">Listy</string>
     <string name="CFC_list_name">Na liście…</string>
-    <string name="astrid_sort_order_summary">Aktywuje ręczny (jak w Astrid) tryb sortowania dla \'Moich zadań\', \'Dzisiaj\' oraz tagów. Ten tryb sortowania będzie zastąpiony przez \'Ręczne\' w kolejnych aktualizacjach</string>
-    <string name="astrid_sort_order">Ręczne sortowanie (jak w Astrid)</string>
     <string name="davx5_selection_description">Synchronizuj swoje zadania z aplikacją DAVx⁵</string>
     <string name="backup_location_warning">OSTRZEŻENIE: Pliki znajdujące się w %s zostaną usunięte, jeśli aplikacja Tasks zostanie odinstalowana! Wybierz własną lokalizację, aby zapobiec usunięciu plików przez system Android.</string>
     <string name="backups_ignore_warnings_summary">Ignoruj ostrzeżenia dotyczące kopii zapasowych, jeśli nie potrzebujesz kopii zapasowych lub masz własne rozwiązanie do tworzenia kopii zapasowych</string>
@@ -330,7 +326,6 @@
     <string name="custom_filter_has_subtask">Ma podzadania</string>
     <string name="multi_select_reschedule">Przełóż</string>
     <string name="header_spacing">Rozstaw</string>
-    <string name="always_display_full_date">Pokaż pełną datę</string>
     <string name="cancel">Anuluj</string>
     <string name="ok">OK</string>
     <string name="github_sponsor">Sponsor</string>

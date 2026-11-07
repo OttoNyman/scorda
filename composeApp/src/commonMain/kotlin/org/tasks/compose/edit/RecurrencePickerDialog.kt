@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,8 +43,6 @@ fun RecurrencePickerDialog(
     recurrence: String?,
     dueDate: Long,
     accountType: Int,
-    calendarInputMode: Boolean,
-    onCalendarInputModeChange: (Boolean) -> Unit,
     onSelected: (String?) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -57,8 +54,6 @@ fun RecurrencePickerDialog(
             recurrence = recurrence,
             dueDate = dueDate,
             accountType = accountType,
-            calendarInputMode = calendarInputMode,
-            onCalendarInputModeChange = onCalendarInputModeChange,
             onSelected = onSelected,
             onDismiss = { showCustom = false },
         )
@@ -117,8 +112,6 @@ private fun CustomRecurrenceDialog(
     recurrence: String?,
     dueDate: Long,
     accountType: Int,
-    calendarInputMode: Boolean,
-    onCalendarInputModeChange: (Boolean) -> Unit,
     onSelected: (String?) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -152,12 +145,6 @@ private fun CustomRecurrenceDialog(
                 setOccurrences = viewModel::setOccurrences,
                 toggleDay = viewModel::toggleDay,
                 setMonthSelection = viewModel::setMonthSelection,
-                calendarDisplayMode = if (calendarInputMode) {
-                    DisplayMode.Input
-                } else {
-                    DisplayMode.Picker
-                },
-                setDisplayMode = { onCalendarInputModeChange(it == DisplayMode.Input) },
             )
         }
     }

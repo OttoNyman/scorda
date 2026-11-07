@@ -228,7 +228,6 @@
     <string name="due_date">Data completării</string>
     <string name="TEA_timer_elap">Trecut %s</string>
     <string name="SSD_sort_start">După data începerii</string>
-    <string name="astrid_sort_order_summary">Activează modul de sortare manuală Astrid pentru \"Sarcini mele\", \"Astăzi\" și etichete. Acest mod de sortare va fi înlocuit cu \"Prioritatea mea\" într-o actualizare viitoare</string>
     <string name="save">Salvează</string>
     <string name="TEA_elapsedDuration_label">Timp deja alocat</string>
     <string name="TEA_estimatedDuration_label">Cât timp va dura\?</string>
@@ -243,7 +242,6 @@
     <string name="SSD_sort_alpha">După titlu</string>
     <string name="SSD_sort_auto">Sortare inteligentă</string>
     <string name="TLA_no_items">Nu există sarcini aici.</string>
-    <string name="astrid_sort_order">Sortare manuală Astrid</string>
     <string name="SSD_sort_my_order">Sortarea mea</string>
     <string name="action_call">Sună</string>
     <string name="TAd_actionEditTask">Editare</string>
@@ -279,8 +277,6 @@
     <string name="local_lists">Liste locale</string>
     <string name="sort_modified_group">Modificat %s</string>
     <string name="sort_created_group">Creat %s</string>
-    <string name="support_development_subscribe">Deblochează funcții suplimentare și sprijină software-ul cu sursă deschisă</string>
-    <string name="enjoying_tasks">Îți place Tasks\?</string>
     <string name="filter_eisenhower_box_4">Nu este important și nu este urgent</string>
     <string name="filter_eisenhower_box_3">Nu este important și urgent</string>
     <string name="filter_eisenhower_box_2">Important și deloc urgent</string>
@@ -371,7 +367,6 @@
     <string name="EPr_delete_task_data">Șterge datele sarcinii</string>
     <string name="EPr_reset_preferences_warning">Preferințele vor fi reinițializate la valorile implicite</string>
     <string name="EPr_reset_preferences">Reinițializarea preferințelor</string>
-    <string name="always_display_full_date">Afișează data completă</string>
     <string name="now">Acum</string>
     <string name="completed">Finalizat</string>
     <string name="snackbar_task_completed">Sarcină îndeplinită</string>
@@ -401,9 +396,6 @@
     <string name="multiline_title">Permite titluri multiline</string>
     <string name="multiline_title_on">Apasă tasta Enter pentru a adăuga o linie nouă</string>
     <string name="sync_warning_microsoft">Nu toate detaliile sarcinii se sincronizează cu Microsoft To Do.</string>
-    <string name="donate_today">Donează astăzi</string>
-    <string name="donate_nag">Exprimă-ți sprijinul cu ajutorul unei donații!</string>
-    <string name="donate_maybe_later">Poate mai târziu</string>
     <string name="cost_money">Preț: $</string>
     <string name="sync_warning_microsoft_title">Despre sincronizarea Microsoft To Do</string>
     <string name="sync_warning_google_tasks_title">Despre sincronizarea Sarcini Google</string>
@@ -439,7 +431,6 @@
     <string name="accept">Acceptă</string>
     <string name="exit">Ieșire</string>
     <string name="returning_user">Utilizator care revine?</string>
-    <string name="read_more">Citeşte mai mult</string>
     <string name="email_to_task">E-mail către sarcină</string>
     <string name="sort_options">Opțiuni de sortare</string>
     <string name="write_permission_label">Modificare sarcini</string>

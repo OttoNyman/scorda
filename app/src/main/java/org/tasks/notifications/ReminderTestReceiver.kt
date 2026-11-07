@@ -75,8 +75,6 @@ class RingReceiver : BroadcastReceiver() {
             try {
                 val live = ids.filter { stillDue(context, it) }
                 if (live.isEmpty()) return@launch
-                val testOnly = live.all { it == TEST_NOTIFICATION_ID.toLong() }
-                if (!testOnly && preferences.isCurrentlyQuietHours()) return@launch
                 val sounding = live
                     .map { it to levelOf(it) }
                     .filter { it.second != AlertLevel.SILENT }

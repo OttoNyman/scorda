@@ -69,17 +69,18 @@ class TasksJsonExporter @Inject constructor(
         progressDialog?.progress = taskNumber
     }
 
-    suspend fun exportTasks(context: Context?, exportType: ExportType, progressDialog: ProgressDialog?) {
+    /** Returns the file it wrote, or null when the export failed. */
+    suspend fun exportTasks(context: Context?, exportType: ExportType, progressDialog: ProgressDialog?): Uri? {
         this.context = context
         exportCount = 0
         this.progressDialog = progressDialog
         if (exportType != ExportType.EXPORT_TYPE_SERVICE) {
             handler = Handler()
         }
-        runBackup(exportType)
+        return runBackup(exportType)
     }
 
-    private suspend fun runBackup(exportType: ExportType) {
+    private suspend fun runBackup(exportType: ExportType): Uri? {
         try {
             val filename = getFileName(exportType)
             val tasks = taskDao.getAllTaskIds()
@@ -108,8 +109,10 @@ class TasksJsonExporter @Inject constructor(
             if (exportType != ExportType.EXPORT_TYPE_SERVICE) {
                 onFinishExport(filename)
             }
+            return externalStorageBackup
         } catch (e: IOException) {
             Timber.e(e)
+            return null
         } finally {
             post {
                 if (progressDialog != null && progressDialog!!.isShowing

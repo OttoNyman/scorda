@@ -300,15 +300,11 @@
     <string name="filter_today_only">Uniquement aujourd\'hui</string>
     <string name="filter_overdue">En retard</string>
     <string name="sort_created">Par date de création</string>
-    <string name="support_development_subscribe">Déverrouillez des fonctionnalités supplémentaires et soutenez les logiciels à code source ouvert</string>
-    <string name="enjoying_tasks">Appréciez-vous Tasks \?</string>
     <string name="whats_new">Nouveautés</string>
     <string name="action_new_task">Nouvelle tâche</string>
     <string name="sort_modified_group">Modifié %s</string>
     <string name="sort_created_group">Créé %s</string>
     <string name="lists">Listes</string>
-    <string name="astrid_sort_order_summary">Activez le mode de tri manuel d’Astrid pour « Mes tâches », « Aujourd\'hui », et les étiquettes. Ce mode de tri sera remplacé par « Mon tri » dans une future mise à jour</string>
-    <string name="astrid_sort_order">Tri manuel Astrid</string>
     <string name="CFC_list_name">Dans la liste…</string>
     <string name="reset_sort_order">Réinitialiser l’ordre de tri</string>
     <string name="permission_read_tasks">Accès complet à la base de données de Tasks</string>
@@ -330,7 +326,6 @@
     <string name="multi_select_reschedule">Replanifier</string>
     <string name="cancel">Annuler</string>
     <string name="ok">OK</string>
-    <string name="always_display_full_date">Afficher la date complète</string>
     <string name="custom_filter_is_subtask">Est une sous-tâche</string>
     <string name="custom_filter_has_subtask">A des sous-tâches</string>
     <string name="current_subscription">Abonnement en cours : %s</string>
@@ -383,9 +378,6 @@
     <string name="sort_list">Par liste</string>
     <string name="change_priority">Modifier la priorité</string>
     <string name="theme_dynamic">Dynamique</string>
-    <string name="donate_nag">Pensez à manifester votre soutien en faisant un don !</string>
-    <string name="donate_today">Faites un don aujourd\'hui</string>
-    <string name="donate_maybe_later">Peut-être plus tard</string>
     <string name="customize_drawer">Personnaliser le tiroir</string>
     <string name="show_edit_screen_without_unlock">Afficher l\'écran d\'édition sans déverrouillage</string>
     <string name="show_edit_screen_without_unlock_summary">Permet d\'utiliser la fenêtre des réglages rapides sans déverrouiller l\'appareil</string>
@@ -434,7 +426,6 @@
     <string name="per_list_sort_summary">Mémoriser les paramètres de tri et de regroupement pour chaque liste séparément</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="location_update_interval_summary">Les mises à jour périodiques de la position améliorent la fiabilité des zones de géorepérage</string>
-    <string name="read_more">Lire la suite</string>
     <string name="upgrade_desktop_app">Scorda pour bureau</string>
     <string name="upgrade_desktop_app_description">Accès anticipé à la nouvelle application de bureau</string>
     <string name="sort_options">Options de tri</string>

@@ -1,5 +1,9 @@
 package org.tasks
 
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import org.tasks.themes.AppFont
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
@@ -80,6 +84,12 @@ class TasksApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         syncComposeResourceLocale()
+        AppFont.family = FontFamily(
+            Font(R.font.manrope_regular, FontWeight.Normal),
+            Font(R.font.manrope_medium, FontWeight.Medium),
+            Font(R.font.manrope_semibold, FontWeight.SemiBold),
+            Font(R.font.manrope_bold, FontWeight.Bold),
+        )
         buildSetup.setup()
         val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
@@ -187,7 +197,6 @@ class TasksApplication : Application(), Configuration.Provider {
             scheduleConfigRefresh()
             updatePurchases()
             scheduleRefresh()
-            scheduleBlogFeedCheck()
         }
         OpenTaskContentObserver.registerObserver(context, contentObserver.get())
         locationService.get().registerAllGeofences()

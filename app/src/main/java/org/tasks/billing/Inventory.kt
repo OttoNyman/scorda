@@ -60,9 +60,6 @@ class Inventory @Inject constructor(
     override val hasTasksSubscription: Boolean
         get() = subscription.value?.isTasksSubscription == true || hasTasksAccount
 
-    val begForMoney: Boolean
-        get() = if (IS_GENERIC) !hasTasksAccount else !hasPro
-
     override fun purchasedThemes() = hasPro || purchases.containsKey(SKU_THEMES)
 
     @Suppress("SimplifyBooleanWithConstants")

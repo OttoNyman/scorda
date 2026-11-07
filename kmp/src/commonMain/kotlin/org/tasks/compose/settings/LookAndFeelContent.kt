@@ -52,7 +52,6 @@ fun LookAndFeelContent(
     onColor: () -> Unit,
     onLauncher: () -> Unit = {},
     onDefaultFilter: () -> Unit,
-    onTranslations: () -> Unit,
     onRestartApplication: () -> Unit = {},
 ) {
     if (!viewModel.loaded) {
@@ -79,8 +78,6 @@ fun LookAndFeelContent(
         launcherColor = viewModel.launcherColor,
         showLauncherIcon = viewModel.showLauncherIcon,
         showLanguage = viewModel.showLanguage,
-        showMarkdown = viewModel.showMarkdown,
-        markdownEnabled = viewModel.settings.markdown,
         openLastViewedList = viewModel.settings.openLastViewedList,
         defaultFilterName = viewModel.defaultFilterName,
         localeName = viewModel.localeName,
@@ -88,11 +85,9 @@ fun LookAndFeelContent(
         onDynamicColor = { viewModel.setDynamicColor(it) },
         onColor = onColor,
         onLauncher = onLauncher,
-        onMarkdown = { viewModel.setMarkdown(it) },
         onOpenLastViewedList = { viewModel.setOpenLastViewedList(it) },
         onDefaultFilter = onDefaultFilter,
         onLanguage = { showLanguageDialog = true },
-        onTranslations = onTranslations,
     )
 
     if (showThemeDialog) {

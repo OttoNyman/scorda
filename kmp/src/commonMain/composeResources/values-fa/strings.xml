@@ -64,7 +64,6 @@
     <string name="send_anonymous_statistics">بهبود وظیفه</string>
     <string name="restart_now">اکنون ریست کن</string>
     <string name="restart_later">بعدا</string>
-    <string name="blog_feed_none">هیچکدام</string>
     <string name="new_list">ایجاد لیست جدید</string>
     <string name="color">رنگ</string>
     <string name="gtasks_GLA_errorIOAuth">پوزش، ارتباط با سرورهای گوگل میسر نشد. لطفا دوباره تلاش نمایید.</string>
@@ -129,10 +128,6 @@
     <string name="EPr_voiceRemindersEnabled_title">یادآور صوتی</string>
     <string name="rmd_EPr_rmd_time_title">یادآور پیش فرض</string>
     <string name="enabled">فعال شده</string>
-    <string name="quiet_hours">ساعات سکوت</string>
-    <string name="quiet_hours_summary">بدون یادآور در ساعات سکوت</string>
-    <string name="rmd_EPr_quiet_hours_start_title">شروع ساعات خلوتی</string>
-    <string name="rmd_EPr_quiet_hours_end_title">پایان ساعات خلوتی</string>
     <string name="rmd_NoA_done">کامل</string>
     <string name="rmd_NoA_snooze">عقب انداختن</string>
     <string name="action_open">باز</string>
@@ -168,7 +163,6 @@
     <string name="language">زبان</string>
     <string name="settings_localization">محلی‌سازی</string>
     <string name="theme">تم</string>
-    <string name="translations">مشارکت در ترجمه</string>
     <string name="theme_light">روشن</string>
     <string name="theme_dark">تیره</string>
     <string name="mcp_tools_group_tags">برچسب ها</string>

@@ -115,8 +115,6 @@
     <string name="supporter_summary">%1$s • Sağ olun!</string>
     <string name="sign_in_to_connect">Scorda hesabınıza bağlanmak için oturum açın</string>
     <string name="guest">Konuk</string>
-    <string name="donate">Bağış Yap</string>
-    <string name="donate_nag">Desteğinizi bağış yaparak göstermeyi düşünün!</string>
     <string name="manage_subscription">Aboneliği değiştir</string>
     <string name="button_unsubscribe">Aboneliği iptal et</string>
     <string name="local_lists">Yerel listeler</string>
@@ -250,18 +248,10 @@
     <string name="pricing_subscribe_google_play">Google Play'de abone ol</string>
     <string name="wrong_account">Oturum açılamadı</string>
     <string name="wrong_account_message">Aboneliğiniz zaten %1$s ile bağlantılı. Bunun bir hata olduğunu düşünüyorsanız, lütfen %2$s ile iletişime geçin</string>
-    <string name="whats_new">Yenilikler</string>
-    <string name="version_string">Sürüm %1$s</string>
-    <string name="blog_notifications">Blog bildirimleri</string>
-    <string name="blog_feed_none">Yok</string>
-    <string name="blog_feed_announcements">Yalnızca duyurular</string>
-    <string name="blog_feed_all">Tüm gönderiler</string>
     <string name="rate_tasks">Tasks'i oyla</string>
     <string name="documentation">Belgelendirme</string>
-    <string name="issue_tracker">Sorun izleyicisi</string>
     <string name="contact_developer">Geliştiriciyle iletişime geç</string>
     <string name="send_application_logs">Uygulama günlüklerini gönder</string>
-    <string name="follow_reddit">r/tasks topluluğuna katıl</string>
     <string name="source_code">Kaynak kodu</string>
     <string name="third_party_licenses">Üçüncü taraf lisanslar</string>
     <string name="terms_of_service">Hizmet koşulları</string>
@@ -270,7 +260,6 @@
     <string name="send_anonymous_statistics_summary">Tasks'ı iyileştirmeye yardımcı olmak için anonim kullanım istatistiklerini ve çökme raporlarını gönderin. Hiçbir kişisel veri toplanmayacak.</string>
     <string name="license_summary">Tasks özgür açık kaynaklı yazılımdır, GNU Genel Kamu Lisansı sürüm 3.0 altında lisanslanmıştır</string>
     <string name="support">Destek</string>
-    <string name="social">Sosyal</string>
     <string name="open_source">Açık kaynak</string>
     <string name="legal">Yasal</string>
     <string name="restart_required">Bu değişikliğin etkinleşmesi için Tasks'ı yeniden başlat</string>
@@ -334,13 +323,6 @@
     <string name="due_time">Bitiş zamanı</string>
     <string name="day_before_due">Bitişten önceki gün</string>
     <string name="week_before_due">Bitişten önceki hafta</string>
-    <string name="next_sunday">Sonraki Pzr</string>
-    <string name="next_monday">Sonraki Pts</string>
-    <string name="next_tuesday">Sonraki Sal</string>
-    <string name="next_wednesday">Sonraki Çar</string>
-    <string name="next_thursday">Sonraki Per</string>
-    <string name="next_friday">Sonraki Cma</string>
-    <string name="next_saturday">Sonraki Cts</string>
     <string name="shortcut_pick_time">Zaman seç</string>
     <string name="no_time">Zaman yok</string>
     <string name="sync_metadata">Etiket üst verilerini burada sakla</string>
@@ -503,7 +485,6 @@
     <string name="repeat_type_due_description">Görev, yapılması gereken zamana göre tekrarlanır</string>
     <string name="repeat_type_completion_description">Görev, onu ne zaman tamamladığınıza göre tekrarlanır</string>
     <string name="mark_completed">Tamamlandı olarak işaretle</string>
-    <string name="quiet_hours_in_effect">Sessiz saatler etkin</string>
     <string name="troubleshooting">Sorun giderme</string>
     <string name="notification_troubleshooting_summary">Eğer bildirimlerle sorun yaşıyorsanız buraya dokunun</string>
     <string name="disable_battery_optimizations">Pil iyileştirmelerini devre dışı bırak</string>
@@ -528,10 +509,6 @@
     <string name="enabled">Etkin</string>
     <string name="swipe_to_snooze_description">Erteleme zamanı</string>
     <string name="swipe_to_snooze_time_description">Temizlenen bir bildirim ertelenecek ve %1$s yeniden oluşturulacak</string>
-    <string name="quiet_hours">Sessiz saatler</string>
-    <string name="quiet_hours_summary">Sessiz saatlerde anımsatıcı yok</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Sessiz saatlerin başlangıcı</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Sessiz saatlerin sonu</string>
     <string name="swipe_to_snooze_time_immediately">hemen</string>
     <string name="swipe_to_snooze_time_15_minutes">15 dakika sonra</string>
     <string name="swipe_to_snooze_time_30_minutes">30 dakika sonra</string>
@@ -600,7 +577,6 @@
     <string name="settings_localization">Yerelleştirme</string>
     <string name="theme">Gövde</string>
     <string name="theme_dynamic">Dinamik</string>
-    <string name="translations">Çeviri katkıları</string>
     <string name="widget_open_list">Listeyi aç</string>
     <string name="theme_light">Açık</string>
     <string name="theme_black">Siyah</string>

@@ -28,7 +28,6 @@
     <string name="SSD_sort_start">Theo ngày bắt đầu</string>
     <string name="SSD_sort_alpha">Theo tiêu đề</string>
     <string name="SSD_sort_auto">Sắp xếp thông minh</string>
-    <string name="astrid_sort_order_summary">Bật chế độ sắp xếp thủ công của Astrid đối với \'Công việc của tôi\', \'Hôm nay\', và các thẻ. Chế độ sắp xếp này sẽ được \'Thứ tự của tôi\' thay thế ở một bản cập nhật trong tương lai</string>
     <string name="action_call">Gọi</string>
     <string name="TAd_actionEditTask">Chỉnh sửa</string>
     <string name="TLA_menu_settings">Cài đặt</string>
@@ -96,8 +95,6 @@
     <string name="local_lists">Danh sách cục bộ</string>
     <string name="sort_modified_group">Đã sửa đổi %s</string>
     <string name="sort_created_group">Đã tạo %s</string>
-    <string name="support_development_subscribe">Mở khoá các tính năng bổ sung và hỗ trợ phần mềm mã nguồn mở</string>
-    <string name="enjoying_tasks">Đang tận hưởng Tasks\?</string>
     <string name="filter_eisenhower_box_4">Không quan trọng và không gấp</string>
     <string name="filter_eisenhower_box_3">Không quan trọng và gấp</string>
     <string name="filter_eisenhower_box_2">Quan trọng và không gấp</string>
@@ -346,7 +343,6 @@
     <string name="EPr_delete_task_data">Xoá dữ liệu công việc</string>
     <string name="EPr_reset_preferences_warning">Các cài đặt sẽ được đặt lại về giá trị mặc định</string>
     <string name="EPr_reset_preferences">Đặt lại các cài đặt</string>
-    <string name="always_display_full_date">Hiện ngày tháng đầy đủ</string>
     <string name="EPr_cal_start_at_due_time">Bắt đầu các sự kiện trong lịch khi đến hạn</string>
     <string name="EPr_cal_end_at_due_time">Kết thúc các sự kiện trong lịch khi đến hạn</string>
     <string name="EPr_cal_end_or_start_at_due_time">Thời gian sự kiện trong lịch</string>
@@ -357,7 +353,6 @@
     <string name="TEA_control_hidden_section">----Luôn ẩn----</string>
     <string name="TEA_control_timer">Điều khiển hẹn giờ</string>
     <string name="TEA_timer_est">Ước tính %s</string>
-    <string name="astrid_sort_order">Sắp xếp thủ công của Astrid</string>
     <string name="SSD_sort_my_order">Thứ tự của tôi</string>
     <string name="import_summary_title">Tóm tắt khôi phục</string>
     <string name="now">Bây giờ</string>

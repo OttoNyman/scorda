@@ -32,14 +32,12 @@ import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_FEATURE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_NAME_YOUR_PRICE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SHOW_MORE_OPTIONS
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SOURCE
-import org.tasks.compose.accounts.AddAccountActivity
 import org.tasks.compose.settings.AndroidMainSettingsScreen
 import org.tasks.compose.settings.ManageSubscriptionSheetContent
 import org.tasks.compose.settings.ProCardState
 import org.tasks.compose.settings.SettingsDestination
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.data.entity.CaldavAccount
-import org.tasks.extensions.Context.openUri
 import android.view.View
 import org.tasks.preferences.BasePreferences
 import org.tasks.preferences.MainPreferences
@@ -89,40 +87,33 @@ class MainSettingsComposeFragment : Fragment() {
             val environmentLabel = proCardViewModel.environmentLabel.collectAsStateWithLifecycle().value
             var showManageSheet by remember { mutableStateOf(false) }
 
-            // Calculate backup warning from activity's PreferencesViewModel
-            val showBackupWarning = preferences.showBackupWarnings() &&
-                    (preferencesViewModel.usingPrivateStorage ||
-                            preferencesViewModel.staleLocalBackup ||
-                            preferencesViewModel.staleRemoteBackup)
-
             AndroidMainSettingsScreen(
-                accounts = filteredAccounts,
                 proCardState = proCardState,
                 environmentLabel = environmentLabel,
-                showBackupWarning = showBackupWarning,
+                // Backups run on their own and have no folder to pick: nothing to warn about.
+                showBackupWarning = false,
+                accountError = filteredAccounts.any { it.hasError },
                 showWidgets = viewModel.supportsWidgets,
-                onAccountClick = { account -> handleAccountClick(account) },
-                onAddAccountClick = { addAccount() },
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
                 showNavigationDrawer = featureGate.current.showsDrawer,
                 onLinkDesktopClick = { linkDesktop() },
                 onProCardClick = {
-                    val type = when (proCardState) {
+                    val state = proCardState ?: return@AndroidMainSettingsScreen
+                    val type = when (state) {
                         is ProCardState.Subscribed -> "manage"
                         is ProCardState.Upgrade -> "subscribe"
                         is ProCardState.SignIn -> "sign_in"
                         is ProCardState.TasksOrgAccount -> "tasks_org"
-                        is ProCardState.Donate -> "donate"
                     }
                     firebase.logEvent(
                         R.string.event_pro_card,
                         R.string.param_type to type,
                     )
-                    if (proCardState is ProCardState.Subscribed) {
+                    if (state is ProCardState.Subscribed) {
                         showManageSheet = true
                     } else {
-                        handleProCardClick(proCardState)
+                        handleProCardClick(state)
                     }
                 },
             )
@@ -194,9 +185,6 @@ class MainSettingsComposeFragment : Fragment() {
             is ProCardState.SignIn -> {
                 startActivity(Intent(context, SignInActivity::class.java))
             }
-            is ProCardState.Donate -> {
-                requireContext().openUri(R.string.url_donate)
-            }
             is ProCardState.Upgrade -> {
                 startActivity(
                     Intent(context, PurchaseActivity::class.java)
@@ -263,13 +251,6 @@ class MainSettingsComposeFragment : Fragment() {
         }
     }
 
-    private fun addAccount() {
-        startActivityForResult(
-            Intent(requireContext(), AddAccountActivity::class.java),
-            REQUEST_ADD_ACCOUNT
-        )
-    }
-
     private fun linkDesktop() {
         if (inventory.hasPro) {
             startActivity(Intent(requireContext(), LinkDesktopActivity::class.java))
@@ -334,6 +315,5 @@ class MainSettingsComposeFragment : Fragment() {
     companion object {
         const val REQUEST_GOOGLE_TASKS = 10014
         const val REQUEST_TASKS_ORG = 10016
-        private const val REQUEST_ADD_ACCOUNT = 10017
     }
 }

@@ -171,14 +171,27 @@ class DatePickerLogicTest {
 
     // endregion
 
-    // region showKeyboardDateInput
+    // region inline clock dial
 
     @Test
-    fun autoCloseForcesCalendarModeEvenWhenKeyboardInputWasPersisted() {
-        assertFalse(showKeyboardDateInput(initialDateInputMode = true, autoClose = true))
-        assertTrue(showKeyboardDateInput(initialDateInputMode = true, autoClose = false))
-        assertFalse(showKeyboardDateInput(initialDateInputMode = false, autoClose = true))
-        assertFalse(showKeyboardDateInput(initialDateInputMode = false, autoClose = false))
+    fun dialRestsOnNoonWithoutATime() {
+        assertEquals(12 to 0, dialTime(NO_TIME))
+        assertEquals(12 to 0, dialTime(MULTIPLE_TIMES))
+        assertEquals(12 to 0, dialTime(9 * HOUR))
+    }
+
+    @Test
+    fun dialShowsTheSelectedTime() {
+        assertEquals(9 to 0, dialTime(nineAm))
+        assertEquals(17 to 30, dialTime(17 * HOUR + 30 * 60_000 + TIME_MARKER))
+    }
+
+    @Test
+    fun dialSelectionCarriesTheMarkerAndRoundTrips() {
+        assertEquals(fivePm, dialSelection(17, 0))
+        assertTrue(Task.hasDueTime(dialSelection(0, 0).toLong()))
+        val (hour, minute) = dialTime(nineAm)
+        assertEquals(nineAm, dialSelection(hour, minute))
     }
 
     // endregion

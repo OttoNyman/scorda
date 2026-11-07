@@ -3,7 +3,6 @@ package org.tasks.dialogs
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.fragment.compose.content
 import androidx.lifecycle.lifecycleScope
@@ -77,14 +76,6 @@ class DateTimePicker : BaseDateTimePicker() {
                 autoClose = autoclose,
                 showNoDate = !args.getBoolean(EXTRA_HIDE_NO_DATE, false),
                 times = preferences.quickPickTimes,
-                initialDateInputMode = preferences.calendarDisplayMode == DisplayMode.Input,
-                onDateInputModeChange = {
-                    preferences.calendarDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
-                initialTimeInputMode = preferences.timeDisplayMode == DisplayMode.Input,
-                onTimeInputModeChange = {
-                    preferences.timeDisplayMode = if (it) DisplayMode.Input else DisplayMode.Picker
-                },
                 onSelected = { day, time -> save(day, time) },
                 onDismiss = { onDismissHandler?.onDismiss() ?: dismiss() },
             )

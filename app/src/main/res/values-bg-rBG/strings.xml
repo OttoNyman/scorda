@@ -230,7 +230,6 @@
     <string name="invalid_backup_file">Невалидно резервно копие</string>
     <string name="action_new_task">Нова задача</string>
     <string name="support">Поддръжка</string>
-    <string name="enjoying_tasks">Харесвате ли Tasks\?</string>
     <string name="filter_eisenhower_box_4">Не важни и не спешни</string>
     <string name="filter_eisenhower_box_3">Не важни, но спешни</string>
     <string name="filter_eisenhower_box_2">Важни, но не спешни</string>
@@ -252,12 +251,9 @@
     <string name="last_backup_never">никога</string>
     <string name="last_backup">Последно резервно копие: %s</string>
     <string name="automatic_backups">Автоматични резервни копия</string>
-    <string name="always_display_full_date">Показване на цялата дата</string>
     <string name="start_date">Начална дата</string>
     <string name="sort_created">По време на създаване</string>
     <string name="SSD_sort_start">По начална дата</string>
-    <string name="astrid_sort_order_summary">Използвайте режима за ръчно сортиране на Astrid за „Моите задачи“, „Днес“ и етикетите. Този режим на сортиране ще бъде заменен с „Моя подредба“ в бъдещо издание</string>
-    <string name="astrid_sort_order">Ръчно сортиране на Astrid</string>
     <string name="SSD_sort_my_order">Моя подредба</string>
     <string name="list_separator_with_space">", "</string>
     <string name="subscription">Абонамент</string>
@@ -330,7 +326,6 @@
     <string name="filter_any_due_date">Всяка крайна дата</string>
     <string name="android_auto_backup">Услуга за резервни копия на Android</string>
     <string name="device_settings">Настройки на устройството</string>
-    <string name="support_development_subscribe">Отключване на допълнителни възможности и подкрепа на софтуера с отворен код</string>
     <string name="sort_created_group">Създадена %s</string>
     <string name="sort_modified_group">Променена %s</string>
     <string name="github_sponsor">Дарител</string>
@@ -379,9 +374,6 @@
     <string name="show_edit_screen_without_unlock">Показване на екран за редактиране без отключване</string>
     <string name="show_edit_screen_without_unlock_summary">Използва плочката за бързи настройки без отключване на устройството</string>
     <string name="customize_drawer">Настройка на менюто</string>
-    <string name="donate_nag">Помислете дали да не покажете подкрепата си чрез дарение!</string>
-    <string name="donate_today">Даряване днес</string>
-    <string name="donate_maybe_later">Може би после</string>
     <string name="enable_alarms">Получавайте напомнянията навреме</string>
     <string name="enable_alarms_description">За да бъдете сигурни, че ще получите напомняне в точното време дайте разрешение за задаване на будилници и напомняния в настройките</string>
     <string name="price_per_year_with_currency">%s/година</string>
@@ -429,7 +421,6 @@
     <string name="upgrade_desktop_app_description">Ранен достъп до новото приложение за настолни устройства</string>
     <string name="upgrade_friends_and_family">Приятели и семейство</string>
     <string name="upgrade_friends_and_family_description">5 безплатни достъпа като гост на споделени листове. Работи с Apple Reminders</string>
-    <string name="read_more">Прочетете повече</string>
     <string name="sort_options">Настройки на сортиране</string>
     <string name="write_permission_label">Променяне на задачи</string>
     <string name="permission_write_tasks">Добавяне, промяна и премахване на задачи, списъци, етикети и места</string>

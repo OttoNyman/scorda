@@ -67,12 +67,10 @@ class Advanced : Fragment() {
             primary = theme.themeColor.primaryColor,
         ) {
             AdvancedScreen(
-                astridSortEnabled = viewModel.astridSortEnabled,
                 attachmentDirSummary = viewModel.attachmentDirSummary,
                 calendarEndAtDueTime = viewModel.calendarEndAtDueTime,
                 badgesEnabled = viewModel.badgesEnabled,
                 badgeFilterName = viewModel.badgeFilterName,
-                onAstridSort = { viewModel.updateAstridSort(it) },
                 onAttachmentDir = {
                     filesDirLauncher.launch(
                         FileHelper.newDirectoryPickerIntent(

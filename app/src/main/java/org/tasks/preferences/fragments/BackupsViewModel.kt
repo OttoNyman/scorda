@@ -13,8 +13,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
 import org.tasks.analytics.Firebase
 import org.tasks.data.dao.CaldavDao
+import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
-import org.tasks.files.FileHelper
+import org.tasks.service.TaskDeleter
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.preferences.Preferences
@@ -27,17 +28,12 @@ class BackupsViewModel @Inject constructor(
     private val preferences: Preferences,
     private val firebase: Firebase,
     private val caldavDao: CaldavDao,
+    private val taskDeleter: TaskDeleter,
 ) : ViewModel() {
 
-    var backupDirSummary by mutableStateOf("")
-        private set
-    var showBackupDirWarning by mutableStateOf(false)
+    var googleAccount by mutableStateOf<CaldavAccount?>(null)
         private set
     var lastBackupSummary by mutableStateOf("")
-        private set
-    var showLocalBackupWarning by mutableStateOf(false)
-        private set
-    var backupsEnabled by mutableStateOf(preferences.getBoolean(R.string.p_backups_enabled, true))
         private set
     var driveBackupEnabled by mutableStateOf(false)
         private set
@@ -47,45 +43,21 @@ class BackupsViewModel @Inject constructor(
         private set
     var ambiguousLists by mutableStateOf<List<Pair<String, String>>>(emptyList())
         private set
-    var driveAccountSummary by mutableStateOf("")
-        private set
-    var driveAccountEnabled by mutableStateOf(false)
-        private set
     var lastDriveBackupSummary by mutableStateOf("")
         private set
-    var showDriveBackupWarning by mutableStateOf(false)
-        private set
-    var androidBackupEnabled by mutableStateOf(
-        preferences.getBoolean(R.string.p_backups_android_backup_enabled, true)
-    )
-        private set
     var lastAndroidBackupSummary by mutableStateOf("")
-        private set
-    var showAndroidBackupWarning by mutableStateOf(false)
-        private set
-    var ignoreWarnings by mutableStateOf(
-        preferences.getBoolean(R.string.p_backups_ignore_warnings, false)
-    )
         private set
 
     val backupDirectory: Uri?
         get() = preferences.backupDirectory
 
     fun refreshState(preferencesViewModel: PreferencesViewModel) {
-        backupsEnabled = preferences.getBoolean(R.string.p_backups_enabled, true)
-        androidBackupEnabled = preferences.getBoolean(
-            R.string.p_backups_android_backup_enabled, true,
-        )
-        ignoreWarnings = preferences.getBoolean(R.string.p_backups_ignore_warnings, false)
         refreshTasks()
         refreshDriveState(preferencesViewModel)
-        refreshWarnings(preferencesViewModel)
+        refreshLocalBackupSummary(preferencesViewModel.lastBackup.value)
+        refreshDriveBackupSummary(preferencesViewModel.lastDriveBackup.value)
+        refreshAndroidBackupSummary(preferencesViewModel.lastAndroidBackup.value)
         preferencesViewModel.updateBackups()
-    }
-
-    fun updateBackupsEnabled(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_backups_enabled, enabled)
-        backupsEnabled = enabled
     }
 
     fun disableDriveBackup(preferencesViewModel: PreferencesViewModel) {
@@ -93,24 +65,6 @@ class BackupsViewModel @Inject constructor(
         preferences.remove(R.string.p_google_drive_backup_account)
         preferencesViewModel.updateDriveBackup()
         refreshDriveState(preferencesViewModel)
-    }
-
-    fun updateAndroidBackup(enabled: Boolean, preferencesViewModel: PreferencesViewModel) {
-        preferences.setBoolean(R.string.p_backups_android_backup_enabled, enabled)
-        androidBackupEnabled = enabled
-        refreshAndroidBackupSummary(preferencesViewModel.lastAndroidBackup.value, preferencesViewModel)
-    }
-
-    fun updateIgnoreWarnings(enabled: Boolean, preferencesViewModel: PreferencesViewModel) {
-        preferences.setBoolean(R.string.p_backups_ignore_warnings, enabled)
-        ignoreWarnings = enabled
-        refreshWarnings(preferencesViewModel)
-    }
-
-    fun handleBackupDirResult(uri: Uri, preferencesViewModel: PreferencesViewModel) {
-        preferences.setUri(R.string.p_backup_dir, uri)
-        refreshBackupDirectory(preferencesViewModel)
-        preferencesViewModel.updateLocalBackup()
     }
 
     fun logEvent(type: String) {
@@ -123,6 +77,7 @@ class BackupsViewModel @Inject constructor(
     fun refreshTasks() {
         viewModelScope.launch {
             val account = caldavDao.getAccounts(TYPE_GOOGLE_TASKS).firstOrNull()
+            googleAccount = account
             tasksSyncEnabled = account != null &&
                     !preferences.getBoolean(R.string.p_google_tasks_paused, false)
             listProblem = preferences.getStringValue(R.string.p_google_tasks_list_problem).orEmpty()
@@ -170,6 +125,28 @@ class BackupsViewModel @Inject constructor(
         }
     }
 
+    /** Removes the Google account with its tasks on this phone and stops Drive backups. */
+    fun logout(preferencesViewModel: PreferencesViewModel, onDone: () -> Unit) {
+        viewModelScope.launch {
+            caldavDao.getAccounts(TYPE_GOOGLE_TASKS).forEach { taskDeleter.delete(it) }
+            listOf(
+                R.string.p_google_tasks_list_id,
+                R.string.p_google_tasks_previous_list_id,
+                R.string.p_google_tasks_list_problem,
+                R.string.p_google_tasks_ambiguous,
+                R.string.p_google_tasks_paused,
+                R.string.p_google_tasks_force_create,
+                R.string.p_google_tasks_move_local,
+                R.string.p_google_tasks_move_target,
+                R.string.p_google_drive_backup,
+                R.string.p_google_drive_granted,
+            ).forEach { preferences.remove(it) }
+            disableDriveBackup(preferencesViewModel)
+            refreshTasks()
+            onDone()
+        }
+    }
+
     fun pauseTasks() {
         preferences.setBoolean(R.string.p_google_tasks_paused, true)
         tasksSyncEnabled = false
@@ -185,48 +162,19 @@ class BackupsViewModel @Inject constructor(
                 preferences.getBoolean(R.string.p_google_drive_backup, false)
 
     fun refreshDriveState(preferencesViewModel: PreferencesViewModel) {
-        val account = preferencesViewModel.driveAccount
-        driveBackupEnabled = account != null
-        driveAccountEnabled = account != null
-        driveAccountSummary = account?.takeIf { it.isNotBlank() }
-            ?: context.getString(R.string.none)
+        driveBackupEnabled = preferencesViewModel.driveAccount != null
     }
 
-    fun refreshWarnings(preferencesViewModel: PreferencesViewModel) {
-        refreshBackupDirectory(preferencesViewModel)
-        refreshLocalBackupSummary(preferencesViewModel.lastBackup.value, preferencesViewModel)
-        refreshDriveBackupSummary(preferencesViewModel.lastDriveBackup.value, preferencesViewModel)
-        refreshAndroidBackupSummary(preferencesViewModel.lastAndroidBackup.value, preferencesViewModel)
-    }
-
-    fun refreshLocalBackupSummary(timestamp: Long?, preferencesViewModel: PreferencesViewModel) {
+    fun refreshLocalBackupSummary(timestamp: Long?) {
         viewModelScope.launch { lastBackupSummary = formatLastBackup(timestamp) }
-        showLocalBackupWarning = preferences.showBackupWarnings() && preferencesViewModel.staleLocalBackup
     }
 
-    fun refreshDriveBackupSummary(timestamp: Long?, preferencesViewModel: PreferencesViewModel) {
+    fun refreshDriveBackupSummary(timestamp: Long?) {
         viewModelScope.launch { lastDriveBackupSummary = formatLastBackup(timestamp) }
-        showDriveBackupWarning = preferences.showBackupWarnings() && preferencesViewModel.staleRemoteBackup
     }
 
-    fun refreshAndroidBackupSummary(timestamp: Long? = null, preferencesViewModel: PreferencesViewModel) {
+    fun refreshAndroidBackupSummary(timestamp: Long?) {
         viewModelScope.launch { lastAndroidBackupSummary = formatLastBackup(timestamp) }
-        showAndroidBackupWarning = preferences.showBackupWarnings() && preferencesViewModel.staleRemoteBackup
-    }
-
-    private fun refreshBackupDirectory(preferencesViewModel: PreferencesViewModel) {
-        val location = FileHelper.uri2String(preferences.backupDirectory) ?: ""
-        if (preferences.showBackupWarnings() && preferencesViewModel.usingPrivateStorage) {
-            showBackupDirWarning = true
-            val warning = context.getString(
-                R.string.backup_location_warning,
-                FileHelper.uri2String(preferences.appPrivateStorage),
-            )
-            backupDirSummary = "$location\n\n$warning"
-        } else {
-            showBackupDirWarning = false
-            backupDirSummary = location
-        }
     }
 
     private suspend fun formatLastBackup(timestamp: Long?): String {

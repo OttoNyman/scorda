@@ -262,11 +262,8 @@
     <string name="calendar_event_created">%s のカレンダーイベントを作成しました</string>
     <string name="sign_in_with_google">Google でサインイン</string>
     <string name="share">共有</string>
-    <string name="astrid_sort_order">手動で並べ替え (Astrid)</string>
     <string name="SSD_sort_my_order">マイ設定</string>
     <string name="ok">OK</string>
-    <string name="always_display_full_date">完全な日付を表示</string>
-    <string name="astrid_sort_order_summary">「マイタスク」「今日」そしてタグにおいて Astrid の手動並べ替えモードを有効にします。この並べ替えモードは将来のアップデートで「マイ設定」に置き換えられる予定です</string>
     <string name="CFC_startBefore_name">着手は…</string>
     <string name="TEA_creation_date">作成日時</string>
     <string name="filter_criteria_unstarted">開始前</string>
@@ -279,7 +276,6 @@
     <string name="migrating_tasks">タスクを移行する</string>
     <string name="migrate_count">%s を Scorda に移動</string>
     <string name="upgrade_blurb_2">私は何千時間もかけて Tasks を開発し、すべてのソースコードをオンラインで無料公開しています。私の仕事をサポートしていただくために、いくつかの機能は有料です</string>
-    <string name="enjoying_tasks">Tasks を気に入っていだだけましたか？</string>
     <string name="widget_show_dividers">区切り線を表示</string>
     <string name="whats_new">更新情報</string>
     <string name="caldav_selection_description">オープンインターネット標準による同期</string>
@@ -293,7 +289,6 @@
     <string name="filter_overdue">締切を過ぎている</string>
     <string name="filter_any_due_date">締切あり</string>
     <string name="filter_medium_priority">優先度 中</string>
-    <string name="support_development_subscribe">追加機能を利用可能にし、オープンソースソフトウェアを支援する</string>
     <string name="last_backup">最新のバックアップ: %s</string>
     <string name="reset_sort_order">並び順をリセット</string>
     <string name="backups_ignore_warnings">警告を無視する</string>
@@ -381,11 +376,8 @@
     <string name="show_edit_screen_without_unlock_summary">デバイスのロックを解除せずにクイック設定タイルを利用可能に</string>
     <string name="theme_dynamic">ダイナミック</string>
     <string name="customize_drawer">ドロワーのカスタマイズ</string>
-    <string name="donate_today">今日寄付をする</string>
-    <string name="donate_maybe_later">また後で</string>
     <string name="price_per_month_with_currency">%s/月</string>
     <string name="price_per_year_with_currency">%s/年</string>
-    <string name="donate_nag">寄付による支援をご検討ください！</string>
     <string name="sync_warning_microsoft">すべてのタスクの詳細が Microsoft To Do と同期されるわけではありません。</string>
     <string name="button_learn_more">詳細を見る</string>
     <string name="enable_alarms">適切なタイミングで通知を受け取る</string>
@@ -426,5 +418,4 @@
     <string name="upgrade_friends_and_family_description">共有リストに無料のゲスト5名。Apple Remindersで利用可能</string>
     <string name="upgrade_desktop_app">デスクトップ版Scorda</string>
     <string name="upgrade_desktop_app_description">新しいデスクトップアプリの早期利用</string>
-    <string name="read_more">より詳しく</string>
 </resources>

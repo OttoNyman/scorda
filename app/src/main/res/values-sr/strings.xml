@@ -39,8 +39,6 @@
     <string name="today">Данас</string>
     <string name="action_call">Позив</string>
     <string name="SSD_sort_my_order">Мој редослед</string>
-    <string name="astrid_sort_order">Астрид ручно сортирање</string>
-    <string name="astrid_sort_order_summary">Омогући Астрид ручни мод сортирања за ,,Моји задаци\'\', ,,Данас\'\' и тагове. Овај мод сортирања ће бити замењен ,,Мој редослед\'\' модом у будућем ажурирању</string>
     <string name="SSD_sort_start">По датуму почетка</string>
     <string name="sort_created">По времену креирања</string>
     <string name="sort_list">По листи</string>
@@ -71,7 +69,6 @@
     <string name="EPr_beastMode_reset">Ресетуј на подразумевано</string>
     <string name="EPr_fullTask_title">Прикажи пуно име задатка</string>
     <string name="EPr_cal_end_or_start_at_due_time">Време догађаја календара</string>
-    <string name="always_display_full_date">Прикажи пун датум</string>
     <string name="EPr_reset_preferences">Подешавања ресета</string>
     <string name="EPr_reset_preferences_warning">Подешавања ће бити ресетована на подразумевано</string>
     <string name="EPr_delete_task_data">Обриши податке задатка</string>
@@ -336,11 +333,6 @@
     <string name="filter_eisenhower_box_2">Важно и није ургентно</string>
     <string name="filter_eisenhower_box_3">Није важно и ургентно</string>
     <string name="filter_eisenhower_box_4">Није важно и није ургентно</string>
-    <string name="enjoying_tasks">Свиђа ти се апликација?</string>
-    <string name="donate_nag">Подржи нас донацијом!</string>
-    <string name="donate_today">Донирај данас</string>
-    <string name="donate_maybe_later">Можда касније</string>
-    <string name="support_development_subscribe">Откључај додатне функционалности и подржи софтвер отвореног кода</string>
     <string name="sort_created_group">Креирано %s</string>
     <string name="sort_modified_group">Модификовано %s</string>
     <string name="sort_completion_group">Завршетак %s</string>
@@ -431,7 +423,6 @@
     <string name="upgrade_desktop_app">Scorda за рачунар</string>
     <string name="upgrade_friends_and_family">Пријатељи и породица</string>
     <string name="upgrade_friends_and_family_description">5 бесплатних гостију на заједничкој листи. Ради и са Apple Подсетником</string>
-    <string name="read_more">Сазнај више</string>
     <string name="sort_options">Опције сортирања</string>
     <string name="rmd_EPr_rmd_time_desc">Обавештења за целодневне задатке ће се појавити у%1$s</string>
     <string name="p_per_list_sort">Сортирање по листи</string>

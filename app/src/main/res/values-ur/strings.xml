@@ -31,7 +31,6 @@
     <string name="SSD_sort_due">بلحاظ مقررہ تاریخ</string>
     <string name="SSD_sort_alpha">بلحاظ عنوان</string>
     <string name="SSD_sort_auto">سمارٹ ترتیب</string>
-    <string name="astrid_sort_order">آسرڈ کی مینول ترتیب</string>
     <string name="SSD_sort_my_order">میرا آرڈر</string>
     <string name="action_call">کال</string>
     <string name="TAd_actionEditTask">ترمیم</string>
@@ -64,7 +63,6 @@
     <string name="EPr_manage_delete_completed_gcal">تکمیل شدہ ٹاسکس کیلئے کیلنڈر ایونٹس ڈیلیٹ کریں</string>
     <string name="EPr_delete_task_data_warning">تمام ٹاسکس مستقل طور پر ڈیلیٹ کردیئے جائیں گے</string>
     <string name="EPr_delete_task_data">ٹاسک کا ڈیٹا ڈیلیٹ کریں</string>
-    <string name="astrid_sort_order_summary">\'میرے ٹاسکس\' ، \'آج\' اور ٹیگز کیلئے ایسٹرڈ کے مینوئل ترتیب کو فعال کریں۔ اس ترتیب کو آئندہ اپ ڈیٹ میں \'میرا آرڈر\' کے ذریعہ تبدیل کیا جائے گا</string>
     <string name="import_summary_message">فائل%1$s میں%2$sشامل ہے۔
 \n
 \n%3$s درآمد ہو گیا،
@@ -73,7 +71,6 @@
 \n</string>
     <string name="EPr_reset_preferences_warning">ترجیحات کو ڈیفالٹ پر دوبارہ ترتیب دیا جائے گا</string>
     <string name="EPr_reset_preferences">ترجیحات کو دوبارہ ترتیب دیں</string>
-    <string name="always_display_full_date">پوری تاریخ دکھائیں</string>
     <string name="EPr_cal_start_at_due_time">مقررہ وقت پر کیلنڈر ایونٹس شروع کریں</string>
     <string name="EPr_cal_end_at_due_time">مقررہ وقت پر کیلنڈر ایونٹس ختم کریں</string>
     <string name="EPr_cal_end_or_start_at_due_time">کیلنڈر ایونٹ کا وقت</string>

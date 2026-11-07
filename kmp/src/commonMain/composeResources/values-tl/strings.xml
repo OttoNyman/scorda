@@ -42,10 +42,8 @@
     </plurals>
     <string name="delete_task">Tanggalin gawain</string>
     <string name="notification_disable_battery_optimizations_description">Mga baterya optimization ay maaaring antalahin ang mga notification</string>
-    <string name="quiet_hours_summary">Walang paalala sa tahimik na mga oras</string>
     <string name="no_reminders">Walang paalala</string>
     <string name="default_location_reminder_on_arrival">Sa pagdating</string>
-    <string name="translations">Umambag ng pagsasalin</string>
     <string name="more_options">Higit pang mga pagpipilian</string>
     <string name="ok">OK</string>
     <string name="cancel">Kanselahin</string>

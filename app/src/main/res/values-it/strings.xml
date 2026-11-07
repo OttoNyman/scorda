@@ -286,7 +286,6 @@
     <string name="widget_due_date_below_title">Sotto il titolo</string>
     <string name="widget_due_date_after_title">Dopo il titolo</string>
     <string name="CFC_list_name">Nella lista…</string>
-    <string name="astrid_sort_order_summary">Abilita la modalità di ordinamento manuale di Astrid per \"Attività personali\", \"Oggi\" ed etichette. Questa modalità di ordinamento verrà sostituita da \"Ordine personalizzato\" in un futuro aggiornamento</string>
     <string name="custom_filter_criteria">Criteri del filtro</string>
     <string name="compact">Compatto</string>
     <string name="settings_default">Predefinito</string>
@@ -298,8 +297,6 @@
     <string name="lists">Liste</string>
     <string name="sort_modified_group">Modificato %s</string>
     <string name="sort_created_group">Creato %s</string>
-    <string name="support_development_subscribe">Sblocca funzionalità aggiuntive e supporta il software open source</string>
-    <string name="enjoying_tasks">Ti piace Tasks\?</string>
     <string name="filter_no_priority">Senza priorità</string>
     <string name="filter_low_priority">Bassa priorità</string>
     <string name="filter_medium_priority">Media priorità</string>
@@ -309,7 +306,6 @@
     <string name="filter_any_due_date">Qualsiasi scadenza</string>
     <string name="filter_today_only">Solo oggi</string>
     <string name="sort_created">Per data di creazione</string>
-    <string name="astrid_sort_order">Ordinamento manuale Astrid</string>
     <string name="reset_sort_order">Ripristina ordinamento</string>
     <string name="permission_read_tasks">Accesso completo al database di Tasks</string>
     <string name="davx5_selection_description">Sincronizza le tue attività con l\'app DAVx⁵</string>
@@ -328,7 +324,6 @@
     <string name="no_app_found">Nessuna app è in grado di gestire questa richiesta</string>
     <string name="header_spacing">Spaziatura</string>
     <string name="multi_select_reschedule">Modifica pianificazione</string>
-    <string name="always_display_full_date">Mostra data completa</string>
     <string name="custom_filter_has_subtask">Contiene attività secondarie</string>
     <string name="custom_filter_is_subtask">È un\'attività secondaria</string>
     <string name="current_subscription">Abbonamento attuale: %s</string>
@@ -383,9 +378,6 @@
     <string name="sort_list">Per lista</string>
     <string name="change_priority">Cambia priorità</string>
     <string name="theme_dynamic">Dinamico</string>
-    <string name="donate_today">Dona ora</string>
-    <string name="donate_nag">Dimostra il tuo sostegno con una donazione!</string>
-    <string name="donate_maybe_later">Forse più tardi</string>
     <string name="customize_drawer">Personalizza il menù laterale</string>
     <string name="show_edit_screen_without_unlock">Mostra la schermata di modifica senza sbloccare</string>
     <string name="show_edit_screen_without_unlock_summary">Consente l\'uso delle impostazioni rapide senza sbloccare il dispositivo</string>
@@ -433,7 +425,6 @@
     <string name="per_list_sort_title">Ordinamento per lista</string>
     <string name="per_list_sort_summary">Consente ordinamento e raggruppamento indipendenti per ogni lista</string>
     <string name="location_update_interval_summary">Gli aggiornamenti periodici della posizione migliorano l\'affidabilità del geofence</string>
-    <string name="read_more">Leggi di più</string>
     <string name="upgrade_desktop_app">Scorda per desktop</string>
     <string name="upgrade_desktop_app_description">Accesso in anteprima alla nuova app per desktop</string>
     <string name="p_per_list_sort">ordina_per_lista</string>

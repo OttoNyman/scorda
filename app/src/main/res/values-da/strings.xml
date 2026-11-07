@@ -57,13 +57,10 @@
     <string name="gtasks_error_accountNotFound">Konto %s ikke fundet. Log venligst ud og log ind igen fra Google Huskeliste-indstillingerne.</string>
     <string name="EPr_show_task_edit_comments">Vis kommentarer i opgaveredigering</string>
     <string name="EPr_fullTask_title">Vis hele opgavetitlen</string>
-    <string name="astrid_sort_order">Astrids manuelle sortering</string>
     <string name="permission_read_tasks">Fuld adgang til Tasks-databasen</string>
     <string name="reset_sort_order">Nulstil rækkefølge</string>
     <string name="lists">Lister</string>
     <string name="sort_modified_group">Redigeret %s</string>
-    <string name="support_development_subscribe">Lås op for ekstra funktioner og støt open source-software</string>
-    <string name="enjoying_tasks">Nyder du Tasks\?</string>
     <string name="filter_eisenhower_box_4">Ikke vigtigt og ikke presserende</string>
     <string name="filter_eisenhower_box_3">Ikke vigtigt og presserende</string>
     <string name="filter_eisenhower_box_2">Vigtigt og ikke presserende</string>
@@ -300,7 +297,6 @@
     <string name="save">Gem</string>
     <string name="FLA_new_filter">Opret nyt filter</string>
     <string name="sort_created">Efter oprettelsestidspunkt</string>
-    <string name="astrid_sort_order_summary">Aktiver Astrids manuelle sortering for ‘Mine opgaver’, ‘I dag’ og tags. Denne sorteringsmetode erstattes af ‘Min rækkefølge’ i en kommende opdatering</string>
     <string name="SSD_sort_my_order">Min rækkefølge</string>
     <string name="action_call">Ring</string>
     <string name="TLA_menu_search">Søg</string>
@@ -320,7 +316,6 @@
     <string name="authorization_cancelled">Autorisation annulleret</string>
     <string name="current_subscription">Nuværende abonnement: %s</string>
     <string name="start_date">Startdato</string>
-    <string name="always_display_full_date">Vis fuld dato</string>
     <string name="automatic_backups">Automatiske sikkerhedskopier</string>
     <string name="device_settings">Enhedsindstillinger</string>
     <string name="last_backup_never">aldrig</string>
@@ -376,12 +371,9 @@
     <string name="customize_drawer">Tilpas skuffe</string>
     <string name="sort_list">Efter liste</string>
     <string name="show_edit_screen_without_unlock_summary">Aktiverer brug af Hurtigindstillinger-flisen uden at oplåse enheden</string>
-    <string name="donate_today">Donér i dag</string>
-    <string name="donate_maybe_later">Måske senere</string>
     <string name="comment">Kommentar</string>
     <string name="change_priority">Ændr prioritet</string>
     <string name="theme_dynamic">Dynamisk</string>
-    <string name="donate_nag">Overvej at vise din støtte med en donation!</string>
     <string name="price_per_month_with_currency">%s/måned</string>
     <string name="price_per_year_with_currency">%s/år</string>
     <string name="cost_money">Pris: $</string>
@@ -429,7 +421,6 @@
     <string name="upgrade_desktop_app_description">Tidlig adgang til den nye desktop-app</string>
     <string name="upgrade_friends_and_family">Venner og familie</string>
     <string name="upgrade_friends_and_family_description">5 gratis gæster på delte lister. Fungerer med Apple Reminders</string>
-    <string name="read_more">Læs mere</string>
     <string name="sort_options">Sorteringsmuligheder</string>
     <string name="write_permission_label">Redigér opgaver</string>
     <string name="permission_write_tasks">Tilføj, ændr og slet dine opgaver, lister, tags og steder</string>

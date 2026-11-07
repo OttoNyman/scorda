@@ -260,7 +260,6 @@
     <string name="widget_show_menu">Visa meny</string>
     <string name="CFC_list_name">I lista…</string>
     <string name="upgrade_blurb_2">Jag har ägnat tusentals timmar åt Tasks och publicerar all källkod fritt på nätet. Vissa funktioner kräver en prenumeration för att stödja mitt arbete.</string>
-    <string name="astrid_sort_order_summary">Aktivera Astrids manuella sorteringsläge för ”Mina uppgifter”, ”Idag” och etiketter. Sorteringsläget ersätts av ”Min ordning” i en framtida uppdatering.</string>
     <string name="upgrade_open_source_description">Din prenumeration stöder den fortsatta utvecklingen</string>
     <string name="upgrade_tasks_org_account_description">Synkronisera med Scorda och samarbeta med andra användare</string>
     <string name="upgrade_more_customization_description">Lås upp alla teman, färger och ikoner</string>
@@ -302,8 +301,6 @@
     <string name="permission_read_tasks">Fullständig åtkomst till Tasks-databasen</string>
     <string name="reset_sort_order">Återställ sorteringsordningen</string>
     <string name="local_lists">Lokala listor</string>
-    <string name="support_development_subscribe">Lås upp fler funktioner och stöd utvecklingen av fri programvara</string>
-    <string name="enjoying_tasks">Gillar du Tasks\?</string>
     <string name="filter_eisenhower_box_4">Inte viktigt och inte brådskande</string>
     <string name="filter_eisenhower_box_3">Inte viktigt och brådskande</string>
     <string name="filter_eisenhower_box_2">Viktigt och inte brådskande</string>
@@ -354,11 +351,9 @@
     <string name="no_start_date">Inget startdatum</string>
     <string name="CFC_startBefore_name">Startar före…</string>
     <string name="CFC_startBefore_text">Startar före: ?</string>
-    <string name="always_display_full_date">Visa hela datumet</string>
     <string name="start_date">Startdatum</string>
     <string name="sort_created">Efter skapandetid</string>
     <string name="SSD_sort_start">Efter startdatum</string>
-    <string name="astrid_sort_order">Manuell sortering från Astrid</string>
     <string name="display_name">Visningsnamn</string>
     <string name="now">Nu</string>
     <string name="completed">Slutförd</string>
@@ -376,9 +371,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Avbryt</string>
     <string name="theme_dynamic">Dynamisk</string>
-    <string name="donate_nag">Överväg att stödja oss med en donation!</string>
-    <string name="donate_today">Donera idag</string>
-    <string name="donate_maybe_later">Kanske senare</string>
     <string name="show_edit_screen_without_unlock">Visa redigeringsskärm utan upplåsning</string>
     <string name="show_edit_screen_without_unlock_summary">Gör det möjligt att använda en ruta i snabbinställningarna utan att låsa upp enheten.</string>
     <string name="customize_drawer">Anpassa navigeringspanelen</string>
@@ -428,7 +420,6 @@
     <string name="upgrade_email_to_task_description">Förvandla e-postmeddelanden till uppgifter genom att vidarebefordra dem till din privata inkorg</string>
     <string name="advanced_tools">Avancerade verktyg</string>
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync med mera</string>
-    <string name="read_more">Läs mer</string>
     <string name="per_list_sort_title">Sortering per lista</string>
     <string name="sort_options">Sorteringsalternativ</string>
 </resources>

@@ -57,6 +57,12 @@ actual class PlatformDateFormatter actual constructor() {
     actual fun date(timestamp: Long, style: DateStyle): String =
         dateFormatters.getValue(style).stringFromDate(timestamp.toNSDate())
 
+    actual fun pattern(timestamp: Long, pattern: String): String =
+        NSDateFormatter().apply {
+            locale = NSLocale.currentLocale
+            dateFormat = pattern
+        }.stringFromDate(timestamp.toNSDate())
+
     actual fun time(timestamp: Long, is24HourFormat: Boolean): String =
         timeFormatter(is24HourFormat).stringFromDate(timestamp.toNSDate())
 

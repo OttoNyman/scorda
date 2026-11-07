@@ -14,6 +14,11 @@ import androidx.fragment.compose.content
 import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
 import org.tasks.compose.settings.DateAndTimeScreen
+import org.tasks.compose.settings.DateFormatDialog
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import org.tasks.dialogs.MyTimePickerDialog
 import org.tasks.dialogs.MyTimePickerDialog.Companion.newTimePicker
 import org.tasks.extensions.Context.toast
@@ -81,8 +86,20 @@ class DateAndTime : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            var pickFormat by remember { mutableStateOf(false) }
+            if (pickFormat) {
+                DateFormatDialog(
+                    options = viewModel.dateFormatOptions,
+                    selected = viewModel.dateFormat,
+                    onSelect = {
+                        viewModel.updateDateFormat(it)
+                        pickFormat = false
+                    },
+                    onDismiss = { pickFormat = false },
+                )
+            }
             DateAndTimeScreen(
-                fullDateEnabled = viewModel.fullDateEnabled,
+                dateFormatLabel = viewModel.dateFormatLabel,
                 morningSummary = viewModel.morningSummary,
                 afternoonSummary = viewModel.afternoonSummary,
                 eveningSummary = viewModel.eveningSummary,
@@ -90,7 +107,7 @@ class DateAndTime : Fragment() {
                 autoDismissListEnabled = viewModel.autoDismissListEnabled,
                 autoDismissEditEnabled = viewModel.autoDismissEditEnabled,
                 autoDismissWidgetEnabled = viewModel.autoDismissWidgetEnabled,
-                onFullDate = { viewModel.updateFullDate(it) },
+                onDateFormat = { pickFormat = true },
                 onMorning = {
                     showTimePicker(
                         R.string.p_date_shortcut_morning,

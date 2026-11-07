@@ -102,7 +102,6 @@
     <string name="display_name">Visningsnamn</string>
     <string name="price_per_month_with_currency">%1$s/månad</string>
     <string name="price_per_year_with_currency">%1$s/år</string>
-    <string name="donate_nag">Överväg att stödja oss med en donation!</string>
     <string name="manage_subscription">Hantera prenumeration</string>
     <string name="button_unsubscribe">Avsluta prenumerationen</string>
     <string name="local_lists">Lokala listor</string>
@@ -168,14 +167,10 @@
     <string name="etesync_account_description">Kräver ett konto hos EteSync.com eller en egen värdserver</string>
     <string name="show_advanced_settings">Visa avancerade inställningar</string>
     <string name="app_settings">Appinställningar</string>
-    <string name="whats_new">Nyheter</string>
-    <string name="version_string">Version %1$s</string>
     <string name="rate_tasks">Betygsätt Tasks</string>
     <string name="documentation">Dokumentation</string>
-    <string name="issue_tracker">Ärendehanterare</string>
     <string name="contact_developer">Kontakta utvecklaren</string>
     <string name="send_application_logs">Skicka apploggar</string>
-    <string name="follow_reddit">Gå med i r/tasks</string>
     <string name="source_code">Källkod</string>
     <string name="third_party_licenses">Licenser från tredje part</string>
     <string name="terms_of_service">Användarvillkor</string>
@@ -184,13 +179,11 @@
     <string name="send_anonymous_statistics_summary">Skicka anonym användarstatistik och kraschrapporter för att hjälpa till att förbättra Tasks. Ingen personlig information kommer att samlas in.</string>
     <string name="license_summary">Tasks är fri programvara med öppen källkod och licensieras under GNU General Public License v3.0.</string>
     <string name="support">Stöd</string>
-    <string name="social">Sociala medier</string>
     <string name="open_source">Öppen källkod</string>
     <string name="legal">Juridisk information</string>
     <string name="restart_required">Starta om Tasks för att ändringen ska börja gälla</string>
     <string name="restart_now">Starta om nu</string>
     <string name="restart_later">Senare</string>
-    <string name="blog_feed_none">Ingen</string>
     <string name="wear_phone_update_required">Telefonuppdatering krävs</string>
     <string name="wear_connecting_to_phone">Ansluter till telefon…</string>
     <string name="failed_to_save_task">Det gick inte att spara uppgiften</string>
@@ -208,7 +201,6 @@
     <string name="supporter_summary">%1$s • Tack!</string>
     <string name="sign_in_to_connect">Logga in för att ansluta ditt Scorda-konto</string>
     <string name="guest">Gäst</string>
-    <string name="donate">Donera</string>
     <string name="email_to_task">E-post till uppgift</string>
     <string name="email_to_task_address">Din e-postadress</string>
     <string name="email_to_task_calendar">Mållista</string>
@@ -272,9 +264,6 @@
     <string name="already_subscribed">Redan prenumerant?</string>
     <string name="sign_in_subtitle">Redan prenumerant eller inbjuden gäst?</string>
     <string name="upgrade_subscription_banner">Tack för ditt stöd! Uppgradera din prenumeration för att aktivera Scorda-molnsynkronisering.</string>
-    <string name="blog_notifications">Bloggaviseringar</string>
-    <string name="blog_feed_announcements">Endast tillkännagivanden</string>
-    <string name="blog_feed_all">Alla inlägg</string>
     <string name="cannot_access_account">Det går inte att komma åt kontot</string>
     <string name="new_list">Skapa en ny lista</string>
     <string name="list_members">Listmedlemmar</string>
@@ -320,13 +309,6 @@
     <string name="due_time">Förfallotid</string>
     <string name="day_before_due">Dag före förfallodatum</string>
     <string name="week_before_due">Vecka före förfallodatum</string>
-    <string name="next_sunday">Nästa sön</string>
-    <string name="next_monday">Nästa mån</string>
-    <string name="next_tuesday">Nästa tis</string>
-    <string name="next_wednesday">Nästa ons</string>
-    <string name="next_thursday">Nästa tors</string>
-    <string name="next_friday">Nästa fre</string>
-    <string name="next_saturday">Nästa lör</string>
     <string name="shortcut_pick_time">Välj en tid</string>
     <string name="no_time">Ingen tid</string>
     <string name="TEA_note_label">Beskrivning</string>
@@ -475,7 +457,6 @@
     <string name="delete_task">Ta bort uppgift</string>
     <string name="menu_discard_changes">Kassera ändringar</string>
     <string name="more_options">Fler alternativ</string>
-    <string name="quiet_hours_in_effect">Tysta timmar är aktiva</string>
     <string name="troubleshooting">Felsökning</string>
     <string name="notification_troubleshooting_summary">Tryck här om du har problem med aviseringar</string>
     <string name="disable_battery_optimizations">Inaktivera batterioptimeringar</string>
@@ -500,10 +481,6 @@
     <string name="enabled">Aktiverad</string>
     <string name="swipe_to_snooze_description">Tid för senareläggning</string>
     <string name="swipe_to_snooze_time_description">När en avisering sveps bort senareläggs den och visas igen %1$s</string>
-    <string name="quiet_hours">Tysta timmar</string>
-    <string name="quiet_hours_summary">Inga påminnelser under tysta timmar</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Tysta timmar börjar</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Tysta timmar slutar</string>
     <string name="swipe_to_snooze_time_immediately">omedelbart</string>
     <string name="swipe_to_snooze_time_15_minutes">efter 15 minuter</string>
     <string name="swipe_to_snooze_time_30_minutes">efter 30 minuter</string>
@@ -600,7 +577,6 @@
     <string name="settings_localization">Språk och region</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dynamisk</string>
-    <string name="translations">Hjälp till att översätta</string>
     <string name="widget_open_list">Öppna lista</string>
     <string name="theme_light">Ljust</string>
     <string name="theme_black">Svart</string>

@@ -31,21 +31,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat.getParcelableExtra
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.todoroo.astrid.adapter.SubheaderClickHandler
-import com.todoroo.astrid.gtasks.auth.GtasksLoginActivity
 import com.todoroo.astrid.service.TaskCreator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -60,12 +57,8 @@ import org.tasks.analytics.logCloudOnboarding
 import org.tasks.auth.SignInActivity
 import org.tasks.auth.TasksServerEnvironment
 import org.tasks.billing.Inventory
-import org.tasks.billing.PurchaseActivity
-import org.tasks.billing.PurchaseActivityViewModel
 import org.tasks.billing.maybeTriggerCloudOnboarding
 import org.tasks.caldav.BaseCaldavCalendarSettingsActivity
-import org.tasks.caldav.CaldavSignInActivity
-import org.tasks.compose.AddAccountDestination
 import org.tasks.compose.HomeDestination
 import org.tasks.compose.ImportTasksViewModel
 import org.tasks.compose.PurchaseDestination
@@ -75,11 +68,6 @@ import org.tasks.compose.SubscriptionOnboardingScreen
 import org.tasks.compose.TosUpdateDialog
 import org.tasks.compose.WelcomeDestination
 import org.tasks.compose.WelcomeScreen
-import org.tasks.compose.accounts.AddAccountScreenWrapper
-import org.tasks.compose.accounts.AddAccountViewModel
-import org.tasks.compose.accounts.Platform
-import org.tasks.compose.accounts.featureTitle
-import org.tasks.compose.accounts.openUrl
 import org.tasks.compose.home.HomeScreen
 import org.tasks.compose.navigateClearingBackStack
 import org.tasks.viewmodel.OnboardingNavigation
@@ -93,7 +81,6 @@ import org.tasks.data.entity.Task
 import org.tasks.data.listSettingsClass
 import org.tasks.data.newLocalAccount
 import org.tasks.dialogs.NewFilterDialog
-import org.tasks.etebase.EtebaseSignInActivity
 import org.tasks.extensions.Context.nightMode
 import org.tasks.extensions.Context.openUri
 import org.tasks.extensions.Context.toast
@@ -107,7 +94,6 @@ import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
 import org.tasks.sync.SyncSource
-import org.tasks.sync.microsoft.MicrosoftSignInViewModel
 import org.tasks.themes.ColorProvider
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
@@ -206,14 +192,6 @@ class MainActivity : AppCompatActivity() {
                     routing.ready?.let { isReady = it }
                 }
 
-                LifecycleResumeEffect(Unit) {
-                    if (intent.getBooleanExtra(OPEN_ADD_ACCOUNT, false)) {
-                        intent.removeExtra(OPEN_ADD_ACCOUNT)
-                        navController.navigate(AddAccountDestination)
-                    }
-                    onPauseOrDispose {}
-                }
-
                 NavHost(
                     navController = navController,
                     startDestination = HomeDestination,
@@ -229,15 +207,7 @@ class MainActivity : AppCompatActivity() {
                                 preferences.backupDirectory
                             ),
                             onBack = { finish() },
-                            onSignIn = {
-                                lifecycleScope.launch {
-                                    if (IS_GOOGLE_PLAY) {
-                                        firebase.logEvent(R.string.event_accept_tos)
-                                        setAcceptedTosVersion(currentTosVersion)
-                                    }
-                                    navController.navigate(AddAccountDestination)
-                                }
-                            },
+                            onSignIn = null,
                             onContinueWithoutSync = {
                                 lifecycleScope.launch {
                                     if (IS_GOOGLE_PLAY) {
@@ -269,134 +239,6 @@ class MainActivity : AppCompatActivity() {
                                 lifecycleScope.launch {
                                     serverEnvironment.setEnvironment(env)
                                 }
-                            },
-                        )
-                    }
-                    composable<AddAccountDestination> { backStackEntry ->
-                        LaunchedEffect(Unit) {
-                            firebase.logEvent(R.string.event_screen_add_account)
-                        }
-                        val addAccountViewModel: AddAccountViewModel = hiltViewModel()
-                        val microsoftVM: MicrosoftSignInViewModel = hiltViewModel()
-                        LaunchedEffect(Unit) {
-                            addAccountViewModel.accountAdded.collect {
-                                navController.popBackStack()
-                            }
-                        }
-                        val syncLauncher =
-                            rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                                if (result.resultCode != RESULT_OK) {
-                                    result.data
-                                        ?.getStringExtra(GtasksLoginActivity.EXTRA_ERROR)
-                                        ?.let { toast(it) }
-                                }
-                            }
-                        var pendingPlatform by rememberSaveable { mutableStateOf<String?>(null) }
-                        val purchased by backStackEntry.savedStateHandle
-                            .getStateFlow("purchased", false)
-                            .collectAsStateWithLifecycle()
-                        fun doSignIn(platform: Platform) {
-                            when (platform) {
-                                Platform.TASKS_ORG ->
-                                    syncLauncher.launch(
-                                        Intent(this@MainActivity, SignInActivity::class.java)
-                                    )
-
-                                Platform.GOOGLE_TASKS ->
-                                    syncLauncher.launch(
-                                        Intent(this@MainActivity, GtasksLoginActivity::class.java)
-                                    )
-
-                                Platform.MICROSOFT ->
-                                    microsoftVM.signIn(this@MainActivity)
-
-                                Platform.CALDAV ->
-                                    syncLauncher.launch(
-                                        Intent(this@MainActivity, CaldavSignInActivity::class.java)
-                                    )
-
-                                Platform.ETEBASE ->
-                                    syncLauncher.launch(
-                                        Intent(this@MainActivity, EtebaseSignInActivity::class.java)
-                                    )
-
-                                else -> throw IllegalArgumentException()
-                            }
-                        }
-                        fun doOpenUrl(platform: Platform) = openUrl(platform)
-                        fun requirePurchase(platform: Platform, nameYourPrice: Boolean = true) {
-                            pendingPlatform = platform.name
-                            navController.navigate(
-                                PurchaseDestination(
-                                    nameYourPrice = nameYourPrice,
-                                    feature = platform.featureTitle,
-                                    source = platform.name,
-                                )
-                            )
-                        }
-                        LaunchedEffect(purchased) {
-                            if (purchased) {
-                                backStackEntry.savedStateHandle["purchased"] = false
-                                pendingPlatform?.let { name ->
-                                    pendingPlatform = null
-                                    val platform = Platform.valueOf(name)
-                                    when (platform) {
-                                        Platform.CALDAV,
-                                        Platform.ETEBASE -> doSignIn(platform)
-                                        Platform.DAVX5 -> doOpenUrl(platform)
-                                        else -> {}
-                                    }
-                                }
-                            }
-                        }
-                        AddAccountScreenWrapper(
-                            configuration = configuration,
-                            hasTasksAccount = addAccountViewModel.hasTasksAccount,
-                            hasPro = addAccountViewModel.hasPro,
-                            needsConsent = acceptedTosVersion < currentTosVersion,
-                            onBack = { navController.popBackStack() },
-                            signIn = { platform ->
-                                firebase.logEvent(R.string.event_add_account, R.string.param_source to "onboarding", R.string.param_selection to platform)
-                                when (platform) {
-                                    Platform.TASKS_ORG -> {
-                                        if (inventory.hasTasksSubscription) {
-                                            doSignIn(platform)
-                                        } else {
-                                            syncLauncher.launch(
-                                                Intent(this@MainActivity, PurchaseActivity::class.java)
-                                                    .putExtra(PurchaseActivityViewModel.EXTRA_NAME_YOUR_PRICE, false)
-                                                    .putExtra(PurchaseActivityViewModel.EXTRA_FEATURE, Platform.TASKS_ORG.featureTitle)
-                                                    .putExtra(PurchaseActivityViewModel.EXTRA_SOURCE, Platform.TASKS_ORG.name)
-                                            )
-                                        }
-                                    }
-                                    Platform.CALDAV, Platform.ETEBASE -> {
-                                        if (inventory.hasPro) {
-                                            doSignIn(platform)
-                                        } else {
-                                            requirePurchase(platform)
-                                        }
-                                    }
-                                    else -> doSignIn(platform)
-                                }
-                            },
-                            openUrl = { platform ->
-                                firebase.logEvent(R.string.event_add_account, R.string.param_source to "onboarding", R.string.param_selection to platform.name)
-                                when (platform) {
-                                    Platform.DAVX5 -> {
-                                        if (inventory.hasPro) {
-                                            doOpenUrl(platform)
-                                        } else {
-                                            requirePurchase(platform)
-                                        }
-                                    }
-                                    else -> doOpenUrl(platform)
-                                }
-                            },
-                            openLegalUrl = { openUri(it) },
-                            onConsent = { setAcceptedTosVersion(currentTosVersion) },
-                            onNameYourPriceInfo = {
-                                firebase.logEvent(R.string.event_onboarding_name_your_price)
                             },
                         )
                     }
@@ -662,7 +504,6 @@ class MainActivity : AppCompatActivity() {
         const val OPEN_TASK = "open_new_task" // $NON-NLS-1$
         const val REMOVE_TASK = "remove_task"
         const val FINISH_AFFINITY = "finish_affinity"
-        const val OPEN_ADD_ACCOUNT = "open_add_account"
 
         val Intent.getFilter: Filter?
             get() = if (isFromHistory) {

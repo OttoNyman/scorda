@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
@@ -23,6 +24,7 @@ import org.tasks.R
 import org.tasks.TasksUrls
 import org.tasks.compose.settings.HelpAndFeedbackContent
 import org.tasks.extensions.Context.openUri
+import org.tasks.extensions.Context.toast
 import org.tasks.logging.FileLogger
 import org.tasks.preferences.BasePreferences
 import org.tasks.preferences.DiagnosticInfo
@@ -55,6 +57,7 @@ class HelpAndFeedback : Fragment() {
                 viewModel = viewModel,
                 openUri = { context?.openUri(it) },
                 onRestartApplication = { exitProcess(0) },
+                showMessage = { context?.toast(it, Toast.LENGTH_SHORT) },
                 onRateTasks = {
                     context?.openUri(R.string.market_url)
                 },

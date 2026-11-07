@@ -87,8 +87,6 @@ import org.tasks.preferences.PreferencesSnapshot
 import org.tasks.preferences.QueryPreferences
 import org.tasks.preferences.TaskDefaultSettings
 import org.tasks.preferences.TasksPreferences
-import org.tasks.preferences.adjustForQuietHours
-import org.tasks.preferences.isCurrentlyQuietHours
 import org.tasks.preferences.toAlarmJson
 import org.tasks.preferences.toAlarms
 import org.tasks.reminders.Random
@@ -281,10 +279,6 @@ val coreModule: Module = module {
                 tasksPreferences.set(TasksPreferences.defaultLocationReminder, value)
             override suspend fun setLocationUpdateIntervalMinutes(value: Int) =
                 tasksPreferences.set(TasksPreferences.locationUpdateInterval, value)
-            override suspend fun isCurrentlyQuietHours() =
-                tasksPreferences.snapshot().notificationSettings().isCurrentlyQuietHours()
-            override suspend fun adjustForQuietHours(time: Long) =
-                tasksPreferences.snapshot().notificationSettings().adjustForQuietHours(time)
             override suspend fun drawerSettings() =
                 tasksPreferences.snapshot().drawerSettings()
             override suspend fun setFiltersEnabled(value: Boolean) =
@@ -337,12 +331,6 @@ val coreModule: Module = module {
                 tasksPreferences.set(TasksPreferences.defaultRemindersEnabled, value)
             override suspend fun setDefaultReminderTime(value: Int) =
                 tasksPreferences.set(TasksPreferences.defaultReminderTime, value)
-            override suspend fun setQuietHoursEnabled(value: Boolean) =
-                tasksPreferences.set(TasksPreferences.quietHoursEnabled, value)
-            override suspend fun setQuietHoursStart(value: Int) =
-                tasksPreferences.set(TasksPreferences.quietHoursStart, value)
-            override suspend fun setQuietHoursEnd(value: Int) =
-                tasksPreferences.set(TasksPreferences.quietHoursEnd, value)
             // TODO: populate the remaining DatePickerPreferences fields
             override suspend fun datePickerPreferences() = DatePickerPreferences(
                 datePickerInputMode = tasksPreferences.get(TasksPreferences.datePickerInputMode, false),
@@ -837,12 +825,6 @@ internal fun PreferencesSnapshot.notificationSettings() = NotificationSettings(
         TasksPreferences.defaultReminderTime,
         notificationDefaults.defaultReminderTime
     ),
-    quietHoursEnabled = get(
-        TasksPreferences.quietHoursEnabled,
-        notificationDefaults.quietHoursEnabled
-    ),
-    quietHoursStart = get(TasksPreferences.quietHoursStart, notificationDefaults.quietHoursStart),
-    quietHoursEnd = get(TasksPreferences.quietHoursEnd, notificationDefaults.quietHoursEnd),
 )
 
 internal fun String.orNull(): String? = takeIf { it.isNotBlank() }

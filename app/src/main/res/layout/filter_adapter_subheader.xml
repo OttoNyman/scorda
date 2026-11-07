@@ -67,7 +67,7 @@
         android:ellipsize="end"
         android:background="@null"
         android:textColor="?android:attr/textColorSecondary"
-        android:fontFamily="@string/font_fontFamily_medium"
+        android:fontFamily="@font/manrope_medium"
         android:layout_alignParentStart="true"
         android:layout_below="@id/divider"
         android:layout_toStartOf="@id/chevron"

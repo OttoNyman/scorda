@@ -48,7 +48,13 @@ class GtasksLoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        chooseAccount()
+        // One Google account: once it is known, later sign-ins only ask for scopes.
+        val known = intent.getStringExtra(EXTRA_ACCOUNT)?.takeIf { it.isNotBlank() }
+        if (known != null) {
+            lifecycleScope.launch { getAuthToken(known) }
+        } else {
+            chooseAccount()
+        }
     }
 
     private fun chooseAccount() {
@@ -157,6 +163,7 @@ class GtasksLoginActivity : AppCompatActivity() {
         const val EXTRA_ERROR = "extra_error"
         const val EXTRA_SCOPES = "extra_scopes"
         const val EXTRA_DAILY_DRIVE = "extra_daily_drive"
+        const val EXTRA_ACCOUNT = "extra_account"
         private const val RC_CHOOSE_ACCOUNT = 10988
     }
 }

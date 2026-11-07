@@ -2918,7 +2918,6 @@ private fun SettingsScreen(
                     val configuration = koinInject<PlatformConfiguration>()
                     val purchaseState = koinInject<org.tasks.billing.PurchaseState>()
                     MainSettingsScreen(
-                        accounts = accounts,
                         proCardState = proCardState,
                         environmentLabel = environmentLabel,
                         showBackupWarning = false,
@@ -2929,62 +2928,6 @@ private fun SettingsScreen(
                         showDesktopLinking = configuration.supportsDesktopLinking
                                 && !purchaseState.hasTasksAccount,
                         onLinkDesktopClick = onLinkDesktopClick,
-                        onAccountClick = { account ->
-                            when {
-                                account.isLocalList -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            LocalAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                account.isCaldavAccount -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            CaldavAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                account.isEtebaseAccount -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            EtebaseAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                account.isGoogleTasks -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            GoogleTasksAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                account.isMicrosoft -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            MicrosoftAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                account.isOpenTasks -> {
-                                    scope.launch {
-                                        navigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            OpenTaskAccountSettingsPane(account),
-                                        )
-                                    }
-                                }
-                                else -> {
-                                    Logger.w("App") { "Unhandled account click: ${account.accountType}" }
-                                }
-                            }
-                        },
-                        onAddAccountClick = onAddAccountClick,
                         onSettingsClick = { destination ->
                             scope.launch {
                                 navigator.navigateTo(
@@ -2995,6 +2938,7 @@ private fun SettingsScreen(
                         },
                         onProCardClick = {
                             when (val state = proCardState) {
+                                null -> {}
                                 is ProCardState.TasksOrgAccount -> {
                                     scope.launch {
                                         navigator.navigateTo(
@@ -3011,10 +2955,7 @@ private fun SettingsScreen(
                                 }
                                 is ProCardState.SignIn -> {
                                     onSignInClick()
-                                }
-                                is ProCardState.Donate -> {
-                                    onUpgradeClick()
-                                }
+                                }
                             }
                         },
                     )

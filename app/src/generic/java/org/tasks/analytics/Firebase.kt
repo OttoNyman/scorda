@@ -7,9 +7,7 @@ import org.tasks.R
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
 import org.tasks.viewmodel.TasksAccountViewModel.Companion.DEFAULT_TOS_VERSION
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("UNUSED_PARAMETER")
@@ -48,16 +46,6 @@ class Firebase @Inject constructor(
     override fun setSku(sku: String?) {
         Timber.d("sku -> $sku")
     }
-
-    val subscribeCooldown: Boolean
-        get() = installCooldown
-                || preferences.lastSubscribeRequest + days(28L) > currentTimeMillis()
-
-    private val installCooldown: Boolean
-        get() = preferences.installDate + days(7L) > currentTimeMillis()
-
-    private fun days(default: Long): Long =
-        TimeUnit.DAYS.toMillis(default)
 
     fun getTosVersion(): Int = DEFAULT_TOS_VERSION
 

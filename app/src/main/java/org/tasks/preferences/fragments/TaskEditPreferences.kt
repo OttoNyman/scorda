@@ -20,7 +20,6 @@ import javax.inject.Inject
 class TaskEditPreferences : Fragment() {
 
     @Inject lateinit var theme: Theme
-    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: TaskEditPreferencesViewModel by viewModels()
 
@@ -39,7 +38,8 @@ class TaskEditPreferences : Fragment() {
                 backButtonSaves = viewModel.backButtonSaves,
                 multilineTitle = viewModel.multilineTitle,
                 showComments = viewModel.showComments,
-                showCommentsRow = featureGate.current.notes,
+                // Lives under Description on the Capabilities screen.
+                showCommentsRow = false,
                 showWithoutUnlock = viewModel.showWithoutUnlock,
                 onShowLinks = { viewModel.updateShowLinks(it) },
                 onBackButtonSaves = { viewModel.updateBackButtonSaves(it) },

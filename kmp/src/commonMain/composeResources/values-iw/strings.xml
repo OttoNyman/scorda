@@ -115,8 +115,6 @@
     <string name="supporter_summary">%1$s • תודה לך!</string>
     <string name="sign_in_to_connect">יש להיכנס כדי לחבר את חשבון ה־Scorda שלך</string>
     <string name="guest">אורח</string>
-    <string name="donate">תרומה</string>
-    <string name="donate_nag">נא לשקול להראות את תמיכתך באמצעות תרומה!</string>
     <string name="manage_subscription">שינוי מינוי</string>
     <string name="button_unsubscribe">ביטול מינוי</string>
     <string name="local_lists">רשימות מקומיות</string>
@@ -194,14 +192,10 @@
     <string name="sign_in_subtitle">כבר מנוי/ה או אורח/ת מוזמן/ת?</string>
     <string name="show_advanced_settings">הצגת הגדרות מתקדמות</string>
     <string name="app_settings">הגדרות יישום</string>
-    <string name="whats_new">מה חדש</string>
-    <string name="version_string">גרסה %1$s</string>
     <string name="rate_tasks">דרגו את Tasks</string>
     <string name="documentation">תיעוד</string>
-    <string name="issue_tracker">עוקב בעיות</string>
     <string name="contact_developer">יצירת קשר עם המפתח</string>
     <string name="send_application_logs">שליחת יומני יישום</string>
-    <string name="follow_reddit">הצטרפו אל r/tasks</string>
     <string name="source_code">קוד מקור</string>
     <string name="third_party_licenses">רישיונות צד שלישי</string>
     <string name="terms_of_service">תנאי השירות</string>
@@ -210,13 +204,11 @@
     <string name="send_anonymous_statistics_summary">ניתן לשלוח סטטיסטיקת שימוש ודוחות קריסה אנונימיים כדי לעזור לשפר את Tasks. לא ייאסף מידע אישי.</string>
     <string name="license_summary">היישום Tasks הוא תוכנה חופשית בקוד פתוח, המורשת תחת הרישיון הציבורי הכללי של GNU בגרסה 3.0</string>
     <string name="support">תמיכה</string>
-    <string name="social">חברתי</string>
     <string name="open_source">קוד פתוח</string>
     <string name="legal">משפטי</string>
     <string name="restart_required">יש להפעיל מחדש את Tasks כדי ששינוי זה ייכנס לתוקף</string>
     <string name="restart_now">הפעלה מחדש כעת</string>
     <string name="restart_later">מאוחר יותר</string>
-    <string name="blog_feed_none">ללא</string>
     <string name="cannot_access_account">לא ניתן לגשת לחשבון</string>
     <string name="upgrade_subscription_banner">תודה על תמיכתך! יש לשדרג את המינוי שלך כדי להפעיל גיבוי בענן Scorda</string>
     <string name="new_list">יצירת רשימה חדשה</string>
@@ -254,13 +246,6 @@
     <string name="due_time">זמן יעד</string>
     <string name="day_before_due">יום לפני מועד היעד</string>
     <string name="week_before_due">שבוע לפני מועד היעד</string>
-    <string name="next_sunday">ראשון הבא</string>
-    <string name="next_monday">שני הבא</string>
-    <string name="next_tuesday">שלישי הבא</string>
-    <string name="next_wednesday">רביעי הבא</string>
-    <string name="next_thursday">חמישי הבא</string>
-    <string name="next_friday">שישי הבא</string>
-    <string name="next_saturday">שבת הבאה</string>
     <string name="shortcut_pick_time">בחירת זמן</string>
     <string name="no_time">אין זמן</string>
     <string name="TEA_note_label">תיאור</string>
@@ -428,7 +413,6 @@
     <string name="delete_task">מחיקת משימה</string>
     <string name="menu_discard_changes">השלכת שינויים</string>
     <string name="more_options">אפשרויות נוספות</string>
-    <string name="quiet_hours_in_effect">שעות שקטות בתוקף</string>
     <string name="troubleshooting">איתור תקלות</string>
     <string name="notification_troubleshooting_summary">יש להקיש כאן אם יש לך בעיה עם התראות</string>
     <string name="disable_battery_optimizations">השבתת מיטובי סוללה</string>
@@ -453,10 +437,6 @@
     <string name="enabled">מאופשר</string>
     <string name="swipe_to_snooze_description">זמן נודניק</string>
     <string name="swipe_to_snooze_time_description">התראה שנוקתה תנמנם ותיווצר מחדש %1$s</string>
-    <string name="quiet_hours">שעות שקטות</string>
-    <string name="quiet_hours_summary">לא היו תזכורות במהלך השעות השקטות</string>
-    <string name="rmd_EPr_quiet_hours_start_title">התחלת שעות שקטות</string>
-    <string name="rmd_EPr_quiet_hours_end_title">סיום שעות שקטות</string>
     <string name="swipe_to_snooze_time_immediately">באופן מיידי</string>
     <string name="swipe_to_snooze_time_15_minutes">לאחר 15 דקות</string>
     <string name="swipe_to_snooze_time_30_minutes">לאחר 30 דקות</string>
@@ -539,7 +519,6 @@
     <string name="pricing_nyp_feature_1">ערכות נושא וסמלים בהתאמה אישית</string>
     <string name="pricing_nyp_feature_3">תמיכה בתוכנה חופשית שהיא בקוד פתוח</string>
     <string name="pricing_subscribe_google_play">רישום למינוי ב־Google Play</string>
-    <string name="blog_feed_all">כל הפוסטים</string>
     <string name="add_tag">הוספת תגית</string>
     <string name="create_a_list">יצירת רשימה</string>
     <string name="cloud_onboarding_not_now">לא עכשיו</string>
@@ -553,7 +532,6 @@
     <string name="cloud_onboarding_welcome_title">ברוך בואך לשירות הענן של Scorda</string>
     <string name="cloud_onboarding_welcome_body">נא להתחבר דרך Google בשביל ליצור את החשבון שלך בשירות הענן של Scorda</string>
     <string name="google_tasks_permission_not_granted">לא הוענקה הרשאת גישה ל־Tasks מבית Google. נא להתחבר מחדש ולהעניק גישה ל־Tasks מבית Google במסך ההסכמה.</string>
-    <string name="blog_notifications">התראות בלוג</string>
     <string name="pricing_cloud_feature_1">סנכרון מיידי בין גרסת האנדרואיד לגרסה השולחנית</string>
     <string name="pricing_cloud_monthly_note">בתשלום חודשי</string>
     <string name="rmd_NoA_done">השלמה</string>
@@ -574,7 +552,6 @@
     <string name="settings_localization">לוקליזציה</string>
     <string name="theme">ערכת נושא</string>
     <string name="theme_dynamic">דינמי</string>
-    <string name="translations">לתרום תרגומים</string>
     <string name="widget_open_list">פתיחת רשימה</string>
     <string name="theme_light">בהיר</string>
     <string name="theme_black">שחור</string>

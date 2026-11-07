@@ -90,8 +90,6 @@
     <string name="username_required">Precísase un nome d'usuariu</string>
     <string name="show_advanced_settings">Amosar axustes avanzaos</string>
     <string name="app_settings">Axustes de l'aplicación</string>
-    <string name="whats_new">Novedaes</string>
-    <string name="version_string">Versión %1$s</string>
     <string name="rate_tasks">Valora Tasks</string>
     <string name="contact_developer">Contauta col desendolcador</string>
     <string name="send_application_logs">Unviar rexistros de l'aplicación</string>
@@ -104,7 +102,6 @@
     <string name="restart_required">Reanicia Tasks pa qu'esti cambeu tenga efeutu</string>
     <string name="restart_now">Reaniciar agora</string>
     <string name="restart_later">Dempués</string>
-    <string name="blog_feed_none">Denguna</string>
     <string name="cannot_access_account">Nun se puee acceder a la cuenta</string>
     <string name="new_list">Amestar nueva llista</string>
     <string name="color">Color</string>
@@ -124,13 +121,6 @@
     <string name="due_time">Hora de vencimientu</string>
     <string name="day_before_due">Día previu al vencimientu</string>
     <string name="week_before_due">Selmana previa al vencimientu</string>
-    <string name="next_sunday">Próximu Domingu</string>
-    <string name="next_monday">Próximu Llunes</string>
-    <string name="next_tuesday">Próximu Martes</string>
-    <string name="next_wednesday">Próximu Miércoles</string>
-    <string name="next_thursday">Próximu Xueves</string>
-    <string name="next_friday">Próximu Vienres</string>
-    <string name="next_saturday">Próximu Sábadu</string>
     <string name="TEA_note_label">Descripción</string>
     <string name="start_date">Data d'entamu</string>
     <string name="repeats_custom_recurrence">Recurrencia personalizada</string>
@@ -264,7 +254,6 @@
     </plurals>
     <string name="delete_task">Desaniciar xera</string>
     <string name="menu_discard_changes">Escartar cambeos</string>
-    <string name="quiet_hours_in_effect">Les hores de silenciu tán vixentes</string>
     <string name="notification_disable_battery_optimizations_description">L'optimización de batería puee retrasar avisos</string>
     <string name="persistent_notifications">Notificaciones persistentes</string>
     <string name="persistent_notifications_description">Les notificaciones persistentes nun se pueen desaniciar</string>
@@ -277,10 +266,6 @@
     <string name="enabled">Activáu</string>
     <string name="swipe_to_snooze_description">Tiempu de repetición</string>
     <string name="swipe_to_snooze_time_description">Una notificación desaniciada pospondrase y tornarase a crear %1$s</string>
-    <string name="quiet_hours">Horariu silenciosu</string>
-    <string name="quiet_hours_summary">Ensin recordatorios durante les hores de tranquilidá</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Entama l'horariu de silenciu</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Acaba l'horariu de silenciu</string>
     <string name="swipe_to_snooze_time_immediately">darréu</string>
     <string name="swipe_to_snooze_time_15_minutes">dempués de 15 minutos</string>
     <string name="swipe_to_snooze_time_30_minutes">dempués de 30 minutos</string>
@@ -331,7 +316,6 @@
     <string name="settings_localization">Llocalización</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dinámicu</string>
-    <string name="translations">Contribuyi cola torna</string>
     <string name="widget_open_list">Abrir llista</string>
     <string name="theme_light">Claru</string>
     <string name="theme_black">Prietu</string>

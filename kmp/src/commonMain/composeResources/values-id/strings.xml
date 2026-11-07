@@ -117,8 +117,6 @@
     <string name="supporter_summary">%1$s - Terima kasih!</string>
     <string name="sign_in_to_connect">Masuk untuk menghubungkan akun Scorda Anda</string>
     <string name="guest">Tamu</string>
-    <string name="donate">Donasi</string>
-    <string name="donate_nag">Pertimbangkan untuk menunjukkan dukungan Anda dengan donasi!</string>
     <string name="manage_subscription">Ubah/perbarui langganan</string>
     <string name="button_unsubscribe">Batalkan langganan</string>
     <string name="local_lists">Daftar lokal</string>
@@ -192,18 +190,10 @@
     <string name="sign_in_subtitle">Sudah berlangganan atau diundang sebagai tamu?</string>
     <string name="show_advanced_settings">Tampilkan pengaturan lanjutan</string>
     <string name="app_settings">Pengaturan aplikasi</string>
-    <string name="whats_new">Apa yang Baru</string>
-    <string name="version_string">Versi %1$s</string>
-    <string name="blog_notifications">Notifikasi blog</string>
-    <string name="blog_feed_none">Tidak ada</string>
-    <string name="blog_feed_announcements">Pengumuman saja</string>
-    <string name="blog_feed_all">Semua postingan</string>
     <string name="rate_tasks">Nilai Tasks</string>
     <string name="documentation">Dokumentasi</string>
-    <string name="issue_tracker">Pelacak isu</string>
     <string name="contact_developer">Hubungi pengembang</string>
     <string name="send_application_logs">Kirim log aplikasi</string>
-    <string name="follow_reddit">Gabung r/tasks</string>
     <string name="source_code">Kode sumber</string>
     <string name="third_party_licenses">Lisensi pihak ketiga</string>
     <string name="terms_of_service">Ketentuan layanan</string>
@@ -212,7 +202,6 @@
     <string name="send_anonymous_statistics_summary">Kirim statistik penggunaan dan laporan kerusakan secara anonim untuk membantu membuat Tasks menjadi lebih baik. Tidak ada data personal yang dikumpulkan.</string>
     <string name="license_summary">Tasks adalah perangkat lunak bebas bersumber terbuka, dilindungi Lisensi Publik Umum GNU v3.0</string>
     <string name="support">Dukung</string>
-    <string name="social">Sosial</string>
     <string name="open_source">Sumber Terbuka</string>
     <string name="legal">Hukum</string>
     <string name="restart_required">Mulai ulang Tasks supaya perubahan ini diterapkan</string>
@@ -329,13 +318,6 @@
     <string name="due_time">Waktu jatuh tempo</string>
     <string name="day_before_due">Hari sebelum jatuh tempo</string>
     <string name="week_before_due">Minggu sebelum jatuh tempo</string>
-    <string name="next_sunday">Minggu Depan</string>
-    <string name="next_monday">Senin Depan</string>
-    <string name="next_tuesday">Selasa Depan</string>
-    <string name="next_wednesday">Rabu Depan</string>
-    <string name="next_thursday">Kamis Depan</string>
-    <string name="next_friday">Jumat Depan</string>
-    <string name="next_saturday">Sabtu Depan</string>
     <string name="shortcut_pick_time">Pilih waktu</string>
     <string name="no_time">Tidak ada waktu</string>
     <string name="TEA_note_label">Deskripsi</string>
@@ -466,7 +448,6 @@
     <string name="delete_task">Hapus tugas</string>
     <string name="menu_discard_changes">Buang perubahan</string>
     <string name="more_options">Opsi lainnya</string>
-    <string name="quiet_hours_in_effect">Jam hening sedang berlaku</string>
     <string name="troubleshooting">Penyelesaian masalah</string>
     <string name="notification_troubleshooting_summary">Ketuk di sini jika anda mengalami masalah dengan notifikasi</string>
     <string name="disable_battery_optimizations">Nonaktifkan pengoptimalan baterai</string>
@@ -491,10 +472,6 @@
     <string name="enabled">Aktif</string>
     <string name="swipe_to_snooze_description">Waktu tunda</string>
     <string name="swipe_to_snooze_time_description">Notifikasi yang dibersihkan akan ditunda dan dibuat ulang %1$s</string>
-    <string name="quiet_hours">Jam Tenang</string>
-    <string name="quiet_hours_summary">Tidak ada pengingat selama jam tenang</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Jam tenang mulai</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Jalam tenang berakhir</string>
     <string name="swipe_to_snooze_time_immediately">segera</string>
     <string name="swipe_to_snooze_time_15_minutes">setelah 15 menit</string>
     <string name="swipe_to_snooze_time_30_minutes">setelah 30 menit</string>
@@ -580,7 +557,6 @@
     <string name="settings_localization">Pelokalan bahasa</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dinamis</string>
-    <string name="translations">Kontribusi terjemahan</string>
     <string name="widget_open_list">Buka daftar</string>
     <string name="theme_light">Cerah</string>
     <string name="theme_black">Hitam</string>

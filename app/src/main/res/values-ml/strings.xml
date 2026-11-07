@@ -35,7 +35,6 @@
     <string name="DLG_undo">പഴയപടിയാക്കുക</string>
     <string name="backup_BAc_import">ബാക്കപ്പ് ഇറക്കുമതി ചെയ്യുക</string>
     <string name="export_toast">%1$s ൽ നിന്നും %2$s ലേക്ക് പകർത്തി</string>
-    <string name="always_display_full_date">പൂർണ്ണ തീയതി കാണിക്കുക</string>
     <string name="import_summary_title">പുനഃസ്ഥാപിച്ചതിന്റെ സംഗ്രഹം</string>
     <string name="SSD_sort_start">ആരംഭ തീയതി പ്രകാരം</string>
     <string name="read_permission_label">ജോലികളുടെ അനുവാദം</string>
@@ -44,7 +43,6 @@
     <string name="day_before_due">തികയുന്നതിന് ഒരു ദിവസം മുൻപ്</string>
     <string name="TEA_control_location">സ്ഥലം</string>
     <string name="TEA_control_timer">ടൈമർ നിയന്ത്രണങ്ങൾ</string>
-    <string name="astrid_sort_order_summary">എന്റെ ടാസ്‌ക്കുകൾ\', \'ഇന്ന്\', ടാഗുകൾ എന്നിവയ്‌ക്കായി ആസ്ട്രിഡിന്റെ മാനുവൽ സോർട്ട് മോഡ് പ്രവർത്തനക്ഷമമാക്കുക. ഭാവിയിലെ അപ്‌ഡേറ്റിൽ ഈ സോർട്ട് മോഡ് \'എന്റെ ഓർഡർ\' ഉപയോഗിച്ച് മാറ്റിസ്ഥാപിക്കും</string>
     <string name="week_before_due">തികയുന്നതിനു ഒരാഴ്ച മുൻപ്</string>
     <string name="EPr_beastMode_reset">സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക</string>
     <string name="EPr_reset_preferences_warning">മുൻഗണനകൾ ഡിഫോൾട്ട് മൂല്യങ്ങളിലേക്ക് പുനഃസജ്ജമാക്കും</string>

@@ -42,7 +42,6 @@ class AlarmServiceTest : DatabaseTest() {
     private val notifier: Notifier = mock()
     private val testDispatcher = UnconfinedTestDispatcher()
     private val preferences: AppPreferences = mock {
-        onBlocking { isCurrentlyQuietHours() } doReturn false
         onBlocking { defaultDueTime() } doReturn 0
     }
 

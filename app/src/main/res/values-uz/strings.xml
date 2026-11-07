@@ -28,8 +28,6 @@
     <string name="customize_drawer">Yon menyuni sozlash</string>
     <string name="action_call">Qo\'ng\'iroq qilish</string>
     <string name="SSD_sort_my_order">Mening tartibim</string>
-    <string name="astrid_sort_order">Astrid usulida qo\'lda saralash</string>
-    <string name="astrid_sort_order_summary">Astridning qo\'lda saralash rejimini \"Mening vazifalarim\", \"Bugun\" va teglar uchun yoqish. Bu saralash rejimi kelgusi yangilanishda \"Qo\'lda tartiblash\" bilan almashtiriladi</string>
     <string name="SSD_sort_auto">Aqlli saralash</string>
     <string name="SSD_sort_alpha">Nomi bo\'yicha</string>
     <string name="SSD_sort_start">Boshlanish sanasi bo\'yicha</string>
@@ -70,7 +68,6 @@
     <string name="EPr_cal_end_or_start_at_due_time">Taqvim tadbiri vaqti</string>
     <string name="EPr_cal_end_at_due_time">Taqvim tadbirlarini muddat vaqtida tugatish</string>
     <string name="EPr_cal_start_at_due_time">Taqvim tadbirlarini muddat vaqtida boshlash</string>
-    <string name="always_display_full_date">To\'liq sanani ko\'rsatish</string>
     <string name="EPr_reset_preferences">Sozlamalarni asliga qaytarish</string>
     <string name="EPr_reset_preferences_warning">Sozlamalar standart qiymatlarga qaytariladi</string>
     <string name="EPr_delete_task_data">Vazifa ma\'lumotlarini o\'chirish</string>
@@ -379,11 +376,6 @@
     <string name="filter_eisenhower_box_3">Muhim emas, ammo shoshilinch</string>
     <string name="filter_eisenhower_box_4">Muhim emas va shoshilinch emas</string>
     <string name="banner_subscription_required_body">Sinxronlashni yoqish uchun istagan miqdoringizni to‘lang: %s</string>
-    <string name="enjoying_tasks">Tasks sizga yoqyaptimi?</string>
-    <string name="donate_nag">Xayriya orqali loyihani qo‘llab-quvvatlashni o‘ylab ko‘ring!</string>
-    <string name="donate_today">Bugun xayriya qiling</string>
-    <string name="donate_maybe_later">Balki keyinroq</string>
-    <string name="support_development_subscribe">Qo‘shimcha imkoniyatlarni oching va ochiq kodli dasturiy ta’minotni qo‘llab-quvvatlang</string>
     <string name="p_per_list_sort">Har bir ro‘yxat uchun saralash</string>
     <string name="per_list_sort_title">Ro‘yxat bo‘yicha saralash</string>
     <string name="per_list_sort_summary">Saralash va guruhlash sozlamalarini har bir ro‘yxat uchun alohida saqlash</string>
@@ -432,5 +424,4 @@
     <string name="tos_updated_title">Foydalanish shartlarimiz yangilandi.</string>
     <string name="button_learn_more">Batafsil ma’lumot oling</string>
     <string name="widget_view_more_tasks">Ko‘proq vazifalarni ko‘rish</string>
-    <string name="read_more">Batafsil o‘qish</string>
 </resources>

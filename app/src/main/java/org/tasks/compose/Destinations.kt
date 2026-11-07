@@ -9,9 +9,6 @@ object HomeDestination
 object WelcomeDestination
 
 @Serializable
-object AddAccountDestination
-
-@Serializable
 object SubscriptionOnboardingDestination
 
 @Serializable

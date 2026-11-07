@@ -128,7 +128,6 @@
     <string name="date_shortcut_night">ليلًا</string>
     <string name="date_shortcut_evening">مساءً</string>
     <string name="date_shortcut_morning">صباحًا</string>
-    <string name="always_display_full_date">أظهر التاريخ الكامل</string>
     <string name="SSD_sort_my_order">ترتيبي</string>
     <string name="cancel">إلغاء</string>
     <string name="ok">حسنًا</string>
@@ -137,7 +136,6 @@
     <string name="export_toast">تم تصدير %1$s إلى %2$s.</string>
     <string name="TEA_timer_elap">مضى %s</string>
     <string name="save">حفظ</string>
-    <string name="astrid_sort_order">ترتيب Astrid اليدوي</string>
     <string name="display_name">اسم العرض</string>
     <string name="filter_any_start_date">أيّ تاريخ بدأ</string>
     <string name="no_start_date">بدون تاريخ بدأ</string>
@@ -190,7 +188,6 @@
     <string name="privacy">الخصوصيّة</string>
     <string name="current_subscription">الاشتراك الحالي: %s</string>
     <string name="account">حساب</string>
-    <string name="enjoying_tasks">مستمتع بTasks؟</string>
     <string name="filter_eisenhower_box_4">غير مهم وغير مستعجل</string>
     <string name="filter_eisenhower_box_3">غير مهم ومستعجل</string>
     <string name="filter_eisenhower_box_2">مهم وغير مستعجل</string>
@@ -253,7 +250,6 @@
     <string name="sort_created_group">أنشأ %s</string>
     <string name="EPr_manage_delete_gcal_status">تم حذف %d من أحداث التقويم!</string>
     <string name="import_summary_message">الملف %1$s احتوى على %2$s. \n \n تم استيراد %3$s، \n %4$s موجود مسبقًا \n مشاكل في %5$s</string>
-    <string name="support_development_subscribe">‪افتح ميّزات إضافيّة وادعم البرامج مفتوحة المصدر</string>
     <string name="invalid_backup_file">ملف نسخة احتياطيّة غير صالح</string>
     <string name="location_remind_departure">تذكير عند الرحيل</string>
     <string name="location_remind_arrival">تذكير عند الوصول</string>
@@ -263,7 +259,6 @@
     <string name="gtasks_error_accountNotFound">لم يتم العثور على الحساب %s، الرجاء تسجيل الخروج ثم تسجيل الدخول من إعدادات Google Tasks.</string>
     <string name="CFC_startBefore_name">بدأ عند…</string>
     <string name="CFC_startBefore_text">بدأ عند: \?</string>
-    <string name="astrid_sort_order_summary">تشغيل وضع ترتيب Astrid اليدوي ل\'مهامي\' و\'اليوم\' والعلامات. وضع الترتيب هذا سيستبدل ب\'ترتيبي\' في تحديثٍ مستقبلي</string>
     <plurals name="repeat_n_minutes">
         <item quantity="zero">%d دقيقة</item>
         <item quantity="one">%d دقيقة</item>
@@ -411,9 +406,6 @@
     <string name="show_edit_screen_without_unlock_summary">تمكين استخدام لوحة الإعدادات السريعة دون إلغاء قفل الجهاز</string>
     <string name="banner_app_updated_description">تم تحديث Tasks للتو إلى %s. هل ترغب في الاطلاع على ملاحظات الإصدار؟</string>
     <string name="banner_app_updated_title">التطبيق محدث</string>
-    <string name="donate_today">تبرع اليوم</string>
-    <string name="donate_maybe_later">ربما لاحقا</string>
-    <string name="donate_nag">فكِّر في إظهار دعمك بالتبرع!</string>
     <string name="multiline_title">السماح بعناوين متعددة الأسطر</string>
     <string name="multiline_title_on">اضغط على مفتاح Enter لإضافة فواصل الأسطر</string>
     <string name="multiline_title_off">اضغط على تم لحفظ المهمة</string>

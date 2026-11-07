@@ -11,13 +11,8 @@ import org.tasks.kmp.org.tasks.themes.ColorProvider
 import org.tasks.themes.BaseTheme
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Task
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
-import org.tasks.time.plusDays
-import org.tasks.time.withMillisOfDay
 
 const val DEFAULT_REMINDER_TIME = 18 * 60 * 60 * 1000
-const val DEFAULT_QUIET_HOURS_START = 22 * 60 * 60 * 1000
-const val DEFAULT_QUIET_HOURS_END = 10 * 60 * 60 * 1000
 const val DEFAULT_SNOOZE_MINUTES = 5
 
 /** What swiping a reminder away does. Stored by ordinal: keep the order. */
@@ -70,9 +65,6 @@ data class NotificationSettings(
     val swipeToSnoozeMinutes: Int = DEFAULT_SNOOZE_MINUTES,
     val defaultRemindersEnabled: Boolean = true,
     val defaultReminderTime: Int = DEFAULT_REMINDER_TIME,
-    val quietHoursEnabled: Boolean = false,
-    val quietHoursStart: Int = DEFAULT_QUIET_HOURS_START,
-    val quietHoursEnd: Int = DEFAULT_QUIET_HOURS_END,
 )
 
 data class DrawerSettings(
@@ -112,39 +104,6 @@ data class TaskDefaultSettings(
     val locationUpdateIntervalMinutes: Int = DEFAULT_LOCATION_UPDATE_INTERVAL,
 )
 
-fun NotificationSettings.isCurrentlyQuietHours(
-    now: Long = currentTimeMillis(),
-): Boolean {
-    if (!quietHoursEnabled) {
-        return false
-    }
-    val start = now.withMillisOfDay(quietHoursStart)
-    val end = now.withMillisOfDay(quietHoursEnd)
-    return if (start > end) {
-        now < end || now > start
-    } else {
-        now > start && now < end
-    }
-}
-
-fun NotificationSettings.adjustForQuietHours(time: Long): Long {
-    if (!quietHoursEnabled) {
-        return time
-    }
-    val start = time.withMillisOfDay(quietHoursStart)
-    val end = time.withMillisOfDay(quietHoursEnd)
-    if (start > end) {
-        if (time < end) {
-            return end
-        } else if (time > start) {
-            return end.plusDays(1)
-        }
-    } else if (time > start && time < end) {
-        return end
-    }
-    return time
-}
-
 interface AppPreferences {
     suspend fun getInstallVersion(): Int
     suspend fun setInstallVersion(value: Int)
@@ -158,8 +117,6 @@ interface AppPreferences {
     suspend fun defaultRingMode(): Int
     suspend fun defaultDueTime(): Int
     suspend fun defaultPriority(): Int
-    suspend fun isCurrentlyQuietHours(): Boolean
-    suspend fun adjustForQuietHours(time: Long): Long
     suspend fun locationUpdateIntervalMinutes(): Int = DEFAULT_LOCATION_UPDATE_INTERVAL
     suspend fun addTasksToTop(): Boolean = true
     suspend fun taskDefaults(): TaskDefaultSettings
@@ -207,7 +164,4 @@ interface AppPreferences {
     suspend fun setSwipeToSnoozeMinutes(value: Int)
     suspend fun setDefaultRemindersEnabled(value: Boolean)
     suspend fun setDefaultReminderTime(value: Int)
-    suspend fun setQuietHoursEnabled(value: Boolean)
-    suspend fun setQuietHoursStart(value: Int)
-    suspend fun setQuietHoursEnd(value: Int)
 }

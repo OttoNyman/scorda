@@ -279,8 +279,6 @@
     <string name="CFC_list_name">Na lista…</string>
     <string name="TEA_timer_est">Est. %s</string>
     <string name="sort_created">Por hora de criação</string>
-    <string name="astrid_sort_order_summary">Ativar ordenação manual do Astrid para \'Minhas tarefas\', \'Hoje\', e etiquetas. Esse modo de ordenação será substituído por \'Minhas ordenações\' em uma atualização futura</string>
-    <string name="astrid_sort_order">Ordenação manual do Astrid</string>
     <string name="SSD_sort_my_order">Minhas ordenações</string>
     <string name="display_name">Nome de exibição</string>
     <string name="permission_read_tasks">Acesso completo à base de dados do Tasks</string>
@@ -288,8 +286,6 @@
     <string name="lists">Listas</string>
     <string name="sort_modified_group">Modificado em %s</string>
     <string name="sort_created_group">Criado em %s</string>
-    <string name="support_development_subscribe">Desbloquear funcionalidades adicionais e oferecer suporte a software de código aberto</string>
-    <string name="enjoying_tasks">Curtindo Tasks\?</string>
     <string name="filter_eisenhower_box_4">Não é importante e não é urgente</string>
     <string name="filter_eisenhower_box_3">Não é importante e urgente</string>
     <string name="filter_eisenhower_box_2">Importante e não urgente</string>
@@ -341,7 +337,6 @@
     <string name="subscription">Assinatura</string>
     <string name="no_app_found">Nenhum aplicativo pode atender a esta solicitação</string>
     <string name="filter_criteria_unstarted">Não iniciadas</string>
-    <string name="always_display_full_date">Mostrar data completa</string>
     <string name="upgrade_open_source_description">Sua assinatura ajuda a continuar o desenvolvimento</string>
     <string name="upgrade_tasks_org_account_description">Sincronize com Scorda e colabore com outros usuários</string>
     <string name="upgrade_more_customization_description">Desbloqueie todos os temas, cores e ícones</string>
@@ -386,9 +381,6 @@
     <string name="show_edit_screen_without_unlock">Mostrar tela de edição sem desbloquear</string>
     <string name="show_edit_screen_without_unlock_summary">Permite o uso do bloco \"Configurações Rápidas\" sem desbloquear o dispositivo</string>
     <string name="customize_drawer">Personalizar menu</string>
-    <string name="donate_nag">Considere mostrar seu apoio com uma doação!</string>
-    <string name="donate_maybe_later">Talvez mais tarde</string>
-    <string name="donate_today">Faça sua doação hoje</string>
     <string name="comment">Comentário</string>
     <string name="cost_money">Preço: $</string>
     <string name="app_settings">Configurações do aplicativo</string>
@@ -436,7 +428,6 @@
     <string name="exit">Sair</string>
     <string name="returning_user">Usuário retornando?</string>
     <string name="widget_view_more_tasks">Ver mais tarefas</string>
-    <string name="read_more">Ler mais</string>
     <string name="sort_options">Opções de ordem</string>
     <string name="permission_write_tasks">Adicionar, alterar e excluir suas tarefas, listas, etiquetas e locais</string>
     <string name="write_permission_label">Modificar tarefas</string>

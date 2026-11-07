@@ -28,7 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class ConstructorRepository @Inject constructor(
     private val preferences: Preferences,
-    caldavDao: CaldavDao,
+    private val caldavDao: CaldavDao,
     private val taskDao: TaskDao,
     private val gate: FeatureGate,
     private val timerPlugin: Lazy<TimerPlugin>,
@@ -73,9 +73,13 @@ class ConstructorRepository @Inject constructor(
         scope.launch { publish(rawFlow.value) }
     }
 
-    /** The next Google sync moves every local list to Google. */
-    fun moveLocalListsToGoogle() {
+    /**
+     * The next Google sync moves every local list to Google: into [target] when it is one of
+     * [googleLists], otherwise each list under its own name.
+     */
+    fun moveLocalListsToGoogle(target: String? = null) {
         preferences.setBoolean(R.string.p_google_tasks_move_local, true)
+        preferences.setString(R.string.p_google_tasks_move_target, target)
         scope.launch {
             try {
                 workManager.get().sync(SyncSource.USER_INITIATED)
@@ -83,6 +87,15 @@ class ConstructorRepository @Inject constructor(
                 Timber.e(e)
             }
         }
+    }
+
+    /** Google lists the app keeps, as uuid to name, Scorda first. */
+    suspend fun googleLists(): List<Pair<String, String>> {
+        val account = caldavDao.getAccounts(CaldavAccount.TYPE_GOOGLE_TASKS).firstOrNull() ?: return emptyList()
+        val scorda = preferences.getStringValue(R.string.p_google_tasks_list_id)
+        return caldavDao.getCalendarsByAccount(account.uuid!!)
+            .mapNotNull { c -> c.uuid?.let { it to (c.name ?: it) } }
+            .sortedBy { it.first != scorda }
     }
 
     suspend fun counts(now: Long): ConstructorCounts {

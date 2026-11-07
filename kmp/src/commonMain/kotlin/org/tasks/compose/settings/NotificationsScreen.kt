@@ -68,18 +68,12 @@ import tasks.kmp.generated.resources.bundle_notifications_summary
 import tasks.kmp.generated.resources.completion_sound
 import tasks.kmp.generated.resources.default_reminder
 import tasks.kmp.generated.resources.disable_battery_optimizations
-import tasks.kmp.generated.resources.enabled
 import tasks.kmp.generated.resources.more_settings
 import tasks.kmp.generated.resources.notification_disable_battery_optimizations_description
 import tasks.kmp.generated.resources.notification_troubleshooting_summary
 import tasks.kmp.generated.resources.notifications
 import tasks.kmp.generated.resources.persistent_notifications
 import tasks.kmp.generated.resources.persistent_notifications_description
-import tasks.kmp.generated.resources.quiet_hours
-import tasks.kmp.generated.resources.quiet_hours_in_effect
-import tasks.kmp.generated.resources.quiet_hours_summary
-import tasks.kmp.generated.resources.rmd_EPr_quiet_hours_end_title
-import tasks.kmp.generated.resources.rmd_EPr_quiet_hours_start_title
 import tasks.kmp.generated.resources.rmd_EPr_rmd_time_title
 import tasks.kmp.generated.resources.rmd_time_enabled_off
 import tasks.kmp.generated.resources.rmd_time_enabled_on
@@ -124,7 +118,6 @@ private fun timeSummary(millisOfDay: Int, is24HourFormat: Boolean): String =
 @Composable
 fun NotificationsScreen(
     is24HourFormat: Boolean,
-    isCurrentlyQuietHours: Boolean,
     showTroubleshooting: Boolean,
     showBatteryOptimization: Boolean,
     showNotificationsEnabled: Boolean,
@@ -145,9 +138,6 @@ fun NotificationsScreen(
     swipeToSnoozeMinutes: Int,
     defaultRemindersEnabled: Boolean,
     defaultReminderTime: Int,
-    quietHoursEnabled: Boolean,
-    quietHoursStart: Int,
-    quietHoursEnd: Int,
     onTroubleshooting: () -> Unit,
     onBatteryOptimization: () -> Unit,
     onNotificationsEnabled: (Boolean) -> Unit,
@@ -162,9 +152,6 @@ fun NotificationsScreen(
     onSnoozeTime: () -> Unit,
     onDefaultReminders: (Boolean) -> Unit,
     onReminderTime: () -> Unit,
-    onQuietHours: (Boolean) -> Unit,
-    onQuietStart: () -> Unit,
-    onQuietEnd: () -> Unit,
     showHealth: Boolean = false,
     healthChecks: List<ReminderCheck> = emptyList(),
     modeLine: ModeLine = ModeLine.ON_TIME,
@@ -204,30 +191,6 @@ fun NotificationsScreen(
                 onTest = onReminderTest,
             )
         }
-
-        if (isCurrentlyQuietHours) {
-            DangerCard(
-                icon = TasksIcons.NOTIFICATIONS_OFF,
-                title = stringResource(Res.string.quiet_hours_in_effect),
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
-
-        SectionHeader(
-            stringResource(Res.string.quiet_hours),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        QuietHoursBlock(
-            is24HourFormat = is24HourFormat,
-            quietHoursEnabled = quietHoursEnabled,
-            quietHoursStart = quietHoursStart,
-            quietHoursEnd = quietHoursEnd,
-            onQuietHours = onQuietHours,
-            onQuietStart = onQuietStart,
-            onQuietEnd = onQuietEnd,
-        )
 
         SectionHeader(
             stringResource(Res.string.default_reminder),
@@ -596,48 +559,6 @@ private fun ringSummary(mode: Int): String {
     val label = RingModeOptions.firstOrNull { it.first == mode }?.second
         ?: RingModeOptions.first { it.first == 0 }.second
     return stringResource(label)
-}
-
-@Composable
-private fun QuietHoursBlock(
-    is24HourFormat: Boolean,
-    quietHoursEnabled: Boolean,
-    quietHoursStart: Int,
-    quietHoursEnd: Int,
-    onQuietHours: (Boolean) -> Unit,
-    onQuietStart: () -> Unit,
-    onQuietEnd: () -> Unit,
-) {
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(position = CardPosition.First) {
-            SwitchPreferenceRow(
-                title = stringResource(Res.string.enabled),
-                summary = stringResource(Res.string.quiet_hours_summary),
-                checked = quietHoursEnabled,
-                onCheckedChange = onQuietHours,
-            )
-        }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.rmd_EPr_quiet_hours_start_title),
-                summary = timeSummary(quietHoursStart, is24HourFormat),
-                enabled = quietHoursEnabled,
-                onClick = onQuietStart,
-            )
-        }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.rmd_EPr_quiet_hours_end_title),
-                summary = timeSummary(quietHoursEnd, is24HourFormat),
-                enabled = quietHoursEnabled,
-                onClick = onQuietEnd,
-            )
-        }
-    }
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
 }
 
 @Composable

@@ -107,8 +107,6 @@
     <string name="supporter_summary">%1$s • Dankon!</string>
     <string name="sign_in_to_connect">Ensalutu por konekti al via konto de Scorda</string>
     <string name="guest">Gasto</string>
-    <string name="donate">Donaci</string>
-    <string name="donate_nag">Bonvolu doni subtenon per donaco!</string>
     <string name="manage_subscription">Modifi abonon</string>
     <string name="button_unsubscribe">Nuligi abonon</string>
     <string name="local_lists">Lokaj listoj</string>
@@ -184,18 +182,10 @@
     <string name="sign_in_subtitle">Ĉu vi jam estas abonanto aŭ invitita gasto?</string>
     <string name="show_advanced_settings">Vidigi altnivelajn agordojn</string>
     <string name="app_settings">Agordoj de Aplikaĵo</string>
-    <string name="whats_new">Novaĵoj</string>
-    <string name="version_string">Versio %1$s</string>
-    <string name="blog_notifications">Sciigoj de blogo</string>
-    <string name="blog_feed_none">Neniu</string>
-    <string name="blog_feed_announcements">Nur anoncoj</string>
-    <string name="blog_feed_all">Ĉiuj afiŝoj</string>
     <string name="rate_tasks">Pritaksi Tasks</string>
     <string name="documentation">Dokumentado</string>
-    <string name="issue_tracker">Problem-spurado</string>
     <string name="contact_developer">Kontakti programiston</string>
     <string name="send_application_logs">Sendi protokoladon</string>
-    <string name="follow_reddit">Aniĝi al r/tasks</string>
     <string name="source_code">Fontkodo</string>
     <string name="third_party_licenses">Licencoj de ekstera liveranto</string>
     <string name="terms_of_service">Kondiĉoj de uzado</string>
@@ -204,7 +194,6 @@
     <string name="send_anonymous_statistics_summary">Permesi sendi anonimajn statistikon kaj prikolapsajn raportojn. Neniu persona datumo estos kolektita.</string>
     <string name="license_summary">Tasks estas libre malfermitkoda programaro, rajtigite per la GNU General Public License v3.0</string>
     <string name="support">Helpo</string>
-    <string name="social">Sociaj Komunikiloj</string>
     <string name="open_source">Malfermitkoda</string>
     <string name="legal">Leĝa</string>
     <string name="restart_required">Restartigu Tasks por efikigi ĉi tiun ŝanĝon</string>
@@ -259,13 +248,6 @@
     <string name="due_time">Limtempo</string>
     <string name="day_before_due">Tago antaŭ limdato</string>
     <string name="week_before_due">Semajno antaŭ limdato</string>
-    <string name="next_sunday">Sekva dim</string>
-    <string name="next_monday">Venonta lun</string>
-    <string name="next_tuesday">Sekva mar</string>
-    <string name="next_wednesday">Sekva mer</string>
-    <string name="next_thursday">Sekva ĵaŭ</string>
-    <string name="next_friday">Sekva ven</string>
-    <string name="next_saturday">Sekva sab</string>
     <string name="shortcut_pick_time">Elekti horon</string>
     <string name="no_time">Sen tempo</string>
     <string name="add_platform_account">Aldoni %1$s konton</string>
@@ -459,7 +441,6 @@
     <string name="delete_task">Forigi taskon</string>
     <string name="menu_discard_changes">Forĵeti ŝanĝojn</string>
     <string name="more_options">Pli da opcioj</string>
-    <string name="quiet_hours_in_effect">Senperturbaj horoj aktivas</string>
     <string name="troubleshooting">Problemsolvado</string>
     <string name="notification_troubleshooting_summary">Batetu ĉi tien se vi havas problemon pri sciigoj</string>
     <string name="disable_battery_optimizations">Malŝalti optimumigojn</string>
@@ -484,10 +465,6 @@
     <string name="enabled">Ŝaltita</string>
     <string name="swipe_to_snooze_description">Daŭro por paŭzigi</string>
     <string name="swipe_to_snooze_time_description">Forigita sciigo paŭziĝos kaj rekreiĝos je %1$s</string>
-    <string name="quiet_hours">Silentaj horoj</string>
-    <string name="quiet_hours_summary">Neniu memorigoj dum kviethoroj</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Komenco de kviethoroj</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Fino de Kviethoroj</string>
     <string name="swipe_to_snooze_time_immediately">tuj</string>
     <string name="swipe_to_snooze_time_15_minutes">post 15 minutoj</string>
     <string name="swipe_to_snooze_time_30_minutes">post 30 minutoj</string>
@@ -550,7 +527,6 @@
     <string name="settings_localization">Traduko</string>
     <string name="theme">Etoso</string>
     <string name="theme_dynamic">Dinamika</string>
-    <string name="translations">Helpi traduki</string>
     <string name="widget_open_list">Malfermi liston</string>
     <string name="theme_light">Hela</string>
     <string name="theme_black">Nigra</string>

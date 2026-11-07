@@ -4,8 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.tasks.PlatformConfiguration
 import org.tasks.TasksBuildConfig
@@ -13,12 +11,11 @@ import org.tasks.analytics.AnalyticsEvents
 import org.tasks.analytics.Reporting
 import org.tasks.billing.BillingProvider
 import org.tasks.billing.PurchaseState
-import org.tasks.feed.BlogFeedMode
 import org.tasks.preferences.TasksPreferences
 
 open class HelpAndFeedbackViewModel(
     private val reporting: Reporting,
-    private val tasksPreferences: TasksPreferences,
+    tasksPreferences: TasksPreferences,
     private val platformConfiguration: PlatformConfiguration,
     purchaseState: PurchaseState,
     collectStatistics: Boolean = runBlocking { tasksPreferences.get(TasksPreferences.collectStatistics, true) },
@@ -32,27 +29,27 @@ open class HelpAndFeedbackViewModel(
     val showTermsOfService: Boolean =
         !platformConfiguration.isLibre || purchaseState.hasTasksAccount
 
-    val showSendLogs: Boolean = platformConfiguration.supportsLogExport
+    /** Hidden until the version row is tapped [LOGS_UNLOCK_TAPS] times; lives as long as this view model. */
+    var showSendLogs by mutableStateOf(false)
+        private set
+
+    private var versionTaps = 0
 
     val showCollectStatistics: Boolean = !platformConfiguration.isLibre
 
     var collectStatistics by mutableStateOf(collectStatistics)
         protected set
 
-    var blogFeedMode by mutableStateOf(
-        runBlocking {
-            BlogFeedMode.fromValue(
-                tasksPreferences.get(TasksPreferences.blogFeedMode, BlogFeedMode.ANNOUNCEMENTS.value)
-            )
-        }
-    )
-        private set
-
-    var showBlogFeedModeDialog by mutableStateOf(false)
-        private set
-
     var showRestartDialog by mutableStateOf(false)
         private set
+
+    /** Returns true on the tap that reveals "Send application logs". */
+    fun onVersionClick(): Boolean {
+        if (showSendLogs || !platformConfiguration.supportsLogExport) return false
+        if (++versionTaps < LOGS_UNLOCK_TAPS) return false
+        showSendLogs = true
+        return true
+    }
 
     fun logEvent(type: String) {
         reporting.logEvent(
@@ -70,22 +67,7 @@ open class HelpAndFeedbackViewModel(
         showRestartDialog = false
     }
 
-    fun showBlogFeedModeDialog() {
-        showBlogFeedModeDialog = true
-    }
-
-    fun dismissBlogFeedModeDialog() {
-        showBlogFeedModeDialog = false
-    }
-
-    fun updateBlogFeedMode(mode: BlogFeedMode) {
-        blogFeedMode = mode
-        showBlogFeedModeDialog = false
-        viewModelScope.launch {
-            tasksPreferences.set(TasksPreferences.blogFeedMode, mode.value)
-            if (mode == BlogFeedMode.NONE) {
-                tasksPreferences.set(TasksPreferences.blogPendingPost, "")
-            }
-        }
+    companion object {
+        const val LOGS_UNLOCK_TAPS = 10
     }
 }

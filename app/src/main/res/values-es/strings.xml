@@ -300,15 +300,11 @@
     <string name="filter_today_only">Hoy sólo</string>
     <string name="filter_overdue">Atrasada</string>
     <string name="sort_created">En el momento de la creación</string>
-    <string name="support_development_subscribe">Desbloquee funciones adicionales y apoye el software de código abierto</string>
-    <string name="enjoying_tasks">¿Disfruta Tasks\?</string>
     <string name="whats_new">Qué hay de nuevo</string>
     <string name="action_new_task">Nueva tarea</string>
     <string name="sort_modified_group">Modificado %s</string>
     <string name="sort_created_group">Creado %s</string>
     <string name="lists">Listas</string>
-    <string name="astrid_sort_order_summary">Active el modo de ordenación manual de Astrid para «Mis tareas», «Hoy» y las etiquetas. Este modo de ordenación se reemplazará por «Mi orden» en una futura actualización</string>
-    <string name="astrid_sort_order">Clasificación manual de Astrid</string>
     <string name="CFC_list_name">En la lista…</string>
     <string name="reset_sort_order">Restablecer orden de clasificación</string>
     <string name="permission_read_tasks">Acceso completo a la base de datos de Tasks</string>
@@ -330,7 +326,6 @@
     <string name="multi_select_reschedule">Reprogramar</string>
     <string name="ok">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="always_display_full_date">Mostrar la fecha completa</string>
     <string name="custom_filter_is_subtask">Es una subtarea</string>
     <string name="custom_filter_has_subtask">Tiene subtareas</string>
     <string name="current_subscription">Suscripción actual: %s</string>
@@ -386,9 +381,6 @@
     <string name="show_edit_screen_without_unlock">Mostrar pantalla de edición sin desbloquear</string>
     <string name="show_edit_screen_without_unlock_summary">Permite utilizar la ventana de ajustes rápidos sin desbloquear el dispositivo</string>
     <string name="customize_drawer">Personalizar menú</string>
-    <string name="donate_nag">¡Considera mostrar tu apoyo con una donación!</string>
-    <string name="donate_today">Donar ahora</string>
-    <string name="donate_maybe_later">Quizas mas tarde</string>
     <string name="enable_alarms_description">Para asegurarse de recibir notificaciones en el momento adecuado, otorgue permiso para configurar alarmas y recordatorios en Configuración</string>
     <string name="enable_alarms">Recibe notificaciones en el momento adecuado</string>
     <string name="multiline_title">Permitir títulos de varias líneas</string>
@@ -421,5 +413,4 @@
     <string name="tos_updated_title">Hemos actualizado nuestras condiciones de uso</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="upgrade_friends_and_family">Amigos y familia</string>
-    <string name="read_more">Leer más</string>
 </resources>

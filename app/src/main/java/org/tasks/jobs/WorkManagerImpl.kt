@@ -45,7 +45,6 @@ import org.tasks.jobs.WorkManager.Companion.TAG_NOTIFICATIONS
 import org.tasks.jobs.WorkManager.Companion.TAG_NOTIFICATION_SAFETY
 import org.tasks.jobs.WorkManager.Companion.TAG_REFRESH
 import org.tasks.jobs.WorkManager.Companion.TAG_REMOTE_CONFIG
-import org.tasks.jobs.WorkManager.Companion.TAG_BLOG_FEED
 import org.tasks.jobs.WorkManager.Companion.TAG_SYNC
 import org.tasks.jobs.WorkManager.Companion.TAG_UPDATE_PURCHASES
 import org.tasks.notifications.AndroidReminderHealth
@@ -219,10 +218,6 @@ class WorkManagerImpl(
     override fun updatePurchases() =
         enqueueUnique(TAG_UPDATE_PURCHASES, UpdatePurchaseWork::class.java)
 
-    override suspend fun scheduleBlogFeedCheck() {
-        workManager.cancelUniqueWork(TAG_BLOG_FEED)
-    }
-
     @SuppressLint("EnqueueWork")
     private fun enqueueUnique(
         key: String,
@@ -292,9 +287,3 @@ private fun printDuration(millis: Long): String = if (BuildConfig.DEBUG) {
 
 val networkConstraints: Constraints
     get() = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-
-val blogFeedConstraints: Constraints
-    get() = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresCharging(true)
-        .build()

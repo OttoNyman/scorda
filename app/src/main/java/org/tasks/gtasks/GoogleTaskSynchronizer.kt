@@ -110,8 +110,10 @@ class AndroidGoogleTaskSynchronizer @Inject constructor(
             },
             moveLocal = moveLocal,
             localDefaultList = if (moveLocal) defaultFilterProvider.getLocalDefaultListUuid() else null,
+            moveTarget = preferences.getStringValue(R.string.p_google_tasks_move_target),
             onMovedLocal = {
                 preferences.setBoolean(R.string.p_google_tasks_move_local, false)
+                preferences.setString(R.string.p_google_tasks_move_target, null)
             },
         )
     }

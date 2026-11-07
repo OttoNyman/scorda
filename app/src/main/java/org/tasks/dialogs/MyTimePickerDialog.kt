@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberTimePickerState
-import androidx.compose.runtime.remember
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.compose.content
 import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.compose.pickers.TimePickerDialog
 import org.tasks.extensions.Context.is24HourFormat
-import org.tasks.preferences.Preferences
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -24,7 +22,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyTimePickerDialog : DialogFragment() {
 
-    @Inject lateinit var preferences: Preferences
     @Inject lateinit var theme: Theme
 
     private val requestKey: String
@@ -46,8 +43,6 @@ class MyTimePickerDialog : DialogFragment() {
                     initialMinute = (initial.millisOfDay / (60_000)) % 60,
                     is24Hour = requireContext().is24HourFormat
                 ),
-                initialDisplayMode = remember { preferences.timeDisplayMode },
-                setDisplayMode = { preferences.timeDisplayMode = it },
                 selected = {
                     parentFragmentManager.setFragmentResult(
                         requestKey,

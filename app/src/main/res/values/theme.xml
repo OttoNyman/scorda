@@ -8,6 +8,8 @@
   <style name="DayNightAlert" parent="ThemeOverlay.Material3.Dialog.Alert" />
 
   <style name="TasksBase" parent="DayNight">
+    <item name="android:fontFamily">@font/manrope</item>
+    <item name="fontFamily">@font/manrope</item>
     <item name="android:windowBackground">@color/window_background</item>
     <item name="android:colorBackground">@color/content_background</item>
     <item name="background">@color/window_background</item>
@@ -33,13 +35,18 @@
   </style>
 
   <style name="TasksDialogAlert" parent="DayNightAlert">
+    <item name="android:fontFamily">@font/manrope</item>
+    <item name="fontFamily">@font/manrope</item>
     <item name="android:background">@color/dialog_background</item>
     <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
     <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     <item name="buttonBarNeutralButtonStyle">@style/AlertButtonStyle</item>
   </style>
 
-  <style name="TasksDialog" parent="DayNightDialog"/>
+  <style name="TasksDialog" parent="DayNightDialog">
+    <item name="android:fontFamily">@font/manrope</item>
+    <item name="fontFamily">@font/manrope</item>
+  </style>
 
   <style name="ThemeBlack" parent="Tasks">
     <item name="android:windowBackground">@android:color/black</item>

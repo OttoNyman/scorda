@@ -27,13 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.platform.testTag
-import org.tasks.themes.TestTags
 import org.tasks.kmp.formatTime
 import org.tasks.compose.rememberDateFormatter
 import org.tasks.kmp.org.tasks.time.DateStyle
@@ -46,18 +40,9 @@ import tasks.kmp.generated.resources.date_picker_multiple
 import tasks.kmp.generated.resources.day_before_due
 import tasks.kmp.generated.resources.due_date
 import tasks.kmp.generated.resources.due_time
-import tasks.kmp.generated.resources.next_friday
-import tasks.kmp.generated.resources.next_monday
-import tasks.kmp.generated.resources.next_saturday
-import tasks.kmp.generated.resources.next_sunday
-import tasks.kmp.generated.resources.next_thursday
-import tasks.kmp.generated.resources.next_tuesday
-import tasks.kmp.generated.resources.next_wednesday
 import tasks.kmp.generated.resources.no_date
 import tasks.kmp.generated.resources.no_time
 import tasks.kmp.generated.resources.shortcut_pick_time
-import tasks.kmp.generated.resources.today
-import tasks.kmp.generated.resources.tomorrow
 import tasks.kmp.generated.resources.week_before_due
 
 @Composable
@@ -162,83 +147,6 @@ fun StartDateShortcuts(
         selected = selected == NO_DAY,
         onClick = { clearDate() },
     )
-}
-
-@Composable
-fun DueDateShortcuts(
-    today: Long,
-    tomorrow: Long,
-    nextWeek: Long,
-    selected: Long,
-    showNoDate: Boolean,
-    selectedDay: (Long) -> Unit,
-    clearDate: () -> Unit,
-) {
-    var custom by remember { mutableLongStateOf(0) }
-    LaunchedEffect(selected) {
-        custom = if (selected == MULTIPLE_DAYS || selected !in listOf(today, tomorrow, nextWeek, NO_DAY)) {
-            selected
-        } else {
-            custom
-        }
-    }
-
-    if (custom > 0 || custom == MULTIPLE_DAYS) {
-        ShortcutButton(
-            icon = TasksIcons.TODAY,
-            text = if (custom == MULTIPLE_DAYS) {
-                stringResource(Res.string.date_picker_multiple)
-            } else {
-                customDateLabel(custom, today)
-            },
-            selected = selected == custom,
-            onClick = { selectedDay(custom) },
-        )
-    }
-    ShortcutButton(
-        icon = TasksIcons.TODAY,
-        text = stringResource(Res.string.today),
-        selected = selected == today,
-        onClick = { selectedDay(today) },
-        modifier = Modifier.testTag(TestTags.DATE_SHORTCUT_TODAY),
-    )
-    ShortcutButton(
-        icon = TasksIcons.WB_SUNNY,
-        text = stringResource(Res.string.tomorrow),
-        selected = selected == tomorrow,
-        onClick = { selectedDay(tomorrow) },
-    )
-    ShortcutButton(
-        icon = TasksIcons.NEXT_WEEK,
-        text = stringResource(
-            remember {
-                when (
-                    Instant.fromEpochMilliseconds(nextWeek)
-                        .toLocalDateTime(TimeZone.currentSystemDefault())
-                        .dayOfWeek
-                ) {
-                    DayOfWeek.SUNDAY -> Res.string.next_sunday
-                    DayOfWeek.MONDAY -> Res.string.next_monday
-                    DayOfWeek.TUESDAY -> Res.string.next_tuesday
-                    DayOfWeek.WEDNESDAY -> Res.string.next_wednesday
-                    DayOfWeek.THURSDAY -> Res.string.next_thursday
-                    DayOfWeek.FRIDAY -> Res.string.next_friday
-                    DayOfWeek.SATURDAY -> Res.string.next_saturday
-                    else -> throw IllegalArgumentException()
-                }
-            }
-        ),
-        selected = selected == nextWeek,
-        onClick = { selectedDay(nextWeek) },
-    )
-    if (showNoDate) {
-        ShortcutButton(
-            icon = TasksIcons.BLOCK,
-            text = stringResource(Res.string.no_date),
-            selected = selected == NO_DAY,
-            onClick = { clearDate() },
-        )
-    }
 }
 
 @Composable

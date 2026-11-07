@@ -29,8 +29,4 @@
     android:defaultValue="false"
     android:key="@string/p_badges_enabled" />
 
-  <SwitchPreferenceCompat
-    android:defaultValue="false"
-    android:key="@string/p_rmd_enable_quiet" />
-
 </PreferenceScreen>

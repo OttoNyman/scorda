@@ -1,7 +1,5 @@
 package org.tasks.compose.pickers
 
-import org.tasks.themes.TasksIcons
-import org.tasks.compose.components.SymbolIcon
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,24 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerColors
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -42,15 +33,19 @@ import tasks.kmp.generated.resources.ok
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+internal fun timePickerColors(): TimePickerColors = TimePickerDefaults.colors(
+    timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
+    timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun TimePickerDialog(
     state: TimePickerState,
-    initialDisplayMode: DisplayMode,
-    setDisplayMode: (DisplayMode) -> Unit,
     selected: (Int) -> Unit,
     dismiss: () -> Unit,
 ) {
     PlatformBackHandler(enabled = true, onBack = dismiss)
-    var displayMode by remember { mutableStateOf(initialDisplayMode) }
     val containerSize = LocalWindowInfo.current.containerSize
     val layoutType = if (containerSize.height < containerSize.width) {
         TimePickerLayoutType.Horizontal
@@ -73,24 +68,11 @@ fun TimePickerDialog(
                         .weight(1f, fill = false),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (displayMode == DisplayMode.Input) {
-                        TimeInput(
-                            state = state,
-                            colors = TimePickerDefaults.colors(
-                                timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                                timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-                        )
-                    } else {
-                        TimePicker(
-                            state = state,
-                            layoutType = layoutType,
-                            colors = TimePickerDefaults.colors(
-                                timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                                timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-                        )
-                    }
+                    TimePicker(
+                        state = state,
+                        layoutType = layoutType,
+                        colors = timePickerColors(),
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -99,25 +81,6 @@ fun TimePickerDialog(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        IconButton(
-                            onClick = {
-                                displayMode = if (displayMode == DisplayMode.Input) {
-                                    DisplayMode.Picker
-                                } else {
-                                    DisplayMode.Input
-                                }
-                                setDisplayMode(displayMode)
-                            },
-                        ) {
-                            SymbolIcon(
-                                name = if (displayMode == DisplayMode.Input) {
-                                    TasksIcons.SCHEDULE
-                                } else {
-                                    TasksIcons.KEYBOARD
-                                },
-                                contentDescription = null
-                            )
-                        }
                         Spacer(modifier = Modifier.weight(1f))
                         TextButton(onClick = dismiss) {
                             Text(text = stringResource(Res.string.cancel))

@@ -20,11 +20,9 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.stub
 import org.tasks.DatabaseTest
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.entity.Alarm
@@ -50,7 +48,6 @@ class NotificationSchedulerTest : DatabaseTest() {
     private val taskDao = db.taskDao()
 
     private val preferences: AppPreferences = mock {
-        onBlocking { isCurrentlyQuietHours() } doReturn false
         onBlocking { defaultDueTime() } doAnswer { defaultDueTime }
     }
 
@@ -129,38 +126,6 @@ class NotificationSchedulerTest : DatabaseTest() {
             listOf(start, start + INTERVAL, start + 2 * INTERVAL),
             fired.map { it.timestamp },
         )
-    }
-
-    @Test
-    fun nothingFiresDuringQuietHours() = runTest {
-        setTime(MINUTE_ALIGNED)
-        val task = createTask()
-        alarmDao.insert(Alarm(task = task.id, time = now - 1, type = TYPE_DATE_TIME))
-        setQuietHours(true, until = now + 4 * SCAN_INTERVAL)
-
-        repeat(3) {
-            scheduler.scanOnce()
-            setTime(now + SCAN_INTERVAL)
-        }
-
-        assertTrue(fired.isEmpty())
-    }
-
-    @Test
-    fun firesOnceQuietHoursAreOver() = runTest {
-        setTime(MINUTE_ALIGNED)
-        val task = createTask()
-        alarmDao.insert(Alarm(task = task.id, time = now - 1, type = TYPE_DATE_TIME))
-        setQuietHours(true, until = now + SCAN_INTERVAL)
-
-        scheduler.scanOnce()
-        assertTrue(fired.isEmpty())
-
-        setTime(now + SCAN_INTERVAL)
-        setQuietHours(false)
-        scheduler.scanOnce()
-
-        assertEquals(1, fired.size)
     }
 
     @Test
@@ -849,13 +814,6 @@ class NotificationSchedulerTest : DatabaseTest() {
     private fun setTime(millis: Long) {
         now = millis
         DateTimeUtils2.setCurrentMillisFixed(millis)
-    }
-
-    private fun setQuietHours(quiet: Boolean, until: Long = 0) {
-        preferences.stub {
-            onBlocking { isCurrentlyQuietHours() } doReturn quiet
-            onBlocking { adjustForQuietHours(any()) } doReturn until
-        }
     }
 
     companion object {

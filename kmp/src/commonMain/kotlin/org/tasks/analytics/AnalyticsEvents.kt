@@ -79,13 +79,10 @@ object AnalyticsEvents {
     object SettingsClick {
         const val DELETE_LIST = "delete_list"
         const val DELETE_TAG = "delete_tag"
-        const val WHATS_NEW = "whats_new"
         const val RATE_TASKS = "rate_tasks"
         const val DOCUMENTATION = "documentation"
-        const val ISSUE_TRACKER = "issue_tracker"
         const val CONTACT_DEVELOPER = "contact_developer"
         const val SEND_LOGS = "send_logs"
-        const val REDDIT = "reddit"
         const val SOURCE_CODE = "source_code"
         const val THIRD_PARTY_LICENSES = "third_party_licenses"
         const val TOS = "tos"

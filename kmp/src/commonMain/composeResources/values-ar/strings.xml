@@ -92,7 +92,6 @@
     <string name="display_name">اسم العرض</string>
     <string name="price_per_month_with_currency">%1$s/شهر</string>
     <string name="price_per_year_with_currency">%1$s/السنة</string>
-    <string name="donate_nag">فكِّر في إظهار دعمك بالتبرع!</string>
     <string name="manage_subscription">عدّل الاشتراك</string>
     <string name="button_unsubscribe">إلغاء الإشتراك</string>
     <string name="local_lists">القوائم المحلية</string>
@@ -164,14 +163,10 @@
     <string name="etesync_account_description">يتطلب حسابًا مع EteSync.com أو خادمًا مستضافًا ذاتيًا</string>
     <string name="show_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="app_settings">إعدادات التطبيق</string>
-    <string name="whats_new">ما الجديد</string>
-    <string name="version_string">نسخة %1$s</string>
     <string name="rate_tasks">قيّم تاسكس</string>
     <string name="documentation">التوثيق</string>
-    <string name="issue_tracker">تعقب المشكلة</string>
     <string name="contact_developer">تواصل مع المطور</string>
     <string name="send_application_logs">إرسال سجلات التطبيق</string>
-    <string name="follow_reddit">انضم إلى r/tasks</string>
     <string name="source_code">الكود المصدرى</string>
     <string name="third_party_licenses">رخص طرف ثالث</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
@@ -179,12 +174,10 @@
     <string name="send_anonymous_statistics_summary">أرسل إحصاءات الاستخدام المجهولة وتقارير الأعطال للمساعدة في تحسين التطبيق. لن يتم جمع أي بيانات شخصية.</string>
     <string name="license_summary">التطبيق "مهامي" هي برنامج مفتوح المصدر حر ، ومرخص بموجب رخصة جنو العمومية العامة v3.0</string>
     <string name="support">دعم</string>
-    <string name="social">اجتماعي</string>
     <string name="open_source">مفتوح المصدر</string>
     <string name="restart_required">أعد تشغيل التطبيق ليأخذ هذا التغيير تأثيره</string>
     <string name="restart_now">إعادة التشغيل الآن</string>
     <string name="restart_later">لاحقاً</string>
-    <string name="blog_feed_none">لا شيء</string>
     <string name="cannot_access_account">لا يمكن الوصول الى الحساب</string>
     <string name="new_list">أنشأ قائمةً جديدة</string>
     <string name="list_members">أعضاء القائمة</string>
@@ -216,13 +209,6 @@
     <string name="due_time">الوقت المحدد</string>
     <string name="day_before_due">يوم قبل الموعد</string>
     <string name="week_before_due">أسبوع قبل الموعد</string>
-    <string name="next_sunday">الأحد القادم</string>
-    <string name="next_monday">الإثنين القادم</string>
-    <string name="next_tuesday">الثلاثاء القادم</string>
-    <string name="next_wednesday">الأربعاء القادم</string>
-    <string name="next_thursday">الخميس القادم</string>
-    <string name="next_friday">الجمعة القادمة</string>
-    <string name="next_saturday">السبت القادم</string>
     <string name="shortcut_pick_time">اختر الوقت</string>
     <string name="no_time">لا وقت</string>
     <string name="TEA_note_label">وصف</string>
@@ -439,7 +425,6 @@
     <string name="delete_task">حذف المهمة</string>
     <string name="menu_discard_changes">تجاهل التغييرات</string>
     <string name="more_options">المزيد من الخيارات</string>
-    <string name="quiet_hours_in_effect">ساعات الهدوء سارية المفعول</string>
     <string name="troubleshooting">استكشاف الأخطاء وإصلاحها</string>
     <string name="notification_troubleshooting_summary">انقر هنا إذا كنت تواجه مشاكل في الإشعارات</string>
     <string name="disable_battery_optimizations">تعطيل تحسينات البطارية</string>
@@ -460,10 +445,6 @@
     <string name="enabled">مفعّل</string>
     <string name="swipe_to_snooze_description">وقت الغفوة</string>
     <string name="swipe_to_snooze_time_description">سيتم تأجيل الإشعار الذي تم مسحه وإعادة إنشائه %1$s</string>
-    <string name="quiet_hours">الساعات الهادئة</string>
-    <string name="quiet_hours_summary">لا منبهات أثناء أوقات الراحة</string>
-    <string name="rmd_EPr_quiet_hours_start_title">ابتداء ساعات الهدوء</string>
-    <string name="rmd_EPr_quiet_hours_end_title">إنتهاء ساعات الهدوء</string>
     <string name="swipe_to_snooze_time_immediately">فورا</string>
     <string name="swipe_to_snooze_time_15_minutes">بعد ربع ساعه</string>
     <string name="swipe_to_snooze_time_30_minutes">بعد نصف ساعه</string>
@@ -520,7 +501,6 @@
     <string name="settings_localization">تخصيص اللغة و الجهة</string>
     <string name="theme">المظهر</string>
     <string name="theme_dynamic">ديناميكى</string>
-    <string name="translations">ساهم في الترجمة</string>
     <string name="widget_open_list">فتح قائمة</string>
     <string name="theme_light">فاتح</string>
     <string name="theme_black">أسود</string>

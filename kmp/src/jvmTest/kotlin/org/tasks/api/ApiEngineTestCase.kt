@@ -55,7 +55,6 @@ abstract class ApiEngineTestCase {
         onBlocking { isDefaultDueTimeEnabled() } doReturn false
         onBlocking { defaultAlarms() } doReturn emptyList()
         onBlocking { defaultDueTime() } doReturn 0
-        onBlocking { isCurrentlyQuietHours() } doReturn false
     }
 
     private val locationService: LocationService by lazy {

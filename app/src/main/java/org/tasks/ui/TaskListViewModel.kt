@@ -14,7 +14,6 @@ import org.tasks.R
 import org.tasks.broadcast.ComposeRefreshBroadcaster
 import org.tasks.data.TaskSaver
 import org.tasks.service.TaskCompleter
-import org.tasks.TasksApplication.Companion.IS_GENERIC
 import org.tasks.TasksApplication.Companion.IS_GOOGLE_PLAY
 import org.jetbrains.compose.resources.StringResource
 import org.tasks.analytics.Firebase
@@ -25,15 +24,12 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.composeTitle
 import org.tasks.extensions.Context.canScheduleExactAlarms
-import org.tasks.feed.BlogPost
 import org.tasks.filters.SearchFilter
 import org.tasks.preferences.PermissionChecker
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
 import org.tasks.service.TaskDeleter
 import org.tasks.tasklist.HeaderFormatter
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 sealed class Banner(
@@ -44,15 +40,9 @@ sealed class Banner(
     data object NotificationsDisabled : Banner("notifications", "TLA_menu_settings", "dismiss")
     data object AlarmsDisabled : Banner("alarms", "TLA_menu_settings", "dismiss")
     data class SubscriptionRequired(val nameRes: StringResource, val isTasksOrg: Boolean) : Banner("subscribe", "upgrade", "dismiss")
-    data object BegForMoney : Banner(
-        "subscribe",
-        if (IS_GENERIC) "donate_today" else "upgrade",
-        "donate_maybe_later",
-    )
     data object WarnMicrosoft : Banner("microsoft", "button_learn_more", "dismiss")
     data object WarnGoogleTasks : Banner("google_tasks", "button_learn_more", "dismiss")
     data object AppUpdated : Banner("app_updated", "whats_new", "dismiss")
-    data class BlogAnnouncement(val post: BlogPost) : Banner("blog", "read_more", "dismiss")
 }
 
 @HiltViewModel
@@ -129,13 +119,11 @@ class TaskListViewModel @Inject constructor(
                     Banner.NotificationsDisabled
                 preferences.warnAlarmsDisabled && !applicationContext.canScheduleExactAlarms() ->
                     Banner.AlarmsDisabled
-                inventory.begForMoney && !firebase.subscribeCooldown ->
-                    Banner.BegForMoney
                 accounts.any { it.isMicrosoft } && preferences.warnMicrosoft ->
                     Banner.WarnMicrosoft
                 accounts.any { it.isGoogleTasks } && preferences.warnGoogleTasks ->
                     Banner.WarnGoogleTasks
-                else -> pendingBlogPost()
+                else -> null
             }
             if (banner != null && banner != _banner.value) {
                 firebase.logEvent(
@@ -169,17 +157,9 @@ class TaskListViewModel @Inject constructor(
                         )
                     }
                 }
-                Banner.BegForMoney -> preferences.lastSubscribeRequest = currentTimeMillis()
                 Banner.WarnGoogleTasks -> preferences.warnGoogleTasks = false
                 Banner.WarnMicrosoft -> preferences.warnMicrosoft = false
                 Banner.AppUpdated -> preferences.setBoolean(R.string.p_just_updated, false)
-                is Banner.BlogAnnouncement -> {
-                    tasksPreferences.set(
-                        TasksPreferences.blogDismissedPostId,
-                        currentBanner.post.guid,
-                    )
-                    tasksPreferences.set(TasksPreferences.blogPendingPost, "")
-                }
             }
             val action = if (tookAction) "positive" else "negative"
             val label = if (tookAction) currentBanner.positiveLabel else currentBanner.negativeLabel
@@ -190,16 +170,6 @@ class TaskListViewModel @Inject constructor(
                 R.string.param_label to label,
             )
             updateBannerState()
-        }
-    }
-
-    private suspend fun pendingBlogPost(): Banner.BlogAnnouncement? {
-        val json = tasksPreferences.get(TasksPreferences.blogPendingPost, "")
-        if (json.isBlank()) return null
-        return try {
-            Banner.BlogAnnouncement(Json.decodeFromString<BlogPost>(json))
-        } catch (_: Exception) {
-            null
         }
     }
 

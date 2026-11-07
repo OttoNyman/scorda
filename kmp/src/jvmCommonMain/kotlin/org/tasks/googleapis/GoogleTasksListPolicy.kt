@@ -52,15 +52,17 @@ internal data class LocalList(val uuid: String, val name: String?)
 /**
  * Where each local list goes when everything moves to Google: the default one and one named
  * Scorda into Scorda, one sharing a name with a known Google list into it, the rest into a new
- * list (null target).
+ * list (null target). A chosen [target] that still exists takes every list.
  */
 internal fun planLocalMove(
     local: List<LocalList>,
     localDefault: String?,
     scordaId: String,
     known: List<LocalList>,
+    target: String? = null,
 ): List<Pair<LocalList, String?>> = local.map { list ->
     list to when {
+        target != null && known.any { it.uuid == target } -> target
         list.uuid == localDefault || list.name == SCORDA_LIST_NAME -> scordaId
         else -> known.firstOrNull { it.name == list.name }?.uuid
     }

@@ -35,10 +35,6 @@ class TasksFileBackupHelper(
             newState: ParcelFileDescriptor?
     ) {
         val preferences = hilt.preferences
-        if (!preferences.androidBackupServiceEnabled()) {
-            Timber.d("Android backup service disabled")
-            return
-        }
         file
                 ?.let {
                     Timber.d("Backing up ${it.absolutePath}")

@@ -16,6 +16,9 @@ actual class PlatformDateFormatter actual constructor() {
     actual fun date(timestamp: Long, style: DateStyle): String =
         dateFormatters.getValue(style).format(timestamp.toLocalDateTime().toLocalDate())
 
+    actual fun pattern(timestamp: Long, pattern: String): String =
+        DateTimeFormatter.ofPattern(pattern, locale).format(timestamp.toLocalDateTime().toLocalDate())
+
     actual fun time(timestamp: Long, is24HourFormat: Boolean): String =
         formatTimeString(timestamp.toLocalDateTime(), is24HourFormat)
 

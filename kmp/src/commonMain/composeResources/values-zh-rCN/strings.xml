@@ -117,8 +117,6 @@
     <string name="supporter_summary">%1$s • 谢谢！</string>
     <string name="sign_in_to_connect">登录以连接您的 Scorda 账号</string>
     <string name="guest">来宾</string>
-    <string name="donate">捐赠</string>
-    <string name="donate_nag">考虑用捐赠显示您的支持！</string>
     <string name="manage_subscription">修改订阅</string>
     <string name="button_unsubscribe">取消订阅</string>
     <string name="local_lists">本地清单</string>
@@ -248,18 +246,10 @@
     <string name="github_sponsorship">GitHub Sponsorship</string>
     <string name="wrong_account">登录失败</string>
     <string name="wrong_account_message">您的订阅已关联到 %1$s。如果您认为这是一个错误，请联系 %2$s</string>
-    <string name="whats_new">更新日志</string>
-    <string name="version_string">版本 %1$s</string>
-    <string name="blog_notifications">博客通知</string>
-    <string name="blog_feed_none">无</string>
-    <string name="blog_feed_announcements">仅公告</string>
-    <string name="blog_feed_all">所有帖子</string>
     <string name="rate_tasks">给 Tasks 打分</string>
     <string name="documentation">文档</string>
-    <string name="issue_tracker">问题跟踪器</string>
     <string name="contact_developer">联系开发者</string>
     <string name="send_application_logs">发送应用程序日志</string>
-    <string name="follow_reddit">加入 r/tasks</string>
     <string name="source_code">源代码</string>
     <string name="third_party_licenses">第三方许可证</string>
     <string name="terms_of_service">服务条款</string>
@@ -268,7 +258,6 @@
     <string name="send_anonymous_statistics_summary">发送匿名使用情况统计信息和崩溃报告，以帮助改进 Tasks。不会收集任何个人数据。</string>
     <string name="license_summary">Tasks 是遵循 GNU 通用公共许可证 v3.0 的自由开源软件</string>
     <string name="support">支持</string>
-    <string name="social">社交</string>
     <string name="open_source">开源</string>
     <string name="legal">法律</string>
     <string name="restart_required">必须重新启动 Tasks 才能使更改生效</string>
@@ -339,13 +328,6 @@
     <string name="due_time">截止时间</string>
     <string name="day_before_due">截止日期前一天</string>
     <string name="week_before_due">截止日期前一周</string>
-    <string name="next_sunday">下周日</string>
-    <string name="next_monday">下周一</string>
-    <string name="next_tuesday">下周二</string>
-    <string name="next_wednesday">下周三</string>
-    <string name="next_thursday">下周四</string>
-    <string name="next_friday">下周五</string>
-    <string name="next_saturday">下周六</string>
     <string name="shortcut_pick_time">挑选时间</string>
     <string name="no_time">无时间</string>
     <string name="TEA_note_label">描述</string>
@@ -494,7 +476,6 @@
     <string name="mark_completed">标记为已完成</string>
     <string name="repeat_type_due_description">任务根据原定完成时间重复</string>
     <string name="repeat_type_completion_description">任务根据实际完成时间重复</string>
-    <string name="quiet_hours_in_effect">静音时段生效中</string>
     <string name="troubleshooting">疑难解答</string>
     <string name="notification_troubleshooting_summary">如果您在通知方面遇到问题，请点按此处</string>
     <string name="disable_battery_optimizations">禁用电池优化</string>
@@ -519,10 +500,6 @@
     <string name="enabled">启用</string>
     <string name="swipe_to_snooze_description">延后时长</string>
     <string name="swipe_to_snooze_time_description">清除的通知将被推迟并于 %1$s 被再次创建</string>
-    <string name="quiet_hours">静音时间</string>
-    <string name="quiet_hours_summary">静音期间不提醒</string>
-    <string name="rmd_EPr_quiet_hours_start_title">静音开始时间</string>
-    <string name="rmd_EPr_quiet_hours_end_title">静音结束时间</string>
     <string name="swipe_to_snooze_time_immediately">立即</string>
     <string name="swipe_to_snooze_time_15_minutes">15 分钟后</string>
     <string name="swipe_to_snooze_time_30_minutes">30 分钟后</string>
@@ -591,7 +568,6 @@
     <string name="settings_localization">本地化</string>
     <string name="theme">主题</string>
     <string name="theme_dynamic">动态</string>
-    <string name="translations">贡献翻译</string>
     <string name="widget_open_list">打开清单</string>
     <string name="theme_light">亮色</string>
     <string name="theme_black">黑色</string>

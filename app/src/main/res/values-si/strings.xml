@@ -15,7 +15,6 @@
     <string name="auto_dismiss_datetime_edit">කාර්ය සංස්කරණය</string>
     <string name="chip_appearance">චිප් පෙනුම</string>
     <string name="TEA_timer_est">කාලය %s</string>
-    <string name="astrid_sort_order_summary">\'මගේ කාර්යයන්\', \'අද\' සහ ටැග් සඳහා Astrid හි අතින් වර්ග කිරීමේ මාදිලිය සක්‍රීය කරන්න. මෙම වර්ග කිරීමේ මාදිලිය අනාගත යාවත්කාලීනයකදී \'මාගේ පිලිවෙල\' මගින් ප්‍රතිස්ථාපනය වනු ඇත</string>
     <string name="widget_due_date_hidden">සඟවන්න</string>
     <string name="widget_due_date_below_title">මාතෘකාවට පහළින්</string>
     <string name="widget_due_date_after_title">මාතෘකාවෙන් පසු</string>
@@ -70,8 +69,6 @@
     <string name="permission_read_tasks">Tasks දත්ත ගබඩාවට පූර්ණ ප්‍රවේශය</string>
     <string name="reset_sort_order">වර්ග කිරීමේ අනුපිළිවෙල නැවත සකසන්න</string>
     <string name="lists">ලැයිස්තු</string>
-    <string name="support_development_subscribe">අමතර විශේෂාංග අගුළු ඇරීම සහ විවෘත මෘදුකාංග සඳහා සහාය වීම</string>
-    <string name="enjoying_tasks">Tasks සතුටුදායකද\?</string>
     <string name="filter_eisenhower_box_4">වැදගත් නොවන සහ හදිසි නොවන</string>
     <string name="filter_eisenhower_box_3">හදිසි හා වැදගත් නොවන</string>
     <string name="filter_eisenhower_box_2">වැදගත් සහ හදිසි නොවන</string>
@@ -181,7 +178,6 @@
     <string name="ring_five_times">පස් වතාවක් නාද කරන්න</string>
     <string name="CFC_list_name">ලැයිස්තුවේ…</string>
     <string name="SSD_sort_modified">අවසන් වරට වෙනස් කරන ලද දිනය අනුව</string>
-    <string name="astrid_sort_order">Astrid අතින් වර්ග කිරීම</string>
     <string name="TVA_add_comment">අදහස දක්වන්න…</string>
     <string name="premium_record_audio">සටහනක් පටිගත කරන්න</string>
     <string name="gtasks_error_accountNotFound">%s ගිණුම සොයාගත නොහැකිවිය - කරුණාකර Log out වී Google Tasks සැකසුම් වලින් නැවත ලොග් වන්න.</string>
@@ -228,7 +224,6 @@
     <string name="CFC_startBefore_text">ආරම්භ වනුයේ:\?</string>
     <string name="CFC_dueBefore_name">අවසාන වනුයේ…</string>
     <string name="CFC_dueBefore_text">අවසාන වනුයේ: \?</string>
-    <string name="always_display_full_date">සම්පූර්ණ දිනය පෙන්වන්න</string>
     <string name="EPr_cal_end_at_due_time">කැලැන්ඩරයේ සිදුවීම් නියමිත වේලාවට අවසන් කරන්න</string>
     <string name="EPr_cal_end_or_start_at_due_time">දින දර්ශන සිදුවීම් වේලාව</string>
     <string name="EPr_show_task_edit_comments">කාර්ය සංස්කරණයේ අදහස් (comments) පෙන්වන්න</string>

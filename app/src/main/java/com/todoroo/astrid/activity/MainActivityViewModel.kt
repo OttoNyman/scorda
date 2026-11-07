@@ -13,9 +13,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import android.widget.Toast
+import org.tasks.resources.getString
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.default_list
+import tasks.kmp.generated.resources.inbox_list
+import tasks.kmp.generated.resources.lists_on_message
 import kotlinx.coroutines.runBlocking
 import org.tasks.R
 import org.tasks.analytics.Firebase
@@ -25,6 +32,7 @@ import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.Task
 import org.tasks.data.getOrCreateLocalAccount
 import org.tasks.constructor.fits
+import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.SearchFilter
 import org.tasks.preferences.DefaultFilterProvider
@@ -45,6 +53,7 @@ class MainActivityViewModel @Inject constructor(
     private val firebase: Firebase,
     private val tasksPreferences: TasksPreferences,
     private val featureGate: org.tasks.constructor.FeatureGate,
+    private val constructorRepository: org.tasks.constructor.ConstructorRepository,
     val drawerViewModel: DrawerViewModel,
 ) : ViewModel() {
 
@@ -115,6 +124,37 @@ class MainActivityViewModel @Inject constructor(
 
     init {
         drawerViewModel.setSelectedFilter(_state.value.filter)
+        watchFeatures()
+    }
+
+    /**
+     * Turning lists on opens the default list and says that every task is there. Any other change
+     * that hides what is on screen goes back to all tasks.
+     */
+    private fun watchFeatures() = viewModelScope.launch {
+        var listsWere = constructorRepository.effective.value.lists
+        constructorRepository.effective.drop(1).collect { features ->
+            if (features.lists && !listsWere) {
+                val list = inboxNamed(defaultFilterProvider.getDefaultList())
+                setFilter(list)
+                Toast.makeText(
+                    applicationContext,
+                    getString(Res.string.lists_on_message, list.title.orEmpty()),
+                    Toast.LENGTH_LONG,
+                ).show()
+            } else if (!_state.value.filter.fits(features)) {
+                setFilter(org.tasks.filters.MyTasksFilter.create())
+            }
+            listsWere = features.lists
+        }
+    }
+
+    /** The hidden local list still carries the old default name: it becomes Inbox when it shows up. */
+    private suspend fun inboxNamed(list: CaldavFilter): CaldavFilter {
+        if (!list.account.isLocalList || list.calendar.name != getString(Res.string.default_list)) return list
+        val renamed = list.calendar.copy(name = getString(Res.string.inbox_list))
+        caldavDao.update(renamed)
+        return list.copy(calendar = renamed)
     }
 
     suspend fun resetFilter() {

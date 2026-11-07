@@ -13,16 +13,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.tasks.data.composeIcon
-import org.tasks.data.composeTitle
 import org.tasks.data.entity.CaldavAccount
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.EPr_edit_screen_options
-import tasks.kmp.generated.resources.add_account
-import tasks.kmp.generated.resources.backup_BPr_header
+import tasks.kmp.generated.resources.account_and_backup
 import tasks.kmp.generated.resources.caldav
 import tasks.kmp.generated.resources.etesync
 import tasks.kmp.generated.resources.gtasks_GPr_header
@@ -39,7 +35,6 @@ import tasks.kmp.generated.resources.notifications
 import tasks.kmp.generated.resources.preferences_advanced
 import tasks.kmp.generated.resources.preferences_look_and_feel
 import tasks.kmp.generated.resources.settings
-import tasks.kmp.generated.resources.sync_and_backup
 import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
@@ -61,7 +56,7 @@ sealed class SettingsDestination(override val titleRes: StringResource) : Settin
     data object TaskEdit : SettingsDestination(Res.string.EPr_edit_screen_options)
     data object DateAndTime : SettingsDestination(Res.string.date_and_time)
     data object NavigationDrawer : SettingsDestination(Res.string.navigation_drawer)
-    data object Backups : SettingsDestination(Res.string.sync_and_backup)
+    data object Backups : SettingsDestination(Res.string.account_and_backup)
     data object Widgets : SettingsDestination(Res.string.widget_settings)
     data object McpServer : SettingsDestination(Res.string.mcp_server)
     data object Advanced : SettingsDestination(Res.string.preferences_advanced)
@@ -114,17 +109,15 @@ data class OpenTaskAccountSettingsPane(
 
 @Composable
 fun MainSettingsScreen(
-    accounts: List<CaldavAccount>,
     proCardState: ProCardState?,
     environmentLabel: String? = null,
     showBackupWarning: Boolean,
+    accountError: Boolean = false,
     showWidgets: Boolean,
     showNotifications: Boolean = true,
     showMcpServer: Boolean = false,
     showNavigationDrawer: Boolean = true,
     isDebug: Boolean = false,
-    onAccountClick: (CaldavAccount) -> Unit,
-    onAddAccountClick: () -> Unit,
     onSettingsClick: (SettingsDestination) -> Unit,
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
@@ -151,38 +144,16 @@ fun MainSettingsScreen(
             Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
-        // Accounts card group
-        val hasTasksOrg = proCardState is ProCardState.TasksOrgAccount
-        if (accounts.isNotEmpty() || !hasTasksOrg) {
-            val totalAccountItems = accounts.size + if (!hasTasksOrg) 1 else 0
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                accounts.forEachIndexed { index, account ->
-                    SettingsItemCard(
-                        position = CardPosition.forIndex(index, totalAccountItems),
-                    ) {
-                        AccountRow(
-                            account = account,
-                            onClick = { onAccountClick(account) },
-                        )
-                    }
-                }
-                if (!hasTasksOrg) {
-                    SettingsItemCard(
-                        position = if (accounts.isEmpty()) CardPosition.Only else CardPosition.Last,
-                    ) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.add_account),
-                            icon = TasksIcons.ADD,
-                            onClick = onAddAccountClick
-                        )
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = stringResource(Res.string.account_and_backup),
+                icon = TasksIcons.CLOUD_UPLOAD,
+                showWarning = showBackupWarning,
+                showError = accountError,
+                onClick = { onSettingsClick(SettingsDestination.Backups) },
+            )
         }
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         if (showDesktopLinking || showWorksWith) {
             Column(
@@ -218,7 +189,6 @@ fun MainSettingsScreen(
         }
 
         SettingsCategories(
-            showBackupWarning = showBackupWarning,
             showWidgets = showWidgets,
             showNotifications = showNotifications,
             showMcpServer = showMcpServer,
@@ -233,7 +203,6 @@ fun MainSettingsScreen(
 
 @Composable
 fun SettingsCategories(
-    showBackupWarning: Boolean,
     showWidgets: Boolean,
     showNotifications: Boolean,
     showMcpServer: Boolean = false,
@@ -326,14 +295,6 @@ fun SettingsCategories(
                 )
             }
         }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.backup_BPr_header),
-                icon = TasksIcons.SD_STORAGE,
-                showWarning = showBackupWarning,
-                onClick = { onSettingsClick(SettingsDestination.Backups) }
-            )
-        }
         if (showWidgets) {
             SettingsItemCard(position = CardPosition.Middle) {
                 PreferenceRow(
@@ -391,19 +352,3 @@ fun SettingsCategories(
     Spacer(modifier = Modifier.height(SettingsContentPadding))
 }
 
-@Composable
-private fun AccountRow(
-    account: CaldavAccount,
-    onClick: () -> Unit,
-) {
-    val icon = account.composeIcon
-    val title = account.composeTitle
-    PreferenceRow(
-        title = if (title != null) stringResource(title) else account.name.orEmpty(),
-        summary = account.name,
-        iconDrawable = icon?.drawable,
-        iconTint = if (icon?.tinted == true) null else Color.Unspecified,
-        showError = account.hasError,
-        onClick = onClick,
-    )
-}

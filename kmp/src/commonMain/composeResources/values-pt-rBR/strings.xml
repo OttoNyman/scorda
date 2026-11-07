@@ -92,7 +92,6 @@
     <string name="display_name">Nome de exibição</string>
     <string name="price_per_month_with_currency">%1$s/mensal</string>
     <string name="price_per_year_with_currency">%1$s/anual</string>
-    <string name="donate_nag">Considere mostrar seu apoio com uma doação!</string>
     <string name="manage_subscription">Modificar assinatura</string>
     <string name="button_unsubscribe">Cancelar assinatura</string>
     <string name="local_lists">Listas locais</string>
@@ -183,7 +182,6 @@
     <string name="supporter_summary">%1$s • Obrigado!</string>
     <string name="sign_in_to_connect">Faça login para conectar sua conta Scorda</string>
     <string name="guest">Convidado</string>
-    <string name="donate">Doar</string>
     <string name="email_to_task">Email para tarefa</string>
     <string name="email_to_task_address">Seu email</string>
     <string name="email_to_task_calendar">Lista de destino</string>
@@ -211,18 +209,10 @@
     <string name="sign_in_subtitle">Já tem inscrição ou é um convidado?</string>
     <string name="show_advanced_settings">Mostrar configurações avançadas</string>
     <string name="app_settings">Configurações do aplicativo</string>
-    <string name="whats_new">Novidades</string>
-    <string name="version_string">Versão %1$s</string>
-    <string name="blog_notifications">Notificações do blog</string>
-    <string name="blog_feed_none">Nenhum</string>
-    <string name="blog_feed_announcements">Apenas anúncios</string>
-    <string name="blog_feed_all">Todos posts</string>
     <string name="rate_tasks">Avalie o Tasks</string>
     <string name="documentation">Documentação</string>
-    <string name="issue_tracker">Publicações de relatórios</string>
     <string name="contact_developer">Contate o desenvolvedor</string>
     <string name="send_application_logs">Enviar registros do aplicativo</string>
-    <string name="follow_reddit">r/tasks (reddit)</string>
     <string name="source_code">Código-fonte</string>
     <string name="third_party_licenses">Licenças de Terceiros</string>
     <string name="terms_of_service">Termos de serviço</string>
@@ -231,7 +221,6 @@
     <string name="send_anonymous_statistics_summary">Enviar estatísticas de uso e relatórios de falha anonimamente para ajudar a melhorar o Tasks. Nenhuma informação pessoal será coletada.</string>
     <string name="license_summary">O Tasks é um software livre e de código aberto, licenciado sob a GNU General Public License v3.0</string>
     <string name="support">Suporte</string>
-    <string name="social">Mídias sociais</string>
     <string name="open_source">Código aberto</string>
     <string name="legal">Legal</string>
     <string name="restart_required">Reinicie o Tasks para que esta alteração tenha efeito</string>
@@ -336,13 +325,6 @@
     <string name="due_time">Na hora de vencimento</string>
     <string name="day_before_due">Um dia antes do vencimento</string>
     <string name="week_before_due">Semana antes do vencimento</string>
-    <string name="next_sunday">Próximo domingo</string>
-    <string name="next_monday">Próxima segunda</string>
-    <string name="next_tuesday">Próxima terça</string>
-    <string name="next_wednesday">Próxima quarta</string>
-    <string name="next_thursday">Próxima quinta</string>
-    <string name="next_friday">Próxima sexta</string>
-    <string name="next_saturday">Próximo sábado</string>
     <string name="shortcut_pick_time">Escolher hora</string>
     <string name="no_time">Sem horário</string>
     <string name="TEA_note_label">Descrição</string>
@@ -509,7 +491,6 @@
     <string name="delete_task">Excluir tarefa</string>
     <string name="menu_discard_changes">Descartar mudanças</string>
     <string name="more_options">Mais opções</string>
-    <string name="quiet_hours_in_effect">Horário de silêncio em vigor</string>
     <string name="troubleshooting">Soluções de problemas</string>
     <string name="notification_troubleshooting_summary">Toque aqui se você está tendo problemas com as notificações</string>
     <string name="disable_battery_optimizations">Desativar 'Otimização da Bateria'</string>
@@ -534,10 +515,6 @@
     <string name="enabled">Ativado</string>
     <string name="swipe_to_snooze_description">Tempo de soneca</string>
     <string name="swipe_to_snooze_time_description">Uma notificação apagada será adiada e recriada %1$s</string>
-    <string name="quiet_hours">Horas de silêncio</string>
-    <string name="quiet_hours_summary">Sem lembretes nas horas de silêncio</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Início das horas de silêncio</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Fim das horas de silêncio</string>
     <string name="swipe_to_snooze_time_immediately">imediatamente</string>
     <string name="swipe_to_snooze_time_15_minutes">após 15 minutos</string>
     <string name="swipe_to_snooze_time_30_minutes">após 30 minutos</string>
@@ -617,7 +594,6 @@
     <string name="settings_localization">Localização</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dinâmico</string>
-    <string name="translations">Ajude com as traduções</string>
     <string name="widget_open_list">Abrir lista</string>
     <string name="theme_light">Claro</string>
     <string name="theme_black">Preto</string>

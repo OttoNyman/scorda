@@ -115,8 +115,6 @@
     <string name="supporter_summary">%1$s • Grazie!</string>
     <string name="sign_in_to_connect">Accedi per connettere il tuo account Scorda</string>
     <string name="guest">Ospite</string>
-    <string name="donate">Dona</string>
-    <string name="donate_nag">Dimostra il tuo sostegno con una donazione!</string>
     <string name="manage_subscription">Modifica abbonamento</string>
     <string name="button_unsubscribe">Annulla abbonamento</string>
     <string name="local_lists">Liste locali</string>
@@ -197,18 +195,10 @@
     <string name="sign_in_subtitle">Sei già abbonato o sei stato invitato?</string>
     <string name="show_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="app_settings">Impostazioni app</string>
-    <string name="whats_new">Novità</string>
-    <string name="version_string">Versione %1$s</string>
-    <string name="blog_notifications">Notifiche del blog</string>
-    <string name="blog_feed_none">Nessuna</string>
-    <string name="blog_feed_announcements">Solo annunci</string>
-    <string name="blog_feed_all">Tutti i post</string>
     <string name="rate_tasks">Valuta Tasks</string>
     <string name="documentation">Documentazione (online)</string>
-    <string name="issue_tracker">Segnalazione problemi</string>
     <string name="contact_developer">Contatta lo sviluppatore</string>
     <string name="send_application_logs">Invia i log dell'applicazione</string>
-    <string name="follow_reddit">Unisciti a r/tasks</string>
     <string name="source_code">Codice sorgente</string>
     <string name="third_party_licenses">Licenze di terze parti</string>
     <string name="terms_of_service">Termini del servizio</string>
@@ -217,7 +207,6 @@
     <string name="send_anonymous_statistics_summary">Invia statistiche anonime e problemi di funzionamento per migliorare Tasks. Non verrà raccolto nessun dato personale.</string>
     <string name="license_summary">Tasks è un software libero ed open-source, rilasciato sotto licenza GNU General Public License v3.0</string>
     <string name="support">Supporto</string>
-    <string name="social">Social</string>
     <string name="open_source">Open source</string>
     <string name="legal">Condizioni</string>
     <string name="restart_required">Riavvia Tasks per rendere effettiva la modifica</string>
@@ -265,13 +254,6 @@
     <string name="due_time">Ora di scadenza</string>
     <string name="day_before_due">Giorno prima della scadenza</string>
     <string name="week_before_due">Settimana prima della scadenza</string>
-    <string name="next_sunday">Domenica prossima</string>
-    <string name="next_monday">Lunedì prossimo</string>
-    <string name="next_tuesday">Martedì prossimo</string>
-    <string name="next_wednesday">Mercoledì prossimo</string>
-    <string name="next_thursday">Giovedì prossimo</string>
-    <string name="next_friday">Venerdì prossimo</string>
-    <string name="next_saturday">Sabato prossimo</string>
     <string name="shortcut_pick_time">Scegli un'ora</string>
     <string name="no_time">Senza ora</string>
     <string name="TEA_note_label">Descrizione</string>
@@ -438,7 +420,6 @@
     <string name="delete_task">Elimina attività</string>
     <string name="menu_discard_changes">Ignora le modifiche</string>
     <string name="more_options">Altre opzioni</string>
-    <string name="quiet_hours_in_effect">Ore di quiete attive</string>
     <string name="troubleshooting">Risoluzione problemi</string>
     <string name="notification_troubleshooting_summary">Tocca qui se stai riscontrando problemi con le notifiche</string>
     <string name="disable_battery_optimizations">Disabilita ottimizzazione batteria</string>
@@ -463,10 +444,6 @@
     <string name="enabled">Attiva</string>
     <string name="swipe_to_snooze_description">Posticipa</string>
     <string name="swipe_to_snooze_time_description">Una notifica annullata sarà posticipata e ricreata %1$s</string>
-    <string name="quiet_hours">Ore di quiete</string>
-    <string name="quiet_hours_summary">Nessuna notifica durante le ore di quiete</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Inizio ore di quiete</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Fine ore di quiete</string>
     <string name="swipe_to_snooze_time_immediately">immediatamente</string>
     <string name="swipe_to_snooze_time_15_minutes">dopo 15 minuti</string>
     <string name="swipe_to_snooze_time_30_minutes">dopo 30 minuti</string>
@@ -529,7 +506,6 @@
     <string name="settings_localization">Localizzazione</string>
     <string name="theme">Tema</string>
     <string name="theme_dynamic">Dinamico</string>
-    <string name="translations">Contribuisci alla traduzione</string>
     <string name="widget_open_list">Apri lista</string>
     <string name="theme_light">Chiaro</string>
     <string name="theme_black">Nero</string>

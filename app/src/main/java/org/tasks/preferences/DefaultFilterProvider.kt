@@ -7,6 +7,8 @@ import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavCalendar.Companion.ACCESS_READ_ONLY
 import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Task
+import org.tasks.data.entity.CaldavAccount
+import org.tasks.data.getLocalList
 import org.tasks.data.getOrCreateDefaultListFilter
 import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
@@ -40,20 +42,28 @@ class DefaultFilterProvider @Inject constructor(
 
     suspend fun getDefaultList(): CaldavFilter {
         val stored = getStoredDefaultList()
+        if (!gate.sync) {
+            // No sync, paused included: every new task stays on the phone.
+            return stored?.takeIf { it.account.isLocalList } ?: localList()
+        }
         // While syncing, a hidden list or a hidden local block means the task goes to Scorda.
         val features = gate.current
-        if (gate.sync && (!features.lists || (stored?.account?.isLocalList != false && !features.localLists))) {
+        if (!features.lists || (stored?.account?.isLocalList != false && !features.localLists)) {
             scordaList()?.let { return it }
         }
         return stored ?: getAnyList()
     }
 
-    /** The saved default when it is a local list: the one that moves into Scorda. */
+    /** The saved default when it is a local list, else the first local list: the one that moves into Scorda. */
     suspend fun getLocalDefaultListUuid(): String? =
-        (getStoredDefaultList() ?: getAnyList())
-            .takeIf { it.account.isLocalList }
-            ?.calendar
-            ?.uuid
+        getStoredDefaultList()?.takeIf { it.account.isLocalList }?.calendar?.uuid
+            ?: caldavDao.getAccounts(CaldavAccount.TYPE_LOCAL).firstOrNull()
+                ?.let { caldavDao.getCalendarsByAccount(it.uuid!!).firstOrNull()?.uuid }
+
+    private suspend fun localList(): CaldavFilter =
+        caldavDao.getLocalList().let {
+            CaldavFilter(calendar = it, account = caldavDao.getAccountByUuid(it.account!!)!!)
+        }
 
     private suspend fun getStoredDefaultList(): CaldavFilter? =
         getFilterFromPreference(preferences.getStringValue(R.string.p_default_list), null)

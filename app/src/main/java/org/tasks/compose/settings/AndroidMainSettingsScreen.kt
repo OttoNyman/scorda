@@ -7,18 +7,15 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.tasks.BuildConfig
-import org.tasks.data.entity.CaldavAccount
 
 @Composable
 fun AndroidMainSettingsScreen(
-    accounts: List<CaldavAccount>,
     proCardState: ProCardState?,
     environmentLabel: String? = null,
     showBackupWarning: Boolean,
+    accountError: Boolean = false,
     showWidgets: Boolean,
     isDebug: Boolean = BuildConfig.DEBUG,
-    onAccountClick: (CaldavAccount) -> Unit,
-    onAddAccountClick: () -> Unit,
     onSettingsClick: (SettingsDestination) -> Unit,
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
@@ -26,15 +23,13 @@ fun AndroidMainSettingsScreen(
     onLinkDesktopClick: () -> Unit = {},
 ) {
     MainSettingsScreen(
-        accounts = accounts,
         proCardState = proCardState,
         environmentLabel = environmentLabel,
         showBackupWarning = showBackupWarning,
+        accountError = accountError,
         showWidgets = showWidgets,
         isDebug = isDebug,
         showNavigationDrawer = showNavigationDrawer,
-        onAccountClick = onAccountClick,
-        onAddAccountClick = onAddAccountClick,
         onSettingsClick = onSettingsClick,
         onProCardClick = onProCardClick,
         showDesktopLinking = showDesktopLinking,

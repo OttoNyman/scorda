@@ -91,9 +91,6 @@ class Firebase @Inject constructor(
         R.string.p_rmd_time,
         R.string.p_badges_enabled,
         R.string.p_badge_list,
-        R.string.p_rmd_enable_quiet,
-        R.string.p_rmd_quietStart,
-        R.string.p_rmd_quietEnd,
         // Task defaults
         R.string.p_add_to_top,
         R.string.p_default_list,
@@ -319,10 +316,6 @@ class Firebase @Inject constructor(
 
     val reviewCooldown: Boolean
         get() = installCooldown || preferences.lastReviewRequest + days("review_cooldown", 30L) > currentTimeMillis()
-
-    val subscribeCooldown: Boolean
-        get() = installCooldown
-                || preferences.lastSubscribeRequest + days("subscribe_cooldown", 30L) > currentTimeMillis()
 
     private fun days(key: String, default: Long): Long =
             TimeUnit.DAYS.toMillis(remoteConfig?.getLong(key) ?: default)

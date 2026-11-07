@@ -3,6 +3,7 @@ package org.tasks.dialogs
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class ExportTasksDialog : DialogFragment() {
     @Inject lateinit var dialogBuilder: DialogBuilder
     @Inject lateinit var tasksJsonExporter: TasksJsonExporter
+    private var saved: Uri? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val progressDialog = dialogBuilder.newProgressDialog().apply {
@@ -33,7 +35,8 @@ class ExportTasksDialog : DialogFragment() {
             } else {
                 TasksJsonExporter.ExportType.EXPORT_TYPE_MANUAL
             }
-            tasksJsonExporter.exportTasks(activity, type, progressDialog)
+            val file = tasksJsonExporter.exportTasks(activity, type, progressDialog)
+            if (type == TasksJsonExporter.ExportType.EXPORT_TYPE_MANUAL) saved = file
         }
 
         return progressDialog
@@ -42,13 +45,18 @@ class ExportTasksDialog : DialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
 
-        parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle.EMPTY)
+        parentFragmentManager.setFragmentResult(
+            REQUEST_KEY,
+            Bundle().apply { saved?.let { putParcelable(EXTRA_FILE, it) } },
+        )
     }
 
     companion object {
         const val REQUEST_KEY = "export_tasks_result"
 
         private const val ARG_DRIVE = "drive"
+        /** The file a manual export wrote, so the caller can offer to send it. */
+        const val EXTRA_FILE = "file"
 
         fun newExportTasksDialog(uploadToDrive: Boolean = false) = ExportTasksDialog().apply {
             arguments = Bundle().apply { putBoolean(ARG_DRIVE, uploadToDrive) }

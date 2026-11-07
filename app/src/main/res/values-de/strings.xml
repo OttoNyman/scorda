@@ -229,7 +229,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="icon">Symbol</string>
     <string name="SSD_sort_my_order">Eigene Sortierung</string>
-    <string name="always_display_full_date">Datum ganz anzeigen</string>
     <string name="expand_subtasks">Teilaufgaben ausklappen</string>
     <string name="collapse_subtasks">Teilaufgaben einklappen</string>
     <string name="subtasks">Teilaufgaben</string>
@@ -291,18 +290,14 @@
     <string name="add_tags">Schlagwörter hinzufügen</string>
     <string name="filter_no_tags">Keine Schlagwörter</string>
     <string name="filter_any_due_date">Beliebiges Fälligkeitsdatum</string>
-    <string name="enjoying_tasks">Dir gefällt Tasks?</string>
     <string name="whats_new">Was gibt\'s Neues</string>
     <string name="filter_eisenhower_box_4">Unwichtig und nicht dringend</string>
     <string name="filter_eisenhower_box_3">Unwichtig und dringend</string>
     <string name="filter_eisenhower_box_2">Wichtig und nicht dringend</string>
     <string name="filter_eisenhower_box_1">Dringend &amp; Wichtig</string>
     <string name="action_new_task">Neue Aufgabe</string>
-    <string name="support_development_subscribe">Schalte zusätzliche Funktionen frei und unterstütze freie Software</string>
-    <string name="astrid_sort_order_summary">Astrids manuelle Sortiermethode für „Meine Aufgaben“, „Heute“ und Schlagwörter aktivieren. Diese Sortiermethode wird in einer zukünftigen Version „Meine Sortierung“ ersetzen</string>
     <string name="lists">Listen</string>
     <string name="CFC_list_name">In der Liste…</string>
-    <string name="astrid_sort_order">Manuelle Sortierung nach Astrid</string>
     <string name="sort_modified_group">%s bearbeitet</string>
     <string name="sort_created_group">%s erstellt</string>
     <string name="reset_sort_order">Sortierung zurücksetzen</string>
@@ -376,9 +371,6 @@
     <string name="TEA_creation_date">Erstellungsdatum</string>
     <string name="sort_list">Nach Listen</string>
     <string name="theme_dynamic">Dynamisch</string>
-    <string name="donate_nag">Erwäge deine Unterstützung mit einer Spende zu zeigen!</string>
-    <string name="donate_today">Jetzt spenden</string>
-    <string name="donate_maybe_later">Vielleicht später</string>
     <string name="show_edit_screen_without_unlock_summary">Ermöglicht die Verwendung der Kachel „Schnelleinstellungen“, ohne das Gerät zu entsperren</string>
     <string name="customize_drawer">Drawer anpassen</string>
     <string name="show_edit_screen_without_unlock">Bearbeitungsbildschirm ohne Entsperren anzeigen</string>
@@ -426,7 +418,6 @@
     <string name="per_list_sort_summary">Sortier- und Gruppierungseinstellungen für jede Liste unabhängig speichern</string>
     <string name="per_list_sort_title">Individuelle Listen-Sortierung</string>
     <string name="location_update_interval_summary">Regelmäßige Standort-Updates verbessern die Standortgenauigkeit</string>
-    <string name="read_more">Mehr anzeigen</string>
     <string name="upgrade_desktop_app">Scorda für Desktop</string>
     <string name="upgrade_desktop_app_description">Vorabzugang zur neuen Desktop-App</string>
     <string name="p_per_list_sort">sortierung_nach_liste</string>

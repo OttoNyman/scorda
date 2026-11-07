@@ -248,8 +248,6 @@
     <string name="TEA_estimatedDuration_label">Berapa lama\?</string>
     <string name="FLA_search_filter">Sesuai \'%s\'</string>
     <string name="SSD_sort_start">Berdasarkan tanggal awal</string>
-    <string name="astrid_sort_order_summary">Aktifkan sortir manual Astrid untuk \'Tugas Saya\', \'Hari Ini\', dan tag. Mode sortir ini akan digantikan dengan \'Sortiran Saya\' di pembaharuan berikutnya</string>
-    <string name="astrid_sort_order">Sortiran manual astrid</string>
     <string name="display_name">Nama tampilan</string>
     <string name="background_location_permission_required">Aplikasi ini mengumpulkan data lokasi untuk mengaktifkan pengingat berdasarkan lokasi bahkan saat aplikasi ditutup atau sedang tidak digunakan.</string>
     <string name="repeats_plural_number_of_times">Ulangi setiap %1$s, terjadi %2$d %3$s</string>
@@ -289,8 +287,6 @@
     <string name="local_lists">Daftar lokal</string>
     <string name="sort_modified_group">Diubah %s</string>
     <string name="sort_created_group">Dibuat %s</string>
-    <string name="support_development_subscribe">Temukan fitur tambahan dan dukung perangkat lunak sumber terbuka</string>
-    <string name="enjoying_tasks">Menikmati Tasks\?</string>
     <string name="filter_eisenhower_box_4">Tidak penting dan tidak mendesak</string>
     <string name="filter_eisenhower_box_3">Tidak penting tapi mendesak</string>
     <string name="filter_eisenhower_box_2">Penting tapi tidak mendesak</string>
@@ -347,7 +343,6 @@
     <string name="CFC_startBefore_name">Mulai pada…</string>
     <string name="CFC_startBefore_text">Mulai pada: \?</string>
     <string name="CFC_dueBefore_text">Jatuh tempo pada:\?</string>
-    <string name="always_display_full_date">Tampilkan tanggal penuh</string>
     <string name="widget_show_title">Tampilkan judul</string>
     <string name="tasks_org_account_required">Akun Scorda Dibutuhkan</string>
     <string name="privacy">Privasi</string>
@@ -386,9 +381,6 @@
     <string name="banner_app_updated_title">Aplikasi diperbarui</string>
     <string name="banner_app_updated_description">Tasks baru saja diperbarui ke %s. Apakah Anda ingin melihat catatan rilis?</string>
     <string name="banner_subscription_required_body">Bayar sesuai keinginan Anda untuk membuka kunci sinkronisasi %s</string>
-    <string name="donate_nag">Pertimbangkan untuk menunjukkan dukungan Anda dengan donasi!</string>
-    <string name="donate_today">Donasi sekarang</string>
-    <string name="donate_maybe_later">Mungkin nanti</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="per_list_sort_title">Pengurutan per daftar</string>
     <string name="per_list_sort_summary">Ingat pengaturan urutan dan grup untuk setiap daftar secara terpisah</string>
@@ -425,5 +417,4 @@
     <string name="sync_warning_google_tasks">Tidak semua detail tugas tersinkronisasi dengan Google Tasks</string>
     <string name="button_learn_more">Pelajari lebih lanjut</string>
     <string name="widget_view_more_tasks">Lihat lebih banyak tugas</string>
-    <string name="read_more">Baca selengkapnya</string>
 </resources>

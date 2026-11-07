@@ -76,8 +76,6 @@ import org.tasks.preferences.PreferencesSnapshot
 import org.tasks.preferences.QueryPreferences
 import org.tasks.preferences.TaskDefaultSettings
 import org.tasks.preferences.TasksPreferences
-import org.tasks.preferences.adjustForQuietHours
-import org.tasks.preferences.isCurrentlyQuietHours
 import org.tasks.preferences.toAlarmJson
 import org.tasks.preferences.toAlarms
 import org.tasks.reminders.Random
@@ -126,7 +124,6 @@ val commonModule = module {
             override fun updateCalendar(task: Task) {}
             override suspend fun scheduleRefresh(timestamp: Long) =
                 refreshScheduler.schedule(timestamp)
-            override suspend fun scheduleBlogFeedCheck() {}
             override fun migrateLocalTasks(
                 localAccount: CaldavAccount,
                 tasksAccount: CaldavAccount,

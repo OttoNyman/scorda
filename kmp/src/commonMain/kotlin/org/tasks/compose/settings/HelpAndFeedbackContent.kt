@@ -6,6 +6,7 @@ import org.tasks.TasksUrls
 import org.tasks.analytics.AnalyticsEvents.SettingsClick
 import org.tasks.viewmodel.HelpAndFeedbackViewModel
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.logs_unlocked
 import tasks.kmp.generated.resources.restart_later
 import tasks.kmp.generated.resources.restart_now
 import tasks.kmp.generated.resources.restart_required
@@ -15,6 +16,7 @@ fun HelpAndFeedbackContent(
     viewModel: HelpAndFeedbackViewModel,
     openUri: (String) -> Unit,
     onRestartApplication: () -> Unit,
+    showMessage: (String) -> Unit = {},
     onRateTasks: (() -> Unit)? = null,
     onContactDeveloper: (() -> Unit)? = null,
     onSendLogs: (() -> Unit)? = null,
@@ -22,6 +24,7 @@ fun HelpAndFeedbackContent(
     onCollectStatisticsChanged: ((Boolean) -> Unit)? = null,
     bottomInsets: @Composable () -> Unit = {},
 ) {
+    val logsUnlocked = stringResource(Res.string.logs_unlocked)
     HelpAndFeedbackScreen(
         versionName = viewModel.versionName,
         isGooglePlay = viewModel.isGooglePlay,
@@ -29,9 +32,8 @@ fun HelpAndFeedbackContent(
         showSendLogs = viewModel.showSendLogs,
         showCollectStatistics = viewModel.showCollectStatistics,
         collectStatistics = viewModel.collectStatistics,
-        onWhatsNew = {
-            viewModel.logEvent(SettingsClick.WHATS_NEW)
-            openUri(TasksUrls.CHANGELOG)
+        onVersionClick = {
+            if (viewModel.onVersionClick()) showMessage(logsUnlocked)
         },
         onRateTasks = {
             viewModel.logEvent(SettingsClick.RATE_TASKS)
@@ -40,10 +42,6 @@ fun HelpAndFeedbackContent(
         onDocumentation = {
             viewModel.logEvent(SettingsClick.DOCUMENTATION)
             openUri(TasksUrls.DOCUMENTATION)
-        },
-        onIssueTracker = {
-            viewModel.logEvent(SettingsClick.ISSUE_TRACKER)
-            openUri(TasksUrls.ISSUE_TRACKER)
         },
         onContactDeveloper = {
             viewModel.logEvent(SettingsClick.CONTACT_DEVELOPER)
@@ -56,10 +54,6 @@ fun HelpAndFeedbackContent(
         onSendLogs = {
             viewModel.logEvent(SettingsClick.SEND_LOGS)
             onSendLogs?.invoke()
-        },
-        onReddit = {
-            viewModel.logEvent(SettingsClick.REDDIT)
-            openUri(TasksUrls.REDDIT)
         },
         onSourceCode = {
             viewModel.logEvent(SettingsClick.SOURCE_CODE)
@@ -77,8 +71,6 @@ fun HelpAndFeedbackContent(
             viewModel.logEvent(SettingsClick.PRIVACY_POLICY)
             openUri(TasksUrls.PRIVACY_POLICY)
         },
-        blogFeedMode = viewModel.blogFeedMode,
-        onBlogFeedModeClick = { viewModel.showBlogFeedModeDialog() },
         onCollectStatisticsChanged = { enabled ->
             viewModel.updateCollectStatistics(enabled)
             onCollectStatisticsChanged?.invoke(enabled)
@@ -93,14 +85,6 @@ fun HelpAndFeedbackContent(
             dismissText = stringResource(Res.string.restart_later),
             onConfirm = onRestartApplication,
             onDismiss = { viewModel.dismissRestartDialog() },
-        )
-    }
-
-    if (viewModel.showBlogFeedModeDialog) {
-        BlogFeedModeDialog(
-            selected = viewModel.blogFeedMode,
-            onSelect = { viewModel.updateBlogFeedMode(it) },
-            onDismiss = { viewModel.dismissBlogFeedModeDialog() },
         )
     }
 }

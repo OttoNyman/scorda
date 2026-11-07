@@ -117,8 +117,6 @@
     <string name="supporter_summary">%1$s • Merci !</string>
     <string name="sign_in_to_connect">Authentifiez-vous pour connecter votre compte Scorda</string>
     <string name="guest">Invité</string>
-    <string name="donate">Faire un don</string>
-    <string name="donate_nag">Pensez à manifester votre soutien en faisant un don !</string>
     <string name="manage_subscription">Modifier l'abonnement</string>
     <string name="button_unsubscribe">Annuler l'abonnement</string>
     <string name="local_lists">Listes locales</string>
@@ -252,18 +250,10 @@
     <string name="pricing_cloud_feature_2">Partage de liste d'amis et de famille</string>
     <string name="wrong_account">Échec de la connexion</string>
     <string name="wrong_account_message">Votre abonnement est déjà associé à %1$s. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter %2$s</string>
-    <string name="whats_new">Nouveautés</string>
-    <string name="version_string">Version %1$s</string>
-    <string name="blog_notifications">Notifications du blog</string>
-    <string name="blog_feed_none">Aucun</string>
-    <string name="blog_feed_announcements">Annonces uniquement</string>
-    <string name="blog_feed_all">Tous les articles</string>
     <string name="rate_tasks">Évaluer Tasks</string>
     <string name="documentation">Documentation</string>
-    <string name="issue_tracker">Suivi des problèmes</string>
     <string name="contact_developer">Contacter le développeur</string>
     <string name="send_application_logs">Envoyer les journaux de l'application</string>
-    <string name="follow_reddit">Rejoindre r/tasks</string>
     <string name="source_code">Code source</string>
     <string name="third_party_licenses">Licences tierces</string>
     <string name="terms_of_service">Conditions d'utilisation</string>
@@ -272,7 +262,6 @@
     <string name="send_anonymous_statistics_summary">Envoyer des statistiques d'utilisation anonymes et des rapports d'erreur pour améliorer Tasks. Aucune donnée personnelle ne sera collectée.</string>
     <string name="license_summary">Tasks est un logiciel libre à code source ouvert, codé sous licence « GNU », « General Public License » version 3.0</string>
     <string name="support">Aide</string>
-    <string name="social">Réseaux sociaux</string>
     <string name="open_source">Code source ouvert</string>
     <string name="legal">Mentions légales</string>
     <string name="restart_required">Redémarrer Tasks pour que cette modification prenne effet</string>
@@ -343,13 +332,6 @@
     <string name="due_time">Heure d'échéance</string>
     <string name="day_before_due">Jour avant échéance</string>
     <string name="week_before_due">Semaine avant échéance</string>
-    <string name="next_sunday">Dimanche prochain</string>
-    <string name="next_monday">Lundi prochain</string>
-    <string name="next_tuesday">Mardi prochain</string>
-    <string name="next_wednesday">Mercredi prochain</string>
-    <string name="next_thursday">Jeudi prochain</string>
-    <string name="next_friday">Vendredi prochain</string>
-    <string name="next_saturday">Samedi prochain</string>
     <string name="shortcut_pick_time">Choisir l'heure</string>
     <string name="no_time">Aucune heure</string>
     <string name="TEA_note_label">Description</string>
@@ -523,7 +505,6 @@
     <string name="repeat_type_completion_description">La tâche se répète en fonction du moment où vous l\'avez réellement terminée</string>
     <string name="mark_completed">Marquer comme terminé</string>
     <string name="resize_panes">Redimensionner les volets</string>
-    <string name="quiet_hours_in_effect">Les heures de tranquillité sont en vigueur</string>
     <string name="troubleshooting">Dépannage</string>
     <string name="notification_troubleshooting_summary">Veuillez appuyer ici si vous rencontrez des problèmes avec les notifications</string>
     <string name="disable_battery_optimizations">Désactiver les optimisations de la batterie</string>
@@ -548,10 +529,6 @@
     <string name="enabled">Activé</string>
     <string name="swipe_to_snooze_description">Temps de veille</string>
     <string name="swipe_to_snooze_time_description">Une notification ignorée sera mise en veille et recréée %1$s</string>
-    <string name="quiet_hours">Heures de repos</string>
-    <string name="quiet_hours_summary">Aucun rappel durant les heures de repos</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Début des heures de repos</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Fin des heures de repos</string>
     <string name="swipe_to_snooze_time_immediately">immédiatement</string>
     <string name="swipe_to_snooze_time_15_minutes">après 15 minutes</string>
     <string name="swipe_to_snooze_time_30_minutes">après 30 minutes</string>
@@ -620,7 +597,6 @@
     <string name="settings_localization">Localisation</string>
     <string name="theme">Thème</string>
     <string name="theme_dynamic">Dynamique</string>
-    <string name="translations">Contribuer aux traductions</string>
     <string name="widget_open_list">Ouvrir la liste</string>
     <string name="theme_light">Clair</string>
     <string name="theme_black">Noir</string>

@@ -92,7 +92,6 @@
     <string name="display_name">Показувана назва</string>
     <string name="price_per_month_with_currency">%1$s/місяць</string>
     <string name="price_per_year_with_currency">%1$s/рік</string>
-    <string name="donate_nag">Розгляньте можливість підтримати нас внеском!</string>
     <string name="manage_subscription">Змінити підписку</string>
     <string name="button_unsubscribe">Скасувати підписку</string>
     <string name="local_lists">Локальні списки</string>
@@ -159,14 +158,10 @@
     <string name="etesync_account_description">Потрібний обліковий запис у EteSync.com або власний сервер</string>
     <string name="show_advanced_settings">Показати розширені налаштування</string>
     <string name="app_settings">Налаштування застосунку</string>
-    <string name="whats_new">Що нового</string>
-    <string name="version_string">Версія %1$s</string>
     <string name="rate_tasks">Оцінити Tasks</string>
     <string name="documentation">Документація</string>
-    <string name="issue_tracker">Відстеження помилок</string>
     <string name="contact_developer">Зв'язатися з розробником</string>
     <string name="send_application_logs">Надіслати журнал застосунку</string>
-    <string name="follow_reddit">Долучитися до r/tasks</string>
     <string name="source_code">Відкритий код</string>
     <string name="third_party_licenses">Ліцензії третіх сторін</string>
     <string name="privacy_policy">Політика приватності</string>
@@ -174,12 +169,10 @@
     <string name="send_anonymous_statistics_summary">Надсилати анонімну статистику використання та звіти про помилки щоб вдосконалити Tasks. Жодних персональних даних не буде зібрано.</string>
     <string name="license_summary">Tasks — це програмне забезпечення з відкритим кодом, ліцензоване GNU General Public License v3.0</string>
     <string name="support">Підтримка</string>
-    <string name="social">Суспільні</string>
     <string name="open_source">Відкритий джерельний код</string>
     <string name="restart_required">Перезапустіть Tasks для вступу змін в дію</string>
     <string name="restart_now">Перезапустити зараз</string>
     <string name="restart_later">Пізніше</string>
-    <string name="blog_feed_none">Немає</string>
     <string name="cannot_access_account">Немає доступу до облікового запису</string>
     <string name="new_list">Новий список</string>
     <string name="list_members">Перелік учасників</string>
@@ -211,13 +204,6 @@
     <string name="due_time">Час виконання</string>
     <string name="day_before_due">Доба до дати виконання</string>
     <string name="week_before_due">Тиждень до дати виконання</string>
-    <string name="next_sunday">Наступної Нд</string>
-    <string name="next_monday">Наступного Пн</string>
-    <string name="next_tuesday">Наступного Вт</string>
-    <string name="next_wednesday">Наступної Ср</string>
-    <string name="next_thursday">Наступного Чт</string>
-    <string name="next_friday">Наступної Пт</string>
-    <string name="next_saturday">Наступної Сб</string>
     <string name="shortcut_pick_time">Оберіть час</string>
     <string name="no_time">Без часу</string>
     <string name="TEA_note_label">Опис</string>
@@ -385,7 +371,6 @@
     <string name="delete_task">Видалити завдання</string>
     <string name="menu_discard_changes">Скасувати зміни</string>
     <string name="more_options">Більше</string>
-    <string name="quiet_hours_in_effect">Активовано тихі години</string>
     <string name="troubleshooting">Розв'язання проблем</string>
     <string name="notification_troubleshooting_summary">Натисніть тут, якщо маєте проблеми з повідомленнями</string>
     <string name="disable_battery_optimizations">Вимкнути оптимізацію енергоспоживання</string>
@@ -406,10 +391,6 @@
     <string name="enabled">Увімкнено</string>
     <string name="swipe_to_snooze_description">Час відкладання</string>
     <string name="swipe_to_snooze_time_description">Очищене сповіщення буде відкладено і відтворено %1$s</string>
-    <string name="quiet_hours">Тихі години</string>
-    <string name="quiet_hours_summary">Без нагадувань під час тихих годин</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Тихий час починається</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Тихий час закінчується</string>
     <string name="swipe_to_snooze_time_immediately">негайно</string>
     <string name="swipe_to_snooze_time_15_minutes">за 15 хвилин</string>
     <string name="swipe_to_snooze_time_30_minutes">за 30 хвилин</string>
@@ -466,7 +447,6 @@
     <string name="settings_localization">Локалізація</string>
     <string name="theme">Тема</string>
     <string name="theme_dynamic">Динамічна</string>
-    <string name="translations">Допомогти перекласти</string>
     <string name="widget_open_list">Відкрити список</string>
     <string name="theme_light">Світла</string>
     <string name="theme_black">Чорна</string>

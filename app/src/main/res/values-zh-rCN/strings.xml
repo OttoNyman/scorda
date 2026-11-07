@@ -290,15 +290,11 @@
     <string name="filter_today_only">仅今日</string>
     <string name="filter_overdue">已过期</string>
     <string name="sort_created">按创建时间</string>
-    <string name="support_development_subscribe">解锁额外功能并支持开源软件</string>
-    <string name="enjoying_tasks">享受Tasks\?</string>
     <string name="whats_new">更新日志</string>
     <string name="action_new_task">新任务</string>
     <string name="sort_modified_group">修改时间 %s</string>
     <string name="sort_created_group">创建时间 %s</string>
     <string name="lists">清单</string>
-    <string name="astrid_sort_order_summary">为“我的任务”，“今天”和标签启用 Astrid 的手动排序模式。在以后的更新中，此排序模式将被“我的顺序”代替</string>
-    <string name="astrid_sort_order">Astrid 手动排序</string>
     <string name="CFC_list_name">在某清单中…</string>
     <string name="reset_sort_order">重置排列顺序</string>
     <string name="permission_read_tasks">对 Tasks 数据库的完全访问</string>
@@ -318,7 +314,6 @@
     <string name="backups_ignore_warnings">忽略警告</string>
     <string name="header_spacing">间距</string>
     <string name="multi_select_reschedule">重新计划</string>
-    <string name="always_display_full_date">显示完整日期</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="custom_filter_is_subtask">是子任务</string>
@@ -376,9 +371,6 @@
     <string name="show_edit_screen_without_unlock_summary">允许不解锁设备的情况下使用“快速设置”磁贴</string>
     <string name="show_edit_screen_without_unlock">不解锁显示编辑屏</string>
     <string name="customize_drawer">自定义抽屉</string>
-    <string name="donate_maybe_later">也许以后</string>
-    <string name="donate_nag">考虑用捐赠显示您的支持！</string>
-    <string name="donate_today">现在捐赠</string>
     <string name="enable_alarms">在正确的时间收到通知</string>
     <string name="enable_alarms_description">确保你在正确的时间收到通知，在设置中授予设置闹铃和提醒的权限</string>
     <string name="yesterday">昨天</string>
@@ -424,7 +416,6 @@
     <string name="per_list_sort_summary">记住每个清单不同的排序和分组设置</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="location_update_interval_summary">定期位置更新可提高地理围栏的可靠性</string>
-    <string name="read_more">阅读更多</string>
     <string name="upgrade_desktop_app">Scorda 桌面版</string>
     <string name="upgrade_desktop_app_description">提前使用新的桌面版应用</string>
     <string name="sort_options">排序选项</string>

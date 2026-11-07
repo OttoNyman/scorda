@@ -185,8 +185,6 @@ fun TaskDefaultsDetail(
             recurrence = viewModel.settings.defaultRecurrence,
             dueDate = 0,
             accountType = CaldavAccount.TYPE_LOCAL,
-            calendarInputMode = false,
-            onCalendarInputModeChange = {},
             onSelected = {
                 viewModel.setRecurrence(it)
                 showRecurrencePicker = false

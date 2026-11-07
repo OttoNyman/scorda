@@ -117,8 +117,6 @@
     <string name="supporter_summary">%1$s • Köszönöm!</string>
     <string name="sign_in_to_connect">Jelentkezz be a Scorda fiókod csatolásához</string>
     <string name="guest">Vendég</string>
-    <string name="donate">Adományozás</string>
-    <string name="donate_nag">Gondolkodjon el rajta, hogy adományozással támogassa az alkalmazást!</string>
     <string name="manage_subscription">Előfizetés módosítása</string>
     <string name="button_unsubscribe">Előfizetés lemondása</string>
     <string name="local_lists">Helyi listák</string>
@@ -194,18 +192,10 @@
     <string name="sign_in_subtitle">Már előfizettél vagy meghívtak, mint vendéget?</string>
     <string name="show_advanced_settings">Haladó beállítások mutatása</string>
     <string name="app_settings">Alkalmazás beállításai</string>
-    <string name="whats_new">Újdonságok</string>
-    <string name="version_string">Verzió %1$s</string>
-    <string name="blog_notifications">Blog értesítések</string>
-    <string name="blog_feed_none">Nincs</string>
-    <string name="blog_feed_announcements">Csak a bejelentések</string>
-    <string name="blog_feed_all">Minden bejegyzés</string>
     <string name="rate_tasks">A Tasks értékelése</string>
     <string name="documentation">Dokumentáció</string>
-    <string name="issue_tracker">Hibakövető</string>
     <string name="contact_developer">Kapcsolatfelvétel a fejlesztővel</string>
     <string name="send_application_logs">Alkalmazás logok küldése</string>
-    <string name="follow_reddit">Csatlakozás r/tasks</string>
     <string name="source_code">Forráskód</string>
     <string name="third_party_licenses">Harmadik fél licenszei</string>
     <string name="terms_of_service">Szolgáltatási feltételek</string>
@@ -214,7 +204,6 @@
     <string name="send_anonymous_statistics_summary">Anonim felhasználási statisztikák és hibajelentések küldése a Tasks fejlesztése érdekében. Személyes adatok gyűjtése nem történik.</string>
     <string name="license_summary">A Tasks nyílt forráskódú program, a GNU Általános Nyilvános Licenc v3.0 alapján licenszelve</string>
     <string name="support">Támogatás</string>
-    <string name="social">Közösségi</string>
     <string name="open_source">Nyílt forráskódú</string>
     <string name="legal">Jogi tudnivalók</string>
     <string name="restart_required">Indítsd újra a Tasks appot a változás érvényesítéséhez</string>
@@ -257,13 +246,6 @@
     <string name="due_time">Esedékesség ideje</string>
     <string name="day_before_due">Egy nappal a határidő előtt</string>
     <string name="week_before_due">Egy héttel a határidő előtt</string>
-    <string name="next_sunday">Köv. V</string>
-    <string name="next_monday">Köv. H</string>
-    <string name="next_tuesday">Köv. K</string>
-    <string name="next_wednesday">Köv. Sze</string>
-    <string name="next_thursday">Köv. Cs</string>
-    <string name="next_friday">Köv. P</string>
-    <string name="next_saturday">Köv. Szo</string>
     <string name="shortcut_pick_time">Időpont kiválasztása</string>
     <string name="no_time">Időpont nélkül</string>
     <string name="TEA_note_label">Leírás</string>
@@ -412,7 +394,6 @@
     <string name="delete_task">Feladat törlése</string>
     <string name="menu_discard_changes">Módosítások elvetése</string>
     <string name="more_options">További lehetőségek</string>
-    <string name="quiet_hours_in_effect">Csendes órák bekapcsolva</string>
     <string name="troubleshooting">Hibaelhárítás</string>
     <string name="notification_troubleshooting_summary">Kattints ide, ha nem működnek az értesítések</string>
     <string name="disable_battery_optimizations">Akkumulátor optimalizálás letiltása</string>
@@ -437,10 +418,6 @@
     <string name="enabled">Engedélyezve</string>
     <string name="swipe_to_snooze_description">Szundi ideje</string>
     <string name="swipe_to_snooze_time_description">Egy törölt értesítés annyi idő múlva lesz újra megjelenítve: %1$s</string>
-    <string name="quiet_hours">Csendes órák</string>
-    <string name="quiet_hours_summary">Emlékeztetők mellőzése csendes órák alatt</string>
-    <string name="rmd_EPr_quiet_hours_start_title">Csendes órák kezdete</string>
-    <string name="rmd_EPr_quiet_hours_end_title">Csendes órák vége</string>
     <string name="swipe_to_snooze_time_immediately">azonnal</string>
     <string name="swipe_to_snooze_time_15_minutes">15 perc múlva</string>
     <string name="swipe_to_snooze_time_30_minutes">30 perc múlva</string>
@@ -503,7 +480,6 @@
     <string name="settings_localization">Lokalizáció</string>
     <string name="theme">Téma</string>
     <string name="theme_dynamic">Dinamikus</string>
-    <string name="translations">Részvétel a fordításban</string>
     <string name="widget_open_list">Lista megnyitása</string>
     <string name="theme_light">Világos</string>
     <string name="theme_black">Fekete</string>

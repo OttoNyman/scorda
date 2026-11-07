@@ -293,15 +293,11 @@
     <string name="filter_today_only">Csak ma</string>
     <string name="filter_overdue">Határidőn túli</string>
     <string name="sort_created">Létrehozás ideje alapján</string>
-    <string name="support_development_subscribe">További finkciók feloldása és a nyílt szoftver támogatása</string>
-    <string name="enjoying_tasks">Tetszik a Tasks\?</string>
     <string name="whats_new">Újdonságok</string>
     <string name="action_new_task">Új feladat</string>
     <string name="sort_modified_group">%s módosítva</string>
     <string name="sort_created_group">%s létrehozva</string>
     <string name="lists">Listák</string>
-    <string name="astrid_sort_order_summary">Astrid egyéni sorbarendezés engedélyezése a \"Saját Feladatok\" és a \"Ma\" listákra illetve a címkékre. Ezt a sorbarendezési módot egy jövőbeni frissítésben fel fogja váltani a \"Saját sorrend\"</string>
-    <string name="astrid_sort_order">Astrid egyéni sorbarendezés</string>
     <string name="CFC_list_name">Ebben a listában…</string>
     <string name="reset_sort_order">Sorbarendezés visszaállítása</string>
     <string name="permission_read_tasks">Teljes hozzáférés a Tasks adatbázishoz</string>
@@ -321,7 +317,6 @@
     <string name="backups_ignore_warnings">Figyelmeztetések ignorálása</string>
     <string name="header_spacing">Szóköz</string>
     <string name="multi_select_reschedule">Újraütemezés</string>
-    <string name="always_display_full_date">Teljes dátum mutatása</string>
     <string name="current_subscription">Jelenlegi előfizetés: %s</string>
     <string name="your_subscription_expired">Az előfizetés lejárt. Fizessen elő most a szolgáltatás folytatásához.</string>
     <string name="custom_filter_is_subtask">Alfeladat</string>
@@ -375,10 +370,7 @@
     <string name="sort_completion_group">Elkészültség %s</string>
     <string name="sort_list">Lista szerint</string>
     <string name="change_priority">Sürgősség módosítása</string>
-    <string name="donate_today">Adományozzon ma</string>
-    <string name="donate_nag">Gondolkodjon el rajta, hogy adományozással támogassa az alkalmazást!</string>
     <string name="customize_drawer">Menü testreszabása</string>
-    <string name="donate_maybe_later">Talán később</string>
     <string name="enable_alarms">Időben értesítsen</string>
     <string name="enable_alarms_description">Ahhoz, hogy az értesítések időben megjelenjenek, adjon jogot a Beállításokban riasztások és emlékeztetők létrehozásához</string>
     <string name="show_edit_screen_without_unlock">A szerkesztőképernyő megjelenítése feloldás nélkül</string>
@@ -427,7 +419,6 @@
     <string name="p_per_list_sort">listánkénti_rendezés</string>
     <string name="per_list_sort_summary">Listánként eltérő rendezési és csoportosítási beállítások eltárolása</string>
     <string name="location_update_interval_summary">A rendszeres helyadat frissítés javítja a geokerítés megbízhatóságát</string>
-    <string name="read_more">Mutass többet</string>
     <string name="upgrade_desktop_app">Scorda PC-re</string>
     <string name="upgrade_desktop_app_description">Korai hozzáférés az új PC-s alkalmazáshoz</string>
     <string name="sort_options">Rendezési lehetőségek</string>

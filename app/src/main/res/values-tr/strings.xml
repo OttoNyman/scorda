@@ -293,16 +293,12 @@
     <string name="custom_filter_and">VE</string>
     <string name="custom_filter_criteria">Süzme ölçütü</string>
     <string name="sort_created">Oluşturulma zamanına göre</string>
-    <string name="support_development_subscribe">Ek özellikleri açın ve açık kaynaklı yazılımı destekleyin</string>
-    <string name="enjoying_tasks">Tasks\'ı Beğeniyor Musunuz\?</string>
     <string name="whats_new">Yenilikler</string>
     <string name="action_new_task">Yeni görev</string>
     <string name="sort_created_group">%s oluşturulan</string>
     <string name="sort_modified_group">%s değiştirilen</string>
     <string name="lists">Listeler</string>
     <string name="CFC_list_name">Listede…</string>
-    <string name="astrid_sort_order_summary">\'Görevlerim\', \'Bugün\' ve etiketler için elle sıralama kipini etkinleştirir. Bu sıralama kipi, gelecek güncellemede \'Düzenim\' ile değiştirilecek</string>
-    <string name="astrid_sort_order">Astrid elle sıralama</string>
     <string name="reset_sort_order">Sıra düzenini sıfırla</string>
     <string name="permission_read_tasks">Tasks veri tabanına tam erişim</string>
     <string name="davx5_selection_description">DAVx⁵ uygulamasıyla görevlerinizi eşzamanlayın</string>
@@ -323,7 +319,6 @@
     <string name="multi_select_reschedule">Yeniden zamanla</string>
     <string name="cancel">İptal</string>
     <string name="ok">Tamam</string>
-    <string name="always_display_full_date">Tam tarihi göster</string>
     <string name="custom_filter_is_subtask">Alt görev</string>
     <string name="custom_filter_has_subtask">Alt görevleri olan</string>
     <string name="background_location_permission_required">Tasks, kapalıyken veya kullanılmazken de konuma dayalı anımsatmaları etkinleştirmek için konum verisi toplar.</string>
@@ -379,9 +374,6 @@
     <string name="show_edit_screen_without_unlock">Kilidi açmadan düzenleme ekranını göster</string>
     <string name="show_edit_screen_without_unlock_summary">Aygıtın kilidini açmadan Hızlı Ayarlar kutucuğunun kullanılmasını sağlar</string>
     <string name="customize_drawer">Çekmeceyi özelleştir</string>
-    <string name="donate_today">Bugün bağış yapın</string>
-    <string name="donate_maybe_later">Belki daha sonra</string>
-    <string name="donate_nag">Desteğinizi bağış yaparak göstermeyi düşünün!</string>
     <string name="comment">Yorum</string>
     <string name="cost_money">Ücret: $</string>
     <string name="delete_comment">yorum</string>
@@ -426,7 +418,6 @@
     <string name="per_list_sort_title">Liste başına sıralama</string>
     <string name="per_list_sort_summary">Her liste için sıra ve küme ayarlarını ayrı ayrı anımsa</string>
     <string name="location_update_interval_summary">Dönemsel konum güncellemeleri coğrafi sınır güvenirliğini iyileştirir</string>
-    <string name="read_more">Daha çoğunu oku</string>
     <string name="p_per_list_sort">per_list_sort</string>
     <string name="upgrade_desktop_app">Masaüstü için Scorda</string>
     <string name="upgrade_desktop_app_description">Yeni masaüstü uygulamasına erken erişim</string>

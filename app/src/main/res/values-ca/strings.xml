@@ -92,7 +92,6 @@
     <string name="EPr_delete_task_data">Suprimeix les dades de la tasca</string>
     <string name="EPr_reset_preferences_warning">Les preferències es restabliran als valors predeterminats</string>
     <string name="EPr_reset_preferences">Reinicia les preferències</string>
-    <string name="always_display_full_date">Mostra la data completa</string>
     <string name="EPr_cal_start_at_due_time">Inicia els esdeveniments del calendari en el moment oportú</string>
     <string name="EPr_cal_end_at_due_time">Finalitza els esdeveniments del calendari a la data de venciment</string>
     <string name="EPr_cal_end_or_start_at_due_time">Hora d\'esdeveniment del calendari</string>
@@ -101,8 +100,6 @@
     <string name="start_date">Data d\'inici</string>
     <string name="sort_created">Per data de creació</string>
     <string name="SSD_sort_start">Per data d\'inici</string>
-    <string name="astrid_sort_order_summary">Activa el mode d\'ordenació manual d\'Astrid per a «Les meves tasques», «Avui» i «etiquetes». Aquest mode d\'ordenació serà substituït per «El meu ordre» en una actualització futura</string>
-    <string name="astrid_sort_order">Ordenació manual d\'Astrid</string>
     <string name="cancel">Cancel·la</string>
     <string name="ok">D\'acord</string>
     <string name="filter_any_start_date">Qualsevol data d\'inici</string>
@@ -338,11 +335,6 @@
     <string name="filter_eisenhower_box_2">Important i no urgent</string>
     <string name="filter_eisenhower_box_3">No important i urgent</string>
     <string name="filter_eisenhower_box_4">No important i no urgent</string>
-    <string name="enjoying_tasks">Gaudint Tasks?</string>
-    <string name="donate_nag">Considereu mostrar el vostre suport amb una donació!</string>
-    <string name="donate_today">Doneu avui</string>
-    <string name="donate_maybe_later">Potser més tard</string>
-    <string name="support_development_subscribe">Desbloquegeu funcionalitats addicionals i suporteu programari de codi obert</string>
     <string name="sort_created_group">S\'ha creat %s</string>
     <string name="sort_modified_group">S\'ha modificat %s</string>
     <string name="sort_completion_group">Finalització %s</string>

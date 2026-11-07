@@ -1,6 +1,17 @@
 package org.tasks.compose.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +31,7 @@ import org.tasks.R
 
 @Composable
 fun DateAndTimeScreen(
-    fullDateEnabled: Boolean,
+    dateFormatLabel: String,
     morningSummary: String,
     afternoonSummary: String,
     eveningSummary: String,
@@ -28,7 +39,7 @@ fun DateAndTimeScreen(
     autoDismissListEnabled: Boolean,
     autoDismissEditEnabled: Boolean,
     autoDismissWidgetEnabled: Boolean,
-    onFullDate: (Boolean) -> Unit,
+    onDateFormat: () -> Unit,
     onMorning: () -> Unit,
     onAfternoon: () -> Unit,
     onEvening: () -> Unit,
@@ -46,12 +57,11 @@ fun DateAndTimeScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Full date island
         SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            SwitchPreferenceRow(
-                title = stringResource(R.string.always_display_full_date),
-                checked = fullDateEnabled,
-                onCheckedChange = onFullDate,
+            PreferenceRow(
+                title = stringResource(R.string.date_format),
+                summary = dateFormatLabel,
+                onClick = onDateFormat,
             )
         }
 
@@ -131,4 +141,42 @@ fun DateAndTimeScreen(
         Spacer(modifier = Modifier.height(SettingsContentPadding))
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }
+}
+
+/** One choice per format; each label shows how today looks in it. */
+@Composable
+fun DateFormatDialog(
+    options: List<Pair<String, String>>,
+    selected: String,
+    onSelect: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.date_format)) },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                options.forEach { (value, label) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = value == selected,
+                                role = Role.RadioButton,
+                                onClick = { onSelect(value) },
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = value == selected, onClick = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = label, style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(android.R.string.cancel)) }
+        },
+    )
 }

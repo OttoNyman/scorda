@@ -69,4 +69,15 @@ class GoogleTasksListPolicyTest {
         )
         assertEquals(listOf("gw", null), plan.map { it.second })
     }
+
+    @Test
+    fun aChosenTargetTakesEveryListOnlyWhileItExists() {
+        val local = listOf(LocalList("d", "Default"), LocalList("w", "Work"))
+        val known = listOf(LocalList("gw", "Errands"))
+        fun plan(target: String) =
+            planLocalMove(local, localDefault = "d", scordaId = "scorda", known = known, target = target)
+                .map { it.second }
+        assertEquals(listOf("gw", "gw"), plan("gw"))
+        assertEquals(listOf("scorda", null), plan("gone"))
+    }
 }

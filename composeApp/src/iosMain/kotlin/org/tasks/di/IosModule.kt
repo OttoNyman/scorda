@@ -162,7 +162,6 @@ actual fun platformModule(): Module = module {
             override fun updateCalendar(task: Task) {}
             override suspend fun scheduleRefresh(timestamp: Long) {}
             override suspend fun sync(source: SyncSource) = runner.sync(source)
-            override suspend fun scheduleBlogFeedCheck() {}
             override fun migrateLocalTasks(localAccount: CaldavAccount, tasksAccount: CaldavAccount) {
                 scope.launch { get<TaskMigrator>().migrateLocalTasks(localAccount, tasksAccount) }
             }

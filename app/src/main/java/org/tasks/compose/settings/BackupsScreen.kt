@@ -15,39 +15,24 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import org.tasks.R
 import org.tasks.themes.TasksIcons
 
+/** Account, Google sync and every kind of backup on one screen. */
 @Composable
 fun BackupsScreen(
-    backupDirSummary: String,
-    showBackupDirWarning: Boolean,
     lastBackupSummary: String,
-    showLocalBackupWarning: Boolean,
-    backupsEnabled: Boolean,
-    driveBackupEnabled: Boolean,
-    driveAccountSummary: String,
-    driveAccountEnabled: Boolean,
     lastDriveBackupSummary: String,
-    showDriveBackupWarning: Boolean,
-    androidBackupEnabled: Boolean,
     lastAndroidBackupSummary: String,
-    showAndroidBackupWarning: Boolean,
-    ignoreWarnings: Boolean,
-    onDocumentation: () -> Unit,
-    onBackupDir: () -> Unit,
-    onBackupNow: () -> Unit,
+    onSaveFile: () -> Unit,
     onImportBackup: () -> Unit,
-    onBackupsEnabled: (Boolean) -> Unit,
-    onDriveBackup: (Boolean) -> Unit,
-    onDriveAccount: () -> Unit,
-    onAndroidBackup: (Boolean) -> Unit,
-    onDeviceSettings: () -> Unit,
-    onIgnoreWarnings: (Boolean) -> Unit,
+    onBackupHelp: () -> Unit,
+    accountEmail: String? = null,
+    accountError: String? = null,
+    onLogout: () -> Unit = {},
     tasksEnabled: Boolean = false,
-    driveDailyEnabled: Boolean = driveBackupEnabled,
+    driveDailyEnabled: Boolean = false,
     expiredMessage: String? = null,
     onTasksEnabled: (Boolean) -> Unit = {},
     onDriveDaily: (Boolean) -> Unit = {},
@@ -65,53 +50,26 @@ fun BackupsScreen(
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        // Documentation
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            PreferenceRow(
-                title = stringResource(R.string.documentation),
-                icon = TasksIcons.OPEN_IN_NEW,
-                onClick = onDocumentation,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        // Backup directory, backup now, import
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                PreferenceRow(
-                    title = stringResource(R.string.backup_directory),
-                    summary = backupDirSummary,
-                    summaryMaxLines = Int.MAX_VALUE,
-                    showError = showBackupDirWarning,
-                    onClick = onBackupDir,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.backup_BAc_export),
-                    summary = lastBackupSummary,
-                    showError = showLocalBackupWarning,
-                    onClick = onBackupNow,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.backup_BAc_import),
-                    onClick = onImportBackup,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.automatic_backups),
-                    checked = backupsEnabled,
-                    onCheckedChange = onBackupsEnabled,
-                )
+        if (accountEmail != null) {
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                SettingsItemCard(position = CardPosition.First) {
+                    PreferenceRow(
+                        title = accountEmail,
+                        summary = accountError ?: stringResource(R.string.google_account),
+                        showError = accountError != null,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Last) {
+                    PreferenceRow(
+                        title = stringResource(R.string.logout),
+                        icon = TasksIcons.LOGOUT,
+                        onClick = onLogout,
+                    )
+                }
             }
         }
 
@@ -180,50 +138,38 @@ fun BackupsScreen(
             }
         }
 
-        // Android Backup Service section
         SectionHeader(
-            R.string.android_auto_backup,
+            R.string.backup_section,
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            onClick = onBackupHelp,
         )
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
+            // Always on: shown so people know it exists, explained under the header.
             SettingsItemCard(position = CardPosition.First) {
-                val errorColor = colorResource(R.color.overdue)
                 SwitchPreferenceRow(
-                    title = stringResource(R.string.enabled),
+                    title = stringResource(R.string.android_auto_backup),
                     summary = lastAndroidBackupSummary,
-                    checked = androidBackupEnabled,
-                    onCheckedChange = onAndroidBackup,
-                    icon = if (showAndroidBackupWarning)
-                        TasksIcons.ERROR_OUTLINE else null,
-                    iconTint = if (showAndroidBackupWarning) errorColor else null,
+                    checked = true,
+                    enabled = false,
+                    onCheckedChange = {},
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(R.string.save_to_file),
+                    summary = lastBackupSummary,
+                    onClick = onSaveFile,
                 )
             }
             SettingsItemCard(position = CardPosition.Last) {
                 PreferenceRow(
-                    title = stringResource(R.string.device_settings),
-                    summary = stringResource(R.string.android_auto_backup_device_summary),
-                    summaryMaxLines = 4,
-                    icon = TasksIcons.OPEN_IN_NEW,
-                    onClick = onDeviceSettings,
+                    title = stringResource(R.string.backup_BAc_import),
+                    onClick = onImportBackup,
                 )
             }
-        }
-
-        // Advanced section
-        SectionHeader(
-            R.string.preferences_advanced,
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            SwitchPreferenceRow(
-                title = stringResource(R.string.backups_ignore_warnings),
-                summary = stringResource(R.string.backups_ignore_warnings_summary),
-                checked = ignoreWarnings,
-                onCheckedChange = onIgnoreWarnings,
-            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

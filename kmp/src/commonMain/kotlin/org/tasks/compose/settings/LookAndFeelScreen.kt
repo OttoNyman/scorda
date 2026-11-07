@@ -29,8 +29,6 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.color
 import tasks.kmp.generated.resources.language
 import tasks.kmp.generated.resources.launcher_icon
-import tasks.kmp.generated.resources.markdown
-import tasks.kmp.generated.resources.markdown_description
 import tasks.kmp.generated.resources.on_launch
 import tasks.kmp.generated.resources.open_last_viewed_list
 import tasks.kmp.generated.resources.settings_localization
@@ -43,7 +41,6 @@ import tasks.kmp.generated.resources.theme_dynamic
 import tasks.kmp.generated.resources.theme_light
 import tasks.kmp.generated.resources.theme_system_default
 import tasks.kmp.generated.resources.theme_wallpaper
-import tasks.kmp.generated.resources.translations
 import tasks.kmp.generated.resources.widget_open_list
 
 @Composable
@@ -56,8 +53,6 @@ fun LookAndFeelScreen(
     launcherColor: Int,
     showLauncherIcon: Boolean = true,
     showLanguage: Boolean = true,
-    showMarkdown: Boolean = true,
-    markdownEnabled: Boolean,
     openLastViewedList: Boolean,
     defaultFilterName: String,
     localeName: String,
@@ -65,11 +60,9 @@ fun LookAndFeelScreen(
     onDynamicColor: (Boolean) -> Unit,
     onColor: () -> Unit,
     onLauncher: () -> Unit,
-    onMarkdown: (Boolean) -> Unit,
     onOpenLastViewedList: (Boolean) -> Unit,
     onDefaultFilter: () -> Unit,
     onLanguage: () -> Unit,
-    onTranslations: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -129,19 +122,6 @@ fun LookAndFeelScreen(
             }
         }
 
-        if (showMarkdown) {
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.markdown),
-                    summary = stringResource(Res.string.markdown_description),
-                    checked = markdownEnabled,
-                    onCheckedChange = onMarkdown,
-                )
-            }
-        }
-
         SectionHeader(
             stringResource(Res.string.on_launch),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
@@ -167,30 +147,16 @@ fun LookAndFeelScreen(
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.settings_localization),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            if (showLanguage) {
-                SettingsItemCard(position = CardPosition.First) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.language),
-                        summary = localeName,
-                        onClick = onLanguage,
-                    )
-                }
-            }
-            SettingsItemCard(
-                position = if (showLanguage) CardPosition.Last else CardPosition.Only
-            ) {
+        if (showLanguage) {
+            SectionHeader(
+                stringResource(Res.string.settings_localization),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
                 PreferenceRow(
-                    title = stringResource(Res.string.translations),
-                    icon = TasksIcons.OPEN_IN_NEW,
-                    onClick = onTranslations,
+                    title = stringResource(Res.string.language),
+                    summary = localeName,
+                    onClick = onLanguage,
                 )
             }
         }

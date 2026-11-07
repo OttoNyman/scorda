@@ -1,8 +1,5 @@
 package org.tasks.compose.pickers
 
-import org.tasks.themes.TasksIcons
-import org.tasks.compose.components.SymbolIcon
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -18,10 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -43,26 +37,29 @@ import org.tasks.themes.exposeTestTags
 import org.tasks.compose.PlatformBackHandler
 import org.tasks.previews.PREVIEW_NIGHT_MODE
 import org.tasks.themes.TasksTheme
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
-import org.tasks.time.plusDays
-import org.tasks.time.startOfDay
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.cancel
+import tasks.kmp.generated.resources.no_date
 import tasks.kmp.generated.resources.ok
 
+/**
+ * Calendar-only date sheet. [headline] goes above the calendar, [content] below it; the bottom bar
+ * holds "No date" on the left when [noDate] is set and Cancel/OK on the right when [showButtons].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerBottomSheet(
     sheetState: SheetState,
+    state: DatePickerState,
     showButtons: Boolean,
     cancel: () -> Unit,
     accept: () -> Unit,
-    setDisplayMode: (DisplayMode) -> Unit,
-    dateShortcuts: @Composable ColumnScope.() -> Unit,
-    timeShortcuts: @Composable ColumnScope.() -> Unit,
-    state: DatePickerState,
+    headline: (@Composable () -> Unit)? = null,
+    noDate: (() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit = {},
 ) {
     PlatformBackHandler(enabled = true, onBack = accept)
+    val showBar = showButtons || noDate != null
     ModalBottomSheet(
         modifier = Modifier.statusBarsPadding(),
         sheetState = sheetState,
@@ -81,22 +78,18 @@ fun DatePickerBottomSheet(
                 DatePicker(
                     state = state,
                     showModeToggle = false,
-                    title = {},
+                    title = if (headline != null) { {} } else null,
                     colors = DatePickerDefaults.colors(
                         containerColor = MaterialTheme.colorScheme.surface,
                     ),
-                    headline = {
-                        DatePickerShortcuts(
-                            dateShortcuts = dateShortcuts,
-                            timeShortcuts = timeShortcuts,
-                        )
-                    },
+                    headline = headline,
                 )
-                if (showButtons) {
+                content()
+                if (showBar) {
                     Spacer(modifier = Modifier.height(56.dp))
                 }
             }
-            if (showButtons) {
+            if (showBar) {
                 Surface(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -105,43 +98,30 @@ fun DatePickerBottomSheet(
                 ) {
                     Row(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .height(56.dp)
                             .padding(horizontal = 24.dp, vertical = 4.dp),
-                        horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        IconButton(
-                            onClick = {
-                                state.displayMode = if (state.displayMode == DisplayMode.Input) {
-                                    DisplayMode.Picker
-                                } else {
-                                    DisplayMode.Input
-                                }
-                                setDisplayMode(state.displayMode)
-                            },
-                        ) {
-                            SymbolIcon(
-                                name = if (state.displayMode == DisplayMode.Input) {
-                                    TasksIcons.CALENDAR_MONTH
-                                } else {
-                                    TasksIcons.KEYBOARD
-                                },
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
+                        noDate?.let {
+                            TextButton(onClick = it) {
+                                Text(stringResource(Res.string.no_date))
+                            }
                         }
                         Spacer(modifier = Modifier.weight(1f))
-                        TextButton(
-                            onClick = { cancel() }
-                        ) {
-                            Text(stringResource(Res.string.cancel))
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        TextButton(
-                            onClick = { accept() },
-                            modifier = Modifier.testTag(TestTags.DATE_PICKER_OK),
-                        ) {
-                            Text(stringResource(Res.string.ok))
+                        if (showButtons) {
+                            TextButton(
+                                onClick = { cancel() }
+                            ) {
+                                Text(stringResource(Res.string.cancel))
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            TextButton(
+                                onClick = { accept() },
+                                modifier = Modifier.testTag(TestTags.DATE_PICKER_OK),
+                            ) {
+                                Text(stringResource(Res.string.ok))
+                            }
                         }
                     }
                 }
@@ -161,7 +141,6 @@ private const val NIGHT = DEFAULT_NIGHT
 @Composable
 private fun DueDatePickerPreview() {
     TasksTheme {
-        val today = currentTimeMillis().startOfDay()
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true).apply {
             runBlocking { show() }
         }
@@ -169,35 +148,20 @@ private fun DueDatePickerPreview() {
             sheetState = sheetState,
             state = rememberDatePickerState(),
             showButtons = true,
-            setDisplayMode = {},
             cancel = {},
             accept = {},
-            dateShortcuts = {
-                DueDateShortcuts(
-                    today = today,
-                    tomorrow = today.plusDays(1),
-                    nextWeek = today.plusDays(7),
-                    selected = today,
-                    showNoDate = true,
-                    selectedDay = {},
-                    clearDate = {},
-                )
-            },
-            timeShortcuts = {
-                TimeShortcuts(
-                    day = NO_DAY,
-                    selected = NO_TIME,
-                    morning = MORNING,
-                    afternoon = AFTERNOON,
-                    evening = EVENING,
-                    night = NIGHT,
-                    is24HourFormat = true,
-                    selectedMillisOfDay = {},
-                    pickTime = {},
-                    clearTime = {},
-                )
-            },
-        )
+            noDate = {},
+        ) {
+            DueTimePicker(
+                selectedTime = { NO_TIME },
+                is24Hour = true,
+                times = QuickPickTimes(),
+                showNoTime = true,
+                showMultiple = false,
+                onDialTime = {},
+                onChipTime = {},
+            )
+        }
     }
 }
 
@@ -214,30 +178,33 @@ private fun StartDatePickerPreview() {
             sheetState = sheetState,
             state = rememberDatePickerState(),
             showButtons = true,
-            setDisplayMode = {},
             cancel = {},
             accept = {},
-            dateShortcuts = {
-                StartDateShortcuts(
-                    selected = DUE_DATE,
-                    selectedDay = {},
-                    selectedDayTime = { _, _ -> },
-                    showDueDate = true,
-                    clearDate = {},
-                )
-            },
-            timeShortcuts = {
-                TimeShortcuts(
-                    day = DUE_DATE,
-                    selected = NO_TIME,
-                    morning = MORNING,
-                    afternoon = AFTERNOON,
-                    evening = EVENING,
-                    night = NIGHT,
-                    is24HourFormat = true,
-                    selectedMillisOfDay = {},
-                    pickTime = {},
-                    clearTime = {},
+            headline = {
+                DatePickerShortcuts(
+                    dateShortcuts = {
+                        StartDateShortcuts(
+                            selected = DUE_DATE,
+                            selectedDay = {},
+                            selectedDayTime = { _, _ -> },
+                            showDueDate = true,
+                            clearDate = {},
+                        )
+                    },
+                    timeShortcuts = {
+                        TimeShortcuts(
+                            day = DUE_DATE,
+                            selected = NO_TIME,
+                            morning = MORNING,
+                            afternoon = AFTERNOON,
+                            evening = EVENING,
+                            night = NIGHT,
+                            is24HourFormat = true,
+                            selectedMillisOfDay = {},
+                            pickTime = {},
+                            clearTime = {},
+                        )
+                    },
                 )
             },
         )
