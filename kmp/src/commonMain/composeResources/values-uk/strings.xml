@@ -166,7 +166,6 @@
     <string name="privacy_policy">Політика приватності</string>
     <string name="send_anonymous_statistics">Поліпшити Tasks</string>
     <string name="send_anonymous_statistics_summary">Надсилати анонімну статистику використання та звіти про помилки щоб вдосконалити Tasks. Жодних персональних даних не буде зібрано.</string>
-    <string name="license_summary">Tasks — це програмне забезпечення з відкритим кодом, ліцензоване GNU General Public License v3.0</string>
     <string name="support">Підтримка</string>
     <string name="open_source">Відкритий джерельний код</string>
     <string name="restart_required">Перезапустіть Tasks для вступу змін в дію</string>
@@ -412,7 +411,6 @@
     <string name="EPr_default_importance_title">Типовий пріоритет</string>
     <string name="default_start_date">Типова дата початку</string>
     <string name="default_due_date">Типова дата виконання</string>
-    <string name="default_calendar">Типовий календар</string>
     <string name="TEA_control_reminders">Нагадування</string>
     <string name="EPr_default_reminders_title">Типові нагадування</string>
     <string name="EPr_default_reminders_mode_title">Типовий звук/вібраця</string>
@@ -420,7 +418,6 @@
     <string name="TEA_control_location">Місце</string>
     <string name="default_location">Типове розташування</string>
     <string name="EPr_default_location_reminder_title">Типові нагадування про розташування</string>
-    <string name="dont_add_to_calendar">Не додавати до календаря</string>
     <string name="no_reminders">Без нагадувань</string>
     <string name="day_after_tomorrow">Післязавтра</string>
     <string name="next_week">Наступного тижня</string>

@@ -152,7 +152,6 @@
     <string name="privacy_policy">Chính sách riêng tư</string>
     <string name="send_anonymous_statistics">Cải thiện Tasks</string>
     <string name="send_anonymous_statistics_summary">Gửi thống kê sử dụng và báo cáo crash nặc danh để giúp cải thiện Tasks. Không có dữ liệu cá nhân nào sẽ được thu thập.</string>
-    <string name="license_summary">Tasks là phần mềm tự do và mã nguồn mở, được cấp phép dưới GNU General Public License v3.0</string>
     <string name="support">Hỗ trợ</string>
     <string name="open_source">Mã nguồn mở</string>
     <string name="restart_required">Khởi động lại Tasks để thay đổi này có hiệu lực</string>
@@ -347,7 +346,6 @@
     <string name="EPr_default_importance_title">Sự ưu tiên mặc định</string>
     <string name="default_start_date">Ngày bắt đầu mặc định</string>
     <string name="default_due_date">Ngày hạn mặc định</string>
-    <string name="default_calendar">Lịch mặc định</string>
     <string name="TEA_control_reminders">Lời nhắc</string>
     <string name="EPr_default_reminders_title">Lời nhắc mặc định</string>
     <string name="EPr_default_reminders_mode_title">Loại đổ chuông/rung mặc định</string>
@@ -355,7 +353,6 @@
     <string name="TEA_control_location">Vị trí</string>
     <string name="default_location">Vị trí mặc định</string>
     <string name="EPr_default_location_reminder_title">Lời nhắc vị trí mặc định</string>
-    <string name="dont_add_to_calendar">Không thêm vào lịch</string>
     <string name="no_reminders">Không có lời nhắc</string>
     <string name="day_after_tomorrow">Ngày kia</string>
     <string name="next_week">Tuần sau</string>

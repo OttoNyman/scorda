@@ -178,6 +178,7 @@
     <string name="preferences_look_and_feel">Look and feel</string>
     <string name="notifications">Notifications</string>
     <string name="task_defaults">Task defaults</string>
+    <string name="screen_settings">Screen settings</string>
     <string name="task_list_options">Task list options</string>
     <string name="EPr_edit_screen_options">Edit screen options</string>
     <string name="date_and_time">Date and time</string>
@@ -691,7 +692,6 @@
     <string name="EPr_default_importance_title">Default priority</string>
     <string name="default_start_date">Default start date</string>
     <string name="default_due_date">Default reminder</string>
-    <string name="default_calendar">Default calendar</string>
     <string name="TEA_control_reminders">Reminders</string>
     <string name="EPr_default_reminders_title">Default reminders</string>
     <string name="EPr_default_reminders_mode_title">Default ring/vibrate type</string>
@@ -700,7 +700,6 @@
     <string name="default_location">Default location</string>
     <string name="EPr_default_location_reminder_title">Default location reminders</string>
     <string name="location_update_interval_title">Background location updates</string>
-    <string name="dont_add_to_calendar">Don't add to calendar</string>
     <string name="no_reminders">No reminders</string>
     <string name="day_after_tomorrow">Day after tomorrow</string>
     <string name="next_week">Next week</string>
@@ -744,7 +743,7 @@
     <string name="constructor_all_off">Turn everything off</string>
     <string name="constructor_all_on">Turn everything on</string>
     <string name="constructor_all_off_confirm">All capabilities will turn off. Existing task data stays; features disappear from the app until you turn them back on.</string>
-    <string name="constructor_all_on_confirm">All capabilities will turn on, including lists, places, calendar, and extra reminders.</string>
+    <string name="constructor_all_on_confirm">All capabilities will turn on, including lists, filters, places, and the early reminder.</string>
     <string name="constructor_group_time">Reminders</string>
     <string name="constructor_group_order">Lists</string>
     <string name="constructor_group_content">Task</string>
@@ -772,8 +771,6 @@
     <string name="constructor_filters">Filters</string>
     <string name="constructor_priority">Priority</string>
     <string name="constructor_geo">Places</string>
-    <string name="constructor_start">Start date</string>
-    <string name="constructor_extra">More reminders</string>
     <string name="advance">In advance</string>
     <string name="advance_default">Default</string>
     <string name="advance_none">None</string>
@@ -784,7 +781,6 @@
     <string name="advance_2h">2 hours before</string>
     <string name="advance_1d">1 day before</string>
     <string name="advance_custom">%s before</string>
-    <string name="constructor_calendar">Calendar</string>
     <string name="constructor_files">Files</string>
     <plurals name="constructor_repeat_count">
         <item quantity="one">%1$d task will stop repeating</item>
@@ -797,17 +793,5 @@
     <plurals name="constructor_geo_count">
         <item quantity="one">%1$d task will stop using a place</item>
         <item quantity="other">%1$d tasks will stop using a place</item>
-    </plurals>
-    <plurals name="constructor_calendar_count">
-        <item quantity="one">%1$d task will stop updating the calendar</item>
-        <item quantity="other">%1$d tasks will stop updating the calendar</item>
-    </plurals>
-    <plurals name="constructor_extra_count">
-        <item quantity="one">%1$d task will lose its extra reminders</item>
-        <item quantity="other">%1$d tasks will lose their extra reminders</item>
-    </plurals>
-    <plurals name="constructor_start_count">
-        <item quantity="one">%1$d task will show up in the list</item>
-        <item quantity="other">%1$d tasks will show up in the list</item>
     </plurals>
 </resources>

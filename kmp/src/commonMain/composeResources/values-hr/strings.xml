@@ -201,7 +201,6 @@
     <string name="privacy_policy">Politika privatnosti</string>
     <string name="send_anonymous_statistics">Poboljšaj Tasks</string>
     <string name="send_anonymous_statistics_summary">Šalji anonimnu statistiku korištenja i izvještaje o prekidima programa radi poboljšanja programa Tasks. Osobni podaci se ne prikupljaju.</string>
-    <string name="license_summary">Tasks je slobodan program otvorenog koda, licenciran pod GNU General Public License v3.0</string>
     <string name="support">Podrška</string>
     <string name="open_source">Otvoreni kod</string>
     <string name="legal">Pravno</string>
@@ -536,7 +535,6 @@
     <string name="EPr_default_importance_title">Standardni prioritet</string>
     <string name="default_start_date">Standardni datum početka</string>
     <string name="default_due_date">Standardni datum roka</string>
-    <string name="default_calendar">Standardni kalendar</string>
     <string name="TEA_control_reminders">Podsjetnici</string>
     <string name="EPr_default_reminders_title">Standardni podsjetnici</string>
     <string name="EPr_default_reminders_mode_title">Standardna vrsta zvona/vibracije</string>
@@ -545,7 +543,6 @@
     <string name="default_location">Standardna lokacija</string>
     <string name="EPr_default_location_reminder_title">Standardni podsjetnici lokacija</string>
     <string name="location_update_interval_title">Aktualiziranja lokacije u pozadini</string>
-    <string name="dont_add_to_calendar">Nemoj dodati kalendaru</string>
     <string name="no_reminders">Bez podsjetnika</string>
     <string name="day_after_tomorrow">Prekosutra</string>
     <string name="next_week">Sljedeći tjedan</string>

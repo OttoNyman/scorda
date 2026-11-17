@@ -110,7 +110,6 @@ class TaskDefaults : Fragment() {
                         tagsLauncher.launch(intent)
                     }
                 },
-                onCalendar = {},
                 onRecurrence = {
                     BasicRecurrenceDialog
                         .newBasicRecurrenceDialog(

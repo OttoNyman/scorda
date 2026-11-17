@@ -65,7 +65,6 @@
     <string name="CFC_gtasks_list_text">பட்டியலில் :\?</string>
     <string name="gcal_completed_title">%s (முடிந்தது)</string>
     <string name="calendar_event_not_found">நாள்காட்டி நிகழ்வு கிடைக்கவில்லை</string>
-    <string name="gcal_TEA_showCalendar_label">நாள்காட்டி நிகழ்வைத் திறக்கவும்</string>
     <string name="CFC_title_contains_text">தலைப்பில்:\?</string>
     <string name="CFC_title_contains_name">தலைப்பில்…</string>
     <string name="CFC_tag_contains_text">குறிச்சொல் பெயர் பின்வருமாறு:\?</string>
@@ -162,7 +161,6 @@
     <string name="help">உதவி</string>
     <string name="tasker_list_notification">பட்டியல் அறிவிப்பு</string>
     <string name="tasker_create_task">பணியை உருவாக்கவும்</string>
-    <string name="dont_add_to_calendar">நாள்காட்டியில் சேர்க்க வேண்டாம்</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_from">இருந்து மீண்டும்</string>
     <string name="list">பட்டியல்</string>

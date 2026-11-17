@@ -60,7 +60,6 @@
     <string name="CFC_title_contains_name">Pealkirjas on…</string>
     <string name="CFC_title_contains_text">Pealkirjas on: \?</string>
     <string name="gcal_TEA_error">Tõrge ülesande lisamisel kalendrisse!</string>
-    <string name="gcal_TEA_showCalendar_label">Ava kalendri sündmus</string>
     <string name="calendar_event_not_found">Kalendri sündmust ei leitud</string>
     <string name="gcal_completed_title">%s (valmis)</string>
     <string name="CFC_gtasks_list_text">Nimekirjas: \?</string>
@@ -326,7 +325,6 @@
     <string name="sync_warning_microsoft_title">Teave Microsoft To Do sünkroniseerimise kohta</string>
     <string name="sync_warning_microsoft">Ülesannete kõikide üksikasjade sünkroniseerimine ei toimi Microsoft To Do liidestusega.</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Ära lisa kalendrisse</string>
     <string name="sync_warning_google_tasks_title">Teave Google Tasksi sünkroniseerimise kohta</string>
     <string name="sync_warning_google_tasks">Ülesannete kõikide üksikasjade sünkroniseerimine ei toimi Google Tasksi liidestusega</string>
     <string name="app_passwords_more_info">Sünkroniseeri oma ülesandeid ja kalendreid kolmandate osapoolte töölaua- ja nutiseadme rakendustega. Lisateavet leiad siit</string>

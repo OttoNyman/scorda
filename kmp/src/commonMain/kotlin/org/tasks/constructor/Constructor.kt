@@ -47,9 +47,6 @@ data class Constructor(
         }
         else -> false
     }
-
-    val showsDrawer: Boolean
-        get() = lists || tags || filters || geo
 }
 
 data class ConstructorCounts(

@@ -163,7 +163,6 @@
     <string name="privacy_policy">Ochrana súkromia</string>
     <string name="send_anonymous_statistics">Pomôžte vylepšiť Tasks</string>
     <string name="send_anonymous_statistics_summary">Zasielať anonymné štatistiky používania a správy o zlyhaní aplikácie pre zlepšenia Úloh. Žiadne osobné údaje nebudú zhromažďované.</string>
-    <string name="license_summary">Tasks je slobodný softvér s otvoreným zdrojovým kódom uvoľnený pod licenciou GNU Public Licence v3.0</string>
     <string name="support">Podpora</string>
     <string name="open_source">Otvorený zdrojový kód</string>
     <string name="restart_required">Reštartujte aplikáciu, aby sa zmena prejavila</string>
@@ -404,7 +403,6 @@
     <string name="EPr_default_importance_title">Predvolená dôležitosť</string>
     <string name="default_start_date">Predvolený dátum spustenia</string>
     <string name="default_due_date">Predvolený termín</string>
-    <string name="default_calendar">Predvolený kalendár</string>
     <string name="TEA_control_reminders">Pripomienky</string>
     <string name="EPr_default_reminders_title">Predvolené pripomienky</string>
     <string name="EPr_default_reminders_mode_title">Predvolené vyzváňanie/vibrovanie</string>
@@ -412,7 +410,6 @@
     <string name="TEA_control_location">Poloha</string>
     <string name="default_location">Predvolené miesto</string>
     <string name="EPr_default_location_reminder_title">Predvolené upozornenia podľa polohy</string>
-    <string name="dont_add_to_calendar">Nepridávať do kalendára </string>
     <string name="no_reminders">Žiadne upozornenia</string>
     <string name="day_after_tomorrow">Pozajtra</string>
     <string name="next_week">Nasledujúci týždeň</string>

@@ -87,7 +87,6 @@
     <string name="CFC_title_contains_name">El títulu contién…</string>
     <string name="CFC_title_contains_text">El títulu contién: ?</string>
     <string name="gcal_TEA_error">¡Error amestando la xera al calendariu!</string>
-    <string name="gcal_TEA_showCalendar_label">Abrir eventu del calendariu</string>
     <string name="calendar_event_not_found">Eventu del calendariu non atopáu</string>
     <string name="gcal_completed_title">%s (completáu)</string>
     <string name="CFC_gtasks_list_text">Na Llista: ?</string>
@@ -226,7 +225,6 @@
     <string name="repeats_from">Repetir dende</string>
     <string name="repeats_plural_number_of_times">Repetir cada %1$s, ocurre %2$d%3$s</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Non amestar al calendariu</string>
     <string name="badges_description">Amosar un contador de xeres nel iconu de Tasks del llanzador. Non tolos llanzadores soporten insignies.</string>
     <string name="tasker_create_task">Amestar xera</string>
     <string name="tasker_list_notification">Llistar avisu</string>

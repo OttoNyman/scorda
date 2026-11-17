@@ -27,7 +27,6 @@ import org.tasks.preferences.alarmOrder
 import org.tasks.repeats.RepeatRuleToString
 import org.tasks.resources.getString
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.dont_add_to_calendar
 import tasks.kmp.generated.resources.none
 import tasks.kmp.generated.resources.repeat_option_does_not_repeat
 
@@ -42,9 +41,6 @@ open class TaskDefaultsViewModel(
     private val listResolver: suspend (String?) -> CaldavFilter? = {
         caldavDao.getOrCreateDefaultListFilter(it)
     },
-    private val calendarNamer: suspend (String?) -> String = {
-        getString(Res.string.dont_add_to_calendar)
-    },
 ) : ViewModel() {
 
     enum class ListPickerTarget {
@@ -57,7 +53,6 @@ open class TaskDefaultsViewModel(
         LOCATION_UPDATE_INTERVAL,
     }
 
-    val showCalendar: Boolean = platformConfiguration.supportsCalendarEvents
     val showRingMode: Boolean = platformConfiguration.supportsRingMode
     val showLocation: Boolean = platformConfiguration.supportsGeofences
 
@@ -85,9 +80,6 @@ open class TaskDefaultsViewModel(
     var hasDefaultLocation by mutableStateOf(false)
         private set
 
-    var calendarName by mutableStateOf("")
-        private set
-
     var listPickerTarget by mutableStateOf<ListPickerTarget?>(null)
         private set
 
@@ -107,7 +99,6 @@ open class TaskDefaultsViewModel(
 
     private var tagsSummaryJob: Job? = null
     private var recurrenceSummaryJob: Job? = null
-    private var calendarNameJob: Job? = null
     private var locationNameJob: Job? = null
 
     private suspend fun reload() {
@@ -120,9 +111,6 @@ open class TaskDefaultsViewModel(
             val recurrence = async {
                 resolve("default recurrence") { describeRecurrence(loadedSettings.defaultRecurrence) }
             }
-            val calendar = async {
-                resolve("default calendar") { calendarNamer(loadedSettings.defaultCalendar) }
-            }
             val place = async {
                 resolve("default location") {
                     loadedSettings.defaultLocation?.let { locationDao.getByUid(it) }
@@ -132,7 +120,6 @@ open class TaskDefaultsViewModel(
             val resolvedList = list.await()
             val resolvedTags = tags.await()
             val resolvedRecurrence = recurrence.await()
-            val resolvedCalendar = calendar.await()
             val resolvedPlace = place.await()
             val none = noPlace.await().orEmpty()
             if (generation != mutationSequence) {
@@ -150,7 +137,6 @@ open class TaskDefaultsViewModel(
             defaultListFilter = resolvedList
             defaultTagsSummary = resolvedTags ?: none
             recurrenceSummary = resolvedRecurrence.orEmpty()
-            calendarName = resolvedCalendar.orEmpty()
             hasDefaultLocation = resolvedPlace != null
             locationName = resolvedPlace?.displayName ?: none
             loaded = true
@@ -206,14 +192,6 @@ open class TaskDefaultsViewModel(
             defaultTagsSummary = describeTags(uuids)
         }
         persist { appPreferences.setDefaultTags(uuids) }
-    }
-
-    fun setDefaultCalendar(calendarId: String?) {
-        settings = settings.copy(defaultCalendar = calendarId)
-        calendarNameJob = updateSummary(calendarNameJob, "default calendar") {
-            calendarName = calendarNamer(calendarId)
-        }
-        persist { appPreferences.setDefaultCalendar(calendarId) }
     }
 
     fun setRecurrence(rrule: String?) {

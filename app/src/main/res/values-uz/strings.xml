@@ -92,7 +92,6 @@
     <string name="CFC_title_contains_name">Nomi tarkibida…</string>
     <string name="CFC_title_contains_text">Nomi tarkibida: ?</string>
     <string name="gcal_TEA_error">Vazifani taqvimga qo\'shishda xatolik!</string>
-    <string name="gcal_TEA_showCalendar_label">Taqvim tadbirini ochish</string>
     <string name="calendar_event_not_found">Taqvim tadbiri topilmadi</string>
     <string name="gcal_completed_title">%s (bajarilgan)</string>
     <string name="CFC_gtasks_list_text">Ro\'yxatda: ?</string>
@@ -218,7 +217,6 @@
     <string name="repeats_from">Takrorlanish boshlanish sanasi</string>
     <string name="repeats_plural_number_of_times">Har %1$s da takrorlanadi, %3$s %2$d marta sodir bo‘ladi</string>
     <string name="list_separator_with_space">", (vergul) "</string>
-    <string name="dont_add_to_calendar">Taqvimga qo‘shmaslik</string>
     <string name="badges_description">Vazifalar ishga tushirish belgisida vazifalar sonini ko‘rsatish. Barcha ishga tushuruvchilar belgilar (badjlar)ni qo‘llab-quvvatlamasligi mumkin.</string>
     <string name="tasker_create_task">Vazifa yaratish</string>
     <string name="tasker_list_notification">Ro‘yxat bildirishnomasi</string>

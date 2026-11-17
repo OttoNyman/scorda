@@ -69,7 +69,6 @@
     <string name="CFC_title_contains_name">Le titre contient…</string>
     <string name="CFC_title_contains_text">Le titre contient : \?</string>
     <string name="gcal_TEA_error">L\'ajout de la tâche au calendrier a échoué !</string>
-    <string name="gcal_TEA_showCalendar_label">Ouvrir l\'évènement de calendrier</string>
     <string name="calendar_event_not_found">Évènement de calendrier introuvable</string>
     <string name="gcal_completed_title">%s (complété)</string>
     <string name="CFC_gtasks_list_text">Dans la liste : \?</string>
@@ -180,7 +179,6 @@
     <string name="list">Liste</string>
     <string name="repeats_from">Répéter depuis</string>
     <string name="repeats_plural_number_of_times">Répéter par intervalle de %1$s, %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Ne pas ajouter au calendrier</string>
     <string name="badges_description">Afficher un compteur de tâches sur l\'icône du lanceur de Tasks. Certains lanceurs ne supportent pas les badges.</string>
     <string name="tasker_create_task">Créer une tâche</string>
     <string name="tasker_list_notification">Notification de liste</string>

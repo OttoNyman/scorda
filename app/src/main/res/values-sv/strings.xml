@@ -73,7 +73,6 @@
     <string name="CFC_title_contains_name">Titeln innehåller…</string>
     <string name="CFC_title_contains_text">Titeln innehåller: ?</string>
     <string name="gcal_TEA_error">Det gick inte att lägga till uppgiften i kalendern.</string>
-    <string name="gcal_TEA_showCalendar_label">Öppna kalenderhändelsen</string>
     <string name="calendar_event_not_found">Kalenderhändelsen hittades inte</string>
     <string name="gcal_completed_title">%s (slutförd)</string>
     <string name="CFC_gtasks_list_text">I listan: ?</string>
@@ -189,7 +188,6 @@
     <string name="repeats_from">Upprepas från</string>
     <string name="repeats_plural_number_of_times">Upprepas med ett intervall på %1$s, totalt %2$d %3$s</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Lägg inte till i kalender</string>
     <string name="badges_description">Visa antalet uppgifter på Tasks-appikonen. Inte alla startprogram stöder aviseringsmärken.</string>
     <string name="tasker_create_task">Skapa uppgift</string>
     <string name="tasker_list_notification">Visa avisering</string>

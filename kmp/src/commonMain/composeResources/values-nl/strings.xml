@@ -179,7 +179,6 @@
     <string name="privacy_policy">Privacy regels</string>
     <string name="send_anonymous_statistics">Tasks verbeteren</string>
     <string name="send_anonymous_statistics_summary">Anonieme gebruiksstatistieken en crashrapporten versturen om Tasks te verbeteren. Persoonlijke gegevens worden niet verzameld.</string>
-    <string name="license_summary">Tasks is vrije open-source software, onder de GNU General Public License v3.0</string>
     <string name="support">Ondersteuning</string>
     <string name="open_source">Open source</string>
     <string name="legal">Juridische informatie</string>
@@ -410,7 +409,6 @@
     <string name="EPr_default_importance_title">Standaard prioriteit</string>
     <string name="default_start_date">Standaard begindatum</string>
     <string name="default_due_date">Standaard vervaldatum</string>
-    <string name="default_calendar">Standaardkalender</string>
     <string name="TEA_control_reminders">Herinneringen</string>
     <string name="EPr_default_reminders_title">Standaard herinneringen</string>
     <string name="EPr_default_reminders_mode_title">Standaard beltoon/trillingstype</string>
@@ -418,7 +416,6 @@
     <string name="TEA_control_location">Locatie</string>
     <string name="default_location">Standaardlocatie</string>
     <string name="EPr_default_location_reminder_title">Locatieherinneringen</string>
-    <string name="dont_add_to_calendar">Niet aan kalender toevoegen</string>
     <string name="no_reminders">Geen herinneringen</string>
     <string name="day_after_tomorrow">Overmorgen</string>
     <string name="next_week">Volgende week</string>

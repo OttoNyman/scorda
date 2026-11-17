@@ -98,7 +98,6 @@
     <string name="privacy_policy">رازداری کی پالیسی</string>
     <string name="send_anonymous_statistics">ٹاسکس ایپ کو بہتر بنائیں</string>
     <string name="send_anonymous_statistics_summary">ٹاسکس ایپ کو بہتر بنانے کیلئے استعمال کے اعدادوشمار اور کریش رپورٹس گمنام طریقے سے بھیجیں۔ کوئی ذاتی ڈیٹا اکٹھا نہیں کیا جائے گا۔</string>
-    <string name="license_summary">ٹاسکس ایک لیبرے اوپن سورس سافٹ وئیر ہےجو کہ جی این یو لائسنس v3.0 کے تحت لائسنس شدہ ہے</string>
     <string name="restart_required">اس تبدیلی کو اثردار بنانے کیلئے ایپ ری سٹارٹ کریں</string>
     <string name="restart_now">ابھی ری سٹارٹ کریں</string>
     <string name="restart_later">بعد میں</string>
@@ -248,7 +247,6 @@
     <string name="EPr_default_importance_title">ڈیفالٹ ترجیح</string>
     <string name="default_start_date">ڈیفالٹ تاریخ آغاز</string>
     <string name="default_due_date">ڈیفالٹ مقررہ تاریخ</string>
-    <string name="default_calendar">ڈیفالٹ کیلںنڈر</string>
     <string name="TEA_control_reminders">یاد دہانی</string>
     <string name="EPr_default_reminders_title">ڈیفالٹ یاددہانی</string>
     <string name="EPr_default_reminders_mode_title">ڈیفالٹ رنگ ٹون / وائبریشن ٹائپ</string>
@@ -256,7 +254,6 @@
     <string name="TEA_control_location">جگہ</string>
     <string name="default_location">ڈیفالٹ لوکیشن</string>
     <string name="EPr_default_location_reminder_title">ڈیفالٹ لوکیشن کی یاد دہانیاں</string>
-    <string name="dont_add_to_calendar">کیلنڈر میں داخل نہ کریں</string>
     <string name="no_reminders">کوئی یاددہانی نہیں</string>
     <string name="day_after_tomorrow">پرسوں</string>
     <string name="next_week">اگلے ہفتے</string>

@@ -34,6 +34,7 @@ import tasks.kmp.generated.resources.navigation_drawer
 import tasks.kmp.generated.resources.notifications
 import tasks.kmp.generated.resources.preferences_advanced
 import tasks.kmp.generated.resources.preferences_look_and_feel
+import tasks.kmp.generated.resources.screen_settings
 import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.task_list_options
@@ -52,6 +53,7 @@ sealed class SettingsDestination(override val titleRes: StringResource) : Settin
     data object Notifications : SettingsDestination(Res.string.notifications)
     data object TaskDefaults : SettingsDestination(Res.string.task_defaults)
     data object Constructor : SettingsDestination(Res.string.constructor_title)
+    data object Screens : SettingsDestination(Res.string.screen_settings)
     data object TaskList : SettingsDestination(Res.string.task_list_options)
     data object TaskEdit : SettingsDestination(Res.string.EPr_edit_screen_options)
     data object DateAndTime : SettingsDestination(Res.string.date_and_time)
@@ -113,7 +115,6 @@ fun MainSettingsScreen(
     environmentLabel: String? = null,
     showBackupWarning: Boolean,
     accountError: Boolean = false,
-    showWidgets: Boolean,
     showNotifications: Boolean = true,
     showMcpServer: Boolean = false,
     showNavigationDrawer: Boolean = true,
@@ -189,7 +190,6 @@ fun MainSettingsScreen(
         }
 
         SettingsCategories(
-            showWidgets = showWidgets,
             showNotifications = showNotifications,
             showMcpServer = showMcpServer,
             showNavigationDrawer = showNavigationDrawer,
@@ -203,7 +203,6 @@ fun MainSettingsScreen(
 
 @Composable
 fun SettingsCategories(
-    showWidgets: Boolean,
     showNotifications: Boolean,
     showMcpServer: Boolean = false,
     showNavigationDrawer: Boolean = true,
@@ -256,18 +255,11 @@ fun SettingsCategories(
                 onClick = { onSettingsClick(SettingsDestination.TaskDefaults) }
             )
         }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.task_list_options),
-                icon = TasksIcons.LIST,
-                onClick = { onSettingsClick(SettingsDestination.TaskList) }
-            )
-        }
         SettingsItemCard(position = CardPosition.Last) {
             PreferenceRow(
-                title = stringResource(Res.string.EPr_edit_screen_options),
-                icon = TasksIcons.EDIT,
-                onClick = { onSettingsClick(SettingsDestination.TaskEdit) }
+                title = stringResource(Res.string.screen_settings),
+                icon = TasksIcons.APPS,
+                onClick = { onSettingsClick(SettingsDestination.Screens) }
             )
         }
     }
@@ -292,15 +284,6 @@ fun SettingsCategories(
                     title = stringResource(Res.string.navigation_drawer),
                     icon = TasksIcons.MENU,
                     onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) }
-                )
-            }
-        }
-        if (showWidgets) {
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.widget_settings),
-                    icon = TasksIcons.WIDGETS,
-                    onClick = { onSettingsClick(SettingsDestination.Widgets) }
                 )
             }
         }

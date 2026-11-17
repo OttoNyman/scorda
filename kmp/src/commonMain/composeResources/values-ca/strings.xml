@@ -165,7 +165,6 @@
     <string name="privacy_policy">Política de privacitat</string>
     <string name="send_anonymous_statistics">Millora Tasks</string>
     <string name="send_anonymous_statistics_summary">Envia estadístiques d'ús anònimes i informes de fallada per ajudar a millorar Tasks. No es recolliran dades personals.</string>
-    <string name="license_summary">Tasks és un programari lliure de codi obert, amb llicència sota la Llicència Pública General de GNU v3.0</string>
     <string name="support">Suport</string>
     <string name="open_source">Codi obert</string>
     <string name="restart_required">Reinicia Tasks per aplicar els canvis</string>
@@ -406,7 +405,6 @@
     <string name="EPr_default_importance_title">Prioritat predeterminada</string>
     <string name="default_start_date">Data d'inici predeterminada</string>
     <string name="default_due_date">Data de venciment predeterminada</string>
-    <string name="default_calendar">Calendari predeterminat</string>
     <string name="TEA_control_reminders">Recordatoris</string>
     <string name="EPr_default_reminders_title">Recordatoris predeterminats</string>
     <string name="EPr_default_reminders_mode_title">So / vibració predeterminat</string>
@@ -414,7 +412,6 @@
     <string name="TEA_control_location">Ubicació</string>
     <string name="default_location">Ubicació predeterminada</string>
     <string name="EPr_default_location_reminder_title">Recordatoris d'ubicació per defecte</string>
-    <string name="dont_add_to_calendar">No afegiu al calendari</string>
     <string name="no_reminders">Sense recordatoris</string>
     <string name="day_after_tomorrow">Demà passat</string>
     <string name="next_week">La setmana que ve</string>

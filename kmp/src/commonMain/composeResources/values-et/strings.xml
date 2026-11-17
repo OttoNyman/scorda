@@ -199,7 +199,6 @@
     <string name="privacy_policy">Privaatsus</string>
     <string name="send_anonymous_statistics">Paranda rakendust Tasks</string>
     <string name="send_anonymous_statistics_summary">Tasksi parandamiseks saada meile anonüümset kasutusstatistikat ja võimalikke vigade logisid. Isiklikke andmeid me ei kogu.</string>
-    <string name="license_summary">Tasks on avatud lähtekoodil põhinev tarkvara, mis on litsentseeritud GNU Üldise Avaliku Litsentsi versiooni 3.0 alusel</string>
     <string name="support">Tugi</string>
     <string name="open_source">Avatud lähtekood</string>
     <string name="legal">Juriidiline teave</string>
@@ -530,7 +529,6 @@
     <string name="EPr_default_importance_title">Vaikimisi tähtsus</string>
     <string name="default_start_date">Vaikimisi alguskuupäev</string>
     <string name="default_due_date">Vaikimisi tähtaeg</string>
-    <string name="default_calendar">Vaikekalender</string>
     <string name="TEA_control_reminders">Meeldetuletused</string>
     <string name="EPr_default_reminders_title">Vaikimisi meeldetuletused</string>
     <string name="EPr_default_reminders_mode_title">Vaikimisi helina/värina tüüp</string>
@@ -539,7 +537,6 @@
     <string name="default_location">Vaikeasukoht</string>
     <string name="EPr_default_location_reminder_title">Vaikimisi asukohapõhised meeldetuletused</string>
     <string name="location_update_interval_title">Asukoha uuendused taustal</string>
-    <string name="dont_add_to_calendar">Ära lisa kalendrisse</string>
     <string name="no_reminders">Meeldetuletusi pole</string>
     <string name="day_after_tomorrow">Ülehomme</string>
     <string name="next_week">Järgmisel nädalal</string>

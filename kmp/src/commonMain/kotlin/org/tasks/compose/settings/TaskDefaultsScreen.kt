@@ -47,7 +47,6 @@ import tasks.kmp.generated.resources.TEA_control_reminders
 import tasks.kmp.generated.resources.TEA_control_repeat
 import tasks.kmp.generated.resources.day_after_tomorrow
 import tasks.kmp.generated.resources.day_before_due
-import tasks.kmp.generated.resources.default_calendar
 import tasks.kmp.generated.resources.default_due_date
 import tasks.kmp.generated.resources.default_list
 import tasks.kmp.generated.resources.default_location
@@ -139,11 +138,9 @@ fun TaskDefaultsScreen(
     settings: TaskDefaultSettings,
     defaultListName: String,
     defaultTagsSummary: String,
-    calendarName: String,
     recurrenceSummary: String,
     locationName: String,
     hasDefaultLocation: Boolean,
-    showCalendar: Boolean,
     showLocation: Boolean,
     features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
     onAddToTop: (Boolean) -> Unit,
@@ -152,7 +149,6 @@ fun TaskDefaultsScreen(
     onImportance: () -> Unit,
     onStartDate: () -> Unit,
     onDueDate: () -> Unit,
-    onCalendar: () -> Unit,
     onRecurrence: () -> Unit,
     onRecurrenceFrom: () -> Unit,
     onLocation: () -> Unit,
@@ -225,13 +221,6 @@ fun TaskDefaultsScreen(
                         icon = TasksIcons.SCHEDULE,
                         summary = DueDateOptions.label(settings.defaultDueDate),
                         onClick = onDueDate,
-                    )
-                DefaultRow.CALENDAR ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.default_calendar),
-                        icon = TasksIcons.EVENT,
-                        summary = calendarName,
-                        onClick = onCalendar,
                     )
             }
         }
@@ -322,7 +311,6 @@ private enum class DefaultRow {
     IMPORTANCE,
     START_DATE,
     DUE_DATE,
-    CALENDAR,
 }
 
 private enum class RecurrenceRow {

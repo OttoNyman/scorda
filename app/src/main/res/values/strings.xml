@@ -100,7 +100,6 @@ File %1$s contained %2$s.\n\n
   <string name="CFC_title_contains_name">Title contains…</string>
   <string name="CFC_title_contains_text">Title contains: ?</string>
   <string name="gcal_TEA_error">Error adding task to calendar!</string>
-  <string name="gcal_TEA_showCalendar_label">Open Calendar Event</string>
   <string name="calendar_event_not_found">Calendar event not found</string>
   <string name="gcal_completed_title">%s (completed)</string>
   <string name="CFC_gtasks_list_text">In List: ?</string>
@@ -285,7 +284,6 @@ File %1$s contained %2$s.\n\n
   <string name="repeats_from">Repeats from</string>
   <string name="repeats_plural_number_of_times">Repeats every %1$s, occurs %2$d %3$s</string>
   <string name="list_separator_with_space">,\u0020</string>
-  <string name="dont_add_to_calendar">Don\'t add to calendar</string>
   <string name="badges_description">Display a task count on Tasks\' launcher icon. Not all launchers support badges.</string>
   <string name="tasker_create_task">Create task</string>
   <string name="tasker_list_notification">List notification</string>

@@ -260,7 +260,6 @@
     <string name="privacy_policy">Zásady ochrany osobních údajů</string>
     <string name="send_anonymous_statistics">Vylepšit Tasks</string>
     <string name="send_anonymous_statistics_summary">Odesílat anonymní statistiky využití a hlášení o pádu, které pomohou vylepšit Tasks. Nebudou shromažďovány žádné osobní údaje.</string>
-    <string name="license_summary">Aplikace Tasks je svobodný software s otevřeným zdrojovým kódem licencovaný pod GNU General Public License v3.0</string>
     <string name="support">Podpora a nápověda</string>
     <string name="open_source">Otevřený zdrojový kód</string>
     <string name="legal">Právní informace</string>
@@ -537,7 +536,6 @@
     <string name="EPr_default_importance_title">Výchozí důležitost</string>
     <string name="default_start_date">Výchozí datum zahájení</string>
     <string name="default_due_date">Výchozí termín</string>
-    <string name="default_calendar">Výchozí kalendář</string>
     <string name="TEA_control_reminders">Upomínky</string>
     <string name="EPr_default_reminders_title">Výchozí upomínky</string>
     <string name="EPr_default_reminders_mode_title">Výchozí vyzvánění / vibrace</string>
@@ -546,7 +544,6 @@
     <string name="default_location">Výchozí místo</string>
     <string name="EPr_default_location_reminder_title">Výchozí upomínky podle polohy</string>
     <string name="location_update_interval_title">Aktualizace polohy na pozadí</string>
-    <string name="dont_add_to_calendar">Nepřidávat do kalendáře</string>
     <string name="no_reminders">Žádné upomínky</string>
     <string name="day_after_tomorrow">Pozítří</string>
     <string name="next_week">Příští týden</string>

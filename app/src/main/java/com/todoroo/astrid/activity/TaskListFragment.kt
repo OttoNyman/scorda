@@ -500,7 +500,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         with (binding.bottomAppBar) {
             setOnMenuItemClickListener(this@TaskListFragment)
             setNavigationOnClickListener {
-                if (!featureGate.current.showsDrawer) return@setNavigationOnClickListener
                 activity?.hideKeyboard()
                 onClickMenu()
             }
@@ -925,11 +924,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     override fun onResume() {
         super.onResume()
         val features = featureGate.current
-        binding.bottomAppBar.navigationIcon = if (features.showsDrawer) {
+        binding.bottomAppBar.navigationIcon =
             androidx.core.content.ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_menu_24px)
-        } else {
-            null
-        }
         if (!mainViewModel.state.value.filter.fits(features)) {
             lifecycleScope.launch { mainViewModel.setFilter(MyTasksFilter.create(), remember = false) }
         }

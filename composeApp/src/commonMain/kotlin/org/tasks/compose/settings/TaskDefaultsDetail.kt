@@ -96,7 +96,6 @@ fun TaskDefaultsDetail(
                 is24HourFormat = is24HourFormat,
                 onDefaultList = { showListPicker = true },
                 onDefaultTags = { showTagPicker = true },
-                onCalendar = {},
                 onRecurrence = { showRecurrencePicker = true },
                 onLocation = {},
             )

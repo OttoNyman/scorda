@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Название содержит…</string>
     <string name="CFC_title_contains_text">Название содержит: ?</string>
     <string name="gcal_TEA_error">Ошибка при добавлении задачи в календарь!</string>
-    <string name="gcal_TEA_showCalendar_label">Открыть событие календаря</string>
     <string name="calendar_event_not_found">Событие календаря не найдено</string>
     <string name="gcal_completed_title">%s (выполнено)</string>
     <string name="CFC_gtasks_list_text">В списке: \?</string>
@@ -237,7 +236,6 @@
     <string name="list">Список</string>
     <string name="repeats_from">Повторять от</string>
     <string name="repeats_plural_number_of_times">Повторять каждые %1$s, %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Не добавлять в календарь</string>
     <string name="badges_description">Отображать количество задач на иконке приложения. Не все лаунчеры это поддерживают.</string>
     <string name="tasker_create_task">Создать задачу</string>
     <string name="tasker_list_notification">Список уведомлений</string>

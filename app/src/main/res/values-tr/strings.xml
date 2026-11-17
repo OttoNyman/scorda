@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Başlık şunu içersin…</string>
     <string name="CFC_title_contains_text">Başlık şunu içersin: ?</string>
     <string name="gcal_TEA_error">Takvime görev eklenmesinde hata!</string>
-    <string name="gcal_TEA_showCalendar_label">Takvim Olayı Aç</string>
     <string name="calendar_event_not_found">Takvim etkinliği bulunamadı</string>
     <string name="gcal_completed_title">%s (tamamlandı)</string>
     <string name="CFC_gtasks_list_text">Liste içinde: ?</string>
@@ -183,7 +182,6 @@
     <string name="list">Liste</string>
     <string name="repeats_from">Şundan sonra yinele</string>
     <string name="repeats_plural_number_of_times">Her %1$s yineler, %2$d %3$s gerçekleşir</string>
-    <string name="dont_add_to_calendar">Takvime ekleme</string>
     <string name="badges_description">Tasks başlatıcı simgesinde görev sayısı göster. Tüm başlatıcılar rozetleri desteklemez.</string>
     <string name="tasker_create_task">Görev oluştur</string>
     <string name="tasker_list_notification">Bildirimi listele</string>

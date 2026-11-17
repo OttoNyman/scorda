@@ -67,7 +67,6 @@
     <string name="url">URL-manzil (Havola)</string>
     <string name="repeats_from">Takrorlanish boshlanish sanasi</string>
     <string name="repeats_plural_number_of_times">Har %1$s da takrorlanadi, %3$s %2$d marta sodir bo‘ladi</string>
-    <string name="dont_add_to_calendar">Taqvimga qo‘shmaslik</string>
     <string name="help">Yordam</string>
     <string name="help_and_feedback">Yordam va fikr-mulohazalar</string>
     <string name="filter">Filtr</string>

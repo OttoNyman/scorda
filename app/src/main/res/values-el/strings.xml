@@ -64,7 +64,6 @@
     <string name="CFC_title_contains_name">Ο τίτλος περιέχει…</string>
     <string name="CFC_title_contains_text">Ο τίτλος περιέχει: ?</string>
     <string name="gcal_TEA_error">Σφάλμα πρόσθεσης καθήκοντος στο ημερολόγιο!</string>
-    <string name="gcal_TEA_showCalendar_label">Άνοιγμα event ημερολογίου</string>
     <string name="gcal_completed_title">%s (έχει ολοκληρωθεί)</string>
     <string name="CFC_gtasks_list_text">Στην λίστα: ?</string>
     <string name="gtasks_GTA_clear_completed">Καθαρισμός ολοκληρωμένων</string>
@@ -190,7 +189,6 @@
     <string name="repeats_from">Επανάληψη από</string>
     <string name="repeats_plural_number_of_times">Επανάληψη κάθε %1$s, συμβαίνει %2$d %3$s</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Να μην προστεθεί στο ημερολόγιο</string>
     <string name="badges_description">Εμφάνιση αριθμού εργασιών στο εικονίδιο εκκίνησης της εφαρμογής Tasks. Δεν υποστηρίζουν όλοι οι προωθητές (launchers) μετάλλια/ εικονίδια.</string>
     <string name="tasker_create_task">Δημιουργία εργασίας</string>
     <string name="tasker_list_notification">Ειδοποίηση λίστας</string>

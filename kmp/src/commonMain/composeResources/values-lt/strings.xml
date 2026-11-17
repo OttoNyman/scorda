@@ -147,7 +147,6 @@
     <string name="privacy_policy">Privatumo politika</string>
     <string name="send_anonymous_statistics">Pagerinti Tasks</string>
     <string name="send_anonymous_statistics_summary">Siųsti anoniminę naudojimo statistiką ir strigčių ataskaitas, kad padėtumėte patobulinti Tasks. Asmens duomenys nebus renkami.</string>
-    <string name="license_summary">Tasks yra laisva atviro kodo programinė įranga, licencijuota pagal GNU General Public License v3.0 licenciją</string>
     <string name="support">Pagalba</string>
     <string name="open_source">Atviras kodas</string>
     <string name="restart_required">Iš naujo paleiskite Tasks, kad šis pakeitimas įsigaliotų</string>
@@ -364,7 +363,6 @@
     <string name="EPr_default_importance_title">Numatytas prioritetas</string>
     <string name="default_start_date">Numatyta pradžios data</string>
     <string name="default_due_date">Numatyta pabaigos data</string>
-    <string name="default_calendar">Numatytas kalendorius</string>
     <string name="TEA_control_reminders">Priminimai</string>
     <string name="EPr_default_reminders_title">Numatyti priminimai</string>
     <string name="EPr_default_reminders_mode_title">Numatytas skambučio/vibracijos tipas</string>
@@ -372,7 +370,6 @@
     <string name="TEA_control_location">Vieta</string>
     <string name="default_location">Numatyta geografinė vieta</string>
     <string name="EPr_default_location_reminder_title">Numatyti vietų priminimai</string>
-    <string name="dont_add_to_calendar">Pridėti prie kalendoriaus</string>
     <string name="no_reminders">Jokių priminimų</string>
     <string name="day_after_tomorrow">Poryt</string>
     <string name="next_week">Kitą savaitę</string>

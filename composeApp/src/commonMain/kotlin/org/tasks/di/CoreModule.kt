@@ -226,7 +226,6 @@ val coreModule: Module = module {
                         TasksPreferences.defaultDueDate,
                         taskSettingDefaults.defaultDueDate
                     ),
-                    defaultCalendar = prefs.get(TasksPreferences.defaultCalendar, "").orNull(),
                     defaultRecurrence = prefs.get(TasksPreferences.defaultRecurrence, "").orNull(),
                     defaultRecurrenceFrom = prefs.get(
                         TasksPreferences.defaultRecurrenceFrom,
@@ -262,8 +261,6 @@ val coreModule: Module = module {
                 tasksPreferences.set(TasksPreferences.defaultHideUntil, value)
             override suspend fun setDefaultDueDate(value: Int) =
                 tasksPreferences.set(TasksPreferences.defaultDueDate, value)
-            override suspend fun setDefaultCalendar(value: String?) =
-                tasksPreferences.set(TasksPreferences.defaultCalendar, value.orEmpty())
             override suspend fun setDefaultRecurrence(value: String?) =
                 tasksPreferences.set(TasksPreferences.defaultRecurrence, value.orEmpty())
             override suspend fun setDefaultRecurrenceFrom(value: Int) =

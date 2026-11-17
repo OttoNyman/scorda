@@ -38,7 +38,6 @@
     <string name="CFC_title_contains_name">Tittel inneholder…</string>
     <string name="CFC_title_contains_text">Tittel inneholder: ?</string>
     <string name="gcal_TEA_error">Klarte ikke å legge gjøremål til i kalender!</string>
-    <string name="gcal_TEA_showCalendar_label">Åpne kalenderhendelse</string>
     <string name="gcal_completed_title">%s (fullført)</string>
     <string name="CFC_gtasks_list_text">I listen\?</string>
     <string name="gtasks_GTA_clear_completed">Fjern fullførte</string>
@@ -191,7 +190,6 @@
     <string name="list">Liste</string>
     <string name="repeats_from">Gjentas fra</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Ikke legg til i kalender</string>
     <string name="badges_description">Vis gjøremålsantall i Task-oppstarterikonet. Ikke alle oppstartere støtter merker.</string>
     <string name="tasker_create_task">Opprett gjøremål</string>
     <string name="tasker_list_notification">Listemerknad</string>

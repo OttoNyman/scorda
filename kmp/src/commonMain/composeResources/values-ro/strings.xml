@@ -165,7 +165,6 @@
     <string name="privacy_policy">Politica de confidențialitate</string>
     <string name="send_anonymous_statistics">Îmbunătățire Tasks</string>
     <string name="send_anonymous_statistics_summary">Se trimit statistici anonime de utilizare și rapoarte de accident pentru a ajuta la îmbunătățirea Tasks. Nu vor fi colectate date cu caracter personal.</string>
-    <string name="license_summary">Tasks este un software libre open-source, licențiat sub licența GNU General Public License v3.0</string>
     <string name="support">Suport</string>
     <string name="open_source">Sursă deschisă</string>
     <string name="restart_required">Repornește Tasks pentru ca această modificare să intre în vigoare</string>
@@ -425,7 +424,6 @@
     <string name="EPr_default_importance_title">Prioritate implicită</string>
     <string name="default_start_date">Data de începere implicită</string>
     <string name="default_due_date">Dată scadentă implicită</string>
-    <string name="default_calendar">Calendar implicit</string>
     <string name="TEA_control_reminders">Mementouri</string>
     <string name="EPr_default_reminders_title">Reamintiri implicite</string>
     <string name="EPr_default_reminders_mode_title">Tipul implicit de alarmă/vibrație</string>
@@ -434,7 +432,6 @@
     <string name="default_location">Locație implicită</string>
     <string name="EPr_default_location_reminder_title">Reamintiri de locație implicită</string>
     <string name="location_update_interval_title">Actualizări ale locației de fundal</string>
-    <string name="dont_add_to_calendar">Nu se adaugă la calendar</string>
     <string name="no_reminders">Fără reamintiri</string>
     <string name="day_after_tomorrow">Poimâine</string>
     <string name="next_week">Săptămâna viitoare</string>

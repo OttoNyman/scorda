@@ -246,6 +246,7 @@ fun TaskEditScreen(
                             linkify = linkify,
                             markdownProvider = markdownProvider,
                             isCompleted = viewState.isCompleted,
+                            showComplete = !viewState.isNew,
                             priority = viewState.task.priority,
                             onComplete = {
                                 if (viewState.isCompleted) {

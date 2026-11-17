@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Il titolo contiene…</string>
     <string name="CFC_title_contains_text">Il titolo contiene: ?</string>
     <string name="gcal_TEA_error">Errore durante l\'aggiunta dell\'attività al calendario!</string>
-    <string name="gcal_TEA_showCalendar_label">Apri evento del calendario</string>
     <string name="calendar_event_not_found">Evento non trovato</string>
     <string name="gcal_completed_title">%s (completato)</string>
     <string name="CFC_gtasks_list_text">Nella lista: ?</string>
@@ -189,7 +188,6 @@
     <string name="list">Lista</string>
     <string name="repeats_from">Ripeti a partire da</string>
     <string name="repeats_plural_number_of_times">Ripetuta ogni %1$s, cade il %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Non  aggiungere al calendario</string>
     <string name="badges_description">Mostra il contatore delle notifiche sull\'icona di Tasks. Non tutti i launcher supportano questa funzionalità.</string>
     <string name="tasker_create_task">Crea attività</string>
     <string name="tasker_list_notification">Elenca notifiche</string>

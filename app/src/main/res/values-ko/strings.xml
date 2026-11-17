@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">다음을 포함하는 제목…</string>
     <string name="CFC_title_contains_text">제목이 다음을 포함: ?</string>
     <string name="gcal_TEA_error">달력에 할일 추가 실패!</string>
-    <string name="gcal_TEA_showCalendar_label">달력 일정 열기</string>
     <string name="calendar_event_not_found">달력 일정이 발견되지 않음</string>
     <string name="gcal_completed_title">%s (완료)</string>
     <string name="CFC_gtasks_list_text">목록에: ?</string>
@@ -181,7 +180,6 @@
     <string name="list">목록</string>
     <string name="repeats_from">반복 시작 기준</string>
     <string name="repeats_plural_number_of_times">%1$s 주기로 %2$d %3$s 더 반복</string>
-    <string name="dont_add_to_calendar">달력에 일정 추가하지 않기</string>
     <string name="badges_description">Tasks 앱 아이콘 위에 할일 개수를 표시합니다. 모든 런처가 배지 기능을 지원하지는 않습니다. </string>
     <string name="tasker_create_task">할일 만들기</string>
     <string name="tasker_list_notification">목록 알림</string>

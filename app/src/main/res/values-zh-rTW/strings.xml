@@ -51,7 +51,6 @@
     <string name="CFC_title_contains_name">主旨含…</string>
     <string name="CFC_title_contains_text">主旨含: ?</string>
     <string name="gcal_TEA_error">工作加入行事曆錯誤!</string>
-    <string name="gcal_TEA_showCalendar_label">打開行事曆事項</string>
     <string name="gcal_completed_title">%s （已完成）</string>
     <string name="CFC_gtasks_list_text">列表內容: ?</string>
     <string name="gtasks_GTA_clear_completed">清除已完成項</string>
@@ -239,7 +238,6 @@
     <string name="help_and_feedback">幫助與回饋</string>
     <string name="help">幫助</string>
     <string name="tasker_create_task">建立工作</string>
-    <string name="dont_add_to_calendar">不要新增至日曆</string>
     <string name="list_separator_with_space">", "</string>
     <string name="url">URL</string>
     <string name="password">密碼</string>

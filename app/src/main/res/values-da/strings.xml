@@ -35,7 +35,6 @@
     <string name="CFC_title_contains_name">Titel indeholder…</string>
     <string name="CFC_title_contains_text">Titel indeholder: ?</string>
     <string name="gcal_TEA_error">Fejl med at føje opgave til kalender!</string>
-    <string name="gcal_TEA_showCalendar_label">Åbn kalenderbegivenhed</string>
     <string name="gcal_completed_title">%s (fuldført)</string>
     <plurals name="Ntasks">
         <item quantity="one">1 opgave</item>
@@ -139,7 +138,6 @@
     <string name="tasker_list_notification">Listemeddelelser</string>
     <string name="tasker_create_task">Opret opgave</string>
     <string name="badges_description">Vis en opgavetæller på Tasks’ app-ikon. Ikke alle platforme understøtter badges.</string>
-    <string name="dont_add_to_calendar">Føj ikke til kalender</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_plural_number_of_times">Gentages hver %1$s, stopper efter %2$d %3$s</string>
     <string name="repeats_from">Gentages fra</string>

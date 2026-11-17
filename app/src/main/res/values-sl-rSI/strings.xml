@@ -60,7 +60,6 @@
     <string name="CFC_title_contains_name">Naslov vsebuje …</string>
     <string name="CFC_title_contains_text">Naslov vsebuje: ?</string>
     <string name="gcal_TEA_error">Napaka pri dodajanju opravila!</string>
-    <string name="gcal_TEA_showCalendar_label">Odpri dogodek v koledarju</string>
     <string name="gcal_completed_title">%s (končani)</string>
     <string name="CFC_gtasks_list_text">V seznamu: ?</string>
     <string name="gtasks_GTA_clear_completed">Zbriši dokončano</string>

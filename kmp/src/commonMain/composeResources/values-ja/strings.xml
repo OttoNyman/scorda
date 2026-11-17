@@ -214,7 +214,6 @@
     <string name="privacy_policy">プライバシーポリシー</string>
     <string name="send_anonymous_statistics">Tasks を改善</string>
     <string name="send_anonymous_statistics_summary">Tasks を改善するために、匿名で使用状況データとクラッシュレポートを送信します。個人情報は収集されません。</string>
-    <string name="license_summary">Tasksは、GNU General Public Licenseバージョン3.0でライセンスされた自由かつオープンソースのソフトウェアです</string>
     <string name="support">サポート</string>
     <string name="open_source">オープンソース</string>
     <string name="legal">法的事項</string>
@@ -484,7 +483,6 @@
     <string name="EPr_default_importance_title">デフォルトの優先度</string>
     <string name="default_start_date">デフォルトの着手日時</string>
     <string name="default_due_date">デフォルトの締切日時</string>
-    <string name="default_calendar">デフォルトのカレンダー</string>
     <string name="TEA_control_reminders">リマインダー</string>
     <string name="EPr_default_reminders_title">デフォルトのリマインダー</string>
     <string name="EPr_default_reminders_mode_title">デフォルトの通知音/バイブレーション</string>
@@ -493,7 +491,6 @@
     <string name="default_location">デフォルトの場所</string>
     <string name="EPr_default_location_reminder_title">デフォルトの場所リマインダー</string>
     <string name="location_update_interval_title">バックグラウンドでの場所の更新</string>
-    <string name="dont_add_to_calendar">カレンダーに追加しない</string>
     <string name="no_reminders">リマインダーなし</string>
     <string name="day_after_tomorrow">2 日後</string>
     <string name="next_week">1 週間後</string>

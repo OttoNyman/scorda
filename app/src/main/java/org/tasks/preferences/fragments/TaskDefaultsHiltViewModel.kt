@@ -31,7 +31,6 @@ class TaskDefaultsHiltViewModel @Inject constructor(
     tagDataDao = tagDataDao,
     locationDao = locationDao,
     repeatRuleToString = repeatRuleToString,
-    calendarNamer = { "" },
 ) {
 
     override suspend fun onLocationUpdateIntervalChanged() {

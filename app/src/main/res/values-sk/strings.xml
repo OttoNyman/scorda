@@ -76,7 +76,6 @@
     <string name="CFC_title_contains_name">Názov obsahuje…</string>
     <string name="CFC_title_contains_text">Zoznam obsahuje: ?</string>
     <string name="gcal_TEA_error">Chyba pri pridávaní úlohy do kalendára!</string>
-    <string name="gcal_TEA_showCalendar_label">Otvoriť udalosť kalendára</string>
     <string name="calendar_event_not_found">Udalosť kalendára nenájdená</string>
     <string name="gcal_completed_title">%s (dokončené)</string>
     <string name="CFC_gtasks_list_text">V zozname: ?</string>
@@ -193,7 +192,6 @@
     <string name="list">Zoznam</string>
     <string name="repeats_from">Opakovanie od</string>
     <string name="repeats_plural_number_of_times">Opakovanie každú %1$s, sa vyskytuje %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Nepridávať do kalendára </string>
     <string name="badges_description">Zobraziť počet úloh na pri ikone Tasks. Niektoré spúšťače túto funkciu nepodporujú.</string>
     <string name="tasker_create_task">Vytvoriť úlohu</string>
     <string name="tasker_list_notification">Zoznam upozornení</string>

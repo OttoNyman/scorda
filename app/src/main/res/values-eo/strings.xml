@@ -64,7 +64,6 @@
     <string name="CFC_list_name">En listo…</string>
     <string name="CFC_gtasks_list_text">En Listo: \?</string>
     <string name="calendar_event_not_found">Kalendara evento ne trovita</string>
-    <string name="gcal_TEA_showCalendar_label">Malfermi Kalendaran Eventon</string>
     <string name="CFC_title_contains_text">Titolo enhavas: \?</string>
     <string name="CFC_title_contains_name">Titolo enhavas…</string>
     <string name="CFC_tag_contains_text">Etikeda nomo enhavas: \?</string>
@@ -182,7 +181,6 @@
     <string name="FLA_search_filter">Kongruante kun \'%s\'</string>
     <string name="TEA_creation_date">Kreodato</string>
     <string name="EPr_beastMode_reset">Restarigi defaŭltojn</string>
-    <string name="dont_add_to_calendar">Ne aldoni al kalendaro</string>
     <string name="add_tags">Aldoni etikedojn</string>
     <string name="EPr_manage_delete_completed_gcal">Forigi kalandarajn eventojn de finitaj taskoj</string>
     <string name="EPr_delete_task_data_warning">Ĉiuj taskoj estos porĉiame forigitaj</string>

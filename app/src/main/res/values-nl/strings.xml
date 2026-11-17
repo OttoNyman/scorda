@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Naam bevat…</string>
     <string name="CFC_title_contains_text">Naam bevat: ?</string>
     <string name="gcal_TEA_error">Fout bij toevoegen taak aan kalender!</string>
-    <string name="gcal_TEA_showCalendar_label">Kalender-item openen</string>
     <string name="calendar_event_not_found">Kalender-item niet gevonden</string>
     <string name="gcal_completed_title">%s (voltooid)</string>
     <string name="CFC_gtasks_list_text">In de lijst: \?</string>
@@ -180,7 +179,6 @@
     <string name="list">Lijst</string>
     <string name="repeats_from">Herhaalt vanaf</string>
     <string name="repeats_plural_number_of_times">Herhaalt elke %1$s , gebeurt %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Niet aan kalender toevoegen</string>
     <string name="badges_description">Toon taken teller bij pictogram van Tasks. Niet alle launchers ondersteunen badges.</string>
     <string name="tasker_create_task">Taak maken</string>
     <string name="tasker_list_notification">Lijst melding</string>

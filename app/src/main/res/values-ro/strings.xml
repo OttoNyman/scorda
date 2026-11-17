@@ -48,7 +48,6 @@
     <string name="tasker_list_notification">Listă de notificare</string>
     <string name="tasker_create_task">Crează o sarcină</string>
     <string name="badges_description">Afișarea numărului de sarcini pe pictograma de lansare a aplicației Tasks. Nu toate lansatoarele acceptă insigne.</string>
-    <string name="dont_add_to_calendar">Nu se adaugă la calendar</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_plural_number_of_times">Se repetă la fiecare %1$s, apare %2$d %3$s</string>
     <string name="repeats_from">Se repetă de la</string>
@@ -181,7 +180,6 @@
     <string name="CFC_gtasks_list_text">În listă: \?</string>
     <string name="gcal_completed_title">%s (finalizat)</string>
     <string name="calendar_event_not_found">Evenimentul din calendar nu a fost găsit</string>
-    <string name="gcal_TEA_showCalendar_label">Deschidere eveniment calendaristic</string>
     <string name="gcal_TEA_error">Eroare la adăugarea sarcinii în calendar!</string>
     <string name="CFC_title_contains_text">Titlul conține: \?</string>
     <string name="CFC_title_contains_name">Titlul conține…</string>

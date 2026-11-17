@@ -176,7 +176,6 @@
     <string name="privacy_policy">Integritetspolicy</string>
     <string name="send_anonymous_statistics">Förbättra Tasks</string>
     <string name="send_anonymous_statistics_summary">Skicka anonym användarstatistik och kraschrapporter för att hjälpa till att förbättra Tasks. Ingen personlig information kommer att samlas in.</string>
-    <string name="license_summary">Tasks är fri programvara med öppen källkod och licensieras under GNU General Public License v3.0.</string>
     <string name="support">Stöd</string>
     <string name="open_source">Öppen källkod</string>
     <string name="legal">Juridisk information</string>
@@ -502,7 +501,6 @@
     <string name="EPr_default_importance_title">Förvald prioritet</string>
     <string name="default_start_date">Förvalt startdatum</string>
     <string name="default_due_date">Förvalt förfallodatum</string>
-    <string name="default_calendar">Förvald kalender</string>
     <string name="TEA_control_reminders">Påminnelser</string>
     <string name="EPr_default_reminders_title">Förvalda påminnelser</string>
     <string name="EPr_default_reminders_mode_title">Förvalt ljud- och vibrationsläge</string>
@@ -511,7 +509,6 @@
     <string name="default_location">Förvald plats</string>
     <string name="EPr_default_location_reminder_title">Förvalda platspåminnelser</string>
     <string name="location_update_interval_title">Uppdatering av plats i bakgrunden</string>
-    <string name="dont_add_to_calendar">Lägg inte till i kalender</string>
     <string name="no_reminders">Inga påminnelser</string>
     <string name="day_after_tomorrow">I övermorgon</string>
     <string name="next_week">Nästa vecka</string>

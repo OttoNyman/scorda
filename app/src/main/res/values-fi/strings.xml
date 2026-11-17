@@ -70,7 +70,6 @@
     <string name="CFC_title_contains_name">Otsikko sisältää…</string>
     <string name="CFC_title_contains_text">Otsikko sisältää: ?</string>
     <string name="gcal_TEA_error">Virhe! Lisättäessä tehtävää kalenteriin!</string>
-    <string name="gcal_TEA_showCalendar_label">Avaa kalenteritapahtuma</string>
     <string name="calendar_event_not_found">Kalenteritapahtumaa ei löydy</string>
     <string name="gcal_completed_title">%s (valmistunut)</string>
     <string name="CFC_gtasks_list_text">Listalla: ?</string>
@@ -175,7 +174,6 @@
     <string name="list">Lista</string>
     <string name="repeats_from">Toista alkaen</string>
     <string name="repeats_plural_number_of_times">Toista joka %1$s, tapahtuu %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Älä lisää kalenteriin</string>
     <string name="badges_description">Näytä tehtävien lukumäärä Tasksin käynnistyskuvakkeessa. Kaikki käynnistimet eivät tue merkkejä.</string>
     <string name="tasker_create_task">Luo tehtävä</string>
     <string name="tasker_list_notification">Ilmoituslista</string>

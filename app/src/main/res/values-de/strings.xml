@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Titel enthält …</string>
     <string name="CFC_title_contains_text">Titel enthält: ?</string>
     <string name="gcal_TEA_error">Fehler beim Hinzufügen der Aufgabe zum Kalender!</string>
-    <string name="gcal_TEA_showCalendar_label">Kalendereintrag öffnen</string>
     <string name="calendar_event_not_found">Kalendereintrag nicht gefunden</string>
     <string name="gcal_completed_title">%s (abgeschlossen)</string>
     <string name="CFC_gtasks_list_text">In der Liste: ?</string>
@@ -181,7 +180,6 @@
     <string name="list">Liste</string>
     <string name="repeats_from">Wiederholung ab</string>
     <string name="repeats_plural_number_of_times">Wiederholt sich alle %1$s, genau %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Nicht im Kalender eintragen</string>
     <string name="badges_description">Anzeige eines Aufgabenzählers am Tasks Launcher Icon. Nicht alle Launcher unterstützen Badges.</string>
     <string name="tasker_create_task">Aufgabe erstellen</string>
     <string name="tasker_list_notification">Listenbenachrichtigung</string>

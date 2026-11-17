@@ -11,7 +11,6 @@
     <string name="custom_filter_not">hindi</string>
     <string name="CFC_title_contains_text">Pamagat naglalaman ng: ?</string>
     <string name="gcal_TEA_error">Kamalian sa pagdadagdag ng gawain sa kalendaryo!</string>
-    <string name="gcal_TEA_showCalendar_label">Buksan ang pangyayari sa kalendaryo</string>
     <string name="gcal_completed_title">%s (naganap)</string>
     <string name="user">Gumagamit</string>
     <string name="location_remind_departure">Ipaalala sa pagdating</string>

@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">A név tartalmazza ezt…</string>
     <string name="CFC_title_contains_text">A név tartalmazza ezt: ?</string>
     <string name="gcal_TEA_error">Nem sikerült a feladat hozzáadása a naptárhoz!</string>
-    <string name="gcal_TEA_showCalendar_label">Naptáresemény megnyitása</string>
     <string name="calendar_event_not_found">Naptáresemény nem található</string>
     <string name="gcal_completed_title">%s (befejezve)</string>
     <string name="CFC_gtasks_list_text">Listában: ?</string>
@@ -184,7 +183,6 @@
     <string name="list">Lista</string>
     <string name="repeats_from">Ismétlés ettől:</string>
     <string name="repeats_plural_number_of_times">Ismétlés minden %1$s, előfordul %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Ne adja hozzá a naptárhoz</string>
     <string name="badges_description">Feladatok számának megjelenítése a Tasks ikonon. Nem minden launcher által támogatott funkció.</string>
     <string name="tasker_create_task">Feladat létrehozása</string>
     <string name="tasker_list_notification">Lista értesítés</string>

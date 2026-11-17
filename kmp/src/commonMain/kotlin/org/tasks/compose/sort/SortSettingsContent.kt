@@ -216,6 +216,8 @@ fun BottomSheetContent(
     showHidden: Boolean,
     showCompletedAndHiddenOptions: Boolean,
     completedAndHiddenEnabled: Boolean,
+    // Start date is retired: nothing is hidden by it, so the switch would do nothing.
+    showUnstarted: Boolean = false,
     setSortAscending: (Boolean) -> Unit,
     setGroupAscending: (Boolean) -> Unit,
     setCompletedAscending: (Boolean) -> Unit,
@@ -267,12 +269,14 @@ fun BottomSheetContent(
         }
         if (showCompletedAndHiddenOptions) {
             HorizontalDivider()
-            SwitchRow(
-                title = Res.string.show_unstarted,
-                checked = showHidden || !completedAndHiddenEnabled,
-                enabled = completedAndHiddenEnabled,
-                onCheckedChange = setShowHidden,
-            )
+            if (showUnstarted) {
+                SwitchRow(
+                    title = Res.string.show_unstarted,
+                    checked = showHidden || !completedAndHiddenEnabled,
+                    enabled = completedAndHiddenEnabled,
+                    onCheckedChange = setShowHidden,
+                )
+            }
             SwitchRow(
                 title = Res.string.show_completed,
                 checked = showCompleted || !completedAndHiddenEnabled,

@@ -191,7 +191,6 @@
     <string name="privacy_policy">Regularo pri privateco</string>
     <string name="send_anonymous_statistics">Plibonigi Tasks</string>
     <string name="send_anonymous_statistics_summary">Permesi sendi anonimajn statistikon kaj prikolapsajn raportojn. Neniu persona datumo estos kolektita.</string>
-    <string name="license_summary">Tasks estas libre malfermitkoda programaro, rajtigite per la GNU General Public License v3.0</string>
     <string name="support">Helpo</string>
     <string name="open_source">Malfermitkoda</string>
     <string name="legal">Leĝa</string>
@@ -486,7 +485,6 @@
     <string name="EPr_default_importance_title">Defaŭlta prioritato</string>
     <string name="default_start_date">Defaŭlta komencdato</string>
     <string name="default_due_date">Defaŭlta limdato</string>
-    <string name="default_calendar">Defaŭlta kalendaro</string>
     <string name="TEA_control_reminders">Memorigiloj</string>
     <string name="EPr_default_reminders_title">Defaŭltaj memorigiloj</string>
     <string name="EPr_default_reminders_mode_title">Defaŭlta vokosono/vibrado</string>
@@ -495,7 +493,6 @@
     <string name="default_location">Defaŭlta loko</string>
     <string name="EPr_default_location_reminder_title">Defaŭltaj lokaj memorigiloj</string>
     <string name="location_update_interval_title">Fona aktualigo de loko</string>
-    <string name="dont_add_to_calendar">Ne aldoni al kalendaro</string>
     <string name="no_reminders">Sen memorigiloj</string>
     <string name="day_after_tomorrow">Postmorgaŭ</string>
     <string name="next_week">Sekvanta semajno</string>

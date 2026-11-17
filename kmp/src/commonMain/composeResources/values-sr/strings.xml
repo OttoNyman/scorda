@@ -185,7 +185,6 @@
     <string name="privacy_policy">Полиса приватности</string>
     <string name="send_anonymous_statistics">Побољшај Задатке</string>
     <string name="send_anonymous_statistics_summary">Пошаљи анонимне статистике коришћења и извештаје падова апликације ради побољшања. Лични подаци неће бити прикупљени.</string>
-    <string name="license_summary">,,Tasks.org'' је софтвер отвореног карактера, са лиценцом ,,GNU General Public License v3.0''</string>
     <string name="support">Подршка</string>
     <string name="open_source">Кôд отвореног типа</string>
     <string name="legal">Правни</string>
@@ -520,7 +519,6 @@
     <string name="EPr_default_importance_title">Подразумевани приоритет</string>
     <string name="default_start_date">Подразумевани датум почетка</string>
     <string name="default_due_date">Подразумевани датум доспећа</string>
-    <string name="default_calendar">Подразумевани календар</string>
     <string name="TEA_control_reminders">Подсетници</string>
     <string name="EPr_default_reminders_title">Подразумевани подсетници</string>
     <string name="EPr_default_reminders_mode_title">Подразумевани тип звона/вибрације</string>
@@ -528,7 +526,6 @@
     <string name="TEA_control_location">Локација</string>
     <string name="default_location">Подразумевана локација</string>
     <string name="EPr_default_location_reminder_title">Подразумевани подсетник локације</string>
-    <string name="dont_add_to_calendar">Не додавати у календар</string>
     <string name="no_reminders">Нема подсетника</string>
     <string name="day_after_tomorrow">Дан после сутра</string>
     <string name="next_week">Следећа седмица</string>

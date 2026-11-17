@@ -76,7 +76,6 @@
     <string name="CFC_title_contains_name">タイトルに含む…</string>
     <string name="CFC_title_contains_text">タイトルに含む: \?</string>
     <string name="gcal_TEA_error">カレンダーに登録できませんでした！</string>
-    <string name="gcal_TEA_showCalendar_label">カレンダーイベントを開く</string>
     <string name="calendar_event_not_found">カレンダーイベントが見つかりません</string>
     <string name="gcal_completed_title">%s (完了)</string>
     <string name="CFC_gtasks_list_text">リストに含む: \?</string>
@@ -185,7 +184,6 @@
     <string name="list">リスト</string>
     <string name="repeats_from">繰り返し開始</string>
     <string name="repeats_plural_number_of_times">%1$sごとに繰り返し、%2$d%3$sに終了</string>
-    <string name="dont_add_to_calendar">カレンダーに追加しない</string>
     <string name="badges_description">Tasksランチャーアイコンにタスク数を表示します。すべてのランチャーがバッジをサポートしているわけではありません。</string>
     <string name="tasker_create_task">タスクを作成</string>
     <string name="tasker_list_notification">通知のリスト</string>

@@ -22,7 +22,6 @@
     <string name="CFC_importance_name">ความสำคัญ…</string>
     <string name="CFC_title_contains_name">ชื่อที่มีคำว่า…</string>
     <string name="CFC_title_contains_text">ชื่อที่มีคำว่า: ?</string>
-    <string name="gcal_TEA_showCalendar_label">เปิดเหตุการณ์ปฏิทิน</string>
     <string name="gcal_completed_title">%s (เสร็จสิ้นแล้ว)</string>
     <string name="today">วันนี้</string>
     <string name="tomorrow">พรุ่งนี้</string>
@@ -128,7 +127,6 @@
     <string name="tasker_create_task">สร้างงาน</string>
     <string name="EPr_manage_delete_gcal_status">ลบ %d กิจกรรมในปฏิทิน!</string>
     <string name="badges_description">แสดงจํานวนงานบนไอคอนตัวเปิดใช้งาน ตัวเรียกใช้งานไม่รองรับป้ายทั้งหมด</string>
-    <string name="dont_add_to_calendar">ไม่ต้องเพิ่มลงในปฏิทิน</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_plural_number_of_times">ซ้ำทุก ๆ %1$s เกิดขึ้น %2$d %3$s</string>
     <string name="repeats_from">ซ้ำจาก</string>

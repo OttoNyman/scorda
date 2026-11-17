@@ -138,7 +138,6 @@
     <string name="privacy_policy">රහස්‍යතා ප්‍රතිපත්තිය</string>
     <string name="send_anonymous_statistics">Tasks වැඩි දියුණු කිරීම</string>
     <string name="send_anonymous_statistics_summary">Tasks වැඩි දියුණු කිරීම සඳහා නිර්නාමික භාවිත තොරතුරු සහ බිඳ වැටීම් වාර්තා (crash reports) යවන්න. පුද්ගලික දත්ත එකතු නොකෙරේ.</string>
-    <string name="license_summary">Tasks යනු GNU පොදු මහජන බලපත්‍රය v3.0 යටතේ බලපත්‍ර ලබා දී ඇති විවෘත මෘදුකාංගයකි</string>
     <string name="support">සහාය</string>
     <string name="open_source">විවෘත මූලාශ්‍රය</string>
     <string name="restart_required">මෙම වෙනස බලාත්මක කිරීම සඳහා Tasks නැවත අරඹන්න</string>
@@ -331,7 +330,6 @@
     <string name="EPr_default_importance_title">පෙරනිමි ප්‍රමුඛතාවය</string>
     <string name="default_start_date">පෙරනිමි ආරම්භක දිනය</string>
     <string name="default_due_date">පෙරනිමි නියමිත දිනය</string>
-    <string name="default_calendar">පෙරනිමි දින දර්ශනය</string>
     <string name="TEA_control_reminders">මතක් කිරීම්</string>
     <string name="EPr_default_reminders_title">පෙරනිමි මතක් කිරීම්</string>
     <string name="EPr_default_reminders_mode_title">පෙරනිමි නාද / කම්පන වර්ගය</string>
@@ -339,7 +337,6 @@
     <string name="TEA_control_location">ස්ථානය</string>
     <string name="default_location">පෙරනිමි ස්ථානය</string>
     <string name="EPr_default_location_reminder_title">පෙරනිමි ස්ථාන මතක් කිරීම්</string>
-    <string name="dont_add_to_calendar">දින දර්ශනයට එකතු නොකරන්න</string>
     <string name="no_reminders">මතක් කිරීම් නොමැත</string>
     <string name="day_after_tomorrow">අනිද්දා</string>
     <string name="next_week">ලබන සතිය</string>

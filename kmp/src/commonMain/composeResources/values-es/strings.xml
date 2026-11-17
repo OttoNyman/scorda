@@ -165,7 +165,6 @@
     <string name="privacy_policy">Política de privacidad</string>
     <string name="send_anonymous_statistics">Mejorar Tasks</string>
     <string name="send_anonymous_statistics_summary">Enviar de forma anónima estadísticas de uso e informes de error para ayudar a mejorar Task. No se recogerán datos personales.</string>
-    <string name="license_summary">Tasks es software libre de código abierto, licenciado bajo la GNU General Public License v3.0</string>
     <string name="support">Asistencia</string>
     <string name="open_source">Código abierto</string>
     <string name="restart_required">Reinicie Tasks para que este cambio surta efecto</string>
@@ -481,7 +480,6 @@
     <string name="EPr_default_importance_title">Prioridad predeterminada</string>
     <string name="default_start_date">Fecha de inicio predeterminada</string>
     <string name="default_due_date">Fecha límite predeterminada</string>
-    <string name="default_calendar">Calendario predeterminado</string>
     <string name="TEA_control_reminders">Recordatorios</string>
     <string name="EPr_default_reminders_title">Recordatorios por defecto</string>
     <string name="EPr_default_reminders_mode_title">Tipo predeterminado de timbre/vibración</string>
@@ -489,7 +487,6 @@
     <string name="TEA_control_location">Ubicación</string>
     <string name="default_location">Ubicación predeterminada</string>
     <string name="EPr_default_location_reminder_title">Recordatorios de ubicación predeterminados</string>
-    <string name="dont_add_to_calendar">No añadir al calendario</string>
     <string name="no_reminders">Sin recordatorio</string>
     <string name="day_after_tomorrow">Pasado mañana</string>
     <string name="next_week">Semana siguiente</string>

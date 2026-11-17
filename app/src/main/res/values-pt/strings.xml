@@ -70,7 +70,6 @@
     <string name="CFC_title_contains_name">Título contém…</string>
     <string name="CFC_title_contains_text">Título contém: ?</string>
     <string name="gcal_TEA_error">Erro ao adicionar tarefa ao calendário!</string>
-    <string name="gcal_TEA_showCalendar_label">Abrir evento no calendário</string>
     <string name="calendar_event_not_found">Não foi encontrado o evento no calendário</string>
     <string name="gcal_completed_title">%s (terminada)</string>
     <string name="CFC_gtasks_list_text">Na lista: ?</string>
@@ -175,7 +174,6 @@
     <string name="list">Lista</string>
     <string name="repeats_from">Repetir de</string>
     <string name="repeats_plural_number_of_times">Repetir a cada %1$s, ocorre %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Não adicionar ao calendário</string>
     <string name="action_call">Ligar</string>
     <string name="icon">Ícone</string>
     <string name="invalid_backup_file">O ficheiro de cópia de segurança é inválido</string>

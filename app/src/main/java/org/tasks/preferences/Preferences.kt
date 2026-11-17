@@ -252,12 +252,6 @@ class Preferences @JvmOverloads constructor(
         } else setting
     }
 
-    val isDefaultCalendarSet: Boolean
-        get() {
-            val defaultCalendar = defaultCalendar
-            return defaultCalendar != null && defaultCalendar != "-1" && defaultCalendar != "0"
-        }
-
     val completionSound: Uri?
         get() = getRingtone(
             R.string.p_completion_ringtone,
@@ -275,9 +269,6 @@ class Preferences @JvmOverloads constructor(
 
     val isTrackingEnabled: Boolean
         get() = getBoolean(R.string.p_collect_statistics, true)
-
-    val defaultCalendar: String?
-        get() = getStringValue(R.string.gcal_p_default)
 
     val showEditScreenWithoutUnlock: Boolean
         get() = getBoolean(R.string.p_show_edit_screen_without_unlock, false)
@@ -344,7 +335,6 @@ class Preferences @JvmOverloads constructor(
             R.string.p_default_urgency_key,
             taskSettingDefaults.defaultDueDate
         ),
-        defaultCalendar = defaultCalendar,
         defaultRecurrence = getStringValue(R.string.p_default_recurrence)?.takeIf { it.isNotBlank() },
         defaultRecurrenceFrom = getIntegerFromString(
             R.string.p_default_recurrence_from,
@@ -382,9 +372,6 @@ class Preferences @JvmOverloads constructor(
 
     override suspend fun setDefaultDueDate(value: Int) =
         setStringFromInteger(R.string.p_default_urgency_key, value)
-
-    override suspend fun setDefaultCalendar(value: String?) =
-        setString(R.string.gcal_p_default, value)
 
     override suspend fun setDefaultRecurrence(value: String?) =
         setString(R.string.p_default_recurrence, value)

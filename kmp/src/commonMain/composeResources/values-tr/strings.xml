@@ -257,7 +257,6 @@
     <string name="privacy_policy">Gizlilik politikası</string>
     <string name="send_anonymous_statistics">Tasks'ı iyileştir</string>
     <string name="send_anonymous_statistics_summary">Tasks'ı iyileştirmeye yardımcı olmak için anonim kullanım istatistiklerini ve çökme raporlarını gönderin. Hiçbir kişisel veri toplanmayacak.</string>
-    <string name="license_summary">Tasks özgür açık kaynaklı yazılımdır, GNU Genel Kamu Lisansı sürüm 3.0 altında lisanslanmıştır</string>
     <string name="support">Destek</string>
     <string name="open_source">Açık kaynak</string>
     <string name="legal">Yasal</string>
@@ -530,7 +529,6 @@
     <string name="EPr_default_importance_title">Öntanımlı öncelik</string>
     <string name="default_start_date">Öntanımlı başlangıç tarihi</string>
     <string name="default_due_date">Öntanımlı bitiş tarihi</string>
-    <string name="default_calendar">Öntanımlı takvim</string>
     <string name="TEA_control_reminders">Anımsatıcılar</string>
     <string name="EPr_default_reminders_title">Öntanımlı anımsatıcılar</string>
     <string name="EPr_default_reminders_mode_title">Öntanımlı zil/titreşim türü</string>
@@ -539,7 +537,6 @@
     <string name="default_location">Öntanımlı konum</string>
     <string name="EPr_default_location_reminder_title">Öntanımlı konum anımsatıcılar</string>
     <string name="location_update_interval_title">Arka plan konum güncellemeleri</string>
-    <string name="dont_add_to_calendar">Takvime ekleme</string>
     <string name="no_reminders">Anımsatıcı yok</string>
     <string name="day_after_tomorrow">Yarından Sonra</string>
     <string name="next_week">Gelecek Hafta</string>

@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">Título contiene…</string>
     <string name="CFC_title_contains_text">Título contiene: ?</string>
     <string name="gcal_TEA_error">¡Ocurrió un error al agregar la tarea al calendario!</string>
-    <string name="gcal_TEA_showCalendar_label">Abrir evento del calendario</string>
     <string name="calendar_event_not_found">Evento de calendario no encontrado</string>
     <string name="gcal_completed_title">%s (completado)</string>
     <string name="CFC_gtasks_list_text">En la Lista: ?</string>
@@ -189,7 +188,6 @@
     <string name="list">Lista</string>
     <string name="repeats_from">Repetir desde </string>
     <string name="repeats_plural_number_of_times">Repetir cada %1$s, %2$d %3$s</string>
-    <string name="dont_add_to_calendar">No añadir al calendario</string>
     <string name="badges_description">Muestre un recuento de tareas en el icono de iniciador de Tasks. No todos los iniciadores admiten insignias de notificación.</string>
     <string name="tasker_create_task">Crear tarea</string>
     <string name="tasker_list_notification">Listar notificación</string>

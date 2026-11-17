@@ -74,7 +74,6 @@
     <string name="CFC_title_contains_name">O título contén…</string>
     <string name="CFC_title_contains_text">O título contén: \?</string>
     <string name="gcal_TEA_error">Erro ao engadir a tarefa ao calendario!</string>
-    <string name="gcal_TEA_showCalendar_label">Abrir evento de calendario</string>
     <string name="calendar_event_not_found">Evento de calendario non atopado</string>
     <string name="gcal_completed_title">%s (finalizado)</string>
     <string name="CFC_gtasks_list_text">Na lista: \?</string>
@@ -270,7 +269,6 @@
     <string name="opacity_row">Opacidade da fila</string>
     <string name="opacity_footer">Opacidade do rodapé</string>
     <string name="theme_system_default">Predefinido do sistema</string>
-    <string name="dont_add_to_calendar">Non engadir ao calendario</string>
     <string name="background_location_permission_required">Tasks recolle información de posicións para ser quen de amosar os recordatorios con información de posicións, incluído cando o aplicativo non estea aberto.</string>
     <string name="location_permission_required_location">Non se precisa de permisos de posición para facer a busca da posición actual</string>
     <string name="whats_new">Que hai novo</string>

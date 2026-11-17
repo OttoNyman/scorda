@@ -204,7 +204,6 @@
     <string name="privacy_policy">Datenschutzerklärung</string>
     <string name="send_anonymous_statistics">Tasks verbessern</string>
     <string name="send_anonymous_statistics_summary">Anonyme Nutzungsstatistiken und Absturzberichte zur Verbesserung von Tasks senden. Es werden keine persönlichen Daten gesammelt.</string>
-    <string name="license_summary">Tasks ist freie, quelloffene Software, die unter der GNU General Public License v3.0 lizenziert ist</string>
     <string name="support">Support</string>
     <string name="open_source">Open-Source</string>
     <string name="legal">Rechtliches</string>
@@ -525,7 +524,6 @@
     <string name="EPr_default_importance_title">Standardpriorität</string>
     <string name="default_start_date">Standard-Startdatum</string>
     <string name="default_due_date">Standard-Fälligkeitszeitpunkt</string>
-    <string name="default_calendar">Standardkalender</string>
     <string name="TEA_control_reminders">Erinnerungen</string>
     <string name="EPr_default_reminders_title">Standard-Erinnerungen</string>
     <string name="EPr_default_reminders_mode_title">Alarm/Vibrationssignal</string>
@@ -534,7 +532,6 @@
     <string name="default_location">Standard-Ort</string>
     <string name="EPr_default_location_reminder_title">Standard-Standort-Erinnerungen</string>
     <string name="location_update_interval_title">Hintergrund-Standort-Updates</string>
-    <string name="dont_add_to_calendar">Nicht im Kalender eintragen</string>
     <string name="no_reminders">Keine Erinnerungen</string>
     <string name="day_after_tomorrow">Übermorgen</string>
     <string name="next_week">Nächste Woche</string>

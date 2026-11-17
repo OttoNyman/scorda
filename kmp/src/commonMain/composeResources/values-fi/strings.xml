@@ -175,7 +175,6 @@
     <string name="privacy_policy">Rekisteriseloste</string>
     <string name="send_anonymous_statistics">Paranna tehtäviä</string>
     <string name="send_anonymous_statistics_summary">Lähetä nimettömästi käyttäjätilastoja ja virheilmoituksia Tasks -ohjelman parantamiseksi. Mitään henkilökohtaisia tietoja ei kerätä.</string>
-    <string name="license_summary">Tasks on vapaa avoimen ohjelmakoodin ohjelmisto lisensöity GNU General Public License v3.0 -lisenssillä</string>
     <string name="support">Tuki</string>
     <string name="open_source">Avoin lähdekoodi</string>
     <string name="restart_required">Käynnistä Tasks uusiksi jotta muutos tulee voimaan</string>
@@ -404,7 +403,6 @@
     <string name="EPr_default_importance_title">Oletusprioriteetti</string>
     <string name="default_start_date">Oletusarvoinen alkamispäivä</string>
     <string name="default_due_date">Eräpäivä oletusarvoisesti</string>
-    <string name="default_calendar">Oletus kalenteri</string>
     <string name="TEA_control_reminders">Muistutukset</string>
     <string name="EPr_default_reminders_title">Oletusmuistutukset</string>
     <string name="EPr_default_reminders_mode_title">Oletussoittoääni/värinä -tyyppi</string>
@@ -412,7 +410,6 @@
     <string name="TEA_control_location">Sijainti</string>
     <string name="default_location">Oletussijainti</string>
     <string name="EPr_default_location_reminder_title">Oletussijaintimuistutukset</string>
-    <string name="dont_add_to_calendar">Älä lisää kalenteriin</string>
     <string name="no_reminders">Ei muistutuksia</string>
     <string name="day_after_tomorrow">Ylihuomenna</string>
     <string name="next_week">Ensi viikko</string>

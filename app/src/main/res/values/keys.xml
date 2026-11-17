@@ -139,7 +139,6 @@
   <!-- ============================================================ OTHER == -->
 
   <!-- Default Calendar Preference Key (do not translate) -->
-  <string name="gcal_p_default">default_calendar_id</string>
 
   <string-array name="TEA_control_sets_beast">
     <item>@string/start_date</item>

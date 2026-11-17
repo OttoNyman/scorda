@@ -171,7 +171,6 @@
     <string name="tasker_list_notification">Obavijest popisa</string>
     <string name="tasker_create_task">Stvori zadatak</string>
     <string name="badges_description">Prikaži broj zadataka na ikoni pokretača programa Tasks. Neki pokretači ne podržavaju značke.</string>
-    <string name="dont_add_to_calendar">Nemoj dodati kalendaru</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_plural_number_of_times">Ponavlja se svakih %1$s, događa se %2$d %3$s</string>
     <string name="repeats_from">Ponavlja se od</string>
@@ -255,7 +254,6 @@
     <string name="CFC_gtasks_list_text">U popisu: \?</string>
     <string name="gcal_completed_title">%s (obavljeno)</string>
     <string name="calendar_event_not_found">Kalendarski događaj nije pronađen</string>
-    <string name="gcal_TEA_showCalendar_label">Otvori kalendarski događaj</string>
     <string name="CFC_title_contains_text">Naslov sadrži: \?</string>
     <string name="CFC_title_contains_name">Naslov sadrži …</string>
     <string name="CFC_tag_contains_text">Ime oznake sadrži: \?</string>

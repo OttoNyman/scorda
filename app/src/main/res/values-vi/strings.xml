@@ -177,7 +177,6 @@
     <string name="tasker_list_notification">Thông báo danh sách</string>
     <string name="tasker_create_task">Tạo công việc</string>
     <string name="badges_description">Hiển thị số lượng công việc trên biểu tượng trên launcher của Tasks. Không phải tất cả launcher đều hỗ trợ huy hiệu.</string>
-    <string name="dont_add_to_calendar">Không thêm vào lịch</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeats_plural_number_of_times">Lặp lại mỗi %1$s, xảy ra %2$d %3$s</string>
     <string name="repeats_from">Lặp lại từ</string>
@@ -305,7 +304,6 @@
     <string name="CFC_gtasks_list_text">Trong danh sách: \?</string>
     <string name="gcal_completed_title">%s (đã hoàn thành)</string>
     <string name="calendar_event_not_found">Không tìm thấy sự kiện trong lịch</string>
-    <string name="gcal_TEA_showCalendar_label">Mở sự kiện trong lịch</string>
     <string name="gcal_TEA_error">Lỗi khi thêm công việc vào lịch!</string>
     <string name="CFC_title_contains_text">Tiêu đề chứa: \?</string>
     <string name="CFC_title_contains_name">Tiêu đề chứa…</string>

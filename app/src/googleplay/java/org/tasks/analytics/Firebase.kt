@@ -174,7 +174,6 @@ class Firebase @Inject constructor(
     private val obfuscatedPrefs by lazy { intArrayOf(
         R.string.p_backup_dir,
         R.string.p_attachment_dir,
-        R.string.gcal_p_default,
         R.string.p_completion_ringtone,
     ).mapTo(HashSet()) { context.getString(it) } }
 

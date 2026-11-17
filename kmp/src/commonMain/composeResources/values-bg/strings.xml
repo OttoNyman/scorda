@@ -194,7 +194,6 @@
     <string name="privacy_policy">Декларация за поверителност</string>
     <string name="send_anonymous_statistics">Подобряване на Tasks</string>
     <string name="send_anonymous_statistics_summary">Изпращане на анонимна статистика и доклади за грешки с цел подобряване на Tasks. Няма да бъдат събирани лични данни.</string>
-    <string name="license_summary">Tasks е софтуер с отворен код, лицензиран под GNU General Public License v3.0</string>
     <string name="support">Поддръжка</string>
     <string name="open_source">Отворен код</string>
     <string name="legal">Правни въпроси</string>
@@ -470,7 +469,6 @@
     <string name="EPr_default_importance_title">Подразбиран приоритет</string>
     <string name="default_start_date">Начална дата по подразбиране</string>
     <string name="default_due_date">Крайна дата по подразбиране</string>
-    <string name="default_calendar">Календар по подразбиране</string>
     <string name="TEA_control_reminders">Напомняне</string>
     <string name="EPr_default_reminders_title">Напомняния по подразбиране</string>
     <string name="EPr_default_reminders_mode_title">Тон на звънене/вибрация по подразбиране</string>
@@ -479,7 +477,6 @@
     <string name="default_location">Място по подразбиране</string>
     <string name="EPr_default_location_reminder_title">Напомняния за място по подразбиране</string>
     <string name="location_update_interval_title">Обновяване на местоположението във фонов режим</string>
-    <string name="dont_add_to_calendar">Не се добавя в календар</string>
     <string name="no_reminders">Без напомняния</string>
     <string name="day_after_tomorrow">Вдругиден</string>
     <string name="next_week">Следваща седмица</string>

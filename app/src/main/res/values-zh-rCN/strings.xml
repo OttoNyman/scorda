@@ -71,7 +71,6 @@
     <string name="CFC_title_contains_name">标题含…</string>
     <string name="CFC_title_contains_text">标题含：?</string>
     <string name="gcal_TEA_error">将任务添加到日历时发生错误！</string>
-    <string name="gcal_TEA_showCalendar_label">打开日程表事件</string>
     <string name="calendar_event_not_found">找不到日历事件</string>
     <string name="gcal_completed_title">%s (已完成)</string>
     <string name="CFC_gtasks_list_text">清单内容：?</string>
@@ -177,7 +176,6 @@
     <string name="list">清单</string>
     <string name="repeats_from">重复始于</string>
     <string name="repeats_plural_number_of_times">每%1$s重复，发生 %2$d %3$s</string>
-    <string name="dont_add_to_calendar">不添加到日历</string>
     <string name="badges_description">在 Tasks 启动图标上显示任务计数。不是所有的启动器都支持角标。</string>
     <string name="tasker_create_task">创建任务</string>
     <string name="tasker_list_notification">列出通知</string>

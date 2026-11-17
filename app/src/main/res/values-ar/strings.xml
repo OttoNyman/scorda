@@ -45,7 +45,6 @@
     <string name="next_month">الشهر القادم</string>
     <string name="CFC_title_contains_name">العنوان يحتوي على…</string>
     <string name="CFC_title_contains_text">العنوان يحتوي على: \?</string>
-    <string name="gcal_TEA_showCalendar_label">افتح أحداث التقويم</string>
     <string name="CFC_gtasks_list_text">في القائمة: \?</string>
     <string name="gtasks_GTA_clear_completed">حذف المتمم</string>
     <string name="premium_record_audio">تسجيل ملاحظة</string>
@@ -219,7 +218,6 @@
     <string name="choose_a_location">اختر موقعًا</string>
     <string name="action_create_new_task">أنشأ مهمّة جديدة</string>
     <string name="tasker_create_task">أنشأ مهمّة</string>
-    <string name="dont_add_to_calendar">لا تضف إلى التقويم</string>
     <string name="repeats_from">تكرار من</string>
     <string name="badges">الشارات</string>
     <string name="url">رابط</string>

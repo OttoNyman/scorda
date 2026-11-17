@@ -201,7 +201,6 @@
     <string name="privacy_policy">מדיניות פרטיות</string>
     <string name="send_anonymous_statistics">שיפור Tasks</string>
     <string name="send_anonymous_statistics_summary">ניתן לשלוח סטטיסטיקת שימוש ודוחות קריסה אנונימיים כדי לעזור לשפר את Tasks. לא ייאסף מידע אישי.</string>
-    <string name="license_summary">היישום Tasks הוא תוכנה חופשית בקוד פתוח, המורשת תחת הרישיון הציבורי הכללי של GNU בגרסה 3.0</string>
     <string name="support">תמיכה</string>
     <string name="open_source">קוד פתוח</string>
     <string name="legal">משפטי</string>
@@ -456,7 +455,6 @@
     <string name="EPr_default_importance_title">עדיפות ברירת מחדל</string>
     <string name="default_start_date">תאריך התחלה ברירת מחדל</string>
     <string name="default_due_date">תאריך יעד ברירת מחדל</string>
-    <string name="default_calendar">יומן ברירת מחדל</string>
     <string name="TEA_control_reminders">תזכורות</string>
     <string name="EPr_default_reminders_title">תזכורות ברירת מחדל</string>
     <string name="EPr_default_reminders_mode_title">סוג צלצול/רטט ברירת מחדל</string>
@@ -465,7 +463,6 @@
     <string name="default_location">מיקום ברירת מחדל</string>
     <string name="EPr_default_location_reminder_title">תזכורות מיקום ברירת מחדל</string>
     <string name="location_update_interval_title">עדכון מיקום ברקע</string>
-    <string name="dont_add_to_calendar">אל תוסיף ליומן</string>
     <string name="no_reminders">אין תזכורות</string>
     <string name="day_after_tomorrow">מחרתיים</string>
     <string name="next_week">שבוע הבא</string>

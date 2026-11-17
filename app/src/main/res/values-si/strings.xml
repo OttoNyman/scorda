@@ -177,7 +177,6 @@
     <string name="gtasks_GLA_authenticating">සත්‍යාපනය…</string>
     <string name="gcal_completed_title">%s (සම්පූර්ණයි)</string>
     <string name="calendar_event_not_found">දින දර්ශන සිදුවීම සොයාගැනීමට නොහැකිවිය</string>
-    <string name="gcal_TEA_showCalendar_label">දින දර්ශන කාර්යය විවෘත කරන්න</string>
     <string name="gcal_TEA_error">දින දර්ශනයට කාර්යය එකතු කිරීමේදී දෝෂයක් ඇති විය!</string>
     <string name="CFC_importance_name">ප්‍රමුඛතාවය…</string>
     <string name="next_month">ඊළඟ මාසය</string>
@@ -301,7 +300,6 @@
     <string name="tasker_list_notification">ලැයිස්තු දැනුම්දීම</string>
     <string name="tasker_create_task">කාර්යය සාදන්න</string>
     <string name="badges_description">Tasks දියත් කිරීමේ නිරූපකයේ කාර්ය ගණන පෙන්වන්න. සියලුම දියත් කරන්නන් (launchers) ලාංඡන සඳහා සහය නොදක්වයි.</string>
-    <string name="dont_add_to_calendar">දින දර්ශනයට එකතු නොකරන්න</string>
     <string name="opacity_row">පේළි පාරාන්ධතාව</string>
     <string name="opacity_header">ශීර්ෂයේ පාරාන්ධතාව</string>
     <string name="opacity">පාරාන්ධතාව</string>

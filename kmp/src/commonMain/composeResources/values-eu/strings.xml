@@ -145,7 +145,6 @@
     <string name="privacy_policy">pribatutasun politika</string>
     <string name="send_anonymous_statistics">Hobetu Tasks</string>
     <string name="send_anonymous_statistics_summary">Bidali erabilera estatistika anonimoak eta kraskatze txostenak Tasks hobetzen laguntzeko. Ez da datu pertsonalik jasoko.</string>
-    <string name="license_summary">Tasks aplikazioa software librea eta kode irekikoa da, GNU General Public License v3.0 lizentziapean</string>
     <string name="support">Euskarria</string>
     <string name="open_source">Kode irekia</string>
     <string name="restart_required">Berrabiarazi Tasks aldaketa aplikatzeko</string>
@@ -345,7 +344,6 @@
     <string name="EPr_default_importance_title">Lehenetsitako lehentasuna</string>
     <string name="default_start_date">Lehenetsitako hasiera data</string>
     <string name="default_due_date">Lehenetsitako epemuga data</string>
-    <string name="default_calendar">Lehenetsitako egutegia</string>
     <string name="TEA_control_reminders">Oroigarriak</string>
     <string name="EPr_default_reminders_title">Lehenetsitako oroigarriak</string>
     <string name="EPr_default_reminders_mode_title">Lehenetsitako doinua/bibrazio mota</string>
@@ -353,7 +351,6 @@
     <string name="TEA_control_location">Kokalekua</string>
     <string name="default_location">Lehenetsitako kokalekua</string>
     <string name="EPr_default_location_reminder_title">Lehenetsitako kokaleku-oroigarriak</string>
-    <string name="dont_add_to_calendar">Ez gehitu egutegira</string>
     <string name="no_reminders">Oroigarririk ez</string>
     <string name="day_after_tomorrow">Etzi</string>
     <string name="next_week">Datorren astean</string>

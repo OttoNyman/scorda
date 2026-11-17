@@ -67,7 +67,6 @@ class MainSettingsComposeFragment : Fragment() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var configuration: PlatformConfiguration
     @Inject lateinit var inventory: Inventory
-    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: MainSettingsViewModel by viewModels()
     private val proCardViewModel: ProCardViewModel by viewModels()
@@ -93,10 +92,8 @@ class MainSettingsComposeFragment : Fragment() {
                 // Backups run on their own and have no folder to pick: nothing to warn about.
                 showBackupWarning = false,
                 accountError = filteredAccounts.any { it.hasError },
-                showWidgets = viewModel.supportsWidgets,
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
-                showNavigationDrawer = featureGate.current.showsDrawer,
                 onLinkDesktopClick = { linkDesktop() },
                 onProCardClick = {
                     val state = proCardState ?: return@AndroidMainSettingsScreen
@@ -271,6 +268,7 @@ class MainSettingsComposeFragment : Fragment() {
             SettingsDestination.Notifications -> Notifications()
             SettingsDestination.TaskDefaults -> TaskDefaults()
             SettingsDestination.Constructor -> ConstructorPreferences()
+            SettingsDestination.Screens -> ScreenSettings()
             SettingsDestination.TaskList -> TaskListPreferences()
             SettingsDestination.TaskEdit -> TaskEditPreferences()
             SettingsDestination.DateAndTime -> DateAndTime()

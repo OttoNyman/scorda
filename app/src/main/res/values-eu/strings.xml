@@ -77,7 +77,6 @@
     <string name="CFC_title_contains_name">Izenburuak hau du…</string>
     <string name="CFC_title_contains_text">Izenburuak hau du: \?</string>
     <string name="gcal_TEA_error">Errorea zeregina egutegira gehitzean!</string>
-    <string name="gcal_TEA_showCalendar_label">Ireki egutegiko gertaera</string>
     <string name="calendar_event_not_found">Ez da egutegiko gertaera aurkitu</string>
     <string name="gcal_completed_title">%s (burututa)</string>
     <string name="CFC_gtasks_list_text">Zerrendan: \?</string>
@@ -191,7 +190,6 @@
     <string name="repeats_from">Errepikatu hemendik</string>
     <string name="repeats_plural_number_of_times">Errepikatu %1$s, %2$d %3$s</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Ez gehitu egutegira</string>
     <string name="badges_description">Bistaratu zeregin kopurua abiarazleko Tasks ikonoan. Abiarazle guztiek ez dituzte dominak onartzen.</string>
     <string name="tasker_create_task">Sortu zeregina</string>
     <string name="tasker_list_notification">Zerrenda-jakinarazpena</string>

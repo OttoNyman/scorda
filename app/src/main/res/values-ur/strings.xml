@@ -91,7 +91,6 @@
     <string name="CFC_gtasks_list_text">لسٹ میں:?</string>
     <string name="gcal_completed_title">%s مکمل ہو گیا</string>
     <string name="calendar_event_not_found">کیلنڈر ایونٹ نہیں مل سکا</string>
-    <string name="gcal_TEA_showCalendar_label">کیلنڈر ایونٹ کھولیں</string>
     <string name="gcal_TEA_error">کیلنڈر میں کام شامل کرنے میں خرابی!</string>
     <string name="snooze_all">سارا اسنوز کریں</string>
     <string name="ring_nonstop">بغیر رکے رنگ بجنا</string>
@@ -219,7 +218,6 @@
     <string name="widget_due_date_after_title">عنوان کے بعد</string>
     <string name="tasker_create_task">ٹاسک بنائیں</string>
     <string name="badges_description">ٹاسکس ایپ کے آئیکن پر ٹاسک کی تعداد ظاہر کریں۔ تمام لانچرز نشانات کو سپوڑٹ نہیں کرتے۔</string>
-    <string name="dont_add_to_calendar">کیلنڈر میں داخل نہ کریں</string>
     <string name="repeats_plural_number_of_times">ہر %1$s کو دہراتا ہے، %2$d%3$s واقع ہوتا ہے</string>
     <string name="repeats_from">سے دہراتا ہے</string>
     <string name="list">فہرست</string>

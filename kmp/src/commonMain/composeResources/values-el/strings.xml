@@ -163,7 +163,6 @@
     <string name="privacy_policy">Πολιτική απορρήτου</string>
     <string name="send_anonymous_statistics">Βελτιώστε το Tasks</string>
     <string name="send_anonymous_statistics_summary">Στείλτε ανώνυμα στατιστικά στοιχεία χρήσης και αναφορές σφαλμάτων για να συμβάλετε στη βελτίωση του Tasks. Δεν θα συλλεχθούν προσωπικά δεδομένα.</string>
-    <string name="license_summary">Η εφαρμογή Tasks είναι ελεύθερο λογισμικό ανοιχτού κώδικα, με άδεια χρήσης GNU General Public License v3.0</string>
     <string name="support">Υποστήριξη</string>
     <string name="open_source">Ανοιχτός κώδικας</string>
     <string name="restart_required">Επανεκκινήστε τις Εργασίες για να εφαρμοστεί αυτή η αλλαγή</string>
@@ -386,7 +385,6 @@
     <string name="EPr_default_importance_title">Προκαθορισμένη προτεραιότητα</string>
     <string name="default_start_date">Προεπιλεγμένη Ημερομηνία έναρξης</string>
     <string name="default_due_date">Προεπιλεγμένη προθεσμία ολοκλήρωσης</string>
-    <string name="default_calendar">Προεπιλεγμένο ημερολόγιο</string>
     <string name="TEA_control_reminders">Υπενθυμίσεις</string>
     <string name="EPr_default_reminders_title">Προκαθορισμένες υπενθυμίσεις</string>
     <string name="EPr_default_reminders_mode_title">Προκαθορισμένος ήχος/τύπος δόνησης</string>
@@ -394,7 +392,6 @@
     <string name="TEA_control_location">Τοποθεσία</string>
     <string name="default_location">Προεπιλεγμένη τοποθεσία</string>
     <string name="EPr_default_location_reminder_title">Υπενθυμίσεις προεπιλεγμένης τοποθεσίας</string>
-    <string name="dont_add_to_calendar">Να μην προστεθεί στο ημερολόγιο</string>
     <string name="no_reminders">Καθόλου υπενθυμίσεις</string>
     <string name="day_after_tomorrow">Μεθαύριο</string>
     <string name="next_week">Επόμενη εβδομάδα</string>

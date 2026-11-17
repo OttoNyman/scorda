@@ -94,7 +94,6 @@ data class TaskDefaultSettings(
     val defaultPriority: Int = Task.Priority.LOW,
     val defaultHideUntil: Int = Task.HIDE_UNTIL_NONE,
     val defaultDueDate: Int = Task.URGENCY_NONE,
-    val defaultCalendar: String? = null,
     val defaultRecurrence: String? = null,
     val defaultRecurrenceFrom: Int = 0,
     val defaultAlarms: List<Alarm> = DEFAULT_ALARMS,
@@ -126,7 +125,6 @@ interface AppPreferences {
     suspend fun setDefaultPriority(value: Int)
     suspend fun setDefaultHideUntil(value: Int)
     suspend fun setDefaultDueDate(value: Int)
-    suspend fun setDefaultCalendar(value: String?)
     suspend fun setDefaultRecurrence(value: String?)
     suspend fun setDefaultRecurrenceFrom(value: Int)
 

@@ -72,7 +72,6 @@
     <string name="CFC_title_contains_name">הכותרת מכילה…</string>
     <string name="CFC_title_contains_text">הכותרת מכילה: ?</string>
     <string name="gcal_TEA_error">שגיאה בהוספת משימה ליומן!</string>
-    <string name="gcal_TEA_showCalendar_label">פתח אירוע יומן</string>
     <string name="calendar_event_not_found">אירוע יומן לא נמצא</string>
     <string name="gcal_completed_title">%s (הושלמו)</string>
     <string name="CFC_gtasks_list_text">ברשימה: ?</string>
@@ -193,7 +192,6 @@
     <string name="list">רשימה</string>
     <string name="repeats_from">חוזר מ</string>
     <string name="repeats_plural_number_of_times">חוזר כל %1$s, מתרחש %2$d %3$s</string>
-    <string name="dont_add_to_calendar">אל תוסיף ליומן</string>
     <string name="badges_description">הצגת מונה משימות על סמל המשגר של Tasks. לא כל המשגרים תומכים בתגים.</string>
     <string name="tasker_create_task">יצירת משימה</string>
     <string name="tasker_list_notification">התראת רשימה</string>

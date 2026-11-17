@@ -98,7 +98,6 @@
     <string name="privacy_policy">Política de privacidá</string>
     <string name="send_anonymous_statistics">Ameyorar Tasks</string>
     <string name="send_anonymous_statistics_summary">Unvia estadístiques anónimes d'usu ya informes d'error p'aidar a ameyorar Tasks. Dengún datu personal sedrá recoyíu.</string>
-    <string name="license_summary">Tasks ye un software llibre de códigu abiertu, llicenciáu baxu la Llicencia Pública Xeneral de GNU v3.0</string>
     <string name="restart_required">Reanicia Tasks pa qu'esti cambeu tenga efeutu</string>
     <string name="restart_now">Reaniciar agora</string>
     <string name="restart_later">Dempués</string>
@@ -288,7 +287,6 @@
     <string name="EPr_default_importance_title">Prioridá predeterminada</string>
     <string name="default_start_date">Data d'entamu predeterminada</string>
     <string name="default_due_date">Data de vencimientu predeterminada</string>
-    <string name="default_calendar">Calendariu predetermináu</string>
     <string name="TEA_control_reminders">Recordatorios</string>
     <string name="EPr_default_reminders_title">Recordatorios predeterminados</string>
     <string name="EPr_default_reminders_mode_title">Tipu predetermináu de timbre/vibración</string>
@@ -296,7 +294,6 @@
     <string name="TEA_control_location">Allugamientu</string>
     <string name="default_location">Allugamientu predetermináu</string>
     <string name="EPr_default_location_reminder_title">Recordatorios d'allugamientu predeterminaos</string>
-    <string name="dont_add_to_calendar">Non amestar al calendariu</string>
     <string name="no_reminders">Ensin recordatorios</string>
     <string name="day_after_tomorrow">Pasáu mañana</string>
     <string name="next_week">La selmana que vien</string>

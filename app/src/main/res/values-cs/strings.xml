@@ -67,7 +67,6 @@
     <string name="CFC_title_contains_name">Název obsahuje…</string>
     <string name="CFC_title_contains_text">Název obsahuje: \?</string>
     <string name="gcal_TEA_error">Chyba při přidávání úkolu do kalendáře!</string>
-    <string name="gcal_TEA_showCalendar_label">Otevřít událost v kalendáři</string>
     <string name="gcal_completed_title">%s (dokončeno)</string>
     <string name="CFC_gtasks_list_text">V seznamu: ?</string>
     <string name="gtasks_GTA_clear_completed">Smazat dokončené</string>
@@ -190,7 +189,6 @@
     <string name="list">Seznam</string>
     <string name="repeats_from">Opakuje se od</string>
     <string name="repeats_plural_number_of_times">Opakuje se každý %1$s, ještě %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Nepřidávat do kalendáře</string>
     <string name="badges_description">Zobrazit počet úkolů u ikony Tasks. Některé spouštěče tuto funkci nepodporují.</string>
     <string name="tasker_create_task">Vytvořit úkol</string>
     <string name="tasker_list_notification">Vypsat upozornění</string>

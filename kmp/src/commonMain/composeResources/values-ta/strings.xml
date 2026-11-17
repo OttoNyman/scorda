@@ -163,7 +163,6 @@
     <string name="privacy_policy">தனியுரிமைக் கொள்கை</string>
     <string name="send_anonymous_statistics">பணிகளை மேம்படுத்தவும்</string>
     <string name="send_anonymous_statistics_summary">பணிகளை மேம்படுத்த உதவ அநாமதேய பயன்பாட்டு புள்ளிவிவரங்கள் மற்றும் செயலிழப்பு அறிக்கைகளை அனுப்பவும். தனிப்பட்ட தரவு எதுவும் சேகரிக்கப்படாது.</string>
-    <string name="license_summary">பணிகள் லிப்ரே ஓப்பன் சோர்ஸ் மென்பொருளாகும், இது குனு GPLv3.0 இன் கீழ் உரிமம் பெற்றது</string>
     <string name="support">உதவி</string>
     <string name="open_source">திறந்த மூல</string>
     <string name="restart_required">இந்த மாற்றம் நடைமுறைக்கு வருவதற்கான பணிகளை மறுதொடக்கம் செய்யுங்கள்</string>
@@ -390,7 +389,6 @@
     <string name="EPr_default_importance_title">இயல்புநிலை முன்னுரிமை</string>
     <string name="default_start_date">இயல்புநிலை தொடக்க தேதி</string>
     <string name="default_due_date">இயல்புநிலை காரணமாக தேதி</string>
-    <string name="default_calendar">இயல்புநிலை காலண்டர்</string>
     <string name="TEA_control_reminders">நினைவூட்டல்கள்</string>
     <string name="EPr_default_reminders_title">இயல்புநிலை நினைவூட்டல்கள்</string>
     <string name="EPr_default_reminders_mode_title">இயல்புநிலை வளையம் / அதிர்வு வகை</string>
@@ -398,7 +396,6 @@
     <string name="TEA_control_location">இடம்</string>
     <string name="default_location">இயல்புநிலை இடம்</string>
     <string name="EPr_default_location_reminder_title">இயல்புநிலை இருப்பிட நினைவூட்டல்கள்</string>
-    <string name="dont_add_to_calendar">நாள்காட்டியில் சேர்க்க வேண்டாம்</string>
     <string name="no_reminders">நினைவூட்டல்கள் இல்லை</string>
     <string name="day_after_tomorrow">நாளை மறுநாள்</string>
     <string name="next_week">அடுத்த வாரம்</string>

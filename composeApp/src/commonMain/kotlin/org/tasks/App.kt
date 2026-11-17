@@ -2921,7 +2921,6 @@ private fun SettingsScreen(
                         proCardState = proCardState,
                         environmentLabel = environmentLabel,
                         showBackupWarning = false,
-                        showWidgets = viewModel.supportsWidgets,
                         showNotifications = configuration.supportsNotifications,
                         showMcpServer = configuration.supportsMcpServer,
                         isDebug = viewModel.isDebug,

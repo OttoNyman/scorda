@@ -162,7 +162,6 @@
     <string name="privacy_policy">개인정보 보호정책</string>
     <string name="send_anonymous_statistics">Tasks 향상</string>
     <string name="send_anonymous_statistics_summary">Tasks를 향상시키기 위해 사용 기록과 충돌 보고서를 익명으로 전송합니다. 개인 정보는 수집되지 않습니다.</string>
-    <string name="license_summary">Tasks는 GNU 일반공중사용권 3.0 (GPLv3)에 따라 사용이 허가된 리브레 오픈소스 소프트웨어입니다</string>
     <string name="support">지원</string>
     <string name="open_source">오픈 소스</string>
     <string name="restart_required">이 변경사항을 적용하려면 Tasks 앱을 재시작하세요</string>
@@ -380,7 +379,6 @@
     <string name="EPr_default_importance_title">기본 우선순위</string>
     <string name="default_start_date">기본 시작일</string>
     <string name="default_due_date">기본 마감일</string>
-    <string name="default_calendar">기본 달력</string>
     <string name="TEA_control_reminders">알람</string>
     <string name="EPr_default_reminders_title">기본 알람</string>
     <string name="EPr_default_reminders_mode_title">기본 벨소리/진동 형식</string>
@@ -388,7 +386,6 @@
     <string name="TEA_control_location">위치</string>
     <string name="default_location">기본 위치</string>
     <string name="EPr_default_location_reminder_title">기본 위치 알람</string>
-    <string name="dont_add_to_calendar">달력에 일정 추가하지 않기</string>
     <string name="no_reminders">알람 없음</string>
     <string name="day_after_tomorrow">모레</string>
     <string name="next_week">다음 주</string>

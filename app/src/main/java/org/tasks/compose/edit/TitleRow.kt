@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun TitleRow(
     linkify: Linkify?,
     markdownProvider: MarkdownProvider?,
     isCompleted: Boolean,
+    showComplete: Boolean,
     priority: Int,
     onComplete: () -> Unit,
     requestFocus: Boolean,
@@ -34,15 +36,23 @@ fun TitleRow(
 ) {
     TaskEditRow(
         icon = {
-            CheckBox(
-                isCompleted = isCompleted,
-                priority = priority,
-                onCompleteClick = onComplete,
-                modifier = Modifier.padding(
-                    start = 4.dp,
-                    end = 20.dp,
+            if (showComplete) {
+                CheckBox(
+                    isCompleted = isCompleted,
+                    priority = priority,
+                    onCompleteClick = onComplete,
+                    modifier = Modifier.padding(
+                        start = 4.dp,
+                        end = 20.dp,
+                    )
                 )
-            )
+            } else {
+                Spacer(
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 20.dp)
+                        .size(48.dp)
+                )
+            }
         },
         content = {
             Column(verticalArrangement = Arrangement.Center) {
@@ -77,6 +87,7 @@ fun EmptyTitlePreview() {
             linkify = null,
             markdownProvider = null,
             isCompleted = false,
+            showComplete = false,
             priority = 0,
             onComplete = {},
             requestFocus = false,
@@ -102,6 +113,7 @@ fun TitlePreview() {
             linkify = null,
             markdownProvider = null,
             isCompleted = false,
+            showComplete = true,
             priority = 0,
             onComplete = {},
             requestFocus = false,

@@ -140,7 +140,6 @@
     <string name="EPr_default_importance_title">اولویت پیش فرض</string>
     <string name="default_start_date">تاریخ شروع دیفالت</string>
     <string name="default_due_date">تاریخ پایان دیفالت</string>
-    <string name="default_calendar">تقویم پیش فرض</string>
     <string name="TEA_control_reminders">یادآوری ها</string>
     <string name="EPr_default_reminders_title">یادآورهای پیش فرض</string>
     <string name="EPr_default_reminders_mode_title">نوع زنگ/ویبره دیفالت</string>
@@ -189,7 +188,6 @@
     <string name="url">نشانی اینترنتی</string>
     <string name="repeats_from">تکرار از</string>
     <string name="repeats_plural_number_of_times">هر %1$s یک‌بار تکرار می‌شود، %2$d %3$s رخ می‌دهد</string>
-    <string name="dont_add_to_calendar">به تقویم اضافه نشود</string>
     <string name="help">راهنما</string>
     <string name="logout">خروج</string>
     <string name="sort_list">فهرست</string>

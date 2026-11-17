@@ -199,7 +199,6 @@
     <string name="privacy_policy">Kebijakan privasi</string>
     <string name="send_anonymous_statistics">Buat Tasks lebih baik</string>
     <string name="send_anonymous_statistics_summary">Kirim statistik penggunaan dan laporan kerusakan secara anonim untuk membantu membuat Tasks menjadi lebih baik. Tidak ada data personal yang dikumpulkan.</string>
-    <string name="license_summary">Tasks adalah perangkat lunak bebas bersumber terbuka, dilindungi Lisensi Publik Umum GNU v3.0</string>
     <string name="support">Dukung</string>
     <string name="open_source">Sumber Terbuka</string>
     <string name="legal">Hukum</string>
@@ -491,7 +490,6 @@
     <string name="EPr_default_importance_title">Prioritas bawaan</string>
     <string name="default_start_date">Tanggal mulai bawaan</string>
     <string name="default_due_date">Tanggal jatuh tempo bawaan</string>
-    <string name="default_calendar">Bawaan kalender</string>
     <string name="TEA_control_reminders">Pengingat</string>
     <string name="EPr_default_reminders_title">Pengingat bawaan</string>
     <string name="EPr_default_reminders_mode_title">Tipe dering/getar bawaan</string>
@@ -500,7 +498,6 @@
     <string name="default_location">Lokasi bawaan</string>
     <string name="EPr_default_location_reminder_title">Pengingat lokasi bawaan</string>
     <string name="location_update_interval_title">Pembaruan lokasi latar belakang</string>
-    <string name="dont_add_to_calendar">Jangan tambahkan ke kalender</string>
     <string name="no_reminders">Tidak ada pengingat</string>
     <string name="day_after_tomorrow">Lusa</string>
     <string name="next_week">Minggu depan</string>

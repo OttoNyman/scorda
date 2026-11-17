@@ -111,6 +111,7 @@ class SortSettingsActivity : ComponentActivity() {
                                 showHidden = state.showHidden,
                                 showCompletedAndHiddenOptions = showCompletedAndHiddenOptions,
                                 completedAndHiddenEnabled = completedAndHiddenEnabled,
+                                showUnstarted = featureGate.current.startDate,
                                 setSortAscending = { viewModel.setSortAscending(it) },
                                 setGroupAscending = { viewModel.setGroupAscending(it) },
                                 setCompletedAscending = { viewModel.setCompletedAscending(it) },

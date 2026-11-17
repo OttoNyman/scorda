@@ -183,7 +183,6 @@
     <string name="privacy_policy">Fortrolighedspolitik</string>
     <string name="send_anonymous_statistics">Forbedr Tasks</string>
     <string name="send_anonymous_statistics_summary">Send anonyme brugerstatistik og fejlrapporter for at hjælpe med at forbedre Tasks. Ingen personlige data indsamles.</string>
-    <string name="license_summary">Tasks er fri open source-software udgivet under GNU General Public License v3.0</string>
     <string name="support">Støtte</string>
     <string name="open_source">Open source</string>
     <string name="legal">Juridisk</string>
@@ -418,7 +417,6 @@
     <string name="EPr_default_importance_title">Standardprioritet</string>
     <string name="default_start_date">Standardstartdato</string>
     <string name="default_due_date">Standardforfaldsdato</string>
-    <string name="default_calendar">Standardkalender</string>
     <string name="TEA_control_reminders">Påmindelser</string>
     <string name="EPr_default_reminders_title">Standardpåmindelser</string>
     <string name="EPr_default_reminders_mode_title">Standard for ring-/vibrationstype</string>
@@ -427,7 +425,6 @@
     <string name="default_location">Standardplacering</string>
     <string name="EPr_default_location_reminder_title">Standardplaceringspåmindelser</string>
     <string name="location_update_interval_title">Opdateringer af placering i baggrunden</string>
-    <string name="dont_add_to_calendar">Føj ikke til kalender</string>
     <string name="no_reminders">Ingen påmindelser</string>
     <string name="day_after_tomorrow">I overmorgen</string>
     <string name="next_week">Næste uge</string>

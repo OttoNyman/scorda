@@ -76,7 +76,6 @@
     <string name="CFC_title_contains_name">Заглавието съдържа…</string>
     <string name="CFC_title_contains_text">Заглавието съдържа: \?</string>
     <string name="gcal_TEA_error">Грешка при добавяне на задача в календара!</string>
-    <string name="gcal_TEA_showCalendar_label">Добавяне на събитие в календара</string>
     <string name="calendar_event_not_found">Събитието от календара не е намерено</string>
     <string name="gcal_completed_title">%s (завършено)</string>
     <string name="CFC_gtasks_list_text">В списъка: \?</string>
@@ -188,7 +187,6 @@
     <string name="list">Списък</string>
     <string name="repeats_from">Повтаря се от</string>
     <string name="repeats_plural_number_of_times">Повтаря се всеки %1$s, възниква %2$d %3$s</string>
-    <string name="dont_add_to_calendar">Не се добавя в календар</string>
     <string name="badges_description">Броят на задачите е видим върху иконата на Tasks. Не всички начални екрани го поддържат.</string>
     <string name="tasker_create_task">Създаване на задача</string>
     <string name="tasker_list_notification">Списък с известия</string>

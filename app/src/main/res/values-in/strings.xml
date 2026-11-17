@@ -57,7 +57,6 @@
     <string name="CFC_tag_contains_name">Nama tag memuat…</string>
     <string name="CFC_tag_contains_text">Nama tag memuat: \?</string>
     <string name="gcal_TEA_error">Terjadi kesalahan saat menambahkan tugas ke kalender!</string>
-    <string name="gcal_TEA_showCalendar_label">Buka Acara Kalender</string>
     <string name="calendar_event_not_found">Acara kalender tidak ditemukan</string>
     <string name="gcal_completed_title">%s (selesai)</string>
     <string name="CFC_gtasks_list_text">Dalam Daftar: \?</string>
@@ -153,7 +152,6 @@
     <string name="list">Daftar</string>
     <string name="repeats_from">Ulangi dari</string>
     <string name="list_separator_with_space">", "</string>
-    <string name="dont_add_to_calendar">Jangan tambahkan ke kalender</string>
     <string name="import_summary_message">Berkas %1$s berisi %2$s.
 \n
 \n %3$s diimpor,

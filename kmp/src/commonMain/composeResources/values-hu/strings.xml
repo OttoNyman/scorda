@@ -201,7 +201,6 @@
     <string name="privacy_policy">Adatvédelmi irányelv</string>
     <string name="send_anonymous_statistics">Tasks fejlesztése</string>
     <string name="send_anonymous_statistics_summary">Anonim felhasználási statisztikák és hibajelentések küldése a Tasks fejlesztése érdekében. Személyes adatok gyűjtése nem történik.</string>
-    <string name="license_summary">A Tasks nyílt forráskódú program, a GNU Általános Nyilvános Licenc v3.0 alapján licenszelve</string>
     <string name="support">Támogatás</string>
     <string name="open_source">Nyílt forráskódú</string>
     <string name="legal">Jogi tudnivalók</string>
@@ -439,7 +438,6 @@
     <string name="EPr_default_importance_title">Alapértelmezett prioritás</string>
     <string name="default_start_date">Alapértelmezett kezdő dátum</string>
     <string name="default_due_date">Alapértelmezett határidő</string>
-    <string name="default_calendar">Alapértelmezett naptár</string>
     <string name="TEA_control_reminders">Emlékeztetők</string>
     <string name="EPr_default_reminders_title">Alapértelmezett emlékeztetők</string>
     <string name="EPr_default_reminders_mode_title">Alapértelmezett csengetés/rezgés típusa</string>
@@ -448,7 +446,6 @@
     <string name="default_location">Alapértelmezett hely</string>
     <string name="EPr_default_location_reminder_title">Alapértelmezett hely emlékeztetők</string>
     <string name="location_update_interval_title">Helyadatok frissítése a háttérben</string>
-    <string name="dont_add_to_calendar">Ne adja hozzá a naptárhoz</string>
     <string name="no_reminders">Nincs emlékeztető</string>
     <string name="day_after_tomorrow">Holnapután</string>
     <string name="next_week">Következő hét</string>
