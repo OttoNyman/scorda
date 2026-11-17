@@ -43,9 +43,7 @@
     <string name="TLA_menu_settings">Agordoj</string>
     <string name="TLA_menu_search">Serĉi</string>
     <string name="TLA_no_items">Neniuj taskoj</string>
-    <string name="WID_dateButtonUnset">Alklaku por ŝanĝi</string>
     <string name="DLG_undo">Malfari</string>
-    <string name="DLG_hour_minutes">Tempo (horoj : minutoj)</string>
     <string name="display_name">Nomo</string>
     <string name="TVA_add_comment">Aldoni komenton…</string>
     <string name="cancel">Nuligi</string>
@@ -89,8 +87,6 @@
     <string name="TEA_control_repeat">Ripeti</string>
     <string name="week_before_due">Semajno antaŭ limdato</string>
     <string name="day_before_due">Tago antaŭ limdato</string>
-    <string name="TEA_timer_elap">Pasinta %s</string>
-    <string name="TEA_timer_est">Prok. %s</string>
     <string name="TEA_importance_label">Prioritato</string>
     <string name="sort_created">Laŭ kreita tempo</string>
     <string name="SSD_sort_modified">Laŭ laste modifita</string>
@@ -105,10 +101,7 @@
     <string name="backup_BAc_import">Importi savkopion</string>
     <string name="backup_BAc_export">Savkopii tuj</string>
     <string name="filter_overdue">Posttempa</string>
-    <string name="TEA_control_timer">Tempokontroliloj</string>
     <string name="TEA_control_location">Loko</string>
-    <string name="TEA_elapsedDuration_label">Tempo jam pasinta</string>
-    <string name="TEA_estimatedDuration_label">Kiom da tempo ĝi daŭros\?</string>
     <string name="FLA_new_filter">Krei novan filtrilon</string>
     <string name="read_permission_label">Permesoj de Tasks</string>
     <string name="import_summary_title">Restaŭri resumon</string>
@@ -156,9 +149,6 @@
     <string name="voice_command_added_task">Tasko Aldonite</string>
     <string name="EPr_voiceInputEnabled_title">Voĉa enigo</string>
     <string name="voice_create_prompt">Paroli por krei taskon</string>
-    <string name="TEA_timer_comment_stopped">ĉesigis ĉi tiun taskon:</string>
-    <string name="TEA_timer_comment_started">komencis ĉi tiun taskon:</string>
-    <string name="TEA_timer_controls">Tempumilo</string>
     <string name="new_list">Krei novan liston</string>
     <string name="new_tag">Krei novan etikedon</string>
     <string name="repeat_snackbar">%1$s replanis por %2$s</string>
@@ -319,7 +309,6 @@
     <string name="automatic_backups">Aŭtomate savkopii</string>
     <string name="android_auto_backup">Savkopia Servo de Android</string>
     <string name="last_backup">Lasta savkopio: %s</string>
-    <string name="TPl_notification">Tempumiloj Aktivaj por %s!</string>
     <string name="no_app_found">Neniu aplikaĵo povis pritrakti ĉi tiun peton</string>
     <string name="refresh_purchases">Reŝargi aĉetojn</string>
     <string name="background_location_permission_required">Tasks kolektas lokan datumon por ebligi lok-bazitajn memorigilojn, eĉ kiam la aplikaĵo estas fermita aŭ ne uzata.</string>
@@ -356,7 +345,6 @@
     <string name="date_shortcut_must_come_after">%1$s devas esti post %2$s</string>
     <string name="custom_filter_has_reminder">Kun memorigilo</string>
     <string name="no_google_play_subscription">Ne trovis elekteblan Google Play abonon</string>
-    <string name="TEA_timer_comment_spent">Tempo pasigita:</string>
     <string name="opacity_footer">Piedlinia netravideblo</string>
     <string name="widget_due_date_below_title">Subtitola</string>
     <string name="repeats_plural_number_of_times">Ripetiĝas ĉiu %1$s, okazas %2$d%3$s</string>

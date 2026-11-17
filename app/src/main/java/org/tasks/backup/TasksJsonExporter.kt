@@ -20,6 +20,7 @@ import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.FilterDao
 import org.tasks.data.dao.LocationDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.TagDao
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskAttachmentDao
@@ -56,6 +57,7 @@ class TasksJsonExporter @Inject constructor(
     private val workManager: WorkManager,
     private val taskListMetadataDao: TaskListMetadataDao,
     private val vtodoCache: VtodoCache,
+    private val seriesDao: SeriesDao,
 ) {
     private var context: Context? = null
     private var exportCount = 0
@@ -174,6 +176,7 @@ class TasksJsonExporter @Inject constructor(
             write("filters", filterDao.getFilters())
             write("caldavAccounts", caldavDao.getAccounts())
             write("caldavCalendars", caldavDao.getCalendars())
+            write("series", seriesDao.getAll())
             write("taskListMetadata", taskListMetadataDao.getAll())
             write("taskAttachments", taskAttachmentDao.getAttachments())
             writePreferences()

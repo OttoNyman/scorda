@@ -3,7 +3,6 @@
     <string name="search">Cerca</string>
     <string name="filter_my_tasks">Tasques actives</string>
     <string name="filter_notifications">Notificacions</string>
-    <string name="filter_timer">Tasques sent cronometrades</string>
     <string name="filter_today">Avui</string>
     <string name="filter_recently_modified">Modificades fa poc</string>
     <string name="help_and_feedback">Ajuda i comentaris</string>

@@ -18,7 +18,6 @@
     <string name="EPr_beastMode_reset">இயல்புநிலைக்கு மீட்டமை</string>
     <string name="none">எதுவுமில்லை</string>
     <string name="TEA_control_hidden_section">---- எப்போதும் மறை ----</string>
-    <string name="TEA_control_timer">டைமர் கட்டுப்பாடுகள்</string>
     <string name="TEA_control_reminders">நினைவூட்டல்கள்</string>
     <string name="TEA_control_files">கோப்புகள்</string>
     <string name="TEA_control_notes">விளக்கம்</string>
@@ -38,13 +37,10 @@
     <string name="SSD_sort_alpha">தலைப்பு மூலம்</string>
     <string name="SSD_sort_auto">ஸ்மார்ட் வகை</string>
     <string name="SSD_sort_my_order">எனது ஆர்டர்</string>
-    <string name="WID_dateButtonUnset">கிளிக் செய்து அமைக்கவும்</string>
     <string name="import_summary_title">சுருக்கத்தை மீட்டமை</string>
     <string name="TVA_add_comment">ஒரு கருத்தைச் சேர்க்கவும்…</string>
     <string name="actfm_picture_clear">தெளிவான படம்</string>
     <string name="save">சேமி</string>
-    <string name="TEA_elapsedDuration_label">ஏற்கனவே செலவழித்த நேரம்</string>
-    <string name="TEA_estimatedDuration_label">இது எவ்வளவு நேரம் எடுக்கும்\?</string>
     <string name="TEA_note_label">விவரிப்பு</string>
     <string name="TEA_importance_label">முன்னுரிமை</string>
     <string name="TEA_title_hint">வேலை பெயர்</string>
@@ -55,7 +51,6 @@
     <string name="TLA_menu_sort">வரிசைப்படுத்து</string>
     <string name="TLA_no_items">இங்கு எந்த வேலைகளும் இல்லை.</string>
     <string name="DLG_undo">பின்வாங்கு</string>
-    <string name="DLG_hour_minutes">நேரம் (மணி : நிமிடங்கள்)</string>
     <string name="read_permission_label">வேலைகள் அனுமதி</string>
     <string name="backup_BAc_export">இப்போதே நகல் எடு</string>
     <string name="backup_BAc_import">நகலை இறக்குமதி செய்</string>
@@ -250,11 +245,6 @@
     <string name="voice_command_added_task">பணி சேர்க்கப்பட்டது</string>
     <string name="EPr_voiceInputEnabled_title">குரல் உள்ளீடு</string>
     <string name="voice_create_prompt">ஒரு பணியை உருவாக்க பேசுங்கள்</string>
-    <string name="TEA_timer_comment_spent">செலவிட்ட நேரம்:</string>
-    <string name="TEA_timer_comment_stopped">இந்த பணியை செய்வதை நிறுத்தியது:</string>
-    <string name="TEA_timer_comment_started">இந்த பணியைத் தொடங்கினார்:</string>
-    <string name="TEA_timer_controls">டைமர்</string>
-    <string name="TPl_notification">டைமர்கள் %s க்கு செயலில் உள்ளன!</string>
     <string name="delete_tag_confirmation">%s ஐ நீக்கவா\?</string>
     <string name="new_list">புதிய பட்டியலை உருவாக்கவும்</string>
     <string name="new_tag">புதிய குறிச்சொல்லை உருவாக்கவும்</string>
@@ -283,8 +273,6 @@
         <item quantity="other">%d பணிகள்</item>
     </plurals>
     <string name="EPr_manage_delete_gcal_status">%d நாள்காட்டி நிகழ்வுகள் நீக்கப்பட்டன!</string>
-    <string name="TEA_timer_elap">கழிந்தது %s</string>
-    <string name="TEA_timer_est">எஸ்டி. %s</string>
     <string name="FLA_search_filter">பொருந்தும் \'%s\'</string>
     <string name="auto_dismiss_datetime_summary">தேதி தேர்வை, தேர்வுக்கு பின் மூடவும்</string>
     <string name="auto_dismiss_datetime">தேதி தேர்வை தானாகவே மூடவும்</string>

@@ -14,9 +14,7 @@
 \n</string>
     <string name="import_progress_read">Nuskaitoma užduotis %d…</string>
     <string name="read_permission_label">Tasks leidimas</string>
-    <string name="DLG_hour_minutes">Laikas (valandos : minutės)</string>
     <string name="DLG_undo">Atstatyti</string>
-    <string name="WID_dateButtonUnset">Spustelėti, kad nustatyti</string>
     <string name="TLA_no_items">Čia užduočių nėra.</string>
     <string name="TLA_menu_sort">Eiliškumas</string>
     <string name="TLA_menu_search">Ieškoti</string>
@@ -34,11 +32,7 @@
     <string name="TEA_importance_label">Prioritetas</string>
     <string name="no_date">Nėra datos</string>
     <string name="TEA_note_label">Aprašymas</string>
-    <string name="TEA_estimatedDuration_label">Kiek laiko tai užtruks?</string>
-    <string name="TEA_elapsedDuration_label">Jau praleistas laikas</string>
     <string name="save">Išsaugoti</string>
-    <string name="TEA_timer_est">Apie %s</string>
-    <string name="TEA_timer_elap">Prabėgo %s</string>
     <string name="due_date">Termino tada</string>
     <string name="due_time">Termino laikas</string>
     <string name="day_before_due">Diena iki termino pabaigos</string>
@@ -50,7 +44,6 @@
     <string name="TEA_control_notes">Aprašymas</string>
     <string name="TEA_control_files">Failai</string>
     <string name="TEA_control_reminders">Priminimai</string>
-    <string name="TEA_control_timer">Laikmačio nustatymai</string>
     <string name="TEA_control_hidden_section">----Visada slėpti----</string>
     <string name="none">Nėra</string>
     <string name="EPr_beastMode_reset">Ištrinti numatytus</string>
@@ -135,11 +128,6 @@
     <string name="new_tag">Sukurti naują etiketę</string>
     <string name="new_list">Sukurti naują sąrašą</string>
     <string name="delete_tag_confirmation">Ištrinti %s?</string>
-    <string name="TPl_notification">Laikmatis yra aktyvus: %s!</string>
-    <string name="TEA_timer_controls">Laikmatis</string>
-    <string name="TEA_timer_comment_started">Užduotis pradėta:</string>
-    <string name="TEA_timer_comment_stopped">Užduotis nustota vykdyti:</string>
-    <string name="TEA_timer_comment_spent">Praleista laiko:</string>
     <string name="voice_create_prompt">Sukurti užduotį žodžiu</string>
     <string name="EPr_voiceInputEnabled_title">Įrašyti balsu</string>
     <string name="voice_command_added_task">Pridėta užduotis</string>

@@ -26,7 +26,6 @@ fun TitleRow(
     linkify: Linkify?,
     markdownProvider: MarkdownProvider?,
     isCompleted: Boolean,
-    isRecurring: Boolean,
     priority: Int,
     onComplete: () -> Unit,
     requestFocus: Boolean,
@@ -37,7 +36,6 @@ fun TitleRow(
         icon = {
             CheckBox(
                 isCompleted = isCompleted,
-                isRecurring = isRecurring,
                 priority = priority,
                 onCompleteClick = onComplete,
                 modifier = Modifier.padding(
@@ -79,7 +77,6 @@ fun EmptyTitlePreview() {
             linkify = null,
             markdownProvider = null,
             isCompleted = false,
-            isRecurring = false,
             priority = 0,
             onComplete = {},
             requestFocus = false,
@@ -105,7 +102,6 @@ fun TitlePreview() {
             linkify = null,
             markdownProvider = null,
             isCompleted = false,
-            isRecurring = false,
             priority = 0,
             onComplete = {},
             requestFocus = false,

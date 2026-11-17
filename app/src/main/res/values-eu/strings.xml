@@ -14,9 +14,7 @@
 \n</string>
     <string name="import_progress_read">%d zeregina irakurtzen…</string>
     <string name="read_permission_label">Tasks aplikazioaren baimenak</string>
-    <string name="DLG_hour_minutes">Denbora (orduak : minutuak)</string>
     <string name="DLG_undo">Desegin</string>
-    <string name="WID_dateButtonUnset">Sakatu ezartzeko</string>
     <string name="TLA_no_items">Ez dago zereginik hemen.</string>
     <string name="TLA_menu_sort">Ordenatu</string>
     <string name="TLA_menu_search">Bilatu</string>
@@ -33,11 +31,7 @@
     <string name="TEA_title_hint">Zereginaren izena</string>
     <string name="TEA_importance_label">Lehentasuna</string>
     <string name="TEA_note_label">Deskripzioa</string>
-    <string name="TEA_estimatedDuration_label">Zenbat hartuko dizu\?</string>
-    <string name="TEA_elapsedDuration_label">Jada erabilitako denbora</string>
     <string name="save">Gorde</string>
-    <string name="TEA_timer_est">Est. %s</string>
-    <string name="TEA_timer_elap">Igarota %s</string>
     <string name="due_date">Epemuga data</string>
     <string name="due_time">Epemuga-ordua</string>
     <string name="day_before_due">Epemugaren aurreko eguna</string>
@@ -49,7 +43,6 @@
     <string name="TEA_control_notes">Deskripzioa</string>
     <string name="TEA_control_files">Fitxategiak</string>
     <string name="TEA_control_reminders">Oroigarriak</string>
-    <string name="TEA_control_timer">Kronometroaren kontrolak</string>
     <string name="TEA_control_hidden_section">----Ezkutatu beti----</string>
     <string name="none">Bat ere ez</string>
     <string name="EPr_beastMode_reset">Berrezarri lehenetsitakoak</string>
@@ -125,11 +118,6 @@
     <string name="new_tag">Sortu etiketa berria</string>
     <string name="new_list">Sortu zerrenda berria</string>
     <string name="delete_tag_confirmation">Ezabatu %s\?</string>
-    <string name="TPl_notification">Kronometro aktiboak: %s !</string>
-    <string name="TEA_timer_controls">Kronometroa</string>
-    <string name="TEA_timer_comment_started">zeregin honekin hasita:</string>
-    <string name="TEA_timer_comment_stopped">zeregin hau egiteari utzita:</string>
-    <string name="TEA_timer_comment_spent">Erabilitako denbora:</string>
     <string name="voice_create_prompt">Hitz egin zeregin bat sortzeko</string>
     <string name="EPr_voiceInputEnabled_title">Ahotz bidezko sarrera</string>
     <string name="voice_command_added_task">Zeregina gehituta</string>

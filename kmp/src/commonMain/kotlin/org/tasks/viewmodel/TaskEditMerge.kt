@@ -41,6 +41,9 @@ internal fun TaskEditViewModel.State.mergedWith(dbTask: Task): TaskEditViewModel
         modificationDate = dbTask.modificationDate,
         reminderLast = dbTask.reminderLast,
         reminderDismissed = dbTask.reminderDismissed,
+        // the scheduler owns these; the editor never sets them
+        series = dbTask.series,
+        scheduled = dbTask.scheduled,
     )
     val start = reconcileStartDate(dbTask, merged.dueDate)
     return copy(

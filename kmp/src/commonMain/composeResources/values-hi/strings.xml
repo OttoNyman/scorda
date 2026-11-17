@@ -11,7 +11,6 @@
     <string name="filter_my_tasks">मेरे कार्य</string>
     <string name="filter_notifications">नोटिफ़िकेशन</string>
     <string name="filter_snoozed">स्नूज़ किया गया</string>
-    <string name="filter_timer">कार्य समयबद्ध किया जा रहा है</string>
     <string name="filter_today">आज</string>
     <string name="filter_recently_modified">हाल ही में संशोधित</string>
     <string name="default_list">डिफ़ॉल्ट सूची</string>

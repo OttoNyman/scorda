@@ -14,7 +14,6 @@
     <string name="auto_dismiss_datetime_widget">විජට්</string>
     <string name="auto_dismiss_datetime_edit">කාර්ය සංස්කරණය</string>
     <string name="chip_appearance">චිප් පෙනුම</string>
-    <string name="TEA_timer_est">කාලය %s</string>
     <string name="widget_due_date_hidden">සඟවන්න</string>
     <string name="widget_due_date_below_title">මාතෘකාවට පහළින්</string>
     <string name="widget_due_date_after_title">මාතෘකාවෙන් පසු</string>
@@ -22,14 +21,12 @@
     <string name="back_button_saves_task">පසුපස බොත්තම මඟින් කාර්යය සුරකිනු ඇත</string>
     <string name="geofence_radius">අරය</string>
     <string name="voice_command_added_task">කාර්යය එකතු කරන ලදි</string>
-    <string name="TEA_timer_comment_started">මෙම කාර්යය ආරම්භ කරන ලදි:</string>
     <string name="snooze_all">සියල්ල මඳකට මගහරින්න</string>
     <string name="gtasks_GTA_clear_completed">ඉවත්කිරීම සම්පූර්ණයි</string>
     <string name="CFC_tag_name">ටැගය…</string>
     <string name="CFC_tag_text">ටැගය:\?</string>
     <string name="CFC_startBefore_name">ආරම්භ කරන්න…</string>
     <string name="EPr_cal_start_at_due_time">නියමිත වේලාවට දින දර්ශන සිදුවීම් ආරම්භ කරන්න</string>
-    <string name="TEA_control_timer">ටයිමර් පාලනය</string>
     <string name="action_call">අමතන්න</string>
     <string name="display_name">ප්‍රදර්ශන නාමය</string>
     <string name="actfm_picture_clear">පින්තූරය ඉවත් කරන්න</string>
@@ -141,10 +138,6 @@
     </plurals>
     <string name="EPr_voiceInputEnabled_title">ශ්‍රව්‍ය ආදානය</string>
     <string name="voice_create_prompt">කාර්යයක් නිර්මාණය කිරීමට කතා කරන්න</string>
-    <string name="TEA_timer_comment_spent">ගතකල කාලය:</string>
-    <string name="TEA_timer_comment_stopped">මෙම කාර්යය කිරීම නැවැත්වීය:</string>
-    <string name="TEA_timer_controls">ටයිමර්</string>
-    <string name="TPl_notification">%s සඳහා ටයිමර්ස් සක්‍රීයයි!</string>
     <string name="delete_tag_confirmation">%s මකාදමනවාද\?</string>
     <string name="new_list">නව ලැයිස්තුවක් සාදන්න</string>
     <string name="new_tag">නව ටැගයක් සාදන්න</string>
@@ -243,10 +236,7 @@
     <string name="start_date">ආරම්භක දිනය</string>
     <string name="due_time">නියමිත කාලය</string>
     <string name="due_date">අවසාන දිනය</string>
-    <string name="TEA_timer_elap">%s අවසන්</string>
     <string name="save">සුරකින්න</string>
-    <string name="TEA_elapsedDuration_label">දැනටමත් ගත කළ කාලය</string>
-    <string name="TEA_estimatedDuration_label">එයට කොපමණ වේලාවක් ගතවේ ද\?</string>
     <string name="TEA_note_label">විස්තර</string>
     <string name="TEA_importance_label">ප්‍රමුඛතාවය</string>
     <string name="TEA_title_hint">කාර්යයේ නම</string>
@@ -264,9 +254,7 @@
     <string name="TLA_menu_search">සොයන්න</string>
     <string name="TLA_menu_sort">වර්ග කරන්න</string>
     <string name="TLA_no_items">මෙහි කිසිදු කාර්යයක් නොමැත.</string>
-    <string name="WID_dateButtonUnset">සැකසීමට ක්ලික් කරන්න</string>
     <string name="DLG_undo">අහෝසි කරන්න</string>
-    <string name="DLG_hour_minutes">කාලය (පැය: මිනිත්තු)</string>
     <string name="read_permission_label">කාර්ය අවසරය</string>
     <string name="import_progress_read">කියවීමේ කාර්යය %d…</string>
     <string name="import_summary_message">%1$s ගොනුවේ %2$s අඩංගු වේ.

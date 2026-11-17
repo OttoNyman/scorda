@@ -20,6 +20,8 @@ import com.todoroo.astrid.ui.CheckableImageView
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.color.MaterialColors
 import org.tasks.R
+import androidx.appcompat.content.res.AppCompatResources
+import org.tasks.compose.chips.Chip
 import org.tasks.compose.chips.ChipGroup
 import org.tasks.compose.chips.FilterChip
 import org.tasks.compose.StartDateChip
@@ -33,9 +35,11 @@ import org.tasks.databinding.TaskAdapterRowBinding
 import org.tasks.dialogs.Linkify
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.filters.CaldavFilter
+import org.tasks.filters.CompletedFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.TagFilter
+import org.tasks.filters.TrashFilter
 import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.kmp.formatTime
 import org.tasks.markdown.Markdown
@@ -43,6 +47,7 @@ import org.tasks.preferences.Preferences
 import org.tasks.themes.TasksIcons
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
+import org.tasks.kmp.org.tasks.time.DateStyle
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.startOfDay
 import org.tasks.ui.CheckBoxProvider
@@ -73,6 +78,10 @@ class TaskViewHolder internal constructor(
     private val row: ViewGroup = binding.row
     private val dueDate: TextView = binding.dueDate.apply {
         setOnClickListener { changeDueDate() }
+        compoundDrawablePadding = (2 * resources.displayMetrics.density).toInt()
+    }
+    private val repeatMark by lazy {
+        AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_outline_repeat_24px)?.mutate()
     }
     private val rowBody: ViewGroup = binding.rowBody.apply {
         setOnClickListener { callback.onClick(this@TaskViewHolder) }
@@ -240,6 +249,14 @@ class TaskViewHolder internal constructor(
                 )
             }
             dueDate.text = dateValue
+            // repeating tasks keep a plain checkbox; the repeat mark goes before the due date
+            val repeating = featureGate.current.repeat && (task.task.isRecurring || task.task.series != null)
+            val mark = repeatMark.takeIf { repeating }?.apply {
+                val size = dueDate.textSize.toInt()
+                setBounds(0, 0, size, size)
+                setTint(dueDate.currentTextColor)
+            }
+            dueDate.setCompoundDrawablesRelative(mark, null, null, null)
             dueDate.visibility = View.VISIBLE
         } else {
             dueDate.visibility = View.GONE
@@ -257,9 +274,19 @@ class TaskViewHolder internal constructor(
         val place = task.location?.place
         val list = task.caldav
         val tagsString = task.tagsString
+        val parentTitle = task.parentTitle
         val appearance = preferences.getIntegerFromString(R.string.p_chip_appearance, 0)
         val showText = appearance != 2
         val showIcon = appearance != 1
+        // moved forward only: adopted overdue legacy rows have dueDate < scheduled
+        val postponedFrom = task.task.takeIf {
+            it.series != null && it.scheduled > 0 && it.dueDate > it.scheduled
+        }?.let {
+            context.getString(
+                R.string.series_postponed_from,
+                dateFormatter.relativeDateTime(it.scheduled, DateStyle.SHORT),
+            )
+        }
         val toggleSubtasks = { task: Long, collapsed: Boolean -> callback.toggleSubtasks(task, collapsed) }
         val onClick = { it: Filter -> callback.onClick(it) }
         chipGroup.setContent {
@@ -274,6 +301,43 @@ class TaskViewHolder internal constructor(
                     )
                 ) {
                     val features = featureGate.current
+                    // Completed and Trash are flat lists: say whose subtask this is
+                    if (!parentTitle.isNullOrBlank() && (filter is CompletedFilter || filter is TrashFilter)) {
+                        Chip(
+                            icon = TasksIcons.SUBTASK,
+                            name = parentTitle,
+                            theme = 0,
+                            showText = true,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
+                        )
+                    }
+                    if (filter is TrashFilter && task.task.isDeleted) {
+                        Chip(
+                            icon = TasksIcons.DELETE,
+                            name = context.getString(
+                                R.string.trash_deleted_at,
+                                dateFormatter.relativeDateTime(task.task.deletionDate, DateStyle.SHORT),
+                            ),
+                            theme = 0,
+                            showText = true,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
+                        )
+                    }
+                    if (features.repeat && postponedFrom != null) {
+                        Chip(
+                            icon = TasksIcons.HISTORY,
+                            name = postponedFrom,
+                            theme = 0,
+                            showText = true,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
+                        )
+                    }
                     if (features.subtasks && children > 0 && remember { preferences.showSubtaskChip }) {
                         SubtaskChip(
                             collapsed = collapsed,

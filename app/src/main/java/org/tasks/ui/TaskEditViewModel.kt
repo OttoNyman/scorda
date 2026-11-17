@@ -21,8 +21,6 @@ import org.tasks.data.getDefaultAlarms
 import org.tasks.service.TaskDeleter
 import org.tasks.data.TaskMover
 import com.todoroo.astrid.tags.TagsControlSet
-import com.todoroo.astrid.timers.TimerControlSet
-import com.todoroo.astrid.timers.TimerPlugin
 import com.todoroo.astrid.ui.ReminderControlSet
 import com.todoroo.astrid.ui.StartDateControlSet
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +49,7 @@ import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.GoogleTaskDao
 import org.tasks.data.dao.LocationDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.TagDao
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskAttachmentDao
@@ -59,6 +58,7 @@ import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Alarm.Companion.TYPE_REL_END
 import org.tasks.data.entity.Alarm.Companion.TYPE_REL_START
 import org.tasks.data.entity.Attachment
+import org.tasks.data.entity.Series
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavCalendar
 import org.tasks.data.entity.CaldavTask
@@ -83,6 +83,12 @@ import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.PermissionChecker
 import org.tasks.preferences.Preferences
+import org.tasks.repeats.Frequency
+import org.tasks.reminders.acceptsDefault
+import org.tasks.reminders.withAdvance
+import org.tasks.repeats.Recur
+import org.tasks.repeats.SeriesEditScope
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.repeats.anchoredToDueDate
 import org.tasks.time.DateTime
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -97,7 +103,6 @@ class TaskEditViewModel @Inject constructor(
     private val taskDao: TaskDao,
     private val taskSaver: TaskSaver,
     private val taskDeleter: TaskDeleter,
-    private val timerPlugin: TimerPlugin,
     private val permissionChecker: PermissionChecker,
     private val calendarEventProvider: CalendarEventProvider,
     private val gCalHelper: GCalHelper,
@@ -118,6 +123,8 @@ class TaskEditViewModel @Inject constructor(
     private val taskAttachmentDao: TaskAttachmentDao,
     private val defaultFilterProvider: DefaultFilterProvider,
     private val featureGate: org.tasks.constructor.FeatureGate,
+    private val seriesDao: SeriesDao,
+    private val seriesScheduler: SeriesScheduler,
 ) : ViewModel() {
     private val resources = context.resources
     private var cleared = false
@@ -141,9 +148,15 @@ class TaskEditViewModel @Inject constructor(
         }
     }.apply { notes = notes?.stripCarriageReturns() } // copying here broke tests 🙄
 
+    /** The schedule of an occurrence: the editor shows and edits its rule, never the row's. */
+    private val series: Series? = task.series?.let { runBlocking { seriesDao.getByUuid(it) } }
+
+    /** Occurrence of a running series: it can't be deleted (spec point 12). */
+    val isLiveOccurrence: Boolean = series?.finished == 0L
+
     private val _originalState = MutableStateFlow(
         TaskEditViewState(
-            task = task,
+            task = series?.let { task.copy(recurrence = it.recurrence, repeatFrom = it.repeatFrom) } ?: task,
             showBeastModeHint = false,
             showComments = featureGate.current.notes &&
                 preferences.getBoolean(R.string.p_show_task_edit_comments, false),
@@ -187,9 +200,6 @@ class TaskEditViewModel @Inject constructor(
     }
 
     var eventUri = MutableStateFlow(task.calendarURI)
-    val timerStarted = MutableStateFlow(task.timerStart)
-    val estimatedSeconds = MutableStateFlow(task.estimatedSeconds)
-    val elapsedSeconds = MutableStateFlow(task.elapsedSeconds)
 
     val dueDate = MutableStateFlow(task.dueDate)
 
@@ -212,7 +222,8 @@ class TaskEditViewModel @Inject constructor(
         }
         if (shouldAddReminders) {
             runBlocking { preferences.defaultAlarms() }
-                .filter { it.type == TYPE_REL_END }
+                .filter { it.type == TYPE_REL_END && featureGate.current.schedules(it) }
+                .filter { _viewState.value.alarms.acceptsDefault(it) }
                 .forEach { alarm ->
                     _viewState.update { state ->
                         state.copy(alarms = state.alarms.plusAlarm(alarm.copy(task = task.id)))
@@ -290,8 +301,36 @@ class TaskEditViewModel @Inject constructor(
         ringsReady = true
     }
 
-    fun hasChanges(): Boolean {
-        val viewState = _viewState.value
+    fun hasChanges(): Boolean = hasChanges(_viewState.value)
+
+    /**
+     * Saving this needs the user's [SeriesEditScope] (spec point 10): an occurrence of a running
+     * series with changes besides its rule. A changed or cleared rule always goes to the schedule
+     * and completing never asks.
+     */
+    fun asksSeriesScope(): Boolean {
+        if (!featureGate.current.repeat) {
+            return false
+        }
+        val series = series?.takeIf { it.finished == 0L } ?: return false
+        val state = _viewState.value
+        return !state.isReadOnly &&
+                state.isCompleted == task.isCompleted &&
+                !ruleChanged(series, state.task) &&
+                // the same rule written another way is no change
+                hasChanges(state.copy(task = state.task.copy(recurrence = series.recurrence)))
+    }
+
+    private fun ruleChanged(series: Series, edited: Task): Boolean {
+        val rule = edited.recurrence?.takeIf { it.isNotBlank() } ?: return true
+        return edited.repeatFrom != series.repeatFrom || rule != series.recurrence && try {
+            Recur.parse(rule) != Recur.parse(series.recurrence)
+        } catch (e: IllegalArgumentException) {
+            true
+        }
+    }
+
+    private fun hasChanges(viewState: TaskEditViewState): Boolean {
         return originalState.value != viewState ||
                 (viewState.isNew && viewState.task.title?.isNotBlank() == true) || // text shared to tasks
                 task.dueDate != dueDate.value ||
@@ -301,8 +340,6 @@ class TaskEditViewModel @Inject constructor(
                 } else {
                     task.calendarURI != eventUri.value
                 } ||
-                task.elapsedSeconds != elapsedSeconds.value ||
-                task.estimatedSeconds != estimatedSeconds.value ||
                 getRingFlags() != when {
             task.isNotifyModeSilent -> NOTIFY_MODE_SILENT
             task.isNotifyModeFive -> NOTIFY_MODE_FIVE
@@ -311,8 +348,12 @@ class TaskEditViewModel @Inject constructor(
         }
     }
 
+    /**
+     * [scope] is the user's answer when [asksSeriesScope]; without one an occurrence edit stays
+     * on the occurrence. After a schedule edit the row may be gone: the editor must close.
+     */
     @MainThread
-    suspend fun save(): Boolean = withContext(NonCancellable) {
+    suspend fun save(scope: SeriesEditScope? = null): Boolean = withContext(NonCancellable) {
         if (cleared) {
             return@withContext false
         }
@@ -328,15 +369,23 @@ class TaskEditViewModel @Inject constructor(
         val viewState = _viewState.value
         val isNew = viewState.isNew
         val original = if (isNew) null else task.copy()
+        val rule = viewState.task.recurrence?.takeIf { it.isNotBlank() }
+        val series = series
+        // completing never goes to the schedule
+        val toSchedule = series != null && rule != null && viewState.isCompleted == task.isCompleted &&
+                (ruleChanged(series, viewState.task) || scope == SeriesEditScope.SCHEDULE)
         task.title = if (viewState.task.title.isNullOrBlank()) getString(Res.string.no_title) else viewState.task.title
         task.dueDate = dueDate.value
         task.priority = viewState.task.priority
         task.notes = viewState.task.notes
         task.hideUntil = startDate.value
-        task.recurrence = viewState.task.recurrence
-        task.repeatFrom = viewState.task.repeatFrom
-        task.elapsedSeconds = elapsedSeconds.value
-        task.estimatedSeconds = estimatedSeconds.value
+        // an occurrence never carries a rule: it lives in the series
+        if (task.series == null) {
+            task.recurrence = viewState.task.recurrence
+            task.repeatFrom = viewState.task.repeatFrom
+        } else {
+            task.recurrence = null
+        }
         task.ringFlags = getRingFlags()
 
         applyCalendarChanges()
@@ -463,6 +512,21 @@ class TaskEditViewModel @Inject constructor(
                 .let { taskAttachmentDao.insert(it) }
         }
 
+        if (series != null && rule == null) {
+            // "Don't repeat" on an occurrence: the series ends, this row stays a plain task
+            seriesScheduler.detach(task.id)
+            task.series = null
+            task.scheduled = 0
+        } else if (toSchedule) {
+            // after the subtasks: the new template is captured from the saved row
+            seriesScheduler.editSchedule(
+                taskId = task.id,
+                newRecurrence = rule,
+                previousDueDate = original!!.dueDate,
+                newRepeatFrom = viewState.task.repeatFrom,
+            )
+        }
+
         if (task.isCompleted != _viewState.value.isCompleted) {
             taskCompleter.setComplete(task, _viewState.value.isCompleted)
             if (_viewState.value.isCompleted) {
@@ -513,7 +577,6 @@ class TaskEditViewModel @Inject constructor(
 
     suspend fun discard() {
         if (_viewState.value.isNew) {
-            timerPlugin.stopTimer(task)
             (originalState.value.attachments + _viewState.value.attachments)
                 .onEach { attachment -> FileHelper.delete(context, attachment.uri.toUri()) }
                 .let { taskAttachmentDao.delete(it.toList()) }
@@ -540,6 +603,13 @@ class TaskEditViewModel @Inject constructor(
     fun removeAlarm(alarm: Alarm) {
         _viewState.update { state ->
             state.copy(alarms = state.alarms.minus(alarm).toPersistentSet())
+        }
+    }
+
+    /** The "In advance" row: replaces the one early ring, null removes it. */
+    fun setAdvance(offset: Long?) {
+        _viewState.update { state ->
+            state.copy(alarms = state.alarms.withAdvance(offset).toPersistentSet())
         }
     }
 
@@ -585,18 +655,35 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setRecurrence(recurrence: String?) {
-        _viewState.update { state ->
-            state.copy(
-                task = state.task.copy(
-                    recurrence = recurrence,
-                    dueDate = if (recurrence?.isNotBlank() == true && task.dueDate == 0L) {
-                        currentTimeMillis().startOfDay()
-                    } else {
-                        task.dueDate
-                    }
-                )
-            )
+        _viewState.update { state -> state.copy(task = state.task.copy(recurrence = recurrence)) }
+        if (recurrence.isNullOrBlank() || hasDueTime(dueDate.value)) {
+            return
         }
+        // A repeat needs a due date, and through setDueDate so default reminders come with it
+        // (the schedule copies them to every occurrence). A sub-day rule needs a time too: the
+        // first occurrence is one period from now.
+        val period = subDayPeriod(recurrence)
+        when {
+            period != null ->
+                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, currentTimeMillis() + period))
+            dueDate.value == 0L ->
+                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY, currentTimeMillis()))
+        }
+    }
+
+    private fun subDayPeriod(rule: String): Long? {
+        val recur = try {
+            Recur.parse(rule)
+        } catch (e: IllegalArgumentException) {
+            return null
+        }
+        val unit = when (recur.frequency) {
+            Frequency.SECONDLY -> 1_000L
+            Frequency.MINUTELY -> 60_000L
+            Frequency.HOURLY -> 3_600_000L
+            else -> return null
+        }
+        return unit * (recur.interval ?: 1).coerceAtLeast(1)
     }
 
     fun setDescription(description: String) {
@@ -648,6 +735,10 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun onDueDateChanged() {
+        if (series != null) {
+            // a moved date is a postpone, or the schedule rebases the rule itself
+            return
+        }
         _viewState.value.task.recurrence?.takeIf { it.isNotBlank() }?.let { recurrence ->
             val anchored = recurrence.anchoredToDueDate(dueDate.value)
             if (anchored != recurrence) {
@@ -710,10 +801,12 @@ class TaskEditViewModel @Inject constructor(
         val TAG_LIST = R.string.TEA_ctrl_google_task_list
         val TAG_PRIORITY = R.string.TEA_ctrl_importance_pref
         val TAG_DUE_DATE = R.string.TEA_ctrl_when_pref
+        val TAG_ADVANCE = R.string.TEA_ctrl_advance_pref
 
         private fun displayOrder(features: org.tasks.constructor.Constructor) = listOf(
             TAG_TITLE to true,
             TAG_DUE_DATE to true,
+            TAG_ADVANCE to features.advance,
             com.todoroo.astrid.repeats.RepeatControlSet.TAG to features.repeat,
             TAG_DESCRIPTION to features.notes,
             TAG_LIST to features.lists,
@@ -724,14 +817,13 @@ class TaskEditViewModel @Inject constructor(
             com.todoroo.astrid.ui.ReminderControlSet.TAG to features.extraReminders,
             org.tasks.ui.LocationControlSet.TAG to features.geo,
             org.tasks.ui.CalendarControlSet.TAG to features.calendar,
-            com.todoroo.astrid.timers.TimerControlSet.TAG to features.timer,
             com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
         ).filter { it.second }.map { it.first }.toPersistentList()
 
         val TASK_EDIT_CONTROL_SET_FRAGMENTS = intArrayOf(
             TAG_TITLE,
             TAG_DUE_DATE,
-            TimerControlSet.TAG,
+            TAG_ADVANCE,
             TAG_DESCRIPTION,
             CalendarControlSet.TAG,
             TAG_PRIORITY,

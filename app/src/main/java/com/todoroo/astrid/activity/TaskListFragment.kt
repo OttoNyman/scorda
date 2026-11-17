@@ -77,7 +77,6 @@ import com.todoroo.astrid.repeats.RepeatTaskHelper
 import com.todoroo.astrid.service.TaskCreator
 import com.todoroo.astrid.service.TaskDuplicator
 import org.tasks.data.TaskMover
-import com.todoroo.astrid.timers.TimerPlugin
 import com.todoroo.astrid.utility.Flags
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
@@ -112,6 +111,7 @@ import org.tasks.compose.SyncWarningMicrosoft
 import org.tasks.data.TaskContainer
 import org.tasks.data.TaskSaver
 import org.tasks.data.dao.CaldavDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.db.Database
@@ -132,12 +132,12 @@ import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.extensions.Context.openAppNotificationSettings
 import org.tasks.extensions.Context.openReminderSettings
 import org.tasks.extensions.Context.openUri
-import org.tasks.extensions.Context.toast
 import org.tasks.extensions.Fragment.safeStartActivityForResult
 import org.tasks.extensions.hideKeyboard
 import org.tasks.extensions.setOnQueryTextListener
 import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.CaldavFilter
+import org.tasks.filters.CompletedFilter
 import org.tasks.filters.CustomFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterImpl
@@ -146,6 +146,7 @@ import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.SearchFilter
 import org.tasks.filters.TagFilter
+import org.tasks.filters.TrashFilter
 import org.tasks.filters.key
 import org.tasks.kmp.org.tasks.time.DateStyle
 import org.tasks.kmp.org.tasks.time.DateFormatter
@@ -155,9 +156,11 @@ import org.tasks.preferences.Device
 import org.tasks.preferences.MainPreferences
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.ResourceResolver.getData
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.resources.getString
 import org.tasks.scheduling.NotificationSchedulerWork
 import org.tasks.service.TaskCompleter
+import org.tasks.service.TaskDeleter
 import org.tasks.sync.SyncAdapters
 import org.tasks.sync.SyncSource
 import org.tasks.tags.TagPickerActivity
@@ -195,7 +198,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var dialogBuilder: DialogBuilder
     @Inject lateinit var taskCreator: TaskCreator
-    @Inject lateinit var timerPlugin: TimerPlugin
     @Inject lateinit var viewHolderFactory: ViewHolderFactory
     @Inject lateinit var localBroadcastManager: LocalBroadcastManager
     @Inject lateinit var device: Device
@@ -211,6 +213,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     @Inject lateinit var colorProvider: ColorProvider
     @Inject lateinit var shortcutManager: ShortcutManager
     @Inject lateinit var taskCompleter: TaskCompleter
+    @Inject lateinit var seriesScheduler: SeriesScheduler
+    @Inject lateinit var seriesDao: SeriesDao
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var repeatTaskHelper: RepeatTaskHelper
     @Inject lateinit var taskListEventBus: TaskListEventBus
@@ -336,7 +340,9 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if ((mainViewModel.state.value.filter as? SearchFilter)?.query?.isNotBlank() == true) {
+                val current = mainViewModel.state.value.filter
+                // search and the trash are side trips: back returns to the list they were opened from
+                if ((current as? SearchFilter)?.query?.isNotBlank() == true || current is TrashFilter) {
                     lifecycleScope.launch {
                         mainViewModel.openLastViewedFilter()
                     }
@@ -475,6 +481,12 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         setupRefresh(swipeRefreshLayout)
         setupRefresh(emptyRefreshLayout)
         binding.toolbar.title = filter.title
+        // no setting for it, so the trash says how long it keeps things
+        binding.toolbar.subtitle = if (filter is TrashFilter) {
+            getString(R.string.trash_retention, org.tasks.service.TaskDeleter.TRASH_RETENTION_DAYS)
+        } else {
+            null
+        }
         binding.toolbar.setTitleTextAppearance(requireContext(), com.google.android.material.R.style.TextAppearance_Material3_HeadlineSmall)
         binding.toolbar.setTitleTextColor(themeColor.primaryColor)
         binding.appbarlayout.addOnOffsetChangedListener { _, verticalOffset ->
@@ -727,7 +739,20 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             menu.findItem(R.id.menu_expand_subtasks).isVisible = false
         }
         menu.findItem(R.id.menu_voice_add).isVisible = device.voiceInputAvailable() && filter.isWritable
-        menu.findItem(R.id.menu_clear_completed).isVisible = filter.isWritable
+        menu.findItem(R.id.menu_clear_completed).apply {
+            isVisible = filter.isWritable
+            if (filter is CompletedFilter) {
+                setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            }
+        }
+        val trash = filter is TrashFilter
+        menu.findItem(R.id.menu_trash).isVisible = !trash
+        menu.findItem(R.id.menu_empty_trash).isVisible = trash
+        if (trash) {
+            // search and share only know live tasks
+            menu.findItem(R.id.menu_search).isVisible = false
+            menu.findItem(R.id.menu_share).isVisible = false
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -779,26 +804,28 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     val tasks = withContext(Dispatchers.Default) {
                         listViewModel.getTasksToClear()
                     }
-                    val countString = requireContext().resources.getQuantityString(R.plurals.Ntasks, tasks.size, tasks.size)
-                    if (tasks.isEmpty()) {
-                        context?.toast(R.string.delete_multiple_tasks_confirmation, countString)
-                    } else {
-                        dialogBuilder
-                            .newDialog(R.string.clear_completed_tasks_confirmation)
-                            .setMessage(R.string.delete_tasks_warning, countString)
-                            .setPositiveButton(R.string.ok) { _, _ ->
-                                lifecycleScope.launch {
-                                    listViewModel.markDeleted(tasks)
-                                    context?.toast(
-                                        R.string.delete_multiple_tasks_confirmation,
-                                        countString
-                                    )
-                                }
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
+                    // no confirmation: the trash is the undo
+                    if (tasks.isNotEmpty()) {
+                        withContext(NonCancellable) { listViewModel.markDeleted(tasks) }
                     }
+                    makeSnackbar(R.string.trash_moved, tasks.size.toString())?.show()
                 }
+                true
+            }
+            R.id.menu_trash -> {
+                lifecycleScope.launch {
+                    // not remembered: back, and the next launch, return to the list it was opened from
+                    mainViewModel.setFilter(TrashFilter.create(), remember = false)
+                }
+                true
+            }
+            R.id.menu_empty_trash -> {
+                dialogBuilder
+                    .newDialog(R.string.trash_empty)
+                    .setMessage(R.string.trash_empty_confirmation, TaskDeleter.TRASH_RETENTION_DAYS)
+                    .setPositiveButton(R.string.ok) { _, _ -> deleteForever(null) }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
                 true
             }
             R.id.menu_filter_settings -> {
@@ -1037,6 +1064,12 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             listOf(R.id.edit_tags, R.id.move_tasks, R.id.reschedule, R.id.copy_tasks, R.id.delete)
                 .forEach { menu.findItem(it).isVisible = false }
         }
+        val trash = filter is TrashFilter
+        listOf(R.id.restore, R.id.delete_forever).forEach { menu.findItem(it).isVisible = trash }
+        menu.findItem(R.id.finish_series).isVisible = filter.isWritable && featureGate.current.repeat
+        if (trash) {
+            listOf(R.id.edit_priority, R.id.menu_share).forEach { menu.findItem(it).isVisible = false }
+        }
         return true
     }
 
@@ -1140,12 +1173,57 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             }
             R.id.delete -> {
                 logMultiSelect("delete", selected.size)
+                // no confirmation: the tasks go to the trash
+                lifecycleScope.launch {
+                    // uncompleted occurrences of a running series can't be deleted: complete,
+                    // postpone or finish the series
+                    val deletable = taskDao.fetch(selected)
+                        .filterNot { task ->
+                            !task.isCompleted &&
+                                task.series?.let { seriesDao.getByUuid(it) }?.finished == 0L
+                        }
+                        .map { it.id }
+                    val dropped = deletable.size < selected.size
+                    when {
+                        deletable.isNotEmpty() -> deleteSelectedItems(deletable, dropped)
+                        else -> makeSnackbar(R.string.series_cannot_delete)?.show()
+                    }
+                }
+                true
+            }
+            R.id.restore -> {
+                restoreSelectedItems(selected)
+                true
+            }
+            R.id.finish_series -> {
+                lifecycleScope.launch {
+                    val series = taskDao
+                        .fetch(selected)
+                        .filter { it.series != null && !it.isCompleted && !it.readOnly }
+                    if (series.isEmpty()) {
+                        makeSnackbar(R.string.series_none)?.show()
+                    } else {
+                        // the checkbox only finishes one occurrence, so this one asks first
+                        dialogBuilder
+                            .newDialog(R.string.series_finish)
+                            .setMessage(R.string.series_finish_confirmation)
+                            .setPositiveButton(R.string.ok) { _, _ -> finishSeries(series) }
+                            .setNegativeButton(R.string.cancel, null)
+                            .show()
+                    }
+                }
+                true
+            }
+            R.id.delete_forever -> {
                 dialogBuilder
-                        .newDialog(R.string.delete_selected_tasks)
-                        .setPositiveButton(
-                                R.string.ok) { _, _ -> deleteSelectedItems(selected) }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+                    .newDialog(R.string.trash_delete_forever)
+                    .setMessage(
+                        R.string.delete_tasks_warning,
+                        resources.getQuantityString(R.plurals.Ntasks, selected.size, selected.size),
+                    )
+                    .setPositiveButton(R.string.ok) { _, _ -> deleteForever(selected) }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
                 true
             }
             R.id.copy_tasks -> {
@@ -1224,21 +1302,51 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
     }
 
-    private fun deleteSelectedItems(tasks: List<Long>) = lifecycleScope.launch {
+    private fun deleteSelectedItems(
+        tasks: List<Long>,
+        skippedOccurrences: Boolean = false,
+    ) = lifecycleScope.launch {
         finishActionMode()
 
         val result = withContext(NonCancellable) {
             listViewModel.markDeleted(tasks)
         }
-        result.forEach {
-            timerPlugin.stopTimer(it)
-            taskAdapter.onTaskDeleted(it)
-        }
+        result.forEach { taskAdapter.onTaskDeleted(it) }
         loadTaskListContent()
         if (tasks.contains(mainViewModel.state.value.task?.id)) {
             mainViewModel.setTask(null)
         }
-        makeSnackbar(R.string.delete_multiple_tasks_confirmation, result.size.toString())?.show()
+        if (skippedOccurrences) {
+            makeSnackbar(R.string.series_cannot_delete)?.show()
+        } else {
+            makeSnackbar(R.string.trash_moved, result.size.toString())?.show()
+        }
+    }
+
+    private fun restoreSelectedItems(tasks: List<Long>) = lifecycleScope.launch {
+        finishActionMode()
+        val restored = withContext(NonCancellable) {
+            listViewModel.restore(tasks)
+        }
+        loadTaskListContent()
+        makeSnackbar(R.string.trash_restored, restored.size.toString())?.show()
+    }
+
+    private fun finishSeries(tasks: List<Task>) = lifecycleScope.launch {
+        finishActionMode()
+        withContext(NonCancellable) {
+            tasks.mapNotNull { it.series }.distinct().forEach { seriesScheduler.finish(it) }
+        }
+        loadTaskListContent()
+    }
+
+    /** Null empties the whole trash. */
+    private fun deleteForever(tasks: List<Long>?) = lifecycleScope.launch {
+        finishActionMode()
+        withContext(NonCancellable) {
+            listViewModel.deleteForever(tasks)
+        }
+        loadTaskListContent()
     }
 
     private fun setSelected(tasks: List<Long>) {
@@ -1257,7 +1365,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     }
 
     override fun onCompletedTask(task: TaskContainer, newState: Boolean) {
-        if (task.isReadOnly) {
+        if (task.isReadOnly || filter is TrashFilter) {
             return
         }
         lifecycleScope.launch {
@@ -1277,6 +1385,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
 
     override fun onClick(taskViewHolder: TaskViewHolder) {
+        if (filter is TrashFilter) {
+            // a trashed task is not edited, only restored or deleted
+            startActionMode()
+        }
         if (isActionModeActive) {
             recyclerAdapter?.toggle(taskViewHolder)
         } else {
@@ -1301,7 +1413,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     }
 
     override fun onChangeDueDate(task: TaskContainer) {
-        if (task.isReadOnly) {
+        if (task.isReadOnly || filter is TrashFilter) {
             return
         }
         showDateTimePicker(task)
@@ -1334,7 +1446,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                 }
                 val undoCompletion = View.OnClickListener {
                     lifecycleScope.launch {
+                        // occurrences (and their discarded subtasks) first, they come back by themselves
+                        seriesScheduler.undoCompletion(tasks.map { it.id })
                         tasks
+                            .filter { it.series == null }
                             .partition { it.isRecurring }
                             .let { (recurring, notRecurring) ->
                                 recurring.forEach { repeatTaskHelper.undoRepeat(it, oldDueDate) }

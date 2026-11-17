@@ -9,9 +9,7 @@
     <string name="import_summary_message">Bestand %1$s bevat %2$s.\n\n%3$s geïmporteerd,\n%4$s bestaan al\n%5$s bevatten fouten</string>
     <string name="import_progress_read">Taak %d lezen…</string>
     <string name="read_permission_label">App-recht Taken</string>
-    <string name="DLG_hour_minutes">Tijd (uren : minuten)</string>
     <string name="DLG_undo">Ongedaan maken</string>
-    <string name="WID_dateButtonUnset">Tik om in te stellen</string>
     <string name="TLA_no_items">Er zijn geen taken.</string>
     <string name="TLA_menu_sort">Sorteren</string>
     <string name="TLA_menu_search">Zoeken</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Taaknaam</string>
     <string name="TEA_importance_label">Prioriteit</string>
     <string name="TEA_note_label">Beschrijving</string>
-    <string name="TEA_estimatedDuration_label">Hoe lang duurt het?</string>
-    <string name="TEA_elapsedDuration_label">Reeds verstreken tijd</string>
     <string name="save">Opslaan</string>
-    <string name="TEA_timer_est">Verwacht %s</string>
-    <string name="TEA_timer_elap">Verstreken %s</string>
     <string name="due_date">Vervaldatum</string>
     <string name="due_time">Vervaltijd</string>
     <string name="day_before_due">Dag voor vervaldatum</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Beschrijving</string>
     <string name="TEA_control_files">Bestanden</string>
     <string name="TEA_control_reminders">Herinneringen</string>
-    <string name="TEA_control_timer">Instellingen timer</string>
     <string name="TEA_control_hidden_section">----Onzichtbaar----</string>
     <string name="none">Geen</string>
     <string name="EPr_beastMode_reset">Beginwaarden herstellen</string>
@@ -120,10 +113,6 @@
     <string name="new_tag">Nieuw label aanmaken</string>
     <string name="new_list">Nieuwe lijst maken</string>
     <string name="delete_tag_confirmation">%s wissen\?</string>
-    <string name="TPl_notification">Tijdklok is actief voor %s!</string>
-    <string name="TEA_timer_comment_started">aan deze taak begonnen:</string>
-    <string name="TEA_timer_comment_stopped">deze taak is gestopt:</string>
-    <string name="TEA_timer_comment_spent">Bestede tijd:</string>
     <string name="voice_create_prompt">Spreek om taak aan te maken</string>
     <string name="EPr_voiceInputEnabled_title">Spraakinvoer</string>
     <string name="voice_command_added_task">Toegevoegde taak</string>
@@ -218,7 +207,6 @@
     <string name="open_map">Kaart openen</string>
     <string name="choose_new_location">Nieuwe locatie kiezen</string>
     <string name="invalid_backup_file">Ongeldig backupbestand</string>
-    <string name="TEA_timer_controls">Tijdklok</string>
     <string name="backup_directory">Backup-map</string>
     <string name="location_radius_meters">%s m</string>
     <string name="filter">Filter</string>

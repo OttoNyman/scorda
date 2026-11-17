@@ -492,10 +492,12 @@ class Preferences @JvmOverloads constructor(
         filters = getBoolean("constructor_filters", false),
         priority = getBoolean("constructor_priority", false),
         geo = getBoolean("constructor_geo", false),
-        startDate = getBoolean("constructor_start_date", false),
-        extraReminders = getBoolean("constructor_extra_reminders", false),
+        // retired: a task has one time; the saved flag and the tasks' start dates stay untouched
+        startDate = false,
+        // retired: "in advance" replaced it; the tasks' extra reminders stay in the database
+        extraReminders = false,
+        advance = getBoolean("constructor_advance", false),
         calendar = getBoolean("constructor_calendar", false),
-        timer = getBoolean("constructor_timer", false),
         files = getBoolean("constructor_files", false),
         localLists = getBoolean("constructor_local_lists", false),
     )
@@ -510,10 +512,8 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_filters", value.filters)
         setBoolean("constructor_priority", value.priority)
         setBoolean("constructor_geo", value.geo)
-        setBoolean("constructor_start_date", value.startDate)
-        setBoolean("constructor_extra_reminders", value.extraReminders)
+        setBoolean("constructor_advance", value.advance)
         setBoolean("constructor_calendar", value.calendar)
-        setBoolean("constructor_timer", value.timer)
         setBoolean("constructor_files", value.files)
         setBoolean("constructor_local_lists", value.localLists)
     }

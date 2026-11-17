@@ -14,9 +14,7 @@
 \n</string>
     <string name="import_progress_read">Ανάγνωση εργασίας %d…</string>
     <string name="read_permission_label">Άδεια εργασιών</string>
-    <string name="DLG_hour_minutes">Ώρα (ώρες : λεπτά)</string>
     <string name="DLG_undo">Αναίρεση</string>
-    <string name="WID_dateButtonUnset">Κλικ για καθορισμό</string>
     <string name="TLA_menu_sort">Ταξινόμηση</string>
     <string name="TLA_menu_search">Αναζήτηση</string>
     <string name="TLA_menu_settings">Ρυθμίσεις</string>
@@ -31,10 +29,6 @@
     <string name="TEA_importance_label">Προτεραιότητα</string>
     <string name="no_date">Χωρίς ημερομηνία</string>
     <string name="TEA_note_label">Περιγραφή</string>
-    <string name="TEA_estimatedDuration_label">Πόσο θα διαρκέσει?</string>
-    <string name="TEA_elapsedDuration_label">Χρόνος που ήδη πέρασε</string>
-    <string name="TEA_timer_est">Εκτιμώμενο %s</string>
-    <string name="TEA_timer_elap">Πέρασε %s</string>
     <string name="due_date">Ημερομηνία λήξης</string>
     <string name="due_time">Ώρα λήξης</string>
     <string name="day_before_due">Μια ημέρα πριν τη λήξη</string>
@@ -43,7 +37,6 @@
     <string name="TEA_control_notes">Περιγραφή</string>
     <string name="TEA_control_files">Αρχεία</string>
     <string name="TEA_control_reminders">Υπενθυμίσεις</string>
-    <string name="TEA_control_timer">Χειριστήρια χρονοδιακόπτη</string>
     <string name="TEA_control_hidden_section">-----Απόκρυψη πάντα-----</string>
     <string name="EPr_beastMode_reset">Επαναφορά προεπιλογών</string>
     <string name="EPr_fullTask_title">Εμφάνισε πλήρη τίτλο εργασίας</string>
@@ -78,11 +71,6 @@
     <string name="gtasks_GLA_authenticating">Αυθεντικοποίηση…</string>
     <string name="gtasks_error_accountNotFound">Λογαριασμός %s δεν βρέθηκε - παρακαλώ αποσυνδεθείτε και συνδεθείτε πάλι απο τις ρυθμίσεις του Google Tasks.</string>
     <string name="premium_record_audio">Ηχογράφηση σημείωσης</string>
-    <string name="TPl_notification">Χρονοδιακόπτες ενεργοί για %s!</string>
-    <string name="TEA_timer_controls">Χρονοδιακόπτης</string>
-    <string name="TEA_timer_comment_started">ξεκίνησε αυτή την εργασία:</string>
-    <string name="TEA_timer_comment_stopped">σταμάτησε να κάνεις την εργασία:</string>
-    <string name="TEA_timer_comment_spent">Χρόνος που πέρασε:</string>
     <string name="voice_create_prompt">Μιλήστε για να δημιουργήσετε εργασία</string>
     <string name="EPr_voiceInputEnabled_title">Εισαγωγή φωνής</string>
     <string name="voice_command_added_task">Η εργασία προστέθηκε</string>

@@ -9,9 +9,7 @@
     <string name="import_summary_message">Plik %1$s zawiera %2$s.\n\n %3$s zaimportowanych,\n %4$s już istnieje\n %5$s zawiera błędy</string>
     <string name="import_progress_read">Czytanie zadania %d…</string>
     <string name="read_permission_label">Uprawnienia Tasks</string>
-    <string name="DLG_hour_minutes">Czas (godziny : minuty)</string>
     <string name="DLG_undo">Cofnij</string>
-    <string name="WID_dateButtonUnset">Kliknij, aby ustawić</string>
     <string name="TLA_no_items">Brak zadań.</string>
     <string name="TLA_menu_sort">Sortuj</string>
     <string name="TLA_menu_search">Szukaj</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Tytuł zadania</string>
     <string name="TEA_importance_label">Priorytet</string>
     <string name="TEA_note_label">Opis</string>
-    <string name="TEA_estimatedDuration_label">Ile czasu to zajmie?</string>
-    <string name="TEA_elapsedDuration_label">Czas dotychczas spędzony nad tym zadaniem</string>
     <string name="save">Zapisz</string>
-    <string name="TEA_timer_est">Ok. %s</string>
-    <string name="TEA_timer_elap">Minęło %s</string>
     <string name="due_date">Termin wykonania</string>
     <string name="due_time">Dokładnie o godzinie</string>
     <string name="day_before_due">Dzień przed terminem</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Opis</string>
     <string name="TEA_control_files">Pliki</string>
     <string name="TEA_control_reminders">Przypomnienia</string>
-    <string name="TEA_control_timer">Sterowanie zegara</string>
     <string name="TEA_control_hidden_section">----Zawsze ukrywaj----</string>
     <string name="none">Brak</string>
     <string name="EPr_beastMode_reset">Przywróć domyślne</string>
@@ -125,11 +118,6 @@
     <string name="new_tag">Stwórz nowy tag</string>
     <string name="new_list">Utwórz nową listę</string>
     <string name="delete_tag_confirmation">Usunąć %s?</string>
-    <string name="TPl_notification">Minutniki aktywne przez %s!</string>
-    <string name="TEA_timer_controls">Minutnik</string>
-    <string name="TEA_timer_comment_started">rozpoczęto zadanie:</string>
-    <string name="TEA_timer_comment_stopped">zakończono zadanie:</string>
-    <string name="TEA_timer_comment_spent">Czas spędzony:</string>
     <string name="voice_create_prompt">Mów by utworzyć zadanie</string>
     <string name="EPr_voiceInputEnabled_title">Polecenia głosowe</string>
     <string name="voice_command_added_task">Dodane zadanie</string>

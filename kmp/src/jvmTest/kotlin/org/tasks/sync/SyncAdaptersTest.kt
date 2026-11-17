@@ -45,7 +45,6 @@ class SyncAdaptersTest {
         refreshBroadcaster = mock(),
         notifier = mock(),
         locationService = mock(),
-        timerPlugin = mock(),
         backgroundWork = mock(),
         caldavDao = caldavDao,
     )

@@ -26,9 +26,7 @@
     <string name="TLA_menu_settings">Подешавања</string>
     <string name="import_summary_message">Датотека %1$s садржи %2$s.\n\n %3$s увезених,\n %4$s већ постојећих\n %5$s са грешкама</string>
     <string name="help_and_feedback">Помоћ и повратне информације</string>
-    <string name="DLG_hour_minutes">Време (сати : минути)</string>
     <string name="DLG_undo">Поништи</string>
-    <string name="WID_dateButtonUnset">Кликни да поставиш</string>
     <string name="TLA_no_items">Нема задатака.</string>
     <string name="TLA_menu_sort">Сортирај</string>
     <string name="tomorrow">Сутра</string>
@@ -45,11 +43,7 @@
     <string name="FLA_search_filter">Поклапање \'%s\'</string>
     <string name="FLA_new_filter">Креирај нови филтер</string>
     <string name="TEA_note_label">Опис</string>
-    <string name="TEA_estimatedDuration_label">Колико ће трајати?</string>
-    <string name="TEA_elapsedDuration_label">Утрошено време</string>
     <string name="save">Сачувај</string>
-    <string name="TEA_timer_est">Процена %s</string>
-    <string name="TEA_timer_elap">Протекло %s</string>
     <string name="due_date">Датум доспећа</string>
     <string name="due_time">Време доспећа</string>
     <string name="start_date">Датум почетка</string>
@@ -62,7 +56,6 @@
     <string name="TEA_control_notes">Опис</string>
     <string name="TEA_control_files">Датотеке</string>
     <string name="TEA_control_reminders">Подсетници</string>
-    <string name="TEA_control_timer">Подешавања тајмера</string>
     <string name="TEA_control_hidden_section">----Увек сакриј----</string>
     <string name="TEA_creation_date">Датум креирања</string>
     <string name="none">Празно</string>
@@ -129,7 +122,6 @@
     <string name="delete_tag_confirmation">Обриши %s?</string>
     <string name="delete_comment">коментар</string>
     <string name="comment">Коментар</string>
-    <string name="TEA_timer_controls">Тајмер</string>
     <string name="EPr_voiceInputEnabled_title">Гласовни улаз</string>
     <string name="voice_command_added_task">Додат задатак</string>
     <plurals name="Ntasks">
@@ -272,10 +264,6 @@
     <string name="CFC_list_name">У листи…</string>
     <string name="premium_record_audio">Сними белешку</string>
     <string name="repeat_option_custom">Друго…</string>
-    <string name="TPl_notification">Тајмери активни за %s!</string>
-    <string name="TEA_timer_comment_started">започет задатак:</string>
-    <string name="TEA_timer_comment_stopped">заустављен задатак:</string>
-    <string name="TEA_timer_comment_spent">Време утрошено:</string>
     <string name="voice_create_prompt">Причај како би креирао задатак</string>
     <string name="widget_show_checkboxes">Прикажи чекирана поља</string>
     <string name="widget_show_header">Прикажи заглавље</string>

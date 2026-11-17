@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.tasks.data.createDueDate
+import org.tasks.data.entity.Series
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.Task.Priority
 import org.tasks.date.DateTimeUtils.newDateTime
@@ -19,10 +20,19 @@ internal object GoogleTaskNotes {
         val dueMin: Int? = null,
         val priority: Int? = null,
         val start: Long? = null,
+        /** Legacy repeating rows only (written by old builds); occurrences never carry it. */
         val recur: String? = null,
+        /** Series uuid and the occurrence's slot. */
+        val ser: String? = null,
+        val sch: Long? = null,
+        /** The series' rule, repeatFrom, created and modified (spec point 14), for a restore. */
+        val rule: String? = null,
+        val from: Int? = null,
+        val sc: Long? = null,
+        val sm: Long? = null,
     )
 
-    fun from(task: Task): Extra? {
+    fun from(task: Task, series: Series?): Extra? {
         val dueMin = if (task.hasDueTime()) {
             val due = newDateTime(task.dueDate)
             due.hourOfDay * 60 + due.minuteOfHour
@@ -34,6 +44,12 @@ internal object GoogleTaskNotes {
             priority = task.priority.takeUnless { it == Priority.NONE },
             start = task.hideUntil.takeIf { it > 0 },
             recur = task.recurrence?.takeIf { it.isNotBlank() },
+            ser = task.series,
+            sch = task.scheduled.takeIf { task.series != null && it > 0 },
+            rule = series?.recurrence,
+            from = series?.repeatFrom,
+            sc = series?.created,
+            sm = series?.modified,
         )
         return extra.takeUnless { it == Extra() }
     }
@@ -54,9 +70,9 @@ internal object GoogleTaskNotes {
         return human to extra
     }
 
-    fun pack(notes: String?, task: Task, max: Int): String? {
+    fun pack(notes: String?, task: Task, series: Series?, max: Int): String? {
         val human = unpack(notes).first
-        val extra = from(task) ?: return clip(human, max)
+        val extra = from(task, series) ?: return clip(human, max)
         val suffix = (if (human.isNullOrEmpty()) "" else "\n") + HEAD + json.encodeToString(extra)
         val joined = if (human.isNullOrEmpty()) suffix else human.trimEnd() + suffix
         return if (joined.length <= max) joined else clip(human, max)
@@ -83,7 +99,12 @@ internal object GoogleTaskNotes {
             task.setDueDateAdjustingHideUntil(createDueDate(urgency, withClock))
         }
         task.priority = extra.priority ?: Priority.NONE
-        task.recurrence = extra.recur
+        // a legacy trailer (old build, or not yet re-pushed) is older than a local schedule
+        if (extra.ser != null || extra.recur == null || task.series == null) {
+            task.recurrence = extra.recur
+            task.series = extra.ser
+            task.scheduled = extra.sch ?: 0L
+        }
         task.hideUntil = extra.start ?: 0L
     }
 

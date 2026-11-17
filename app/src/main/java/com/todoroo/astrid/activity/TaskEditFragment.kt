@@ -21,6 +21,7 @@ import org.tasks.calendars.CalendarPicker
 import org.tasks.compose.edit.TaskEditScreen
 import org.tasks.repeats.BasicRecurrenceDialog
 import org.tasks.repeats.RepeatRuleToString
+import org.tasks.repeats.SeriesEditScope
 import org.tasks.data.dao.UserActivityDao
 import org.tasks.dialogs.Linkify
 import org.tasks.extensions.hideKeyboard
@@ -92,9 +93,9 @@ class TaskEditFragment : Fragment() {
                     .watchComments(viewState.task.uuid)
                     .collectAsStateWithLifecycle(emptyList())
                     .value,
-                save = {
+                save = { scope ->
                     keyboard?.hide()
-                    lifecycleScope.launch { save() }
+                    lifecycleScope.launch { save(scope) }
                 },
                 discard = {
                     keyboard?.hide()
@@ -149,8 +150,8 @@ class TaskEditFragment : Fragment() {
         }
     }
 
-    suspend fun save(remove: Boolean = true) {
-        editViewModel.save()
+    suspend fun save(scope: SeriesEditScope? = null, remove: Boolean = true) {
+        editViewModel.save(scope)
         if (remove) {
             clearTask()
         }

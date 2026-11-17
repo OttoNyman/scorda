@@ -15,9 +15,7 @@
     <string name="import_failed_message">Zaxira faylini o\'qib bo\'lmadi</string>
     <string name="read_permission_label">Vazifalarga ruxsat</string>
     <string name="write_permission_label">Vazifalarni o\'zgartirish</string>
-    <string name="DLG_hour_minutes">Vaqt (soat : daqiqa)</string>
     <string name="DLG_undo">Qaytarish</string>
-    <string name="WID_dateButtonUnset">Belgilash uchun bosing</string>
     <string name="TLA_no_items">Bu yerda vazifalar yo\'q.</string>
     <string name="TLA_menu_sort">Saralash</string>
     <string name="sort_options">Saralash sozlamalari</string>
@@ -41,11 +39,7 @@
     <string name="TEA_title_hint">Vazifa nomi</string>
     <string name="TEA_importance_label">Muhimlik</string>
     <string name="TEA_note_label">Tavsif</string>
-    <string name="TEA_estimatedDuration_label">Qancha vaqt ketadi?</string>
-    <string name="TEA_elapsedDuration_label">Sarflangan vaqt</string>
     <string name="save">Saqlash</string>
-    <string name="TEA_timer_est">Taxm. %s</string>
-    <string name="TEA_timer_elap">O\'tdi: %s</string>
     <string name="due_date">Muddat</string>
     <string name="due_time">Muddat vaqti</string>
     <string name="start_date">Boshlanish sanasi</string>
@@ -58,7 +52,6 @@
     <string name="TEA_control_notes">Tavsif</string>
     <string name="TEA_control_files">Fayllar</string>
     <string name="TEA_control_reminders">Eslatmalar</string>
-    <string name="TEA_control_timer">Taymer boshqaruvi</string>
     <string name="TEA_control_hidden_section">----Doim yashirish----</string>
     <string name="TEA_creation_date">Yaratilgan sana</string>
     <string name="none">Yo\'q</string>
@@ -144,11 +137,6 @@
     <string name="delete_tag_confirmation">%s o\'chirilsinmi?</string>
     <string name="delete_comment">izoh</string>
     <string name="comment">izoh</string>
-    <string name="TPl_notification">%s uchun taymerlar faol!</string>
-    <string name="TEA_timer_controls">Taymer</string>
-    <string name="TEA_timer_comment_started">bu vazifani boshladi:</string>
-    <string name="TEA_timer_comment_stopped">bu vazifani bajarishni to‘xtatdi:</string>
-    <string name="TEA_timer_comment_spent">Sarflangan vaqt:</string>
     <string name="voice_create_prompt">Vazifa yaratish uchun gapiring</string>
     <string name="EPr_voiceInputEnabled_title">Ovozli kiritish</string>
     <string name="voice_command_added_task">Vazifa qo‘shildi</string>

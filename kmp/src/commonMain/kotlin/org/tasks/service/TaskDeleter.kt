@@ -14,6 +14,7 @@ import org.tasks.data.entity.Task
 import org.tasks.filters.filterPreferencesKey
 import org.tasks.preferences.FilterPreferences.Companion.delete
 import org.tasks.preferences.TasksPreferences
+import org.tasks.time.DateTimeUtils2.currentTimeMillis
 
 class TaskDeleter(
     private val deletionDao: DeletionDao,
@@ -42,10 +43,56 @@ class TaskDeleter(
         vtodoCache.delete(ids)
         deletionDao.markDeleted(
             ids = ids,
-            cleanup = { taskCleanup.cleanup(it) }
+            cleanup = { taskCleanup.trashed(it) }
         )
         refreshBroadcaster.broadcastRefresh()
         taskDao.fetch(ids)
+    }
+
+    /**
+     * Drops rows the schedule no longer wants, with their subtasks. They skip the trash and go on
+     * the next [purge]; [restore] still brings them back before that.
+     */
+    suspend fun discard(taskIds: List<Long>) = withContext(NonCancellable) {
+        val ids = taskIds
+            .toSet()
+            .plus(taskIds.chunkedMap(taskDao::getChildren))
+            .toList()
+        vtodoCache.delete(ids)
+        deletionDao.markDiscarded(
+            ids = ids,
+            cleanup = { taskCleanup.trashed(it) }
+        )
+        refreshBroadcaster.broadcastRefresh()
+    }
+
+    /** Takes tasks out of the trash, with the subtasks that were trashed along with them. */
+    suspend fun restore(taskIds: List<Long>): List<Task> = withContext(NonCancellable) {
+        val ids = deletionDao.restore(taskIds)
+        refreshBroadcaster.broadcastRefresh()
+        taskDao.fetch(ids)
+    }
+
+    /** Deletes trashed tasks for good; null means the whole trash. */
+    suspend fun deleteForever(taskIds: List<Long>? = null) = withContext(NonCancellable) {
+        deletionDao.expire(taskIds ?: deletionDao.getTrash())
+        purge()
+    }
+
+    /**
+     * Drops trashed tasks past the retention period. Tasks whose delete has not reached the
+     * server yet stay until a later run.
+     */
+    suspend fun purge(now: Long = currentTimeMillis()) {
+        val ids = deletionDao.getPurgeable(now - TRASH_RETENTION_MILLIS)
+        if (ids.isEmpty()) {
+            return
+        }
+        vtodoCache.delete(ids)
+        // before the rows go: comments are found through their task
+        taskCleanup.cleanup(ids)
+        deletionDao.delete(ids = ids, cleanup = {})
+        refreshBroadcaster.broadcastRefresh()
     }
 
     suspend fun delete(task: Task) = delete(task.id)
@@ -82,4 +129,9 @@ class TaskDeleter(
     }
 
     suspend fun isDeleted(task: Long): Boolean = deletionDao.isDeleted(task)
+
+    companion object {
+        const val TRASH_RETENTION_DAYS = 30
+        private const val TRASH_RETENTION_MILLIS = TRASH_RETENTION_DAYS * 24L * 60 * 60 * 1000
+    }
 }

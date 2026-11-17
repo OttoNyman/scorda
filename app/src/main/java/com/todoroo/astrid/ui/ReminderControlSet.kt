@@ -29,6 +29,8 @@ import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Alarm.Companion.TYPE_DATE_TIME
 import org.tasks.date.DateTimeUtils
 import org.tasks.extensions.Context.openReminderSettings
+import org.tasks.reminders.advance
+import kotlinx.collections.immutable.toPersistentSet
 import org.tasks.scheduling.NotificationSchedulerWork
 import org.tasks.ui.TaskEditControlFragment
 import javax.inject.Inject
@@ -36,6 +38,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ReminderControlSet : TaskEditControlFragment() {
     @Inject lateinit var activity: Activity
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val ringMode = mutableIntStateOf(0)
 
@@ -96,7 +99,13 @@ class ReminderControlSet : TaskEditControlFragment() {
             onDismiss = { showRingModeDialog = false },
         )
         AlarmRow(
-            alarms = viewState.alarms,
+            // with "In advance" on, its early ring lives in that row, not in this list
+            alarms = if (featureGate.current.advance) {
+                viewState.alarms.advance()?.let { advance -> viewState.alarms.filterNot { it === advance }.toPersistentSet() }
+                    ?: viewState.alarms
+            } else {
+                viewState.alarms
+            },
             hasNotificationPermissions = hasReminderPermissions &&
                     (notificationPermissions == null || notificationPermissions.status == PermissionStatus.Granted),
             fixNotificationPermissions = {

@@ -8,8 +8,10 @@ import org.tasks.data.sql.Field.Companion.field
 import org.tasks.data.sql.Join
 import org.tasks.data.sql.Query
 import org.tasks.filters.AstridOrderingFilter
+import org.tasks.filters.CompletedFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.RecentlyModifiedFilter
+import org.tasks.filters.TrashFilter
 import org.tasks.preferences.QueryPreferences
 
 internal object TaskListQueryNonRecursive {
@@ -26,7 +28,9 @@ internal object TaskListQueryNonRecursive {
     private val FIELDS =
         TaskListQuery.FIELDS.plus(listOf(
             TAGS,
-            field("tasks.completed > 0").`as`("parent_complete")
+            field("tasks.completed > 0").`as`("parent_complete"),
+            field("(SELECT parent_task.title FROM tasks AS parent_task WHERE parent_task._id = tasks.parent)")
+                .`as`("parent_title"),
         )).toTypedArray()
 
     fun getNonRecursiveQuery(filter: Filter, preferences: QueryPreferences, limit: Int? = null): String {
@@ -43,7 +47,8 @@ internal object TaskListQueryNonRecursive {
             }
         val orderBy = "$completeAtBottom $completionSort"
         val groupedQuery = when {
-            filter is RecentlyModifiedFilter ->
+            // these filters carry their own order; the completed-at-bottom prefix must not lead it
+            filter is RecentlyModifiedFilter || filter is CompletedFilter || filter is TrashFilter ->
                 query.replace("ORDER BY", "GROUP BY ${Task.ID} ORDER BY")
             query.contains("ORDER BY") ->
                 query.replace("ORDER BY", "GROUP BY ${Task.ID} ORDER BY $orderBy")

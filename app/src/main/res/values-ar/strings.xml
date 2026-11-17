@@ -5,9 +5,7 @@
     <string name="backup_BAc_import">استعادة نسخة احتياطية</string>
     <string name="import_summary_title"> إستعادة المُلخَّص</string>
     <string name="read_permission_label">إذن المهام</string>
-    <string name="DLG_hour_minutes">الوقت (ساعة : دقيقة)</string>
     <string name="DLG_undo">تراجع</string>
-    <string name="WID_dateButtonUnset">اضغط للتعيين</string>
     <string name="TLA_menu_sort">رتب</string>
     <string name="TLA_menu_search">ابحث</string>
     <string name="TLA_menu_settings">إعدادات</string>
@@ -20,8 +18,6 @@
     <string name="TEA_title_hint">اسم المهمة</string>
     <string name="TEA_importance_label">الأولويّة</string>
     <string name="TEA_note_label">وصف</string>
-    <string name="TEA_estimatedDuration_label">كم من الوقت ستأخذ؟</string>
-    <string name="TEA_elapsedDuration_label">الوقت المنقضي</string>
     <string name="due_date">التاريخ المحدد</string>
     <string name="due_time">الوقت المحدد</string>
     <string name="day_before_due">يوم قبل الموعد</string>
@@ -53,9 +49,6 @@
     <string name="CFC_gtasks_list_text">في القائمة: \?</string>
     <string name="gtasks_GTA_clear_completed">حذف المتمم</string>
     <string name="premium_record_audio">تسجيل ملاحظة</string>
-    <string name="TEA_timer_controls">مؤقت</string>
-    <string name="TEA_timer_comment_started">بدء هذه المهمة:</string>
-    <string name="TEA_timer_comment_spent">الوقت المنقضي:</string>
     <string name="voice_create_prompt">تحدث لإنشاء مهمة</string>
     <string name="voice_command_added_task">تم إضافة المهمة</string>
     <plurals name="Ntasks">
@@ -134,14 +127,12 @@
     <string name="start_date">تاريخ البدأ</string>
     <string name="SSD_sort_start">بتاريخ البدأ</string>
     <string name="export_toast">تم تصدير %1$s إلى %2$s.</string>
-    <string name="TEA_timer_elap">مضى %s</string>
     <string name="save">حفظ</string>
     <string name="display_name">اسم العرض</string>
     <string name="filter_any_start_date">أيّ تاريخ بدأ</string>
     <string name="no_start_date">بدون تاريخ بدأ</string>
     <string name="EPr_delete_task_data">حذف معلومات المهام</string>
     <string name="EPr_reset_preferences">إعادة ضبط الإعدادات</string>
-    <string name="TEA_timer_est">تقريبًا %s</string>
     <string name="FLA_search_filter">موافقًا ل\'%s\'</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="subscription">اشتراك</string>
@@ -239,7 +230,6 @@
     <string name="miscellaneous">متنوّع</string>
     <string name="CFC_tag_text">علامة: \?</string>
     <string name="CFC_importance_text">الأولويّة على الأقل \?</string>
-    <string name="TEA_control_timer">ضوابط المؤقت</string>
     <string name="upgrade_open_source_description">اشتراكك يدعم التطور المستمر</string>
     <string name="copied_to_clipboard">تم نسخ %s إلى الحافظة</string>
     <string name="migrate_count">انقل %s إلى Scorda</string>
@@ -316,8 +306,6 @@
     <string name="date_shortcut_afternoon">بعد الظهر</string>
     <string name="google_drive_backup">نسخ احتياطي كوكل درايف</string>
     <string name="EPr_voiceInputEnabled_title">مدخل صوتي</string>
-    <string name="TEA_timer_comment_stopped">توقف عن القيام بهذه المهمة:</string>
-    <string name="TPl_notification">المؤقت نشط ل%s!</string>
     <string name="repeat_snackbar">%1$s اعد جدولته ل %2$s</string>
     <string name="repeat_option_custom">تعديل…</string>
     <string name="gtasks_GLA_authenticating">قيد المصادقة…</string>

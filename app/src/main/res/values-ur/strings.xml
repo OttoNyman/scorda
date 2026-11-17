@@ -3,7 +3,6 @@
     <string name="import_progress_read">%d ٹاسک پڑھا جا رہا ہے…</string>
     <string name="export_toast">%1$s سے %2$s بیک اپ ہو گیا۔</string>
     <string name="TEA_control_hidden_section">----ہمیشہ چھپائیں----</string>
-    <string name="TEA_control_timer">ٹائمر کنٹرول</string>
     <string name="TEA_control_reminders">یاد دہانی</string>
     <string name="TEA_control_files">فائلیں</string>
     <string name="TEA_control_notes">تفصیل</string>
@@ -15,10 +14,7 @@
     <string name="day_before_due">مقررہ دن سے ایک دن قبل</string>
     <string name="due_time">وقت مقرر</string>
     <string name="due_date">آخری تاریخ</string>
-    <string name="TEA_timer_elap">%s گز چکا</string>
     <string name="save">محفوظ کریں</string>
-    <string name="TEA_elapsedDuration_label">صرف شدہ وقت</string>
-    <string name="TEA_estimatedDuration_label">یہ کتنی دیر لے گا؟</string>
     <string name="TEA_note_label">تفصیل</string>
     <string name="no_date">کوئی تاریخ نہیں</string>
     <string name="TEA_importance_label">ترجیح</string>
@@ -38,9 +34,7 @@
     <string name="TLA_menu_search">تلاش</string>
     <string name="TLA_menu_sort">ترتیب</string>
     <string name="TLA_no_items">یہاں کوئی ٹاسکس نہیں ہیں.</string>
-    <string name="WID_dateButtonUnset">سیٹ کرنے کیلئے کلک کریں</string>
     <string name="DLG_undo">ان ڈو کریں</string>
-    <string name="DLG_hour_minutes">وقت (گھنٹے : منٹس)</string>
     <string name="read_permission_label">ٹاسک کی اجازت</string>
     <string name="cancel">منسوخ کریں</string>
     <string name="ok">ٹھیک ہے</string>
@@ -78,7 +72,6 @@
     <string name="EPr_fullTask_title">ٹاسک کا پورا ٹائٹل دکھائیں</string>
     <string name="EPr_beastMode_reset">ڈیفالٹ پر ری سیٹ کریں</string>
     <string name="none">کوئی نہیں</string>
-    <string name="TEA_timer_est">تقریبا %s</string>
     <string name="CFC_title_contains_text">عنوان مشتمل ہے:?</string>
     <string name="CFC_title_contains_name">عنوان مشتمل ہے…</string>
     <string name="CFC_tag_contains_text">ٹیگ کا نام مشتمل ہے:?</string>
@@ -150,11 +143,6 @@
     <string name="voice_command_added_task">ٹاسک جمع کر دیا گیا</string>
     <string name="EPr_voiceInputEnabled_title">وائس ان پٹ</string>
     <string name="voice_create_prompt">ٹاسک بنانے کیلئے بولیں</string>
-    <string name="TEA_timer_comment_spent">صرف کیا گیا وقت:</string>
-    <string name="TEA_timer_comment_stopped">یہ ٹاسک روکیں:</string>
-    <string name="TEA_timer_comment_started">یہ ٹاسک شروع کیا:</string>
-    <string name="TEA_timer_controls">ٹائمر</string>
-    <string name="TPl_notification">%s کیلئے ٹائمرز فعال ہو گئے!</string>
     <string name="date_shortcut_night">رات</string>
     <string name="date_shortcut_evening">شام</string>
     <string name="date_shortcut_afternoon">سہ پہر</string>

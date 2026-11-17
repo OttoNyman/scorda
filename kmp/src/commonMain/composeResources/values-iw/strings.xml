@@ -3,7 +3,6 @@
     <string name="search">חיפוש</string>
     <string name="filter_my_tasks">המשימות שלי</string>
     <string name="filter_notifications">התראות</string>
-    <string name="filter_timer">משימות מתוזמנות</string>
     <string name="filter_today">היום</string>
     <string name="filter_recently_modified">השתנו לאחרונה</string>
     <string name="default_list">רשימת ברירת מחדל</string>

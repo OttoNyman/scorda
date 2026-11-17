@@ -12,10 +12,7 @@
     <string name="start_date">Ngày bắt đầu</string>
     <string name="due_time">Thời gian hạn</string>
     <string name="due_date">Ngày hạn</string>
-    <string name="TEA_timer_elap">Đã qua %s</string>
     <string name="save">Lưu</string>
-    <string name="TEA_elapsedDuration_label">Thời gian đã tiêu tốn</string>
-    <string name="TEA_estimatedDuration_label">Sẽ mất bao lâu\?</string>
     <string name="TEA_note_label">Mô tả</string>
     <string name="TEA_importance_label">Sự ưu tiên</string>
     <string name="TEA_title_hint">Tên công việc</string>
@@ -34,9 +31,7 @@
     <string name="TLA_menu_search">Tìm kiếm</string>
     <string name="TLA_menu_sort">Sắp xếp</string>
     <string name="TLA_no_items">Không có công việc nào ở đây.</string>
-    <string name="WID_dateButtonUnset">Nhấn để đặt</string>
     <string name="DLG_undo">Hoàn tác</string>
-    <string name="DLG_hour_minutes">Thời gian (giờ : phút)</string>
     <string name="read_permission_label">Quyền Tasks</string>
     <string name="import_progress_read">Đang đọc công việc %d…</string>
     <string name="import_summary_message">Tệp %1$s đã chứa %2$s.
@@ -270,11 +265,6 @@
     <string name="voice_command_added_task">Đã thêm công việc</string>
     <string name="EPr_voiceInputEnabled_title">Giọng nói đầu vào</string>
     <string name="voice_create_prompt">Nói để tạo công việc</string>
-    <string name="TEA_timer_comment_spent">Thời gian đã tiêu tốn:</string>
-    <string name="TEA_timer_comment_stopped">đã dừng làm công việc này:</string>
-    <string name="TEA_timer_comment_started">đã bắt đầu công việc này:</string>
-    <string name="TEA_timer_controls">Hẹn giờ</string>
-    <string name="TPl_notification">Hẹn giờ đang hoạt động đối với %s!</string>
     <string name="delete_tag_confirmation">Xoá %s\?</string>
     <string name="new_list">Tạo danh sách mới</string>
     <string name="new_tag">Tạo thẻ mới</string>
@@ -351,8 +341,6 @@
     <string name="EPr_beastMode_reset">Đặt lại về mặc định</string>
     <string name="none">Không có</string>
     <string name="TEA_control_hidden_section">----Luôn ẩn----</string>
-    <string name="TEA_control_timer">Điều khiển hẹn giờ</string>
-    <string name="TEA_timer_est">Ước tính %s</string>
     <string name="SSD_sort_my_order">Thứ tự của tôi</string>
     <string name="import_summary_title">Tóm tắt khôi phục</string>
     <string name="now">Bây giờ</string>

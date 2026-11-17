@@ -9,9 +9,7 @@
     <string name="import_summary_message">El fichero %1$s contenía %2$s. \n \n %3$s importadas \n %4$s ya existían \n %5$s tenían errores</string>
     <string name="import_progress_read">Leyendo tarea %d…</string>
     <string name="read_permission_label">Permisos de Tasks</string>
-    <string name="DLG_hour_minutes">Tiempo (horas : minutos)</string>
     <string name="DLG_undo">Deshacer</string>
-    <string name="WID_dateButtonUnset">Hacer clic para establecer</string>
     <string name="TLA_no_items">No hay tareas aquí.</string>
     <string name="TLA_menu_sort">Ordenar</string>
     <string name="TLA_menu_search">Buscar</string>
@@ -28,10 +26,7 @@
     <string name="TEA_title_hint">Nombre de la tarea</string>
     <string name="TEA_importance_label">Prioridad</string>
     <string name="TEA_note_label">Descripción</string>
-    <string name="TEA_estimatedDuration_label">¿Cuanto tiempo llevará?</string>
-    <string name="TEA_elapsedDuration_label">Tiempo ya empleado en la tarea</string>
     <string name="save">Guardar</string>
-    <string name="TEA_timer_elap">Transcurrido %s</string>
     <string name="due_date">Fecha límite</string>
     <string name="due_time">Hora límite</string>
     <string name="day_before_due">Día previo al límite</string>
@@ -43,7 +38,6 @@
     <string name="TEA_control_notes">Descripción</string>
     <string name="TEA_control_files">Archivos</string>
     <string name="TEA_control_reminders">Recordatorios</string>
-    <string name="TEA_control_timer">Controles de tiempo</string>
     <string name="TEA_control_hidden_section">---Ocultar siempre---</string>
     <string name="none">Ninguna</string>
     <string name="EPr_beastMode_reset">Restablecer valores predeterminados</string>
@@ -125,11 +119,6 @@
     <string name="new_tag">Crear nueva etiqueta</string>
     <string name="new_list">Crea una nueva lista</string>
     <string name="delete_tag_confirmation">¿Eliminar %s?</string>
-    <string name="TPl_notification">Temporizadores activos para %s!</string>
-    <string name="TEA_timer_controls">Temporizador</string>
-    <string name="TEA_timer_comment_started">comenzó esta tarea:</string>
-    <string name="TEA_timer_comment_stopped">dejó de hacer esta tarea:</string>
-    <string name="TEA_timer_comment_spent">Tiempo dedicado:</string>
     <string name="voice_create_prompt">Hable para crear una tarea</string>
     <string name="EPr_voiceInputEnabled_title">Ingreso por voz</string>
     <string name="voice_command_added_task">Tarea agregada</string>
@@ -228,7 +217,6 @@
     <string name="open_map">Abrir mapa</string>
     <string name="choose_new_location">Elegir ubicación nueva</string>
     <string name="invalid_backup_file">Archivo de copia de seguridad no válido</string>
-    <string name="TEA_timer_est">Est. %s</string>
     <string name="location_radius_meters">%s m</string>
     <string name="color">Color</string>
     <string name="url">URL</string>

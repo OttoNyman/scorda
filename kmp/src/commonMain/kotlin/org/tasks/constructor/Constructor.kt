@@ -14,8 +14,9 @@ data class Constructor(
     val geo: Boolean = false,
     val startDate: Boolean = false,
     val extraReminders: Boolean = false,
+    /** One extra ring before the reminder time. */
+    val advance: Boolean = false,
     val calendar: Boolean = false,
-    val timer: Boolean = false,
     val files: Boolean = false,
     /** Raw: keep local lists next to synced ones. Effective: the local block is shown. */
     val localLists: Boolean = false,
@@ -42,7 +43,7 @@ data class Constructor(
         Alarm.TYPE_REL_START -> startDate
         Alarm.TYPE_REL_END -> when {
             alarm.time == 0L && alarm.repeat == 0 -> true
-            alarm.time < 0L -> extraReminders
+            alarm.time < 0L -> if (alarm.repeat == 0) advance || extraReminders else extraReminders
             alarm.time == 0L && alarm.repeat > 0 -> extraReminders
             alarm.time > 0L -> overdue
             else -> false
@@ -65,21 +66,11 @@ data class ConstructorCounts(
     val localLists: Int = 0,
 )
 
-enum class Preset { Simple, Reminders, Tasks, Full }
+enum class Preset { Simple, Full }
 
 val Preset.flags: Constructor
     get() = when (this) {
         Preset.Simple -> Constructor()
-        Preset.Reminders -> Constructor(repeat = true, overdue = true, notes = true)
-        Preset.Tasks -> Constructor(
-            repeat = true,
-            overdue = true,
-            notes = true,
-            lists = true,
-            subtasks = true,
-            tags = true,
-            filters = true,
-        )
         Preset.Full -> Constructor(
             repeat = true,
             overdue = true,
@@ -90,23 +81,12 @@ val Preset.flags: Constructor
             filters = true,
             priority = true,
             geo = true,
-            startDate = true,
-            extraReminders = true,
+            // start date and "more reminders" are retired: one time per task, plus "in advance"
+            advance = true,
             calendar = true,
-            timer = true,
             files = true,
         )
     }
-
-fun matchingPreset(
-    raw: Constructor,
-    geofences: Boolean,
-    calendarEvents: Boolean,
-): Preset? = Preset.entries.firstOrNull { preset ->
-    // Sync and the local-lists toggle never decide which setup is selected.
-    raw.withPreset(preset).effective(sync = false, geofences, calendarEvents) ==
-        raw.effective(sync = false, geofences, calendarEvents)
-}
 
 fun Constructor.allowsSort(mode: Int): Boolean = when (mode) {
     com.todoroo.astrid.core.SortHelper.SORT_START -> startDate

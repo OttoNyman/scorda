@@ -142,15 +142,11 @@ class GCalHelper @Inject constructor(
         val dueDate = task.dueDate
         if (task.hasDueDate()) {
             if (task.hasDueTime()) {
-                var estimatedTime = task.estimatedSeconds * 1000.toLong()
-                if (estimatedTime <= 0) {
-                    estimatedTime = DEFAULT_CAL_TIME
-                }
                 if (preferences.getBoolean(R.string.p_end_at_deadline, true)) {
                     values.put(CalendarContract.Events.DTSTART, dueDate)
-                    values.put(CalendarContract.Events.DTEND, dueDate + estimatedTime)
+                    values.put(CalendarContract.Events.DTEND, dueDate + EVENT_LENGTH)
                 } else {
-                    values.put(CalendarContract.Events.DTSTART, dueDate - estimatedTime)
+                    values.put(CalendarContract.Events.DTSTART, dueDate - EVENT_LENGTH)
                     values.put(CalendarContract.Events.DTEND, dueDate)
                 }
                 values.put(CalendarContract.Events.ALL_DAY, "0")
@@ -169,7 +165,7 @@ class GCalHelper @Inject constructor(
     }
 
     companion object {
-        /** If task has no estimated time, how early to set a task in calendar (seconds)  */
-        private const val DEFAULT_CAL_TIME = ONE_HOUR
+        /** Length of a timed task's calendar event (millis) */
+        private const val EVENT_LENGTH = ONE_HOUR
     }
 }

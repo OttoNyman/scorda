@@ -9,9 +9,7 @@
     <string name="import_summary_message">Soubor %1$s obsahoval %2$s.\n\n%3$s importováno\n%4$s již existovalo\n%5$s obsahovalo chyby</string>
     <string name="import_progress_read">Načítání úkolu %d…</string>
     <string name="read_permission_label">Oprávnění pro Tasks</string>
-    <string name="DLG_hour_minutes">Čas (hodin : minut)</string>
     <string name="DLG_undo">Vrátit změny</string>
-    <string name="WID_dateButtonUnset">Nastavíte kliknutím</string>
     <string name="TLA_no_items">Nejsou zde žádné úkoly.</string>
     <string name="TLA_menu_sort">Seřadit</string>
     <string name="TLA_menu_search">Hledat</string>
@@ -27,11 +25,7 @@
     <string name="TEA_title_hint">Název úkolu</string>
     <string name="TEA_importance_label">Důležitost</string>
     <string name="TEA_note_label">Popis</string>
-    <string name="TEA_estimatedDuration_label">Kolik času to zabere\?</string>
-    <string name="TEA_elapsedDuration_label">Již strávený čas</string>
     <string name="save">Uložit</string>
-    <string name="TEA_timer_est">Zal. %s</string>
-    <string name="TEA_timer_elap">Uplynulo %s</string>
     <string name="due_date">Termín úkolu</string>
     <string name="due_time">Čas dokončení</string>
     <string name="day_before_due">Den před termínem</string>
@@ -42,7 +36,6 @@
     <string name="TEA_control_notes">Popis</string>
     <string name="TEA_control_files">Soubory</string>
     <string name="TEA_control_reminders">Upomínky</string>
-    <string name="TEA_control_timer">Ovladač časovače</string>
     <string name="TEA_control_hidden_section">-----Vždy skrývat----</string>
     <string name="none">Žádný</string>
     <string name="EPr_beastMode_reset">Obnovit výchozí hodnoty</string>
@@ -83,11 +76,6 @@
     <string name="premium_record_audio">Nahrát poznámku</string>
     <string name="new_tag">Vytvořit nový štítek</string>
     <string name="delete_tag_confirmation">Smazat %s?</string>
-    <string name="TPl_notification">Časovače aktivní pro %s!</string>
-    <string name="TEA_timer_controls">Časovač</string>
-    <string name="TEA_timer_comment_started">začal tento úkol:</string>
-    <string name="TEA_timer_comment_stopped">skončil tento úkol:</string>
-    <string name="TEA_timer_comment_spent">Strávený čas:</string>
     <string name="voice_create_prompt">Mluvte pro vytvoření úkolu</string>
     <string name="EPr_voiceInputEnabled_title">Hlasový vstup</string>
     <string name="voice_command_added_task">Přidán úkol</string>

@@ -16,9 +16,7 @@
     <string name="import_progress_read">ಓದುವ ಕಾರ್ಯ %d…</string>
     <string name="cancel">ರದ್ದುಮಾಡಿ</string>
     <string name="ok">ಸರಿ</string>
-    <string name="WID_dateButtonUnset">ಸೆಟ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="DLG_undo">ಪೂರ್ವಕ್ರಿಯೆ</string>
-    <string name="DLG_hour_minutes">ಸಮಯ (ಗಂಟೆಗಳು : ನಿಮಿಷಗಳು)</string>
     <string name="read_permission_label">ಕಾರ್ಯಗಳ ಅನುಮತಿ</string>
     <string name="TLA_no_items">ಇಲ್ಲಿ ಯಾವುದೇ ಕಾರ್ಯಗಳಿಲ್ಲ.</string>
     <string name="TAd_actionEditTask">ತಿದ್ದು</string>

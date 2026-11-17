@@ -87,9 +87,9 @@ internal class TasksWidgetBuilder(
             setTextViewText(R.id.header, header)
             setImageViewResource(
                 R.id.arrow, if (section.collapsed) {
-                    R.drawable.ic_keyboard_arrow_down_black_18dp
+                    R.drawable.ic_keyboard_arrow_right_black_18dp
                 } else {
-                    R.drawable.ic_keyboard_arrow_up_black_18dp
+                    R.drawable.ic_keyboard_arrow_down_black_18dp
                 }
             )
             setColorFilter(R.id.arrow, onSurfaceVariant)

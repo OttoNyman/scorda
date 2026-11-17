@@ -14,9 +14,7 @@
     <string name="import_failed">Innflutningur mistókst</string>
     <string name="import_failed_message">Gat ekki lesið afritsskránna</string>
     <string name="read_permission_label">Aðgangur að verkefnum</string>
-    <string name="DLG_hour_minutes">Tími (klukkustundir : mínútur)</string>
     <string name="DLG_undo">Afturkalla</string>
-    <string name="WID_dateButtonUnset">Smelltu til að velja</string>
     <string name="TLA_no_items">Það eru engin verkefni hér.</string>
     <string name="TLA_menu_sort">Raða</string>
     <string name="TLA_menu_search">Leita</string>
@@ -39,11 +37,7 @@
     <string name="TEA_title_hint">Nafn verkefnis</string>
     <string name="TEA_importance_label">Mikilvægi</string>
     <string name="TEA_note_label">Lýsing</string>
-    <string name="TEA_estimatedDuration_label">Hvað tekur þetta langan tíma?</string>
-    <string name="TEA_elapsedDuration_label">Tími eytt</string>
     <string name="save">Vista</string>
-    <string name="TEA_timer_est">Áætl. %s</string>
-    <string name="TEA_timer_elap">Liðnar %s</string>
     <string name="due_date">Skiladagur</string>
     <string name="due_time">Skilatími</string>
     <string name="start_date">Upphafsdagur</string>
@@ -56,7 +50,6 @@
     <string name="TEA_control_notes">Lýsing</string>
     <string name="TEA_control_files">Skrár</string>
     <string name="TEA_control_reminders">Áminningar</string>
-    <string name="TEA_control_timer">Stillingar tímamælis</string>
     <string name="TEA_control_hidden_section">----Fela alltaf----</string>
     <string name="TEA_creation_date">Stofndagur</string>
     <string name="none">Ekkert</string>

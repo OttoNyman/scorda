@@ -59,6 +59,9 @@ class TaskDuplicator @Inject constructor(
             calendarURI = "",
             parent = parentId,
             remoteId = Task.NO_UUID,
+            // a copy of an occurrence is a plain task, not a twin in its series
+            series = null,
+            scheduled = 0,
         )
         clone.suppressSync()
         clone.suppressRefresh()

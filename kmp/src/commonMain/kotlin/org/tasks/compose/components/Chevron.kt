@@ -9,11 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 
 @Composable
-fun Chevron(collapsed: Boolean) {
+fun Chevron(
+    collapsed: Boolean,
+    tint: Color = MaterialTheme.colorScheme.onSurface,
+) {
+    val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val rotation by animateFloatAsState(
-        targetValue = if (collapsed) 0f else 180f,
+        targetValue = if (!collapsed) 0f else if (rtl) 90f else -90f,
         animationSpec = tween(250),
         label = "arrow rotation",
     )
@@ -21,6 +28,6 @@ fun Chevron(collapsed: Boolean) {
         modifier = Modifier.rotate(rotation),
         name = TasksIcons.EXPAND_MORE,
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.onSurface,
+        tint = tint,
     )
 }

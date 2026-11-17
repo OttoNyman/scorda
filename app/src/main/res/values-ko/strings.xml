@@ -9,9 +9,7 @@
     <string name="import_summary_message">파일 %1$s: %2$s 개의 할일 포함.\n\n %3$s 개 가져오기 성공,\n %4$s 개 이미 존재,\n %5$s 개 에러 발생</string>
     <string name="import_progress_read">할일 %d 읽는 중…</string>
     <string name="read_permission_label">Tasks 권한</string>
-    <string name="DLG_hour_minutes">시간 (시 : 분)</string>
     <string name="DLG_undo">실행 취소</string>
-    <string name="WID_dateButtonUnset">누르세요</string>
     <string name="TLA_no_items">할일이 없습니다.</string>
     <string name="TLA_menu_sort">정렬</string>
     <string name="TLA_menu_search">검색</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">할일 제목</string>
     <string name="TEA_importance_label">우선순위</string>
     <string name="TEA_note_label">설명</string>
-    <string name="TEA_estimatedDuration_label">완료 예상 시간은\?</string>
-    <string name="TEA_elapsedDuration_label">할일 처리에 쓰인 시간</string>
     <string name="save">저장</string>
-    <string name="TEA_timer_est">%s 예정</string>
-    <string name="TEA_timer_elap">경과 시간: %s</string>
     <string name="due_date">마감일</string>
     <string name="due_time">마감 시간</string>
     <string name="day_before_due">마감 하루 전</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">설명</string>
     <string name="TEA_control_files">파일</string>
     <string name="TEA_control_reminders">알람</string>
-    <string name="TEA_control_timer">타이머 조절</string>
     <string name="TEA_control_hidden_section">----항상 숨김----</string>
     <string name="none">없음</string>
     <string name="EPr_beastMode_reset">기본값으로 초기화하기</string>
@@ -120,11 +113,6 @@
     <string name="new_tag">새 태그 만들기</string>
     <string name="new_list">새 목록 만들기</string>
     <string name="delete_tag_confirmation">%s 삭제할까요?</string>
-    <string name="TPl_notification">%s 동안 타이머 작동함!</string>
-    <string name="TEA_timer_controls">타이머</string>
-    <string name="TEA_timer_comment_started">이 할일 시작:</string>
-    <string name="TEA_timer_comment_stopped">이 할일 중지:</string>
-    <string name="TEA_timer_comment_spent">소요 시간:</string>
     <string name="voice_create_prompt">할일을 생성하려면 말하세요</string>
     <string name="EPr_voiceInputEnabled_title">음성 입력</string>
     <string name="voice_command_added_task">추가된 할일</string>

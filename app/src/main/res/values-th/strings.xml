@@ -2,8 +2,6 @@
 <resources>
     <string name="actfm_picture_clear">ล้างภาพ</string>
     <string name="import_progress_read">กำลังอ่านแผนงาน %d…</string>
-    <string name="DLG_hour_minutes">เวลา (ชั่วโมง : นาที)</string>
-    <string name="WID_dateButtonUnset">คลิก เพื่อตั้งค่า</string>
     <string name="TLA_menu_sort">Sort &amp; Hidden</string>
     <string name="TAd_actionEditTask">แก้ไข</string>
     <string name="SSD_sort_auto">จัดเรียงด้วย Tasks Smart</string>
@@ -212,11 +210,6 @@
     <string name="voice_command_added_task">งานที่เพิ่ม</string>
     <string name="EPr_voiceInputEnabled_title">ป้อนข้อมูลด้วยเสียง</string>
     <string name="voice_create_prompt">พูดเพื่อสร้างงาน</string>
-    <string name="TEA_timer_comment_spent">เวลาที่ใช้:</string>
-    <string name="TEA_timer_comment_stopped">หยุดการทํางานนี้:</string>
-    <string name="TEA_timer_comment_started">เริ่มงานนี้:</string>
-    <string name="TEA_timer_controls">ตัวจับเวลา</string>
-    <string name="TPl_notification">ตัวจับเวลาที่ใช้งานอยู่สําหรับ %s!</string>
     <string name="new_list">สร้างรายการใหม่</string>
     <string name="new_tag">สร้างแท็กใหม่</string>
     <string name="repeat_snackbar">%1$s จัดกําหนดการใหม่สําหรับ %2$s</string>
@@ -313,7 +306,6 @@
     <string name="date_shortcut_afternoon">บ่าย</string>
     <string name="date_shortcut_morning">เช้า</string>
     <string name="TEA_control_hidden_section">----ไฮด์----</string>
-    <string name="TEA_control_timer">การควบคุมตัวจับเวลา</string>
     <string name="TEA_control_reminders">จดหมายเตือนชําระเงิน</string>
     <string name="TEA_control_files">แฟ้ม</string>
     <string name="TEA_control_location">สถานที่</string>
@@ -324,11 +316,7 @@
     <string name="start_date">วันที่เริ่มต้น</string>
     <string name="due_time">เวลาครบกําหนด</string>
     <string name="due_date">วันที่ครบกําหนด</string>
-    <string name="TEA_timer_elap">ผ่านไปแล้ว %s</string>
-    <string name="TEA_timer_est">ประมาณ %s</string>
     <string name="save">บันทึก</string>
-    <string name="TEA_elapsedDuration_label">เวลาที่ใช้ไปแล้ว</string>
-    <string name="TEA_estimatedDuration_label">ใช้เวลานานแค่ไหน\?</string>
     <string name="FLA_new_filter">สร้างตัวกรองข้อมูลใหม่</string>
     <string name="FLA_search_filter">การจับคู่ \'%s\'</string>
     <string name="sort_created">โดยเวลาการสร้าง</string>

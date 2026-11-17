@@ -5,10 +5,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.tasks.DatabaseTest
 import org.tasks.data.TaskSaver
 import org.tasks.data.entity.Task
+import org.tasks.repeats.SeriesScheduler
 
 class TaskCompleterTest : DatabaseTest() {
     private val taskDao = db.taskDao()
@@ -18,7 +21,6 @@ class TaskCompleterTest : DatabaseTest() {
         refreshBroadcaster = mock(),
         notifier = mock(),
         locationService = mock(),
-        timerPlugin = mock(),
         backgroundWork = mock(),
         caldavDao = db.caldavDao(),
     )
@@ -42,6 +44,29 @@ class TaskCompleterTest : DatabaseTest() {
     }
 
     private suspend fun completionOf(task: Task): Long = taskDao.fetch(task.id)!!.completionDate
+
+    @Test
+    fun completingAnOccurrenceBringsTheNextOneAtOnce() = runBlocking<Unit> {
+        val scheduler = mock<SeriesScheduler>()
+        val withSeries = TaskCompleter(
+            taskDao = taskDao,
+            taskSaver = taskSaver,
+            notifier = mock(),
+            refreshBroadcaster = mock(),
+            repeatTaskHelper = mock(),
+            caldavDao = db.caldavDao(),
+            calendarHelper = mock(),
+            completionDao = db.completionDao(),
+            soundPlayer = mock(),
+            seriesScheduler = scheduler,
+        )
+        val occurrence = Task(title = "water", dueDate = 1000L, series = "s", scheduled = 1000L)
+        taskDao.createNew(occurrence)
+
+        withSeries.setComplete(occurrence, true)
+
+        verify(scheduler).reconcile(any())
+    }
 
     @Test
     fun completingATaskCarriesDownIntoEverythingInsideIt() = runBlocking {

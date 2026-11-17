@@ -47,6 +47,7 @@ class NotificationSchedulerWork @AssistedInject constructor(
     private suspend fun createNotificationChannels() {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
         notificationManager.deleteNotificationChannel("notifications")
+        notificationManager.deleteNotificationChannel("notifications_timers")
         val reminders = createNotificationChannel(
             NotificationManager.NOTIFICATION_CHANNEL_DEFAULT,
             getString(Res.string.reminder_channel),
@@ -68,9 +69,6 @@ class NotificationSchedulerWork @AssistedInject constructor(
         )
         notificationManager.createNotificationChannel(
                 createNotificationChannel(NotificationManager.NOTIFICATION_CHANNEL_TASKER, R.string.tasker_locale, true))
-        notificationManager.createNotificationChannel(
-                createNotificationChannel(
-                        NotificationManager.NOTIFICATION_CHANNEL_TIMERS, R.string.TEA_timer_controls, true))
         if (preS()) {
             notificationManager.createNotificationChannel(
                 createNotificationChannel(

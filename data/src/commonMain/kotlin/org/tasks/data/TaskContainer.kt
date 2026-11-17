@@ -21,6 +21,8 @@ data class TaskContainer(
     @ColumnInfo(name = "primary_sort") val primarySort: Long = 0,
     @ColumnInfo(name = "secondary_sort") val secondarySort: Long = 0,
     var indent: Int = 0,
+    /** Only the flat (non-recursive) list query selects it; a nested row shows its parent anyway. */
+    @ColumnInfo(name = "parent_title") val parentTitle: String? = null,
 ){
     /**
      * Where a drag would drop this row. Written on every bind and while dragging, never

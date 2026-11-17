@@ -119,7 +119,6 @@
     <string name="filter_my_tasks">Vazifalarim</string>
     <string name="filter_notifications">Bildirishnomalar</string>
     <string name="filter_snoozed">Keyinga qoldirilganlar</string>
-    <string name="filter_timer">Vaqti belgilangan vazifalar</string>
     <string name="filter_today">Bugun</string>
     <string name="filter_recently_modified">Yaqinda o‘zgartirilganlar</string>
     <string name="default_list">Standart ro‘yxat</string>

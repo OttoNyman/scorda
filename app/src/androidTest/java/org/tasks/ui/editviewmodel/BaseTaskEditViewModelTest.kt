@@ -9,7 +9,6 @@ import com.todoroo.astrid.gcal.GCalHelper
 import org.tasks.service.TaskCompleter
 import org.tasks.service.TaskDeleter
 import org.tasks.data.TaskMover
-import com.todoroo.astrid.timers.TimerPlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
@@ -37,7 +36,6 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var taskSaver: TaskSaver
     @Inject lateinit var taskDeleter: TaskDeleter
-    @Inject lateinit var timerPlugin: TimerPlugin
     @Inject lateinit var calendarEventProvider: CalendarEventProvider
     @Inject lateinit var gCalHelper: GCalHelper
     @Inject lateinit var taskMover: TaskMover
@@ -72,7 +70,6 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
             taskDao,
             taskSaver,
             taskDeleter,
-            timerPlugin,
             PermissivePermissionChecker(context),
             calendarEventProvider,
             gCalHelper,

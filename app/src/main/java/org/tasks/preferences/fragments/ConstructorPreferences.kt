@@ -25,6 +25,9 @@ import org.tasks.constructor.ConstructorCounts
 import org.tasks.constructor.ConstructorRepository
 import org.tasks.preferences.BasePreferences
 import org.tasks.preferences.Preferences
+import org.tasks.reminders.advance
+import org.tasks.reminders.forAdvanceToggle
+import org.tasks.reminders.withAdvance
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -52,15 +55,33 @@ class ConstructorPreferences : Fragment() {
         var comments by remember {
             mutableStateOf(preferences.getBoolean(R.string.p_show_task_edit_comments, false))
         }
+        var advanceDefault by remember { mutableStateOf<Long?>(null) }
         val scope = rememberCoroutineScope()
         LaunchedEffect(raw) {
             counts = repository.counts(currentTimeMillis())
+            advanceDefault = preferences.defaultAlarms().advance()?.time?.let { -it }
+        }
+        // the default advance is one early entry in the default reminders every new task gets
+        val setAdvanceDefault = { offset: Long? ->
+            scope.launch {
+                preferences.setDefaultAlarms(preferences.defaultAlarms().withAdvance(offset))
+                advanceDefault = offset
+            }
         }
         TasksSettingsTheme(
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
             val change = { next: Constructor ->
+                if (raw.advance != next.advance) {
+                    scope.launch {
+                        // read fresh: the screen's copy may not be loaded yet
+                        preferences.defaultAlarms().forAdvanceToggle(raw.advance, next.advance)?.let {
+                            preferences.setDefaultAlarms(it)
+                            advanceDefault = it.advance()?.time?.let { time -> -time }
+                        }
+                    }
+                }
                 val sync = repository.sync
                 // Leaving the local block while syncing moves the local lists: ask where.
                 if (counts.localLists > 0 && next.keepsEverythingInGoogle(sync) && !raw.keepsEverythingInGoogle(sync)) {
@@ -91,6 +112,8 @@ class ConstructorPreferences : Fragment() {
                     preferences.setBoolean(R.string.p_show_task_edit_comments, it)
                     comments = it
                 },
+                advanceDefault = advanceDefault,
+                onAdvanceDefault = { setAdvanceDefault(it) },
             )
             pending?.let { next ->
                 MoveTargetDialog(

@@ -13,7 +13,6 @@ enum class CancelReason {
     REMOTE_DELETION,
     SNOOZE,
     STALE,
-    TIMER,
     EVICTED,
 
     DISABLED,
@@ -27,6 +26,4 @@ interface Notifier {
     suspend fun cancelAll(reason: CancelReason)
 
     fun triggerNotifications()
-
-    suspend fun updateTimerNotification()
 }

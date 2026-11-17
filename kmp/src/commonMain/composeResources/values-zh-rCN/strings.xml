@@ -6,7 +6,6 @@
     <string name="filter_my_tasks">我的任务</string>
     <string name="filter_notifications">通知</string>
     <string name="filter_snoozed">已推迟</string>
-    <string name="filter_timer">任务已开始计时</string>
     <string name="filter_today">今天</string>
     <string name="filter_recently_modified">最近修改过的</string>
     <string name="default_list">默认清单</string>

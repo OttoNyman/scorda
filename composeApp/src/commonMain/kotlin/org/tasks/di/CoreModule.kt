@@ -28,7 +28,6 @@ import org.tasks.viewmodel.TagSettingsViewModel
 import com.todoroo.astrid.alarms.AlarmCalculator
 import com.todoroo.astrid.alarms.AlarmService
 import com.todoroo.astrid.repeats.RepeatTaskHelper
-import com.todoroo.astrid.timers.TimerPlugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -402,7 +401,6 @@ val coreModule: Module = module {
     factoryOf(::AlarmService)
     factory { RepeatTaskHelper(get(), get(), get()) }
     factory { TaskCompleter(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    factoryOf(::TimerPlugin)
     factoryOf(::TaskDeleter)
     factoryOf(::TaskSaver)
     factoryOf(::TaskMover)

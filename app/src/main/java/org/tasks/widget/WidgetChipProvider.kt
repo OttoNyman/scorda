@@ -38,9 +38,9 @@ class WidgetChipProvider @Inject constructor(
             setImageViewResource(
                 R.id.chip_icon,
                 if (task.isCollapsed) {
-                    R.drawable.ic_keyboard_arrow_down_black_24dp
+                    R.drawable.ic_keyboard_arrow_right_black_24dp
                 } else {
-                    R.drawable.ic_keyboard_arrow_up_black_24dp
+                    R.drawable.ic_keyboard_arrow_down_black_24dp
                 }
             )
         }

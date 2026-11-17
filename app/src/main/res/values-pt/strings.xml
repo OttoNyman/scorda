@@ -9,9 +9,7 @@
     <string name="import_summary_message">O ficheiro %1$s continha %2$s\n\n%3$s importadas\n%4$s já existem,\n%5$s tinham erros</string>
     <string name="import_progress_read">Lendo a tarefa %d…</string>
     <string name="read_permission_label">Permissões do Tasks</string>
-    <string name="DLG_hour_minutes">Horário (horas:minutos)</string>
     <string name="DLG_undo">Desfazer</string>
-    <string name="WID_dateButtonUnset">Clique para definir</string>
     <string name="TLA_no_items">Não há tarefas aqui.</string>
     <string name="TLA_menu_sort">Ordenar</string>
     <string name="TLA_menu_search">Pesquisar</string>
@@ -27,10 +25,7 @@
     <string name="TEA_title_hint">Nome da tarefa</string>
     <string name="TEA_importance_label">Prioridade</string>
     <string name="TEA_note_label">Descrição</string>
-    <string name="TEA_estimatedDuration_label">Quanto tempo irá durar?</string>
-    <string name="TEA_elapsedDuration_label">Tempo já decorrido</string>
     <string name="save">Guardar</string>
-    <string name="TEA_timer_elap">Decorrido %s</string>
     <string name="due_date">Data de fim</string>
     <string name="due_time">Hora da tarefa</string>
     <string name="day_before_due">Um dia antes</string>
@@ -41,7 +36,6 @@
     <string name="TEA_control_notes">Descrição</string>
     <string name="TEA_control_files">Ficheiros</string>
     <string name="TEA_control_reminders">Lembretes</string>
-    <string name="TEA_control_timer">Controlos temporais</string>
     <string name="TEA_control_hidden_section">----Ocultar sempre----</string>
     <string name="none">Nenhum</string>
     <string name="EPr_beastMode_reset">Restaurar definições originas</string>
@@ -117,11 +111,6 @@
     <string name="new_tag">Criar nova etiqueta</string>
     <string name="new_list">Criar nova lista</string>
     <string name="delete_tag_confirmation">Eliminar %s\?</string>
-    <string name="TPl_notification">Cronómetro ativo para %s!</string>
-    <string name="TEA_timer_controls">Cronómetro</string>
-    <string name="TEA_timer_comment_started">iniciou esta tarefa:</string>
-    <string name="TEA_timer_comment_stopped">parou de fazer esta tarefa:</string>
-    <string name="TEA_timer_comment_spent">Tempo decorrido:</string>
     <string name="voice_create_prompt">Falar para criar uma tarefa</string>
     <string name="EPr_voiceInputEnabled_title">Entrada por voz</string>
     <string name="voice_command_added_task">Tarefa adicionada</string>
@@ -188,7 +177,6 @@
     <string name="repeats_plural_number_of_times">Repetir a cada %1$s, ocorre %2$d %3$s</string>
     <string name="dont_add_to_calendar">Não adicionar ao calendário</string>
     <string name="action_call">Ligar</string>
-    <string name="TEA_timer_est">Duração %s</string>
     <string name="icon">Ícone</string>
     <string name="invalid_backup_file">O ficheiro de cópia de segurança é inválido</string>
     <string name="choose_new_location">Escolher nova localização</string>

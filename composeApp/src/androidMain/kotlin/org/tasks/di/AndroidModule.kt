@@ -41,7 +41,6 @@ actual fun platformModule(): Module = module {
             override suspend fun cancel(ids: List<Long>, reason: CancelReason) {}
             override suspend fun cancelAll(reason: CancelReason) {}
             override fun triggerNotifications() {}
-            override suspend fun updateTimerNotification() {}
         }
     }
     factory<TaskCleanup> { object : TaskCleanup {} }

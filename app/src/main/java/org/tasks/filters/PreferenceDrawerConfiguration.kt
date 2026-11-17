@@ -42,7 +42,4 @@ class PreferenceDrawerConfiguration(
 
     override val googleTasksSyncing: Boolean
         get() = gate.sync
-
-    override val timerEnabled: Boolean
-        get() = features.timer
 }

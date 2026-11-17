@@ -9,8 +9,6 @@
     <string name="import_summary_message">Filen %1$s indeholdt %2$s.\n\n%3$s importeret\n%4$s findes allerede\n%5$s havde fejl</string>
     <string name="import_progress_read">Indlæser opgave %d…</string>
     <string name="read_permission_label">Tasks-tilladelse</string>
-    <string name="DLG_hour_minutes">Tid (timer : minutter)</string>
-    <string name="WID_dateButtonUnset">Tryk for at indstille</string>
     <string name="TLA_menu_sort">Sortér</string>
     <string name="TLA_menu_settings">Indstillinger</string>
     <string name="TAd_actionEditTask">Rediger</string>
@@ -23,8 +21,6 @@
     <string name="TEA_title_hint">Opgavenavn</string>
     <string name="TEA_importance_label">Prioritet</string>
     <string name="TEA_note_label">Beskrivelse</string>
-    <string name="TEA_estimatedDuration_label">Hvor lang tid tager det?</string>
-    <string name="TEA_elapsedDuration_label">Tid allerede brugt</string>
     <string name="TEA_control_importance">Prioritet</string>
     <string name="TEA_control_notes">Beskrivelse</string>
     <string name="TEA_control_files">Filer</string>
@@ -217,11 +213,6 @@
     <string name="refresh_purchases">Opdater køb</string>
     <string name="EPr_voiceInputEnabled_title">Stemmeinput</string>
     <string name="voice_create_prompt">Tal for at oprette en opgave</string>
-    <string name="TEA_timer_comment_spent">Tid brugt:</string>
-    <string name="TEA_timer_comment_stopped">stoppede med opgaven:</string>
-    <string name="TEA_timer_comment_started">begyndte på opgaven:</string>
-    <string name="TEA_timer_controls">Timer</string>
-    <string name="TPl_notification">Timere er aktive for %s!</string>
     <string name="delete_tag_confirmation">Slet %s\?</string>
     <string name="new_list">Opret ny liste</string>
     <string name="new_tag">Opret nyt tag</string>
@@ -283,7 +274,6 @@
     <string name="EPr_cal_end_or_start_at_due_time">Tid for kalenderbegivenhed</string>
     <string name="EPr_beastMode_reset">Gendan standardindstillinger</string>
     <string name="none">Ingen</string>
-    <string name="TEA_control_timer">Timerkontroller</string>
     <string name="TEA_control_location">Placering</string>
     <string name="TEA_control_gcal">Kalender</string>
     <string name="TEA_control_repeat">Gentag</string>
@@ -292,8 +282,6 @@
     <string name="due_time">Forfaldstid</string>
     <string name="due_date">Forfaldsdato</string>
     <string name="display_name">Visningsnavn</string>
-    <string name="TEA_timer_elap">Brugt %s</string>
-    <string name="TEA_timer_est">Ca. %s</string>
     <string name="save">Gem</string>
     <string name="FLA_new_filter">Opret nyt filter</string>
     <string name="sort_created">Efter oprettelsestidspunkt</string>

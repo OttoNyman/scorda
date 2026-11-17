@@ -5,6 +5,7 @@ import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Notification
 import org.tasks.data.entity.Task
 import org.tasks.reminders.Random
+import org.tasks.reminders.isAdvance
 import org.tasks.time.withMillisOfDay
 
 class AlarmCalculator(
@@ -44,6 +45,10 @@ class AlarmCalculator(
         }
         return when {
             trigger <= AlarmService.NO_ALARM ->
+                null
+            // "in advance" whose moment had passed when the task was saved (due in 10 min, ring
+            // 15 min early; an occurrence emitted one short period ahead): no instant ring
+            alarm.isAdvance() && trigger < maxOf(task.creationDate, task.modificationDate) ->
                 null
             trigger > task.reminderLast || alarm.type == Alarm.TYPE_SNOOZE ->
                 Notification(taskId = alarm.task, timestamp = trigger, type = alarm.type)

@@ -42,6 +42,7 @@ import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.FilterDao
 import org.tasks.data.dao.LocationDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.TagDao
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskAttachmentDao
@@ -55,6 +56,7 @@ import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Filter
 import org.tasks.data.entity.Geofence
 import org.tasks.data.entity.Place
+import org.tasks.data.entity.Series
 import org.tasks.data.entity.Tag
 import org.tasks.data.entity.TagData
 import org.tasks.data.entity.Task
@@ -93,6 +95,7 @@ class TasksJsonImporter @Inject constructor(
     private val filterCriteriaProvider: FilterCriteriaProvider,
     private val firebase: Firebase,
     private val upgrade_15_10: Upgrade_15_10,
+    private val seriesDao: SeriesDao,
 ) {
     suspend fun importTasks(
         context: Context,
@@ -266,6 +269,11 @@ class TasksJsonImporter @Inject constructor(
                                             icon = calendar.icon.migrateLegacyIcon(),
                                         )
                                     )
+                                }
+                            }
+                            "series" -> reader.forEach<Series> { imported ->
+                                if (seriesDao.getByUuid(imported.uuid) == null) {
+                                    seriesDao.insert(imported.copy(id = 0))
                                 }
                             }
                             "taskListMetadata" -> reader.forEach<TaskListMetadata> { tlm ->

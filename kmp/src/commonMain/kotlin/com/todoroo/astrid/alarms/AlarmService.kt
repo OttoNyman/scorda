@@ -19,6 +19,7 @@ import org.tasks.data.entity.Notification
 import org.tasks.notifications.CancelReason
 import org.tasks.notifications.Notifier
 import org.tasks.preferences.AppPreferences
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.ONE_MINUTE
 import org.tasks.time.startOfMinute
@@ -31,6 +32,7 @@ class AlarmService(
     private val notifier: Notifier,
     private val alarmCalculator: AlarmCalculator,
     private val preferences: AppPreferences,
+    private val seriesScheduler: SeriesScheduler? = null,
 ) {
     suspend fun getAlarms(taskId: Long): List<Alarm> = alarmDao.getAlarms(taskId)
 
@@ -63,6 +65,7 @@ class AlarmService(
     }
 
     suspend fun snooze(time: Long, taskIds: List<Long>) {
+        seriesScheduler?.postpone(taskIds, time)
         notifier.cancel(taskIds, CancelReason.SNOOZE)
         recordDismissal(taskIds, currentTimeMillis()) {
             alarmDao.deleteSnoozed(taskIds)

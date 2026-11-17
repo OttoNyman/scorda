@@ -15,9 +15,7 @@
     <string name="help_and_feedback">Fangatahana fanampiana &amp; Fanehoan-kevitra avy aminao mombanay</string>
     <string name="import_failed_message">Tsy voasokatra ny zava-bitanao voatahiry</string>
     <string name="read_permission_label">Alàlana mihatra momba ny asa</string>
-    <string name="DLG_hour_minutes">Famantaran\'hora (hora : minitra)</string>
     <string name="DLG_undo">Ravaina/Averina</string>
-    <string name="WID_dateButtonUnset">Tsindrio raha hametraka</string>
     <string name="tomorrow">Rahampitso</string>
     <string name="TLA_no_items">Tsy Mbola misy Asa ato</string>
     <string name="TLA_menu_sort">Alamina</string>

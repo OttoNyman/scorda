@@ -4,9 +4,7 @@
     <string name="backup_BAc_import">Impordi varukoopia</string>
     <string name="backup_BAc_export">Varunda kohe</string>
     <string name="read_permission_label">Ülesande õigused</string>
-    <string name="DLG_hour_minutes">Aeg (tunnid : minutid)</string>
     <string name="DLG_undo">Võta tagasi</string>
-    <string name="WID_dateButtonUnset">Määramiseks kliki</string>
     <string name="TLA_no_items">Siin pole ühtegi ülesannet.</string>
     <string name="TLA_menu_sort">Sorteeri</string>
     <string name="TLA_menu_search">Otsi</string>
@@ -23,11 +21,7 @@
     <string name="TEA_importance_label">Tähtsus</string>
     <string name="no_date">Kuupäeva pole</string>
     <string name="TEA_note_label">Kirjeldus</string>
-    <string name="TEA_estimatedDuration_label">Kui kaua see aega võtab\?</string>
-    <string name="TEA_elapsedDuration_label">Juba kulunud aeg</string>
     <string name="save">Salvesta</string>
-    <string name="TEA_timer_est">Hinnanguliselt %s</string>
-    <string name="TEA_timer_elap">Kulunud %s</string>
     <string name="due_date">Tähtaeg</string>
     <string name="TEA_control_repeat">Korda</string>
     <string name="TEA_control_gcal">Kalender</string>
@@ -78,7 +72,6 @@
     <string name="snooze_all">Lükka kõik edasi</string>
     <string name="repeat_option_custom">Kohandatud…</string>
     <string name="new_list">Loo uus nimekiri</string>
-    <string name="TEA_timer_controls">Taimer</string>
     <string name="voice_command_added_task">Lisatud ülesanne</string>
     <plurals name="Ntasks">
         <item quantity="one">1 ülesanne</item>
@@ -221,7 +214,6 @@
     <string name="settings_default">Vaikimisi</string>
     <string name="support">Tugi</string>
     <string name="completed">Lõpetatud</string>
-    <string name="TEA_timer_comment_spent">Kulunud aeg:</string>
     <string name="opacity_header">Päise läbipaistmatus</string>
     <string name="opacity_row">Rea läbipaistmatus</string>
     <string name="select_all">Vali kõik</string>
@@ -285,11 +277,9 @@
     <string name="filter_any_start_date">Igal algusajal</string>
     <string name="gtasks_error_accountNotFound">„%s“ kasutajakontot ei leidu - palun logi Google Tasksi seadistustest välja ja uuesti sisse.</string>
     <string name="CFC_dueBefore_text">Tähtajaks: ?</string>
-    <string name="TPl_notification">Ajastamine on „%s“ jaoks aktiivne!</string>
     <string name="import_progress_read">Loeme ülesannet %d…</string>
     <string name="import_summary_message">%1$s fail sisdaldas%2$s.\n\n %3$s imporditud,\n %4$s on juba olemas,\n %5$s oli vigadega</string>
     <string name="actfm_picture_clear">Eemalda pilt</string>
-    <string name="TEA_control_timer">Ajastamise haldus</string>
     <string name="EPr_manage_delete_completed_gcal">Kustuta täidetud ülesannete kalendrikirjed</string>
     <string name="EPr_manage_delete_all_gcal_message">Kas sa tõesti soovid kustutada kõikide ülesannete kalendrisse märgitud sündmused?</string>
     <string name="CFC_dueBefore_name">Tähtajaks…</string>
@@ -300,12 +290,10 @@
     <string name="tasker_list_notification">Teavituste loend</string>
     <string name="EPr_manage_delete_all_gcal">Kustuta kõikide ülesannete kalendrikirjed</string>
     <string name="comment">Kommentaar</string>
-    <string name="TEA_timer_comment_started">alustas selle ülesande täitmist:</string>
     <string name="customize_edit_screen_summary">Eemalda väljad või muuda nende järjekorda</string>
     <string name="date_shortcut_must_come_before">%1$s peab olema enne %2$s</string>
     <string name="date_shortcut_must_come_after">%1$s peab olema peale %2$s</string>
     <string name="delete_tag_confirmation">Kas kustutame %s?</string>
-    <string name="TEA_timer_comment_stopped">lõpetas selle ülesande täitmise:</string>
     <string name="voice_create_prompt">Ülesande lisamiseks räägi</string>
     <plurals name="repeat_n_days">
         <item quantity="one">%d päev</item>

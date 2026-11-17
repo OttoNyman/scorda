@@ -4,7 +4,6 @@
     <string name="filter_today">วันนี้</string>
     <string name="filter_my_tasks">แผนงานตอนนี้</string>
     <string name="filter_notifications">แจ้ง เตือน</string>
-    <string name="filter_timer">งานที่กําลังกําหนดเวลาอยู่</string>
     <string name="filter_recently_modified">เพิ่งถูกแก้ไข</string>
     <string name="default_list">รายการเริ่มต้น</string>
     <string name="help_and_feedback">ความช่วยเหลือและคําติชม</string>

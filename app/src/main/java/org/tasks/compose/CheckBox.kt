@@ -19,7 +19,6 @@ fun CheckBox(
 ) {
     CheckBox(
         isCompleted = task.isCompleted,
-        isRecurring = task.isRecurring,
         priority = task.priority,
         onCompleteClick = onCompleteClick,
         modifier = modifier,
@@ -29,14 +28,13 @@ fun CheckBox(
 @Composable
 fun CheckBox(
     isCompleted: Boolean,
-    isRecurring: Boolean,
     priority: Int,
     onCompleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     IconButton(onClick = onCompleteClick, modifier = modifier) {
         Icon(
-            painter = painterResource(id = getCheckboxRes(isCompleted, isRecurring)),
+            painter = painterResource(id = getCheckboxRes(isCompleted)),
             tint = Color(
                 priorityColor(
                     priority = priority,

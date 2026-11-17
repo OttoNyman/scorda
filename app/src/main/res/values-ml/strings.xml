@@ -7,8 +7,6 @@
     <string name="EPr_delete_task_data_warning">എല്ലാ ടാസ്കുകളും ശാശ്വതമായി ഇല്ലാതാക്കപ്പെടും</string>
     <string name="day_after_tomorrow">മറ്റന്നാൾ</string>
     <string name="next_week">അടുത്ത ആഴ്ച</string>
-    <string name="DLG_hour_minutes">സമയം (മണിക്കൂർ: മിനിറ്റ്)</string>
-    <string name="WID_dateButtonUnset">സജ്ജമാക്കാൻ ക്ലിക്കുചെയ്യുക</string>
     <string name="TLA_no_items">ഇവിടെ ടാസ്‌ക്കുകളൊന്നുമില്ല.</string>
     <string name="TLA_menu_search">തിരയുക</string>
     <string name="TLA_menu_settings">ക്രമീകരണങ്ങൾ</string>
@@ -20,7 +18,6 @@
     <string name="TEA_importance_label">മുൻഗണന</string>
     <string name="no_date">തീയതിയില്ല</string>
     <string name="TEA_note_label">വിവരണം</string>
-    <string name="TEA_estimatedDuration_label">എത്ര സമയമെടുക്കും\?</string>
     <string name="save">സംരക്ഷിക്കുക</string>
     <string name="TEA_control_repeat">ആവർത്തിക്കുക</string>
     <string name="TEA_control_gcal">കലണ്ടർ</string>
@@ -42,7 +39,6 @@
     <string name="EPr_cal_end_at_due_time">കലണ്ടർ ഇവന്റുകൾ സമയം തികയുമ്പോൾ അവസാനിപ്പിക്കുക</string>
     <string name="day_before_due">തികയുന്നതിന് ഒരു ദിവസം മുൻപ്</string>
     <string name="TEA_control_location">സ്ഥലം</string>
-    <string name="TEA_control_timer">ടൈമർ നിയന്ത്രണങ്ങൾ</string>
     <string name="week_before_due">തികയുന്നതിനു ഒരാഴ്ച മുൻപ്</string>
     <string name="EPr_beastMode_reset">സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക</string>
     <string name="EPr_reset_preferences_warning">മുൻഗണനകൾ ഡിഫോൾട്ട് മൂല്യങ്ങളിലേക്ക് പുനഃസജ്ജമാക്കും</string>
@@ -57,8 +53,6 @@
     <string name="TAd_actionEditTask">തിരുത്തുക</string>
     <string name="SSD_sort_auto">സ്മാർട്ട് സോർട്ടിംഗ്</string>
     <string name="sort_created">ഉണ്ടാക്കിയ സമയം അനുസരിച്ച്</string>
-    <string name="TEA_elapsedDuration_label">ഇതിനകം ചെലവഴിച്ച സമയം</string>
-    <string name="TEA_timer_elap">കഴിഞ്ഞു %s</string>
     <string name="due_date">തികയുന്നു തിയതി</string>
     <string name="due_time">തികയുന്ന സമയം</string>
     <string name="TEA_control_importance">മുൻഗണന</string>
@@ -77,7 +71,6 @@
     <string name="EPr_manage_delete_all_gcal_message">ടാസ്‌ക്കുകൾക്കുള്ള എല്ലാ ഇവന്റുകളും ഇല്ലാതാക്കണോ?</string>
     <string name="sort_list">ലിസ്റ്റ് പ്രകാരം</string>
     <string name="FLA_search_filter">യോജിക്കുന്നു \'%s\'</string>
-    <string name="TEA_timer_est">ഏകദേശം %s</string>
     <string name="none">ഒന്നുമില്ല</string>
     <string name="EPr_show_task_edit_comments">ടാസ്‌ക് എഡിറ്റിൽ കമന്റുകൾ കാണിക്കുക</string>
 </resources>

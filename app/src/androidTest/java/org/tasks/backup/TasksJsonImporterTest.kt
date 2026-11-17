@@ -16,6 +16,7 @@ import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
 import org.tasks.data.entity.CaldavCalendar
+import org.tasks.data.entity.Series
 import org.tasks.data.entity.TagData
 import org.tasks.data.entity.Task
 import org.tasks.injection.InjectingTestCase
@@ -120,6 +121,33 @@ class TasksJsonImporterTest : InjectingTestCase() {
         assertEquals("test task", tasks[0].title)
         assertEquals(1, caldavDao.getAccounts().size)
         assertEquals(1, caldavDao.getCalendars().size)
+    }
+
+    @Test
+    fun backupAndRestoreCarriesSeries() = runBlocking {
+        val series = Series(
+            uuid = "series-1",
+            recurrence = "RRULE:FREQ=DAILY",
+            anchor = 1_000L,
+            template = "{}",
+            created = 1L,
+            modified = 2L,
+        )
+        database.seriesDao().insert(series)
+        taskDao.createNew(Task(title = "occurrence", series = series.uuid, scheduled = 1_000L))
+
+        val backup = export()
+        database.clearAllTables()
+        import(backup)
+
+        val restored = database.seriesDao().getAll()
+        assertEquals(listOf(series.uuid), restored.map { it.uuid })
+        assertEquals(series.recurrence, restored[0].recurrence)
+        assertEquals(series.anchor, restored[0].anchor)
+        assertEquals(series.uuid, taskDao.getAll().single().series)
+
+        import(backup)
+        assertEquals(1, database.seriesDao().getAll().size)
     }
 
     @Test

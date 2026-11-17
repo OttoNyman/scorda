@@ -5,9 +5,7 @@
     <string name="backup_BAc_import">အရန်သိမ်းထားသည်များကိုပြန်သွင်းမည်</string>
     <string name="import_progress_read">လုပ်စရာကိုကြည့်နေသည် %d…</string>
     <string name="export_toast">အရန်သိမ်းပြီး %1$s to %2$s.</string>
-    <string name="DLG_hour_minutes">အချိန် (နာရီ : မိနစ်)</string>
     <string name="DLG_undo">မလုပ်တော့</string>
-    <string name="WID_dateButtonUnset">ဖန်တီးမည်</string>
     <string name="TLA_menu_sort">စီမည်</string>
     <string name="TLA_menu_search">ရှာမယ်</string>
     <string name="TLA_menu_settings">ဆက်တင်များ</string>
@@ -18,10 +16,7 @@
     <string name="FLA_search_filter">ကိုက်ညီသည် \'%s\'</string>
     <string name="FLA_new_filter">စစ်ထုတ်မည်</string>
     <string name="TEA_title_hint">အလုပ်ခေါင်းစဥ်</string>
-    <string name="TEA_elapsedDuration_label">အချိန်ကုန်ပြီးသား</string>
     <string name="save">သိမ်းမည်</string>
-    <string name="TEA_timer_est">Est. %s</string>
-    <string name="TEA_timer_elap">Elapsed %s</string>
     <string name="due_date">ဆုံးရက်</string>
     <string name="due_time">ပြီးဆုံးချိန်</string>
     <string name="start_date">စရက်</string>
@@ -31,7 +26,6 @@
     <string name="TEA_control_importance">အရေးပါမှု</string>
     <string name="TEA_control_location">တည်နေရာ</string>
     <string name="TEA_control_reminders">သတိပေးမှုများ</string>
-    <string name="TEA_control_timer">အချိန်မှတ်ခြင်းထိန်းချုပ်မှုများ</string>
     <string name="TEA_creation_date">ဖန်တီးသောရက်</string>
     <string name="ok">OK</string>
     <string name="cancel">မလုပ်တော့</string>
@@ -55,7 +49,6 @@
     <string name="sort_created">ဖန်တီးသောအချိန်ဖြင့်</string>
     <string name="TEA_note_label">ဖော်ပြချက်</string>
     <string name="TEA_control_notes">ဖော်ပြချက်</string>
-    <string name="TEA_estimatedDuration_label">အချိန်ဘယ်လောက်ယူမှာလဲ\?</string>
     <string name="day_before_due">မပြီးဆုံးမီတစ်ရက်အလို</string>
     <string name="TEA_control_hidden_section">----အမြဲတမ်းဝှက်ထားမည်----</string>
     <string name="TEA_control_files">ဖိုင်များ</string>

@@ -8,7 +8,6 @@ import org.tasks.filters.PlaceFilter
 import org.tasks.filters.RecentlyModifiedFilter
 import org.tasks.filters.SnoozedFilter
 import org.tasks.filters.TagFilter
-import org.tasks.filters.TimerFilter
 import org.tasks.filters.TodayFilter
 
 fun Filter.fits(features: Constructor): Boolean = when (this) {
@@ -16,7 +15,6 @@ fun Filter.fits(features: Constructor): Boolean = when (this) {
     is TagFilter -> features.tags
     is PlaceFilter -> features.geo
     is CustomFilter -> features.filters
-    is TimerFilter -> features.filters && features.timer
     is TodayFilter, is RecentlyModifiedFilter, is SnoozedFilter, is NotificationsFilter -> features.filters
     else -> true
 }

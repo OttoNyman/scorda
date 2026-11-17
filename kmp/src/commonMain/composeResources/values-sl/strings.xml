@@ -2,7 +2,6 @@
 <resources>
     <string name="search">Iskanje</string>
     <string name="filter_my_tasks">Moji Opravki</string>
-    <string name="filter_timer">Opravki katerim se meri čas</string>
     <string name="filter_today">Danes</string>
     <string name="filter_recently_modified">Nedavno spremenjeno</string>
     <string name="settings">Nastavitve</string>

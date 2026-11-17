@@ -28,7 +28,7 @@
       android:paddingStart="6dp"
       android:paddingEnd="0dp"
       android:layout_gravity="center_vertical"
-      tools:src="@drawable/ic_keyboard_arrow_up_black_24dp" />
+      tools:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
     <TextView
       android:id="@+id/chip_text"

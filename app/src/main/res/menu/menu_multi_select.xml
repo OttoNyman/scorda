@@ -50,4 +50,21 @@
     android:title="@string/delete"
     app:showAsAction="ifRoom"/>
 
+  <item
+    android:id="@+id/finish_series"
+    android:title="@string/series_finish"
+    app:showAsAction="never"/>
+
+  <item
+    android:id="@+id/restore"
+    android:icon="@drawable/ic_outline_restore_from_trash_24px"
+    android:title="@string/trash_restore"
+    app:showAsAction="always"/>
+
+  <item
+    android:id="@+id/delete_forever"
+    android:icon="@drawable/ic_outline_delete_24px"
+    android:title="@string/trash_delete_forever"
+    app:showAsAction="ifRoom"/>
+
 </menu>

@@ -4,7 +4,6 @@
     <string name="filter_my_tasks">Saját Feladatok</string>
     <string name="filter_notifications">Értesítések</string>
     <string name="filter_snoozed">Elhalasztva</string>
-    <string name="filter_timer">Időzített Feladatok</string>
     <string name="filter_today">Ma</string>
     <string name="filter_recently_modified">Nemrég módosítva</string>
     <string name="default_list">Alapértelmezett lista</string>

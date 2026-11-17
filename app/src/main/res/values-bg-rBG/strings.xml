@@ -9,9 +9,7 @@
     <string name="import_summary_message">Файлът %1$s съдържа %2$s. \n \n%3$s внесени, \n%4$s съществуващи \n%5$s с грешка</string>
     <string name="import_progress_read">Прочитане на задача %d…</string>
     <string name="read_permission_label">Разрешения за Tasks</string>
-    <string name="DLG_hour_minutes">Време (часове : минути)</string>
     <string name="DLG_undo">Отменяне</string>
-    <string name="WID_dateButtonUnset">Избиране</string>
     <string name="TLA_no_items">Липсват задачи</string>
     <string name="TLA_menu_sort">Сортиране</string>
     <string name="TLA_menu_search">Търсене</string>
@@ -29,11 +27,7 @@
     <string name="TEA_importance_label">Приоритет</string>
     <string name="no_date">Без дата</string>
     <string name="TEA_note_label">Описание</string>
-    <string name="TEA_estimatedDuration_label">Колко време ще отнеме?</string>
-    <string name="TEA_elapsedDuration_label">Вече отделено време</string>
     <string name="save">Запазване</string>
-    <string name="TEA_timer_est">Прибл. %s</string>
-    <string name="TEA_timer_elap">Изминали %s</string>
     <string name="due_date">Крайна дата</string>
     <string name="due_time">Краен час</string>
     <string name="day_before_due">Ден преди крайния срок</string>
@@ -45,7 +39,6 @@
     <string name="TEA_control_notes">Описание</string>
     <string name="TEA_control_files">Файлове</string>
     <string name="TEA_control_reminders">Напомняне</string>
-    <string name="TEA_control_timer">Отчитане на времето</string>
     <string name="TEA_control_hidden_section">----Винаги скрито----</string>
     <string name="none">Без</string>
     <string name="EPr_beastMode_reset">Подразбирани настройки</string>
@@ -124,11 +117,6 @@
     <string name="new_tag">Създаване на етикет</string>
     <string name="new_list">Създаване на списък</string>
     <string name="delete_tag_confirmation">Изтриване на %s\?</string>
-    <string name="TPl_notification">За %s се отчита време!</string>
-    <string name="TEA_timer_controls">Отчитане на време</string>
-    <string name="TEA_timer_comment_started">Задачата е започната на:</string>
-    <string name="TEA_timer_comment_stopped">Задачата е завършена на:</string>
-    <string name="TEA_timer_comment_spent">Отделено време:</string>
     <string name="voice_create_prompt">Говорете, за да създадете задача</string>
     <string name="EPr_voiceInputEnabled_title">Гласово въвеждане</string>
     <string name="voice_command_added_task">Добавена задача</string>

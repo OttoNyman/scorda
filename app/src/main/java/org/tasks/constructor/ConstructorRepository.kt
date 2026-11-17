@@ -1,6 +1,5 @@
 package org.tasks.constructor
 
-import com.todoroo.astrid.timers.TimerPlugin
 import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +30,6 @@ class ConstructorRepository @Inject constructor(
     private val caldavDao: CaldavDao,
     private val taskDao: TaskDao,
     private val gate: FeatureGate,
-    private val timerPlugin: Lazy<TimerPlugin>,
     private val configuration: PlatformConfiguration,
     private val workManager: Lazy<WorkManager>,
     private val locationService: Lazy<LocationService>,
@@ -161,9 +159,6 @@ class ConstructorRepository @Inject constructor(
     private suspend fun publish(raw: Constructor) {
         val (previous, value) = apply(raw) ?: return
         try {
-            if (previous.timer && !value.timer) {
-                taskDao.runningTimers().forEach { timerPlugin.get().stopTimer(it) }
-            }
             if (previous.geo != value.geo) {
                 locationService.get().registerAllGeofences()
             }

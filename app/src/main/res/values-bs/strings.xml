@@ -2,9 +2,7 @@
 <resources>
     <string name="display_name">Prikazano ime</string>
     <string name="read_permission_label">Odobrenja Zadataka</string>
-    <string name="DLG_hour_minutes">Vrijeme (sati:minute)</string>
     <string name="DLG_undo">Vrati</string>
-    <string name="WID_dateButtonUnset">Klikni za postavljanje</string>
     <string name="TLA_no_items">Ovdje nema zadataka.</string>
     <string name="TLA_menu_sort">Poredaj</string>
     <string name="TLA_menu_search">Traži</string>
@@ -20,10 +18,7 @@
     <string name="TEA_title_hint">Naziv zadatka</string>
     <string name="TEA_importance_label">Bitnost</string>
     <string name="TEA_note_label">Opis</string>
-    <string name="TEA_estimatedDuration_label">Koliko će trajati?</string>
     <string name="save">Spremi</string>
-    <string name="TEA_timer_est">Oko %s</string>
-    <string name="TEA_timer_elap">Prošlo %s</string>
     <string name="EPr_reset_preferences_warning">Preference će se resetovati na uobičajene vrijednosti</string>
     <string name="EPr_delete_task_data">Ižbriši podatke zadatka</string>
     <string name="EPr_delete_task_data_warning">Svi zadaci će se trajno izbrisati</string>
@@ -62,7 +57,6 @@
     <string name="TEA_control_notes">Opis</string>
     <string name="TEA_control_files">Fajlovi</string>
     <string name="TEA_control_reminders">Podsjetnici</string>
-    <string name="TEA_control_timer">Kontrole tajmera</string>
     <string name="TEA_control_hidden_section">----Uvijek sakrij----</string>
     <string name="TEA_creation_date">Datum kreiranja</string>
     <string name="none">Ništa</string>

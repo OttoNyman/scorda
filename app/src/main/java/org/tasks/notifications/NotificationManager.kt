@@ -13,7 +13,6 @@ import androidx.core.app.NotificationManagerCompat.InterruptionFilter
 import androidx.core.os.ConfigurationCompat
 import com.todoroo.andlib.utility.AndroidUtilities.atLeastTiramisu
 import com.todoroo.andlib.utility.AndroidUtilities.preUpsideDownCake
-import com.todoroo.astrid.utility.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -25,7 +24,6 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Notification
 import org.tasks.filters.NotificationsFilter
-import org.tasks.filters.TimerFilter
 import org.tasks.intents.TaskIntents
 import org.tasks.jobs.WorkManager
 import org.tasks.markdown.MarkdownProvider
@@ -40,7 +38,6 @@ import org.tasks.reminders.snoozeOptions
 import org.tasks.resources.getString
 import org.tasks.themes.ColorProvider
 import org.tasks.time.DateTime
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.rmd_NoA_done
 import tasks.kmp.generated.resources.rmd_NoA_snooze
@@ -554,45 +551,6 @@ class NotificationManager @Inject constructor(
         )
     }
 
-    @SuppressLint("MissingPermission")
-    override suspend fun updateTimerNotification() {
-        if (!permissionChecker.hasNotificationPermission()) {
-            return
-        }
-        val count = taskDao.activeTimers()
-        if (count == 0) {
-            cancel(Constants.NOTIFICATION_TIMER.toLong(), CancelReason.TIMER)
-        } else {
-            val filter = TimerFilter.create()
-            val notifyIntent = TaskIntents.getTaskListIntent(context, filter)
-            val pendingIntent = PendingIntent.getActivity(
-                context,
-                Constants.NOTIFICATION_TIMER,
-                notifyIntent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val r = localeContext.resources
-            val appName = r.getString(R.string.app_name)
-            val text = r.getString(
-                R.string.TPl_notification, r.getQuantityString(R.plurals.Ntasks, count, count)
-            )
-            val builder =
-                NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_TIMERS)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(appName)
-                    .setContentText(text)
-                    .setWhen(currentTimeMillis())
-                    .setSmallIcon(R.drawable.ic_timer_white_24dp)
-                    .setAutoCancel(false)
-                    .setOngoing(true)
-            notify(
-                Constants.NOTIFICATION_TIMER.toLong(),
-                builder,
-                alert = false,
-            )
-        }
-    }
-
     private fun cancelSummaryNotification() {
         Timber.d("Cancelling summary notification")
         notificationManager.cancel(SUMMARY_NOTIFICATION_ID)
@@ -603,7 +561,6 @@ class NotificationManager @Inject constructor(
         const val NOTIFICATION_CHANNEL_SILENT = "reminders_silent"
         const val NOTIFICATION_CHANNEL_INSISTENT = "reminders_insistent"
         const val NOTIFICATION_CHANNEL_TASKER = "notifications_tasker"
-        const val NOTIFICATION_CHANNEL_TIMERS = "notifications_timers"
         const val NOTIFICATION_CHANNEL_MISCELLANEOUS = "notifications_miscellaneous"
         const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
         const val EXTRA_NOTIFICATION_TYPE = "extra_notification_type"

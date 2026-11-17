@@ -9,9 +9,7 @@
     <string name="import_summary_message">A(z) %1$s file %2$s-t tartalmazott.\n\n %3$s importálva,\n %4$s már létezett\n %5$s hibás</string>
     <string name="import_progress_read">%d feladat felolvasása…</string>
     <string name="read_permission_label">Tasks engedélyek</string>
-    <string name="DLG_hour_minutes">Idő (óra : perc)</string>
     <string name="DLG_undo">Visszavonás</string>
-    <string name="WID_dateButtonUnset">Érintsd meg a beállításhoz</string>
     <string name="TLA_no_items">Ebben a nézetben nincsenek feladatok.</string>
     <string name="TLA_menu_sort">Rendezés</string>
     <string name="TLA_menu_search">Keresés</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Feladat neve</string>
     <string name="TEA_importance_label">Prioritás</string>
     <string name="TEA_note_label">Leírás</string>
-    <string name="TEA_estimatedDuration_label">Meddig fog tartani?</string>
-    <string name="TEA_elapsedDuration_label">Már eltöltött idő</string>
     <string name="save">Mentés</string>
-    <string name="TEA_timer_est">Kb. %s</string>
-    <string name="TEA_timer_elap">Eltelt %s</string>
     <string name="due_date">Határidő</string>
     <string name="due_time">Esedékesség ideje</string>
     <string name="day_before_due">Egy nappal a határidő előtt</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Leírás</string>
     <string name="TEA_control_files">Fájlok</string>
     <string name="TEA_control_reminders">Emlékeztetők</string>
-    <string name="TEA_control_timer">Időzítő Beállítása</string>
     <string name="TEA_control_hidden_section">---Elrejtve---</string>
     <string name="none">Nincs</string>
     <string name="EPr_beastMode_reset">Visszaállítás alapértékre</string>
@@ -120,11 +113,6 @@
     <string name="new_tag">Új címke létrehozása</string>
     <string name="new_list">Új lista létrehozása</string>
     <string name="delete_tag_confirmation">%s törlése?</string>
-    <string name="TPl_notification">Időzítők aktiválva eddig: %s!</string>
-    <string name="TEA_timer_controls">Időzítő</string>
-    <string name="TEA_timer_comment_started">feladat megkezdve:</string>
-    <string name="TEA_timer_comment_stopped">feladat leállítva:</string>
-    <string name="TEA_timer_comment_spent">Eltöltött idő:</string>
     <string name="voice_create_prompt">Feladat létrehozásához kedjen beszélni</string>
     <string name="EPr_voiceInputEnabled_title">Hang bemenet</string>
     <string name="voice_command_added_task">Hozzáadott feladat</string>

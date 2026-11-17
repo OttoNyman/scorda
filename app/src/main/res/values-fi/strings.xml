@@ -9,9 +9,7 @@
     <string name="import_summary_message">Tiedosto %1$s sisälsi %2$s.\n\n %3$s tuotu,\n %4$s jo olemassa\n %5$s virhettä</string>
     <string name="import_progress_read">Luetaan tehtävää %d…</string>
     <string name="read_permission_label">Tasks käyttöoikeus</string>
-    <string name="DLG_hour_minutes">Aika (tunnit : minuutit)</string>
     <string name="DLG_undo">Kumoa</string>
-    <string name="WID_dateButtonUnset">Klikkaa asettaaksesi</string>
     <string name="TLA_no_items">Ei enää tehtäviä.</string>
     <string name="TLA_menu_sort">Järjestä</string>
     <string name="TLA_menu_search">Etsi</string>
@@ -27,11 +25,7 @@
     <string name="TEA_title_hint">Tehtävän nimi</string>
     <string name="TEA_importance_label">Tärkeys</string>
     <string name="TEA_note_label">Kuvaus</string>
-    <string name="TEA_estimatedDuration_label">Arvioitu kesto</string>
-    <string name="TEA_elapsedDuration_label">Aikaa käytetty</string>
     <string name="save">Tallenna</string>
-    <string name="TEA_timer_est">Arvio %s</string>
-    <string name="TEA_timer_elap">Kulunut %s</string>
     <string name="due_date">Määräpäivä</string>
     <string name="due_time">Määräaika</string>
     <string name="day_before_due">Päivä ennen määräpäivää</string>
@@ -42,7 +36,6 @@
     <string name="TEA_control_notes">Kuvaus</string>
     <string name="TEA_control_files">Tiedostot</string>
     <string name="TEA_control_reminders">Muistutukset</string>
-    <string name="TEA_control_timer">Ajastuksen säätimet</string>
     <string name="TEA_control_hidden_section">----Piilota aina----</string>
     <string name="none">Ei mitään</string>
     <string name="EPr_beastMode_reset">Palauta oletukset</string>
@@ -118,11 +111,6 @@
     <string name="new_tag">Luo uusi tunniste</string>
     <string name="new_list">Luo uusi lista</string>
     <string name="delete_tag_confirmation">Poista %s?</string>
-    <string name="TPl_notification">Ajastus aktiivinen %s!</string>
-    <string name="TEA_timer_controls">Ajastin</string>
-    <string name="TEA_timer_comment_started">tehtävä aloitettu:</string>
-    <string name="TEA_timer_comment_stopped">tehtävä lopetettu:</string>
-    <string name="TEA_timer_comment_spent">Aikaa käytetty:</string>
     <string name="voice_create_prompt">Puhu luodaksesi tehtävän</string>
     <string name="EPr_voiceInputEnabled_title">Äänisyöttö</string>
     <string name="voice_command_added_task">Lisätty tehtävä</string>

@@ -56,12 +56,6 @@ FROM (
     @Query("SELECT * FROM tasks WHERE _id IN (:ids)")
     internal abstract suspend fun fetchInternal(ids: List<Long>): List<Task>
 
-    @Query("SELECT * FROM tasks WHERE timerStart > 0 AND deleted = 0")
-    abstract suspend fun runningTimers(): List<Task>
-
-    @Query("SELECT COUNT(1) FROM tasks WHERE timerStart > 0 AND deleted = 0")
-    abstract suspend fun activeTimers(): Int
-
     @Query("SELECT COUNT(1) FROM tasks INNER JOIN alarms ON tasks._id = alarms.task WHERE deleted = 0 AND completed = 0 AND type = ${Alarm.TYPE_SNOOZE}")
     abstract suspend fun snoozedReminders(): Int
 
@@ -221,6 +215,14 @@ FROM recursive_tasks
             fetch(task.id)?.let {
                 task.parent = it.parent
                 task.order = it.order
+            }
+        }
+        if (task.series == null && original?.series == null) {
+            // a snapshot from before adoption must not undo it: the row would be adopted again
+            fetch(task.id)?.takeIf { it.series != null }?.let {
+                task.series = it.series
+                task.scheduled = it.scheduled
+                task.recurrence = null
             }
         }
         if (updateTimestamp && (!task.insignificantChange(original) || task.checkTransitory(SYNC_TAGS, SYNC_ALARMS, SYNC_LOCATION))) {

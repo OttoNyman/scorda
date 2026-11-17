@@ -6,7 +6,6 @@
     <string name="backup_BAc_export">بکاپ از تسک ها</string>
     <string name="import_summary_title">بازگرداندن خلاصه</string>
     <string name="DLG_undo">بازگرداندن</string>
-    <string name="WID_dateButtonUnset">کلیک برای تنظیم</string>
     <string name="TLA_no_items">هیچ وظیفه ای وجود ندارد.</string>
     <string name="TLA_menu_sort">چینش</string>
     <string name="TLA_menu_search">جست و جو</string>
@@ -22,10 +21,7 @@
     <string name="TEA_importance_label">اولویت</string>
     <string name="no_date">بدون تاریخ</string>
     <string name="TEA_note_label">توضیحات</string>
-    <string name="TEA_estimatedDuration_label">این چقدر طول میکشد ؟</string>
-    <string name="TEA_elapsedDuration_label">زمان سپری شده</string>
     <string name="save">ذخیره</string>
-    <string name="TEA_timer_elap">سپری‌شده %s</string>
     <string name="due_date">تاریخ موعود</string>
     <string name="due_time">زمان موعود</string>
     <string name="day_before_due">روز قبل از موعود</string>
@@ -36,7 +32,6 @@
     <string name="TEA_control_notes">توضیحات</string>
     <string name="TEA_control_files">فایل ها</string>
     <string name="TEA_control_reminders">یادآوری ها</string>
-    <string name="TEA_control_timer">کنترل تایمر</string>
     <string name="TEA_control_hidden_section">----همیشه مخفی----</string>
     <string name="none">هیچکدام</string>
     <string name="EPr_beastMode_reset">برگرداندن به پیش فرض</string>
@@ -69,10 +64,6 @@
     <string name="ring_nonstop">بدون توقف زنگ بزن</string>
     <string name="new_tag">ایجاد تگ جدید</string>
     <string name="new_list">ایجاد لیست جدید</string>
-    <string name="TEA_timer_controls">تایمر</string>
-    <string name="TEA_timer_comment_started">این وظیفه شروع شده:</string>
-    <string name="TEA_timer_comment_stopped">این وظیفه متوقف شده:</string>
-    <string name="TEA_timer_comment_spent">زمان سپری شده:</string>
     <string name="voice_create_prompt">برای ایجاد یک وظیفه صحبت کنید</string>
     <string name="EPr_voiceInputEnabled_title">ورودی صدا</string>
     <string name="voice_command_added_task">وظیفه اضافه شده</string>
@@ -115,7 +106,6 @@
     <string name="cancel">لغو</string>
     <string name="read_permission_label">مجوز وظایف</string>
     <string name="display_name">نام نمایشی</string>
-    <string name="DLG_hour_minutes">وقت</string>
     <string name="SSD_sort_my_order">خرید من</string>
     <string name="action_call">زنگ</string>
     <string name="TEA_control_location">مکان</string>
@@ -157,7 +147,6 @@
     <string name="write_permission_label">اصلاح وظایف</string>
     <string name="sort_options">گزینه‌های مرتب‌سازی</string>
     <string name="FLA_search_filter">مطابق \'%s\'</string>
-    <string name="TEA_timer_est">تخمین %s</string>
     <string name="location_update_interval_summary">به‌روزرسانی دوره‌ای موقعیت مکانی، قابلیت اطمینان محدوده جغرافیایی را بهبود می‌دهد</string>
     <string name="CFC_dueBefore_text">موعد انجام: ?</string>
     <string name="CFC_startBefore_text">شروع از: ?</string>
@@ -191,7 +180,6 @@
     <string name="delete_tag_confirmation">%s حذف شود؟</string>
     <string name="delete_comment">نظر</string>
     <string name="comment">نظر</string>
-    <string name="TPl_notification">زمان‌سنج‌ها برای %s فعال هستند!</string>
     <string name="now">اکنون</string>
     <string name="yesterday">دیروز</string>
     <string name="widget_show_title">نمایش عنوان</string>

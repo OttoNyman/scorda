@@ -15,7 +15,7 @@ class CheckBoxProvider @Inject constructor(
     private val colorProvider: ColorProvider
 ) {
     fun getCheckBox(task: Task, features: org.tasks.constructor.Constructor) = getDrawable(
-        getCheckboxRes(task.isCompleted, task.isRecurring && features.repeat),
+        task.getCheckboxRes(),
         if (features.priority) task.priority else Task.Priority.NONE,
     )
 
@@ -27,12 +27,10 @@ class CheckBoxProvider @Inject constructor(
     }
 
     companion object {
-        fun Task.getCheckboxRes() = getCheckboxRes(isCompleted, isRecurring)
+        fun Task.getCheckboxRes() = getCheckboxRes(isCompleted)
 
-        fun getCheckboxRes(isCompleted: Boolean, isRecurring: Boolean) = when {
-            isCompleted -> R.drawable.ic_outline_check_box_24px
-            isRecurring -> R.drawable.ic_outline_repeat_24px
-            else -> R.drawable.ic_outline_check_box_outline_blank_24px
-        }
+        // a repeating task gets a plain checkbox too; the repeat mark sits next to its due date
+        fun getCheckboxRes(isCompleted: Boolean) =
+            if (isCompleted) R.drawable.ic_outline_check_box_24px else R.drawable.ic_outline_check_box_outline_blank_24px
     }
 }

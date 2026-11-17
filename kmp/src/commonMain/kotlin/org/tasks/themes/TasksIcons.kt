@@ -19,7 +19,6 @@ object TasksIcons {
     const val DELETE = "delete"
     const val NOTIFICATIONS = "notifications"
     const val PENDING_ACTIONS = "pending_actions"
-    const val KEYBOARD_ARROW_UP = "keyboard_arrow_up"
     const val KEYBOARD_ARROW_DOWN = "keyboard_arrow_down"
     const val SNOOZE = "snooze"
     const val TIMER = "timer"

@@ -218,7 +218,7 @@ class FilterProvider(
         showSignIn: Boolean = false,
     ): List<FilterListItem> =
             if (showBuiltIn) {
-                arrayListOf(MyTasksFilter.create())
+                arrayListOf(MyTasksFilter.create(), CompletedFilter.create())
             } else {
                 ArrayList<FilterListItem>()
             }
@@ -330,9 +330,6 @@ class FilterProvider(
         }
         if (taskDao.snoozedReminders() > 0) {
             filters.add(SnoozedFilter.create())
-        }
-        if (configuration.timerEnabled && taskDao.activeTimers() > 0) {
-            filters.add(TimerFilter.create())
         }
         if (taskDao.hasNotifications() > 0) {
             filters.add(NotificationsFilter.create())

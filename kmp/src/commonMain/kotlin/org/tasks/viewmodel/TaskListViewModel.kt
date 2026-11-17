@@ -144,6 +144,15 @@ open class TaskListViewModel(
     suspend fun markDeleted(tasks: List<Long>): List<Task> =
         taskDeleter.markDeleted(tasks)
 
+    suspend fun restore(tasks: List<Long>): List<Task> =
+        taskDeleter.restore(tasks).onEach {
+            // geofences and reminders back on
+            taskSaver.afterSave(it, it.copy(deletionDate = DeletionDao.EXPIRED))
+        }
+
+    /** Null empties the whole trash. */
+    suspend fun deleteForever(tasks: List<Long>? = null) = taskDeleter.deleteForever(tasks)
+
     fun clearCollapsed() {
         _state.update {
             it.copy(collapsed = setOf(SectionedDataSource.HEADER_COMPLETED))

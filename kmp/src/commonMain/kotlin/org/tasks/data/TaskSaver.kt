@@ -1,7 +1,6 @@
 package org.tasks.data
 
 import co.touchlab.kermit.Logger
-import com.todoroo.astrid.timers.TimerPlugin
 import org.tasks.broadcast.RefreshBroadcaster
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.TaskDao
@@ -28,7 +27,6 @@ class TaskSaver(
     private val refreshBroadcaster: RefreshBroadcaster,
     private val notifier: Notifier,
     private val locationService: LocationService,
-    private val timerPlugin: TimerPlugin,
     private val backgroundWork: BackgroundWork,
     private val caldavDao: CaldavDao,
 ) {
@@ -85,14 +83,8 @@ class TaskSaver(
     suspend fun afterSave(task: Task, original: Task?) {
         val completionDateModified = task.completionDate != (original?.completionDate ?: 0)
         val deletionDateModified = task.deletionDate != (original?.deletionDate ?: 0)
-        val justCompleted = completionDateModified && task.isCompleted
         if (task.calendarURI?.isNotBlank() == true) {
             backgroundWork.updateCalendar(task)
-        }
-        if (justCompleted) {
-            if (task.timerStart > 0) {
-                timerPlugin.stopTimer(task)
-            }
         }
         if (task.dueDate != original?.dueDate && task.dueDate > currentTimeMillis()) {
             notifier.cancel(task.id, CancelReason.DUE_DATE_CHANGE)

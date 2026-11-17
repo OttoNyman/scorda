@@ -17,6 +17,7 @@ import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.DirtyDao
 import org.tasks.data.dao.GoogleTaskDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavCalendar
@@ -25,6 +26,7 @@ import org.tasks.data.getDefaultAlarms
 import org.tasks.data.setDefaultReminders
 import org.tasks.date.DateTimeUtils.newDateTime
 import org.tasks.preferences.AppPreferences
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.resources.getString
 import org.tasks.service.TaskCompleter
 import org.tasks.service.TaskDeleter
@@ -55,6 +57,9 @@ class GoogleTaskSynchronizer(
     private val taskCompleter: TaskCompleter,
     private val createTask: suspend () -> org.tasks.data.entity.Task,
     private val featureGate: org.tasks.constructor.FeatureGate? = null,
+    /** Both null: schedules neither ride in the notes nor get restored (desktop). */
+    private val seriesDao: SeriesDao? = null,
+    private val seriesScheduler: SeriesScheduler? = null,
 ) {
     suspend fun sync(
         account: CaldavAccount,
@@ -386,6 +391,12 @@ class GoogleTaskSynchronizer(
                             "Failed to create task ${toPush.task.id}, list ${caldavTask.calendar} not found"
                         }
 
+                    toPush.task.isDeleted -> {
+                        Logger.w(TAG, e) { "Task ${toPush.task.id} already gone remotely, keeping it in the trash" }
+                        googleTaskDao.update(caldavTask.copy(remoteId = ""))
+                        dirtyDao.markPushed(toPush.caldavTaskId, toPush.dirtyVersion)
+                    }
+
                     else -> {
                         Logger.w(TAG, e) { "Task ${toPush.task.id} deleted remotely, deleting local copy" }
                         taskDeleter.delete(toPush.task)
@@ -406,7 +417,8 @@ class GoogleTaskSynchronizer(
         val gtasksMetadata = caldavDao.getCaldavTaskById(caldavTaskId) ?: return
         val newlyCreated = gtasksMetadata.remoteId.isNullOrEmpty()
         if (newlyCreated && task.deletionDate > 0) {
-            taskDeleter.delete(task.id)
+            // nothing on the server to delete; the row stays in the trash
+            dirtyVersion?.let { dirtyDao.markPushed(caldavTaskId, it) }
             return
         }
         if (newlyCreated && task.title.isNullOrEmpty()) {
@@ -425,7 +437,8 @@ class GoogleTaskSynchronizer(
                 remoteModel.deleted = true
             }
             remoteModel.title = truncate(task.title, MAX_TITLE_LENGTH)
-            remoteModel.notes = GoogleTaskNotes.pack(task.notes, task, MAX_DESCRIPTION_LENGTH)
+            val series = task.series?.let { seriesDao?.getByUuid(it) }
+            remoteModel.notes = GoogleTaskNotes.pack(task.notes, task, series, MAX_DESCRIPTION_LENGTH)
             if (task.hasDueDate()) {
                 remoteModel.due =
                     GtasksApiUtilities.unixTimeToGtasksDueDate(task.dueDate)?.toStringRfc3339()
@@ -522,6 +535,10 @@ class GoogleTaskSynchronizer(
                 }
             }
             gtasksMetadata.isMoved = false
+            if (task.isDeleted) {
+                // gone from Google; the local copy waits in the trash and a restore creates it anew
+                gtasksMetadata.remoteId = ""
+            }
             write(task, gtasksMetadata)
         }
     }
@@ -579,7 +596,10 @@ class GoogleTaskSynchronizer(
             var recreate = false
             if (isDeleted != null && isDeleted) {
                 if (task != null) {
-                    if (movedFrom == null) {
+                    if (movedFrom == null && task.isDeleted) {
+                        // already in the trash here; keep it there, cut loose from the dead remote task
+                        googleTaskDao.update(googleTask.copy(remoteId = ""))
+                    } else if (movedFrom == null) {
                         taskDeleter.delete(task)
                     } else {
                         Logger.d(TAG) {
@@ -594,6 +614,8 @@ class GoogleTaskSynchronizer(
                 }
                 if (task.isRecurring) {
                     recreate = true
+                } else if (task.series != null && movedFrom == null) {
+                    // an occurrence is written completed, nothing recreated: the scheduler takes it on
                 } else if (movedFrom != null) {
                     Logger.d(TAG) {
                         "$remoteId hidden in $listId but lives in ${movedFrom.calendar}, keeping"
@@ -644,6 +666,10 @@ class GoogleTaskSynchronizer(
                     recreate = recreate,
                     initialSync = list.ctag.isNullOrBlank(),
                 )
+                // after the save: the template is captured from the saved row
+                if (extra?.ser != null) {
+                    seriesScheduler?.restore(task, extra.rule, extra.from, extra.sc, extra.sm)
+                }
             }
         }
         return lastSyncDate

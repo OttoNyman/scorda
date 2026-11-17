@@ -9,9 +9,7 @@
     <string name="import_summary_message">Il file %1$s contiene %2$s. \n \n %3$s importate, \n %4$s già esistenti \n %5$s con errori</string>
     <string name="import_progress_read">Lettura attività %d…</string>
     <string name="read_permission_label">Permessi di Tasks</string>
-    <string name="DLG_hour_minutes">Tempo (ore : minuti)</string>
     <string name="DLG_undo">Annulla l\'ultima azione</string>
-    <string name="WID_dateButtonUnset">Clicca per impostare</string>
     <string name="TLA_no_items">Qui non ci sono attività.</string>
     <string name="TLA_menu_sort">Ordina</string>
     <string name="TLA_menu_search">Cerca</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Nome attività</string>
     <string name="TEA_importance_label">Priorità</string>
     <string name="TEA_note_label">Descrizione</string>
-    <string name="TEA_estimatedDuration_label">Quanto tempo impiegherà?</string>
-    <string name="TEA_elapsedDuration_label">Tempo già speso per l\'attività</string>
     <string name="save">Salva</string>
-    <string name="TEA_timer_est">Stimato %s</string>
-    <string name="TEA_timer_elap">Trascorso %s</string>
     <string name="due_date">Data di scadenza</string>
     <string name="due_time">Ora di scadenza</string>
     <string name="day_before_due">Giorno prima della scadenza</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Descrizione</string>
     <string name="TEA_control_files">File</string>
     <string name="TEA_control_reminders">Promemoria</string>
-    <string name="TEA_control_timer">Regolazione timer</string>
     <string name="TEA_control_hidden_section">----Nascondi sempre----</string>
     <string name="none">Nessuno</string>
     <string name="EPr_beastMode_reset">Ripristina predefiniti</string>
@@ -126,10 +119,6 @@
     <string name="new_tag">Crea nuova etichetta</string>
     <string name="new_list">Crea nuova lista</string>
     <string name="delete_tag_confirmation">Eliminare %s\?</string>
-    <string name="TPl_notification">Timer attivi per %s!</string>
-    <string name="TEA_timer_comment_started">attività iniziata:</string>
-    <string name="TEA_timer_comment_stopped">attività terminata:</string>
-    <string name="TEA_timer_comment_spent">Tempo speso:</string>
     <string name="voice_create_prompt">Detta il nome dell\'attività</string>
     <string name="EPr_voiceInputEnabled_title">Voce</string>
     <string name="voice_command_added_task">Attività aggiunta</string>
@@ -261,7 +250,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="location_radius_meters">%s m</string>
     <string name="subtasks">Attività secondaria</string>
-    <string name="TEA_timer_controls">Timer</string>
     <string name="chip_appearance">Aspetto Chip</string>
     <string name="chips">Chip</string>
     <string name="custom_filter_not">NON</string>

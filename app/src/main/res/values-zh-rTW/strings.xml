@@ -9,9 +9,7 @@
     <string name="import_summary_message">檔案%1$s包含%2$s。 \n\n 已匯入%3$s， \n %4$s已存在 \n %5$s有問題</string>
     <string name="import_progress_read">正在讀取工作 %d…</string>
     <string name="read_permission_label">Tasks 的權限</string>
-    <string name="DLG_hour_minutes">時間（小時:分鐘）</string>
     <string name="DLG_undo">復原</string>
-    <string name="WID_dateButtonUnset">點選</string>
     <string name="TLA_menu_sort">排序</string>
     <string name="TLA_menu_search">搜尋</string>
     <string name="TLA_menu_settings">設定</string>
@@ -26,17 +24,12 @@
     <string name="TEA_title_hint">工作名稱</string>
     <string name="TEA_importance_label">優先權</string>
     <string name="TEA_note_label">描述</string>
-    <string name="TEA_estimatedDuration_label">要花多久？</string>
-    <string name="TEA_elapsedDuration_label">已消耗的時間</string>
-    <string name="TEA_timer_est">估計%s</string>
-    <string name="TEA_timer_elap">已過%s</string>
     <string name="due_date">到期日</string>
     <string name="week_before_due">到期前一週</string>
     <string name="TEA_control_importance">優先權</string>
     <string name="TEA_control_notes">描述</string>
     <string name="TEA_control_files">檔案</string>
     <string name="TEA_control_reminders">提醒</string>
-    <string name="TEA_control_timer">定時器設定</string>
     <string name="TEA_control_hidden_section">----永遠隱藏----</string>
     <string name="none">無</string>
     <string name="EPr_beastMode_reset">恢復預設值</string>
@@ -74,11 +67,6 @@
     </plurals>
     <string name="new_tag">新增標籤</string>
     <string name="new_list">新增清單</string>
-    <string name="TPl_notification">%s 的碼錶啟動了！</string>
-    <string name="TEA_timer_controls">定時器</string>
-    <string name="TEA_timer_comment_started">已經開始了這項任務工作：</string>
-    <string name="TEA_timer_comment_stopped">已經停止了這項任務工作：</string>
-    <string name="TEA_timer_comment_spent">已經花費時間：</string>
     <string name="voice_create_prompt">請說話以建立工作</string>
     <string name="EPr_voiceInputEnabled_title">語音輸入</string>
     <plurals name="Ntasks">

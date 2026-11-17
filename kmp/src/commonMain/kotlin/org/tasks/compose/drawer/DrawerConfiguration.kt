@@ -37,9 +37,6 @@ interface DrawerConfiguration {
     val googleTasksSyncing: Boolean
         get() = true
 
-    val timerEnabled: Boolean
-        get() = true
-
     val canCreateFilters: Boolean
         get() = true
 

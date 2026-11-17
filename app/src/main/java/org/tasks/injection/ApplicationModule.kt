@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.todoroo.astrid.alarms.AlarmCalculator
 import com.todoroo.astrid.alarms.AlarmService
 import com.todoroo.astrid.service.AndroidCleanup
-import com.todoroo.astrid.timers.TimerPlugin
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,6 +57,7 @@ import org.tasks.data.dao.Astrid2ContentProviderDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.CompletionDao
 import org.tasks.data.dao.DeletionDao
+import org.tasks.data.dao.SeriesDao
 import org.tasks.data.dao.DirtyDao
 import org.tasks.data.dao.FilterDao
 import org.tasks.data.dao.GoogleTaskDao
@@ -195,6 +195,10 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun getDeletionDao(db: Database): DeletionDao = db.deletionDao()
+
+    @Provides
+    @Singleton
+    fun getSeriesDao(db: Database): SeriesDao = db.seriesDao()
 
     @Provides
     @Singleton
@@ -349,9 +353,10 @@ class ApplicationModule {
         calendarHelper: CalendarHelper,
         completionDao: CompletionDao,
         soundPlayer: SoundPlayer,
+        seriesScheduler: org.tasks.repeats.SeriesScheduler,
     ) = TaskCompleter(
         taskDao, taskSaver, notifier, refreshBroadcaster, repeatTaskHelper,
-        caldavDao, calendarHelper, completionDao, soundPlayer,
+        caldavDao, calendarHelper, completionDao, soundPlayer, seriesScheduler,
     )
 
     @Provides
@@ -493,8 +498,9 @@ class ApplicationModule {
         notifier: Notifier,
         alarmCalculator: AlarmCalculator,
         preferences: AppPreferences,
+        seriesScheduler: org.tasks.repeats.SeriesScheduler,
     ): AlarmService =
-        AlarmService(alarmDao, taskDao, dirtyDao, refreshBroadcaster, notifier, alarmCalculator, preferences)
+        AlarmService(alarmDao, taskDao, dirtyDao, refreshBroadcaster, notifier, alarmCalculator, preferences, seriesScheduler)
 
     @Provides
     @Singleton
@@ -526,16 +532,9 @@ class ApplicationModule {
         refreshBroadcaster: RefreshBroadcaster,
         notifier: Notifier,
         locationService: LocationService,
-        timerPlugin: TimerPlugin,
         backgroundWork: BackgroundWork,
         caldavDao: CaldavDao,
-    ) = TaskSaver(taskDao, refreshBroadcaster, notifier, locationService, timerPlugin, backgroundWork, caldavDao)
-
-    @Provides
-    fun providesTimerPlugin(
-        notifier: Notifier,
-        taskDao: TaskDao,
-    ) = TimerPlugin(notifier, taskDao)
+    ) = TaskSaver(taskDao, refreshBroadcaster, notifier, locationService, backgroundWork, caldavDao)
 
     @Provides
     fun providesCaldavSynchronizer(
@@ -721,6 +720,38 @@ class ApplicationModule {
         tasksPreferences: TasksPreferences,
         taskCleanup: TaskCleanup,
     ) = TaskDeleter(deletionDao, taskDao, caldavDao, refreshBroadcaster, vtodoCache, tasksPreferences, taskCleanup)
+
+    @Provides
+    @Singleton
+    fun providesSeriesTemplates(
+        taskDao: TaskDao,
+        taskSaver: TaskSaver,
+        alarmDao: AlarmDao,
+        tagDao: TagDao,
+        tagDataDao: TagDataDao,
+        locationDao: LocationDao,
+        caldavDao: CaldavDao,
+        googleTaskDao: GoogleTaskDao,
+        preferences: AppPreferences,
+    ) = org.tasks.repeats.SeriesTemplates(
+        taskDao, taskSaver, alarmDao, tagDao, tagDataDao, locationDao, caldavDao, googleTaskDao, preferences,
+    )
+
+    @Provides
+    @Singleton
+    fun providesSeriesScheduler(
+        seriesDao: SeriesDao,
+        taskDao: TaskDao,
+        taskSaver: TaskSaver,
+        taskDeleter: TaskDeleter,
+        templates: org.tasks.repeats.SeriesTemplates,
+        featureGate: org.tasks.constructor.FeatureGate,
+        refreshBroadcaster: RefreshBroadcaster,
+        dirtyDao: DirtyDao,
+        notifier: Notifier,
+    ) = org.tasks.repeats.SeriesScheduler(
+        seriesDao, taskDao, taskSaver, taskDeleter, templates, featureGate, refreshBroadcaster, dirtyDao, notifier,
+    )
 
     @Provides
     fun providesTaskMigrator(

@@ -6,7 +6,6 @@
     <string name="TEA_control_files">Fișiere</string>
     <string name="custom_filter_or">SAU</string>
     <string name="compact">Compact</string>
-    <string name="TEA_timer_est">Estim. %s</string>
     <string name="TEA_control_gcal">Calendar</string>
     <string name="export_toast">Salvat %1$s în %2$s.</string>
     <string name="actfm_picture_clear">Șterge poza</string>
@@ -139,10 +138,6 @@
     <string name="voice_command_added_task">Sarcină adăugată</string>
     <string name="EPr_voiceInputEnabled_title">Intrare vocală</string>
     <string name="voice_create_prompt">Vorbește pentru a crea o sarcină</string>
-    <string name="TEA_timer_comment_spent">Timpul petrecut:</string>
-    <string name="TEA_timer_comment_stopped">a încetat să mai facă această sarcină:</string>
-    <string name="TEA_timer_comment_started">a început această activitate:</string>
-    <string name="TEA_timer_controls">Cronometru</string>
     <plurals name="repeat_n_weeks">
         <item quantity="one">%d săptămână</item>
         <item quantity="few">%d săptămâni</item>
@@ -217,7 +212,6 @@
     <string name="EPr_beastMode_reset">Resetare la valorile implicite</string>
     <string name="none">Niciuna</string>
     <string name="TEA_control_hidden_section">----Ascunde mereu----</string>
-    <string name="TEA_control_timer">Controalele temporizatorului</string>
     <string name="TEA_control_reminders">Mementouri</string>
     <string name="TEA_control_location">Locație</string>
     <string name="TEA_control_repeat">Repetare</string>
@@ -226,11 +220,8 @@
     <string name="start_date">Data începerii</string>
     <string name="due_time">Timpul completării</string>
     <string name="due_date">Data completării</string>
-    <string name="TEA_timer_elap">Trecut %s</string>
     <string name="SSD_sort_start">După data începerii</string>
     <string name="save">Salvează</string>
-    <string name="TEA_elapsedDuration_label">Timp deja alocat</string>
-    <string name="TEA_estimatedDuration_label">Cât timp va dura\?</string>
     <string name="TEA_note_label">Descriere</string>
     <string name="TEA_importance_label">Prioritate</string>
     <string name="FLA_new_filter">Crează filtru nou</string>
@@ -248,9 +239,7 @@
     <string name="TLA_menu_settings">Setări</string>
     <string name="TLA_menu_search">Căutare</string>
     <string name="TLA_menu_sort">Sortare</string>
-    <string name="WID_dateButtonUnset">Clic pentru setare</string>
     <string name="DLG_undo">Anulare</string>
-    <string name="DLG_hour_minutes">Timp (oră : minute)</string>
     <string name="read_permission_label">Permisiune sarcini</string>
     <string name="import_progress_read">Citirea sarcinii %d…</string>
     <string name="import_summary_message">Fișierul %1$s conținea %2$s.
@@ -354,7 +343,6 @@
     <string name="reinitialize_account">Reinițializare</string>
     <string name="logout">Deconectează-te</string>
     <string name="pro_dashclock_extension">Extinderea ceasului de bord</string>
-    <string name="TPl_notification">Cronometre active pentru %s!</string>
     <string name="delete_tag_confirmation">Ștergi %s\?</string>
     <string name="new_list">Crează o nouă listă</string>
     <string name="new_tag">Crează o nouă etichetă</string>

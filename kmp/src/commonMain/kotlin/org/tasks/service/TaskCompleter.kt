@@ -13,6 +13,7 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Task
 import org.tasks.notifications.CancelReason
 import org.tasks.notifications.Notifier
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 
 private const val TAG = "TaskCompleter"
@@ -27,6 +28,7 @@ class TaskCompleter(
     private val calendarHelper: CalendarHelper,
     private val completionDao: CompletionDao,
     private val soundPlayer: SoundPlayer,
+    private val seriesScheduler: SeriesScheduler? = null,
 ) {
     suspend fun setComplete(taskId: Long, completed: Boolean = true) =
         taskDao
@@ -43,6 +45,12 @@ class TaskCompleter(
         includeChildren: Boolean,
         completedAt: Long,
     ) {
+        // the completed marker of a finished series: the series carries on from this row
+        if (!completed && item.series != null && seriesScheduler?.revive(item.id) == true) {
+            taskDao.fetch(taskDao.getChildren(item.id)).filter { it.isCompleted }.let { setComplete(it, 0L) }
+            refreshBroadcaster.broadcastRefresh()
+            return
+        }
         val completionDate = if (completed) completedAt.takeIf { it > 0 } ?: currentTimeMillis() else 0L
         ArrayList<Task?>()
             .apply {
@@ -97,6 +105,10 @@ class TaskCompleter(
                 }
             }
         )
+        if (completed && tasks.any { it.series != null }) {
+            // the next occurrence at once, not when the notification worker gets to it
+            seriesScheduler?.reconcile()
+        }
         repeated.lastOrNull()?.let { task ->
             val oldDueDate = tasks.find { it.id == task.id }?.dueDate?.takeIf { it > 0 }
                 ?: computePreviousDueDate(task)

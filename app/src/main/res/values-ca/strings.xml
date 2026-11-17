@@ -7,9 +7,7 @@
     <string name="import_summary_title">Resum de la restauració</string>
     <string name="import_progress_read">S\'està llegint la tasca %d…</string>
     <string name="read_permission_label">Permisos del Tasks</string>
-    <string name="DLG_hour_minutes">Temps (hores : minuts)</string>
     <string name="DLG_undo">Desfés</string>
-    <string name="WID_dateButtonUnset">Premeu per a establir</string>
     <string name="TLA_menu_sort">Ordena</string>
     <string name="TLA_menu_search">Cerca</string>
     <string name="TLA_menu_settings">Configuració</string>
@@ -24,8 +22,6 @@
     <string name="TEA_importance_label">Prioritat</string>
     <string name="no_date">Sense data</string>
     <string name="TEA_note_label">Descripció</string>
-    <string name="TEA_estimatedDuration_label">Quant de temps us portarà\?</string>
-    <string name="TEA_elapsedDuration_label">Temps que ja s\'hi ha invertit</string>
     <string name="due_date">Data de venciment</string>
     <string name="day_before_due">El dia abans del venciment</string>
     <string name="week_before_due">La setmana abans del venciment</string>
@@ -33,7 +29,6 @@
     <string name="TEA_control_notes">Descripció</string>
     <string name="TEA_control_files">Fitxers</string>
     <string name="TEA_control_reminders">Recordatoris</string>
-    <string name="TEA_control_timer">Controls de temporització</string>
     <string name="TEA_control_hidden_section">----Oculta-ho sempre----</string>
     <string name="EPr_beastMode_reset">Restableix els valors predeterminats</string>
     <string name="EPr_fullTask_title">Mostra el títol sencer de la tasca</string>
@@ -58,10 +53,6 @@
     <string name="gcal_completed_title">%s (completada)</string>
     <string name="gtasks_GTA_clear_completed">Neteja les tasques completades</string>
     <string name="gtasks_GLA_authenticating">S\'està autenticant…</string>
-    <string name="TPl_notification">Temporitzadors actius per %s!</string>
-    <string name="TEA_timer_comment_started">inici d\'aquesta tasca:</string>
-    <string name="TEA_timer_comment_stopped">finalització d\'aquesta tasca:</string>
-    <string name="TEA_timer_comment_spent">Temps invertit:</string>
     <plurals name="Ntasks">
         <item quantity="one">1 tasca</item>
         <item quantity="many">%d tasques</item>
@@ -76,14 +67,12 @@
     <string name="action_call">Truca</string>
     <string name="FLA_new_filter">Crea un filtre</string>
     <string name="save">Desa</string>
-    <string name="TEA_timer_est">Est. %s</string>
     <string name="SSD_sort_my_order">El meu ordre</string>
     <string name="display_name">Nom de visualització</string>
     <string name="TEA_control_location">Ubicació</string>
     <string name="TEA_control_gcal">Agenda</string>
     <string name="TEA_control_repeat">Repeteix</string>
     <string name="due_time">Hora de venciment</string>
-    <string name="TEA_timer_elap">Transcorregut %s</string>
     <string name="EPr_manage_delete_all_gcal_message">Esteu segur que voleu suprimir tots els esdeveniments per a les tasques\?</string>
     <string name="EPr_manage_delete_all_gcal">Suprimeix tots els esdeveniments del calendari de les tasques</string>
     <string name="EPr_manage_delete_gcal_status">S\'han eliminat %d esdeveniments de calendari!</string>
@@ -162,7 +151,6 @@
     <string name="EPr_voiceInputEnabled_title">Entrada de veu</string>
     <string name="new_tag">Creeu una nova etiqueta</string>
     <string name="delete_tag_confirmation">Esborreu %s?</string>
-    <string name="TEA_timer_controls">Temporitzador</string>
     <string name="customize_drawer">Personalitza el calaix</string>
     <string name="or_choose_a_location">O escollir una ubicació</string>
     <string name="url">URL</string>

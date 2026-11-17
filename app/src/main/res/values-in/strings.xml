@@ -6,7 +6,6 @@
     <string name="export_toast">Cadangkan %1$s ke %2$s.</string>
     <string name="import_summary_title">Pulihkan ringkasan</string>
     <string name="import_progress_read">Membaca tugas %d …</string>
-    <string name="DLG_hour_minutes">Waktu (jam : menit)</string>
     <string name="DLG_undo">Urungkan</string>
     <string name="TLA_menu_sort">Urutkan</string>
     <string name="TLA_menu_search">Cari</string>
@@ -169,8 +168,6 @@
     <plurals name="repeat_times">
         <item quantity="other">kali</item>
     </plurals>
-    <string name="TEA_timer_comment_started">mulai tugas ini:</string>
-    <string name="TEA_timer_comment_stopped">hentikan tugas ini:</string>
     <string name="voice_create_prompt">Bicara untuk membuat tugas</string>
     <string name="EPr_voiceInputEnabled_title">Masukan suara</string>
     <string name="badges_description">Tampilkan jumlah tugas pada ikon peluncur Tasks. Tidak semua peluncur mendukung fitur lencana ini.</string>
@@ -234,18 +231,12 @@
     <string name="voice_command_added_task">Menambahkan tugas</string>
     <string name="CFC_dueBefore_name">Jatuh tempo pada…</string>
     <string name="no_due_date">Tidak ada tanggal jatuh tempo</string>
-    <string name="TEA_control_timer">Atur Pengingat</string>
     <string name="week_before_due">Minggu sebelum jatuh tempo</string>
-    <string name="TEA_timer_elap">Terlewat %s</string>
-    <string name="TEA_timer_est">Perkiraan %s</string>
-    <string name="TEA_elapsedDuration_label">Waktu telah terpakai</string>
     <string name="sort_created">Berdasarkan waktu pembuatan</string>
-    <string name="WID_dateButtonUnset">Klik untuk mengatur</string>
     <string name="cancel">Batal</string>
     <string name="ok">Oke</string>
     <string name="day_before_due">Hari sebelum jatuh tempo</string>
     <string name="start_date">Tanggal mulai</string>
-    <string name="TEA_estimatedDuration_label">Berapa lama\?</string>
     <string name="FLA_search_filter">Sesuai \'%s\'</string>
     <string name="SSD_sort_start">Berdasarkan tanggal awal</string>
     <string name="display_name">Nama tampilan</string>
@@ -329,9 +320,6 @@
     <string name="date_shortcut_must_come_after">%1$s harus datang setelah %2$s</string>
     <string name="geofence_radius">Radius geofence</string>
     <string name="widget_show_dividers">Tunjukan Batas Waktu</string>
-    <string name="TEA_timer_comment_spent">Waktu terpakai:</string>
-    <string name="TEA_timer_controls">Pencatat Waktu</string>
-    <string name="TPl_notification">Pencatat Waktu Aktif untuk %s!</string>
     <string name="repeat_snackbar">%1$s dijadwalkan ulang untuk %2$s</string>
     <string name="gtasks_GTA_clear_completed">Hapus Telah Selesai</string>
     <string name="CFC_list_name">Dalam daftar…</string>

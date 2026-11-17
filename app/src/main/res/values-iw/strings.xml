@@ -9,9 +9,7 @@
     <string name="import_summary_message">קובץ %1$s הכיל %2$s.\n\n %3$s יובאו,\n %4$s כבר קיימות \n ב־%5$s היו שגיאות</string>
     <string name="import_progress_read">נקראת משימה %d…</string>
     <string name="read_permission_label">הרשאת משימות</string>
-    <string name="DLG_hour_minutes">זמן (דקות : שעות)</string>
     <string name="DLG_undo">ביטול פעולה</string>
-    <string name="WID_dateButtonUnset">יש ללחוץ כדי להגדיר</string>
     <string name="TLA_no_items">אין כאן משימות.</string>
     <string name="TLA_menu_sort">מיון</string>
     <string name="TLA_menu_search">חיפוש</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">שם משימה</string>
     <string name="TEA_importance_label">עדיפות</string>
     <string name="TEA_note_label">תיאור</string>
-    <string name="TEA_estimatedDuration_label">כמה זמן תיקח המשימה?</string>
-    <string name="TEA_elapsedDuration_label">זמן שכבר הושקע</string>
     <string name="save">שמירה</string>
-    <string name="TEA_timer_est">זמן מוערך %s</string>
-    <string name="TEA_timer_elap">חלפו %s</string>
     <string name="due_date">תאריך יעד</string>
     <string name="due_time">זמן יעד</string>
     <string name="day_before_due">יום לפני מועד היעד</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">תיאור</string>
     <string name="TEA_control_files">קבצים</string>
     <string name="TEA_control_reminders">תזכורות</string>
-    <string name="TEA_control_timer">פקדי קוצב זמן</string>
     <string name="TEA_control_hidden_section">----להסתיר תמיד----</string>
     <string name="none">ללא</string>
     <string name="EPr_beastMode_reset">איפוס לברירות מחדל</string>
@@ -126,11 +119,6 @@
     <string name="new_tag">יצירת תגית חדשה</string>
     <string name="new_list">יצירת רשימה חדשה</string>
     <string name="delete_tag_confirmation">למחוק את %s?</string>
-    <string name="TPl_notification">קוצבי זמן פעילים עבור %s!</string>
-    <string name="TEA_timer_controls">קוצב זמן</string>
-    <string name="TEA_timer_comment_started">התחיל משימה זו:</string>
-    <string name="TEA_timer_comment_stopped">הפסיק לבצע משימה זו:</string>
-    <string name="TEA_timer_comment_spent">זמן שהושקע:</string>
     <string name="voice_create_prompt">יש לדבר כדי ליצור משימה</string>
     <string name="EPr_voiceInputEnabled_title">קלט קולי</string>
     <string name="voice_command_added_task">המשימה נוספה</string>

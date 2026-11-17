@@ -11,9 +11,7 @@
     <string name="TLA_menu_search">সার্চ</string>
     <string name="TLA_menu_sort">সাজাও</string>
     <string name="TLA_no_items">এখানে কোন কাজ নেই।</string>
-    <string name="WID_dateButtonUnset">ঠিক করতে ক্লিক করো</string>
     <string name="DLG_undo">পূর্বাবস্থা</string>
-    <string name="DLG_hour_minutes">সময় (ঘন্টা : মিনিট)</string>
     <string name="read_permission_label">কাজের অনুমতি</string>
     <string name="import_progress_read">%d কাজ পড়া হচ্ছে…</string>
     <string name="import_summary_title">সারাংশ পুনরুদ্ধার করো</string>

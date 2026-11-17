@@ -6,7 +6,6 @@
     <string name="filter_my_tasks">Мои задачи</string>
     <string name="filter_notifications">Известия</string>
     <string name="filter_snoozed">Отложени</string>
-    <string name="filter_timer">Задачи, за които се отчита време</string>
     <string name="filter_today">Днес</string>
     <string name="filter_recently_modified">Последно променени</string>
     <string name="default_list">Списък по подразбиране</string>

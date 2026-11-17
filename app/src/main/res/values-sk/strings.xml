@@ -9,9 +9,7 @@
     <string name="import_summary_message">Súbor %1$s obsahoval %2$s.\n\n %3$s importovaných,\n %4$s už existuje\n%5$s je chybných</string>
     <string name="import_progress_read">Načítavam úlohu %d…</string>
     <string name="read_permission_label">Povolenia pre Tasks</string>
-    <string name="DLG_hour_minutes">Čas (hodiny : minúty)</string>
     <string name="DLG_undo">Späť</string>
-    <string name="WID_dateButtonUnset">Kliknúť pre nastavenie</string>
     <string name="TLA_no_items">Nie sú tu žiadne úlohy.</string>
     <string name="TLA_menu_sort">Triediť</string>
     <string name="TLA_menu_search">Hľadať</string>
@@ -29,11 +27,7 @@
     <string name="TEA_importance_label">Dôležitosť</string>
     <string name="no_date">Bez dátumu</string>
     <string name="TEA_note_label">Popis</string>
-    <string name="TEA_estimatedDuration_label">Ako dlho to bude trvať?</string>
-    <string name="TEA_elapsedDuration_label">Už strávený čas</string>
     <string name="save">Uložiť</string>
-    <string name="TEA_timer_est">Spolu %s</string>
-    <string name="TEA_timer_elap">Uplynulo %s</string>
     <string name="due_date">Do termínu</string>
     <string name="due_time">Čas dokončenia</string>
     <string name="day_before_due">Deň pre ukončením</string>
@@ -45,7 +39,6 @@
     <string name="TEA_control_notes">Popis</string>
     <string name="TEA_control_files">Prílohy</string>
     <string name="TEA_control_reminders">Pripomienky</string>
-    <string name="TEA_control_timer">Stopky - nastavenie</string>
     <string name="TEA_control_hidden_section">----Skryť vždy----</string>
     <string name="none">Žiadna</string>
     <string name="EPr_beastMode_reset">Obnoviť na predvolené</string>
@@ -130,11 +123,6 @@
     <string name="new_tag">Vytvoriť nový štítok</string>
     <string name="new_list">Vytvoriť nový zoznam</string>
     <string name="delete_tag_confirmation">Zmazať %s?</string>
-    <string name="TPl_notification">Stopky aktívne pre %s!</string>
-    <string name="TEA_timer_controls">Stopky</string>
-    <string name="TEA_timer_comment_started">začala táto úloha:</string>
-    <string name="TEA_timer_comment_stopped">zastavená je táto úloha:</string>
-    <string name="TEA_timer_comment_spent">Strávený čas:</string>
     <string name="voice_create_prompt">Nadiktujte úlohu</string>
     <string name="EPr_voiceInputEnabled_title">Hlasový vstup</string>
     <string name="voice_command_added_task">Pridaná úloha</string>

@@ -582,9 +582,6 @@ internal class DesktopNotifier(
         signalScheduler()
     }
 
-    override suspend fun updateTimerNotification() {
-    }
-
     suspend fun shutdown() {
         if (close()) {
             guarded("Failed to record that the screen was cleared", Unit, warnOnly = true) {

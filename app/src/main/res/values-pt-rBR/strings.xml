@@ -9,9 +9,7 @@
     <string name="import_summary_message">O arquivo %1$s continha %2$s. \n \n %3$s importadas, \n %4$s já existiam, \n %5$s tinham erros</string>
     <string name="import_progress_read">Lendo tarefa %d…</string>
     <string name="read_permission_label">Permissões do Tasks</string>
-    <string name="DLG_hour_minutes">Horário (horas : minutos)</string>
     <string name="DLG_undo">Desfazer</string>
-    <string name="WID_dateButtonUnset">Toque para definir</string>
     <string name="TLA_no_items">Não há tarefas aqui.</string>
     <string name="TLA_menu_sort">Ordenar</string>
     <string name="TLA_menu_search">Buscar</string>
@@ -28,10 +26,7 @@
     <string name="TEA_title_hint">Nome da tarefa</string>
     <string name="TEA_importance_label">Prioridade</string>
     <string name="TEA_note_label">Descrição</string>
-    <string name="TEA_estimatedDuration_label">Quanto tempo isto vai levar?</string>
-    <string name="TEA_elapsedDuration_label">Tempo já gasto</string>
     <string name="save">Salvar</string>
-    <string name="TEA_timer_elap">Decorrido %s</string>
     <string name="due_date">Data de vencimento</string>
     <string name="due_time">Na hora de vencimento</string>
     <string name="day_before_due">Um dia antes do vencimento</string>
@@ -43,7 +38,6 @@
     <string name="TEA_control_notes">Descrição</string>
     <string name="TEA_control_files">Arquivos</string>
     <string name="TEA_control_reminders">Lembretes</string>
-    <string name="TEA_control_timer">Temporizador</string>
     <string name="TEA_control_hidden_section">----Sempre ocultar----</string>
     <string name="none">Nenhuma</string>
     <string name="EPr_beastMode_reset">Restaurar valores padrões</string>
@@ -124,11 +118,6 @@
     <string name="new_tag">Criar nova etiqueta</string>
     <string name="new_list">Criar nova lista</string>
     <string name="delete_tag_confirmation">Excluir %s?</string>
-    <string name="TPl_notification">Temporizador ativado para %s!</string>
-    <string name="TEA_timer_controls">Temporizador</string>
-    <string name="TEA_timer_comment_started">iniciou essa tarefa:</string>
-    <string name="TEA_timer_comment_stopped">deixou de fazer essa tarefa:</string>
-    <string name="TEA_timer_comment_spent">Tempo gasto:</string>
     <string name="voice_create_prompt">Fale para criar uma tarefa</string>
     <string name="EPr_voiceInputEnabled_title">Entrada de voz</string>
     <string name="voice_command_added_task">Tarefa adicionada</string>
@@ -277,7 +266,6 @@
     <string name="widget_show_dividers">Mostrar divisórias</string>
     <string name="widget_show_menu">Mostrar menu</string>
     <string name="CFC_list_name">Na lista…</string>
-    <string name="TEA_timer_est">Est. %s</string>
     <string name="sort_created">Por hora de criação</string>
     <string name="SSD_sort_my_order">Minhas ordenações</string>
     <string name="display_name">Nome de exibição</string>

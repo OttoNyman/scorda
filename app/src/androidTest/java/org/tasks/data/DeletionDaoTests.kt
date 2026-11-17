@@ -4,8 +4,7 @@ import com.natpryce.makeiteasy.MakeItEasy.with
 import org.tasks.data.dao.TaskDao
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.data.dao.CaldavDao
@@ -66,9 +65,15 @@ class DeletionDaoTests : InjectingTestCase() {
         caldavDao.insert(CaldavCalendar(name = "", uuid = "1234", account = "abcd"))
         caldavDao.insert(CaldavTask(task = task.id, calendar = "1234"))
 
-        deletionDao.purgeDeleted()
+        assertEquals(listOf(task.id), deletionDao.getPurgeable(Long.MAX_VALUE))
+    }
 
-        assertNull(taskDao.fetch(task.id))
+    @Test
+    fun dontPurgeFreshTrash() = runBlocking {
+        val task = newTask(with(DELETION_TIME, newDateTime()))
+        taskDao.createNew(task)
+
+        assertTrue(deletionDao.getPurgeable(task.deletionDate).isEmpty())
     }
 
     @Test
@@ -79,20 +84,17 @@ class DeletionDaoTests : InjectingTestCase() {
         caldavDao.insert(CaldavCalendar(name = "", uuid = "1234", account = "abcd"))
         caldavDao.insert(CaldavTask(task = task.id, calendar = "1234"))
 
-        deletionDao.purgeDeleted()
-
-        assertNotNull(taskDao.fetch(task.id))
+        assertTrue(deletionDao.getPurgeable(Long.MAX_VALUE).isEmpty())
     }
 
     @Test
-    fun dontPurgeDeletedCaldavTask() = runBlocking {
+    fun dontPurgeTaskStillOnServer() = runBlocking {
         val task = newTask(with(DELETION_TIME, newDateTime()))
         taskDao.createNew(task)
-        caldavDao.insert(CaldavCalendar(name = "", uuid = "1234", account = UUIDHelper.newUUID()))
-        caldavDao.insert(CaldavTask(task = task.id, calendar = "1234"))
+        caldavDao.insert(CaldavAccount(uuid = "abcd", accountType = CaldavAccount.TYPE_GOOGLE_TASKS))
+        caldavDao.insert(CaldavCalendar(name = "", uuid = "1234", account = "abcd"))
+        caldavDao.insert(CaldavTask(task = task.id, calendar = "1234", remoteId = "remote"))
 
-        deletionDao.purgeDeleted()
-
-        assertNotNull(taskDao.fetch(task.id))
+        assertTrue(deletionDao.getPurgeable(Long.MAX_VALUE).isEmpty())
     }
 }

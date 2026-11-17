@@ -9,9 +9,7 @@
     <string name="import_summary_message">文件 %1$s 包含 %2$s 个任务。\n\n %3$s 个已导入,\n %4$s 个已存在\n %5$s 个存在错误</string>
     <string name="import_progress_read">正在读取任务 %d…</string>
     <string name="read_permission_label">Tasks 权限</string>
-    <string name="DLG_hour_minutes">时间（小时:分钟）</string>
     <string name="DLG_undo">撤消</string>
-    <string name="WID_dateButtonUnset">点选</string>
     <string name="TLA_no_items">这里没有任务哦。</string>
     <string name="TLA_menu_sort">排序</string>
     <string name="TLA_menu_search">搜索</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">任务名称</string>
     <string name="TEA_importance_label">优先级</string>
     <string name="TEA_note_label">描述</string>
-    <string name="TEA_estimatedDuration_label">要花多久时间?</string>
-    <string name="TEA_elapsedDuration_label">已用于任务的时间</string>
     <string name="save">保存</string>
-    <string name="TEA_timer_est">估计 %s</string>
-    <string name="TEA_timer_elap">已耗时 %s</string>
     <string name="due_date">截止日期</string>
     <string name="due_time">截止时间</string>
     <string name="day_before_due">截止日期前一天</string>
@@ -43,7 +37,6 @@
     <string name="TEA_control_notes">描述</string>
     <string name="TEA_control_files">文件</string>
     <string name="TEA_control_reminders">提醒</string>
-    <string name="TEA_control_timer">定时器控件</string>
     <string name="TEA_control_hidden_section">----始终隐藏----</string>
     <string name="none">无</string>
     <string name="EPr_beastMode_reset">恢复默认值</string>
@@ -117,11 +110,6 @@
     <string name="new_tag">新建标签</string>
     <string name="new_list">新建清单</string>
     <string name="delete_tag_confirmation">是否删除 %s？</string>
-    <string name="TPl_notification">%s 的定时器已启动！</string>
-    <string name="TEA_timer_controls">计时器</string>
-    <string name="TEA_timer_comment_started">这项任务已启动了：</string>
-    <string name="TEA_timer_comment_stopped">停止这项任务的时间是：</string>
-    <string name="TEA_timer_comment_spent">已耗时：</string>
     <string name="voice_create_prompt">请说话以建立任务</string>
     <string name="EPr_voiceInputEnabled_title">语音输入</string>
     <string name="voice_command_added_task">已添加的任务</string>

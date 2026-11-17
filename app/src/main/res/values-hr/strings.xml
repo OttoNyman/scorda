@@ -44,7 +44,6 @@
     <string name="show_description">Pokaži opis</string>
     <string name="action_create_new_task">Stvori novi zadatak</string>
     <string name="logout">Odjavi se</string>
-    <string name="TEA_timer_elap">Proteklo %s</string>
     <string name="no_date">Bez datuma</string>
     <string name="FLA_new_filter">Stvori filtar</string>
     <string name="FLA_search_filter">Uspoređuje se „%s”</string>
@@ -81,14 +80,9 @@
     <string name="start_date">Datum početka</string>
     <string name="due_time">Vrijeme roka</string>
     <string name="due_date">Datum roka</string>
-    <string name="TEA_timer_est">Cca %s</string>
-    <string name="TEA_elapsedDuration_label">Već utrošeno vrijeme</string>
     <string name="week_before_due">Tjedan prije roka</string>
     <string name="TEA_control_hidden_section">----Uvijek sakrij----</string>
     <string name="day_before_due">Dan prije roka</string>
-    <string name="TEA_estimatedDuration_label">Koliko će trajati\?</string>
-    <string name="WID_dateButtonUnset">Pritisni za postavljanje</string>
-    <string name="DLG_hour_minutes">Vrijeme (sati: minute)</string>
     <string name="import_summary_message">Datoteka %1$s je sadržala %2$s. \n \n %3$s uvezena, \n %4$s već postoje \n %5$s s greškama</string>
     <string name="SSD_sort_start">Po datumu početka</string>
     <string name="SSD_sort_modified">Po zadnjoj promjeni</string>
@@ -285,7 +279,6 @@
     <string name="EPr_cal_end_or_start_at_due_time">Vrijeme kalendarskog događaja</string>
     <string name="EPr_show_task_edit_comments">Pokaži komentare u uređivanju zadatka</string>
     <string name="none">Ništa</string>
-    <string name="TEA_control_timer">Funkcije mjerača vremena</string>
     <string name="sort_modified_group">Promijenjeno %s</string>
     <string name="sort_created_group">Stvoreno %s</string>
     <string name="filter_eisenhower_box_4">Nije važno i nije hitno</string>
@@ -332,11 +325,6 @@
     <string name="voice_command_added_task">Dodan zadatak</string>
     <string name="EPr_voiceInputEnabled_title">Govorni unos</string>
     <string name="voice_create_prompt">Govori za izradu zadatka</string>
-    <string name="TEA_timer_comment_spent">Utrošeno vrijeme:</string>
-    <string name="TEA_timer_comment_stopped">je prekinuo obavljati ovaj zadatak:</string>
-    <string name="TEA_timer_comment_started">je započeo ovaj zadatak:</string>
-    <string name="TEA_timer_controls">Mjerač vremena</string>
-    <string name="TPl_notification">Mjerači vremena aktivni za %s!</string>
     <string name="delete_tag_confirmation">Izbrisati %s\?</string>
     <string name="repeat_snackbar">%1$s preraspoređen za %2$s</string>
     <plurals name="repeat_n_weeks">

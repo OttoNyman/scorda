@@ -9,9 +9,7 @@
     <string name="import_summary_message">Filen %1$s innehöll %2$s.\n\n%3$s importerades,\n%4$s fanns redan\n%5$s innehöll fel</string>
     <string name="import_progress_read">Läser uppgift %d…</string>
     <string name="read_permission_label">Tasks-behörighet</string>
-    <string name="DLG_hour_minutes">Tid (timmar:minuter)</string>
     <string name="DLG_undo">Ångra</string>
-    <string name="WID_dateButtonUnset">Tryck för att ange</string>
     <string name="TLA_no_items">Det finns inga uppgifter att visa.</string>
     <string name="TLA_menu_sort">Sortera</string>
     <string name="TLA_menu_search">Sök</string>
@@ -27,11 +25,7 @@
     <string name="TEA_title_hint">Uppgiftsnamn</string>
     <string name="TEA_importance_label">Prioritet</string>
     <string name="TEA_note_label">Beskrivning</string>
-    <string name="TEA_estimatedDuration_label">Uppskattad tidsåtgång</string>
-    <string name="TEA_elapsedDuration_label">Nedlagd tid</string>
     <string name="save">Spara</string>
-    <string name="TEA_timer_est">Beräknad: %s</string>
-    <string name="TEA_timer_elap">Förfluten tid: %s</string>
     <string name="due_date">Förfallodatum</string>
     <string name="due_time">Förfallotid</string>
     <string name="day_before_due">Dag före förfallodatum</string>
@@ -42,7 +36,6 @@
     <string name="TEA_control_notes">Beskrivning</string>
     <string name="TEA_control_files">Filer</string>
     <string name="TEA_control_reminders">Påminnelser</string>
-    <string name="TEA_control_timer">Tidtagarinställningar</string>
     <string name="TEA_control_hidden_section">----Dölj alltid----</string>
     <string name="none">Ingen</string>
     <string name="EPr_beastMode_reset">Återställ förvalda värden</string>
@@ -95,10 +88,6 @@
     <string name="new_tag">Skapa en ny etikett</string>
     <string name="new_list">Skapa en ny lista</string>
     <string name="delete_tag_confirmation">Ta bort %s?</string>
-    <string name="TPl_notification">Tidtagning pågår för %s</string>
-    <string name="TEA_timer_comment_started">Startade den här uppgiften:</string>
-    <string name="TEA_timer_comment_stopped">Slutade arbeta med den här uppgiften:</string>
-    <string name="TEA_timer_comment_spent">Nedlagd tid:</string>
     <string name="voice_create_prompt">Tala för att skapa en uppgift</string>
     <string name="EPr_voiceInputEnabled_title">Röstindata</string>
     <string name="voice_command_added_task">Uppgift skapad</string>
@@ -178,7 +167,6 @@
         <item quantity="one">%d vecka</item>
         <item quantity="other">%d veckor</item>
     </plurals>
-    <string name="TEA_timer_controls">Tidtagning</string>
     <string name="google_drive_backup">Google Drive-säkerhetskopia</string>
     <string name="row_spacing">Radavstånd</string>
     <string name="add_location">Lägg till plats</string>

@@ -16,11 +16,14 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -47,7 +50,6 @@ import com.todoroo.astrid.activity.MainActivity
 import com.todoroo.astrid.files.FilesControlSet
 import com.todoroo.astrid.repeats.RepeatControlSet
 import com.todoroo.astrid.tags.TagsControlSet
-import com.todoroo.astrid.timers.TimerControlSet
 import com.todoroo.astrid.ui.ReminderControlSet
 import com.todoroo.astrid.ui.StartDateControlSet
 import kotlinx.coroutines.launch
@@ -71,6 +73,7 @@ import org.tasks.kmp.org.tasks.extensions.gesturesDisabled
 import org.tasks.kmp.org.tasks.taskedit.TaskEditViewState
 import org.tasks.markdown.MarkdownProvider
 import org.tasks.preferences.Preferences
+import org.tasks.repeats.SeriesEditScope
 import org.tasks.themes.TasksTheme
 import org.tasks.ui.CalendarControlSet
 import org.tasks.ui.LocationControlSet
@@ -79,6 +82,8 @@ import org.tasks.ui.TaskEditViewModel
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_CREATION
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DESCRIPTION
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DUE_DATE
+import org.tasks.ui.TaskEditViewModel.Companion.TAG_ADVANCE
+import org.tasks.reminders.advance
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_LIST
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_PRIORITY
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_TITLE
@@ -95,7 +100,7 @@ fun TaskEditScreen(
     editViewModel: TaskEditViewModel,
     viewState: TaskEditViewState,
     comments: List<UserActivity>,
-    save: () -> Unit,
+    save: (SeriesEditScope?) -> Unit,
     discard: () -> Unit,
     delete: () -> Unit,
     dismissBeastMode: () -> Unit,
@@ -113,6 +118,7 @@ fun TaskEditScreen(
     var showDueDatePicker by rememberSaveable { mutableStateOf(false) }
     var showDiscardConfirmation by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmation by rememberSaveable { mutableStateOf(false) }
+    var showSeriesScope by rememberSaveable { mutableStateOf(false) }
     DisposableEffect(Unit) {
         val activity = context.findActivity()
         if (atLeastOreoMR1() && viewState.showEditScreenWithoutUnlock) {
@@ -133,13 +139,22 @@ fun TaskEditScreen(
             discard()
         }
     }
+    // an occurrence asks once per save whether the edit is for it or for its schedule
+    val requestSave = {
+        if (editViewModel.asksSeriesScope()) {
+            val prompt = { showSeriesScope = true }
+            context.findActivity()?.hideKeyboardThen(prompt) ?: prompt()
+        } else {
+            save(null)
+        }
+    }
     val requestDelete = {
         val prompt = { showDeleteConfirmation = true }
         context.findActivity()?.hideKeyboardThen(prompt) ?: prompt()
     }
     val onBackPressed = {
         if (viewState.backButtonSavesTask) {
-            save()
+            requestSave()
         } else {
             requestDiscard()
         }
@@ -164,7 +179,7 @@ fun TaskEditScreen(
                         }
                     } else {
                         IconButton(
-                            onClick = { save() },
+                            onClick = { requestSave() },
                             modifier = Modifier.testTag(TestTags.SAVE_TASK),
                         ) {
                             SymbolIcon(
@@ -179,7 +194,8 @@ fun TaskEditScreen(
                     if (viewState.isReadOnly) {
                         return@TopAppBar
                     }
-                    if (!viewState.isNew) {
+                    // an uncompleted occurrence can't be deleted: complete, postpone or finish the series
+                    if (!viewState.isNew && !(editViewModel.isLiveOccurrence && !viewState.isCompleted)) {
                         IconButton(onClick = { requestDelete() }) {
                             SymbolIcon(
                                 name = TasksIcons.DELETE,
@@ -231,7 +247,6 @@ fun TaskEditScreen(
                             linkify = linkify,
                             markdownProvider = markdownProvider,
                             isCompleted = viewState.isCompleted,
-                            isRecurring = viewState.task.isRecurring,
                             priority = viewState.task.priority,
                             onComplete = {
                                 if (viewState.isCompleted) {
@@ -239,7 +254,7 @@ fun TaskEditScreen(
                                 } else {
                                     editViewModel.setComplete(true)
                                     scope.launch {
-                                        save()
+                                        save(null)
                                     }
                                 }
                             },
@@ -247,7 +262,7 @@ fun TaskEditScreen(
                             multiline = viewState.multilineTitle,
                             save = {
                                 scope.launch {
-                                    save()
+                                    requestSave()
                                 }
                             },
                         )
@@ -265,6 +280,15 @@ fun TaskEditScreen(
                             context.findActivity()?.hideKeyboardThen(showPicker) ?: showPicker()
                         },
                     )
+                    TAG_ADVANCE -> {
+                        // early ring counts from the reminder time: no time, nothing to count from
+                        if (editViewModel.dueDate.collectAsStateWithLifecycle().value > 0) {
+                            AdvanceRow(
+                                offset = remember(viewState.alarms) { viewState.alarms.advance()?.let { -it.time } },
+                                onPick = { editViewModel.setAdvance(it) },
+                            )
+                        }
+                    }
                     TAG_PRIORITY ->
                         PriorityRow(
                             priority = viewState.task.priority,
@@ -313,7 +337,6 @@ fun TaskEditScreen(
                     ReminderControlSet.TAG -> AndroidFragment<ReminderControlSet>()
                     LocationControlSet.TAG -> AndroidFragment<LocationControlSet>()
                     FilesControlSet.TAG -> AndroidFragment<FilesControlSet>()
-                    TimerControlSet.TAG -> AndroidFragment<TimerControlSet>()
                     TagsControlSet.TAG -> AndroidFragment<TagsControlSet>()
                     RepeatControlSet.TAG -> {
                         val dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value
@@ -380,6 +403,15 @@ fun TaskEditScreen(
                 onDismiss = { showDiscardConfirmation = false },
             )
         }
+        if (showSeriesScope) {
+            SeriesEditScopeDialog(
+                onSelected = {
+                    showSeriesScope = false
+                    save(it)
+                },
+                onDismiss = { showSeriesScope = false },
+            )
+        }
         if (showDeleteConfirmation) {
             DeleteTaskDialog(
                 onDelete = {
@@ -390,6 +422,28 @@ fun TaskEditScreen(
             )
         }
     }
+}
+
+/** Spec point 10: an edit of an occurrence goes to it alone or to its schedule. */
+@Composable
+fun SeriesEditScopeDialog(
+    onSelected: (SeriesEditScope) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.series_edit_scope_title)) },
+        confirmButton = {
+            TextButton(onClick = { onSelected(SeriesEditScope.SCHEDULE) }) {
+                Text(stringResource(R.string.series_edit_schedule))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onSelected(SeriesEditScope.OCCURRENCE) }) {
+                Text(stringResource(R.string.series_edit_occurrence))
+            }
+        },
+    )
 }
 
 @Preview(showBackground = true)

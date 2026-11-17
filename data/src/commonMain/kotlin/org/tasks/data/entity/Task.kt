@@ -32,6 +32,7 @@ const val SYNC_ALARMS = "sync_alarms"
             Index(name = "t_rid", value = ["remoteId"], unique = true),
             Index(name = "active_and_visible", value = ["completed", "deleted", "hideUntil"]),
             Index(value = ["parent"]),
+            Index(name = "index_tasks_series", value = ["series"]),
         ])
 data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     @PrimaryKey(autoGenerate = true)
@@ -89,6 +90,10 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     var order: Long? = null,
     @ColumnInfo(name = "read_only", defaultValue = "0")
     var readOnly: Boolean = false,
+    @ColumnInfo(name = "series")
+    var series: String? = null,
+    @ColumnInfo(name = "scheduled", defaultValue = "0")
+    var scheduled: Long = 0L,
     @Ignore
     @Transient
     private var transitoryData: @CommonRawValue HashMap<String, Any>? = null,
@@ -180,6 +185,9 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
                 && parent == original.parent
                 && notes == original.notes
                 && order == original.order
+                // both ride in the `§scorda` trailer: adopt, detach and revive must push it
+                && series == original.series
+                && scheduled == original.scheduled
     }
 
     fun caldavUpToDate(original: Task?): Boolean {
@@ -301,9 +309,10 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
         val COMPLETION_DATE = TABLE.column("completed")
         val DELETION_DATE = TABLE.column("deleted")
         val NOTES = TABLE.column("notes")
-        val TIMER_START = TABLE.column("timerStart")
         val PARENT = TABLE.column("parent")
         val RECURRENCE = TABLE.column("recurrence")
+        val SERIES = TABLE.column("series")
+        val SCHEDULED = TABLE.column("scheduled")
 
         /** constant value for no uuid  */
         const val NO_UUID = "0" // $NON-NLS-1$

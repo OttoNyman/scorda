@@ -73,7 +73,6 @@ abstract class ApiEngineTestCase {
             refreshBroadcaster = mock(),
             notifier = mock(),
             locationService = locationService,
-            timerPlugin = mock(),
             backgroundWork = mock(),
             caldavDao = caldavDao,
         )
@@ -118,7 +117,9 @@ abstract class ApiEngineTestCase {
             vtodoCache = mock(),
             tasksPreferences = mock(),
             taskCleanup = object : TaskCleanup {
-                override suspend fun cleanup(tasks: List<Long>) = db.deletionDao().purgeDeleted()
+                override suspend fun cleanup(tasks: List<Long>) = with(db.deletionDao()) {
+                    delete(getPurgeable(Long.MAX_VALUE)) {}
+                }
             },
         )
     }

@@ -10,8 +10,6 @@
     <string name="TLA_menu_search">Cercar</string>
     <string name="TLA_menu_sort">Ordinar</string>
     <string name="TLA_no_items">Nulle carga hic.</string>
-    <string name="WID_dateButtonUnset">Cliccar pro definir</string>
-    <string name="DLG_hour_minutes">Tempore (horas : minutas)</string>
     <string name="cancel">Cancellar</string>
     <string name="ok">OK</string>
     <string name="help">Adjuta</string>

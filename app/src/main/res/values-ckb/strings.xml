@@ -3,7 +3,6 @@
     <string name="actfm_picture_clear">وێنە بسڕەوە</string>
     <string name="TVA_add_comment">لێدوانێک زیاد بکە…</string>
     <string name="import_progress_read">ئەرکی %d دەخوێنرێتەوە…</string>
-    <string name="DLG_hour_minutes">کات (کاتژمێر : خولەک)</string>
     <string name="TLA_no_items">هیچ ئەرکێک لێرە نییە.</string>
     <string name="TLA_menu_sort">ڕیزی بکە</string>
     <string name="TLA_menu_search">بگەڕێ</string>
@@ -16,7 +15,6 @@
     <string name="sort_created">بە کاتی دروستکردن</string>
     <string name="FLA_new_filter">پاڵاوتنێک دروست بکە</string>
     <string name="TEA_importance_label">گرنگی</string>
-    <string name="TEA_estimatedDuration_label">چەندێک دەخایەنێت؟</string>
     <string name="save">هەڵیبگرە</string>
     <string name="due_date">بەرواری جێبەجێکردن</string>
     <string name="due_time">کاتی جێبەجێکردن</string>

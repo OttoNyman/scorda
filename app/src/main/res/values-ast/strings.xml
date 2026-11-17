@@ -11,9 +11,7 @@
     <string name="import_summary_message">El ficheru %1$s contenía %2$s\n\n %3$s importaes\n%4$s yá esiste\n %5$s teníen errores</string>
     <string name="import_progress_read">Lleendo xera %d…</string>
     <string name="read_permission_label">Permisos de Tasks</string>
-    <string name="DLG_hour_minutes">Tiempu (hores : minutos)</string>
     <string name="DLG_undo">Desfacer</string>
-    <string name="WID_dateButtonUnset">Calcar p\'establecer</string>
     <string name="TLA_no_items">Nun hai denguna xera equí.</string>
     <string name="TLA_menu_sort">Ordenar</string>
     <string name="TLA_menu_search">Guetar</string>
@@ -37,11 +35,7 @@
     <string name="TEA_importance_label">Prioridá</string>
     <string name="actfm_picture_clear">Esborriar imaxe</string>
     <string name="TEA_note_label">Descripción</string>
-    <string name="TEA_estimatedDuration_label">¿Cuántu tiempu llevará?</string>
-    <string name="TEA_elapsedDuration_label">Tiempu yá emplegáu na xera</string>
     <string name="save">Guardar</string>
-    <string name="TEA_timer_est">Est. %s</string>
-    <string name="TEA_timer_elap">Trescurríu %s</string>
     <string name="due_date">Data de vencimientu</string>
     <string name="due_time">Hora de vencimientu</string>
     <string name="start_date">Data d\'entamu</string>
@@ -54,7 +48,6 @@
     <string name="TEA_control_notes">Descripción</string>
     <string name="TEA_control_files">Archivos</string>
     <string name="TEA_control_reminders">Recordatorios</string>
-    <string name="TEA_control_timer">Controles de tiempu</string>
     <string name="TEA_control_hidden_section">----Esconder siempres----</string>
     <string name="TEA_creation_date">Data de creación</string>
     <string name="none">Denguna</string>
@@ -138,11 +131,6 @@
     <string name="delete_tag_confirmation">Desaniciar %s?</string>
     <string name="delete_comment">comentariu</string>
     <string name="comment">Comentariu</string>
-    <string name="TPl_notification">Temporizadores Activos pa %s!</string>
-    <string name="TEA_timer_controls">Temporizador</string>
-    <string name="TEA_timer_comment_started">entamó esta xera:</string>
-    <string name="TEA_timer_comment_stopped">paró de facer esta xera:</string>
-    <string name="TEA_timer_comment_spent">Tiempu dedicáu:</string>
     <string name="voice_create_prompt">Fala p\'amestar una xera</string>
     <string name="EPr_voiceInputEnabled_title">Entrada de voz</string>
     <string name="voice_command_added_task">Xera amestada</string>

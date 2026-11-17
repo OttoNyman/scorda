@@ -3,7 +3,6 @@
     <string name="search">جست و جو</string>
     <string name="filter_my_tasks">وظایف من</string>
     <string name="filter_notifications">اعلان ها</string>
-    <string name="filter_timer">وظایف زمانبندی شده</string>
     <string name="filter_today">امروز</string>
     <string name="filter_recently_modified">اخیرا ویرایش شده</string>
     <string name="default_list">لیست پیش فرض</string>

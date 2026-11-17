@@ -9,9 +9,7 @@
     <string name="import_summary_message">Файл %1$s містив %2$s. \n \n %3$s імпортовано, \n %4$s вже існувало, \n %5$s з помилками</string>
     <string name="import_progress_read">Читання завдання %d…</string>
     <string name="read_permission_label">Дозволи Tasks</string>
-    <string name="DLG_hour_minutes">Час (години : хвилини)</string>
     <string name="DLG_undo">Повернути</string>
-    <string name="WID_dateButtonUnset">Натисніть для встановлення</string>
     <string name="TLA_no_items">Тут немає завдань.</string>
     <string name="TLA_menu_sort">Сортувати</string>
     <string name="TLA_menu_search">Пошук</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Назва завдання</string>
     <string name="TEA_importance_label">Пріоритет</string>
     <string name="TEA_note_label">Опис</string>
-    <string name="TEA_estimatedDuration_label">Скільки часу це займе\?</string>
-    <string name="TEA_elapsedDuration_label">Часу вже витрачено</string>
     <string name="save">Зберегти</string>
-    <string name="TEA_timer_est">Прибл. %s</string>
-    <string name="TEA_timer_elap">Пройшло %s</string>
     <string name="due_date">Дата виконання</string>
     <string name="due_time">Час виконання</string>
     <string name="day_before_due">Доба до дати виконання</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Опис</string>
     <string name="TEA_control_files">Файли</string>
     <string name="TEA_control_reminders">Нагадування</string>
-    <string name="TEA_control_timer">Управління таймером</string>
     <string name="TEA_control_hidden_section">----Завжди ховати----</string>
     <string name="none">Немає</string>
     <string name="EPr_beastMode_reset">Скинути налаштування</string>
@@ -126,11 +119,6 @@
     <string name="new_tag">Створити нову мітку</string>
     <string name="new_list">Новий список</string>
     <string name="delete_tag_confirmation">Видалити %s?</string>
-    <string name="TPl_notification">Таймери діють протягом %s!</string>
-    <string name="TEA_timer_controls">Таймер</string>
-    <string name="TEA_timer_comment_started">Завдання розпочато:</string>
-    <string name="TEA_timer_comment_stopped">виконання завдання завершено:</string>
-    <string name="TEA_timer_comment_spent">Часу витрачено:</string>
     <string name="voice_create_prompt">Горовіть для створення завдання</string>
     <string name="EPr_voiceInputEnabled_title">Голосове введення</string>
     <string name="voice_command_added_task">Додане завдання</string>

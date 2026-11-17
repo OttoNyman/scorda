@@ -9,9 +9,7 @@
     <string name="import_summary_message">%1$s dosyası %2$s içeriyor. \n \n %3$s içe aktarıldı,\n %4$s zaten var,\n %5$s hata var.</string>
     <string name="import_progress_read">%d görev okunuyor…</string>
     <string name="read_permission_label">Tasks İzni</string>
-    <string name="DLG_hour_minutes">Zaman (saat : dakika)</string>
     <string name="DLG_undo">Geri al</string>
-    <string name="WID_dateButtonUnset">Ayar İçin Dokun</string>
     <string name="TLA_no_items">Burada görev yok.</string>
     <string name="TLA_menu_sort">Sırala</string>
     <string name="TLA_menu_search">Ara</string>
@@ -28,11 +26,7 @@
     <string name="TEA_title_hint">Görev adı</string>
     <string name="TEA_importance_label">Öncelik</string>
     <string name="TEA_note_label">Açıklama</string>
-    <string name="TEA_estimatedDuration_label">Ne kadar sürecek?</string>
-    <string name="TEA_elapsedDuration_label">Önceden geçirilen zaman</string>
     <string name="save">Kaydet</string>
-    <string name="TEA_timer_est">Kalan %s</string>
-    <string name="TEA_timer_elap">Geçen %s</string>
     <string name="due_date">Bitiş tarihi</string>
     <string name="due_time">Bitiş zamanı</string>
     <string name="day_before_due">Bitişten önceki gün</string>
@@ -44,7 +38,6 @@
     <string name="TEA_control_notes">Açıklama</string>
     <string name="TEA_control_files">Dosyalar</string>
     <string name="TEA_control_reminders">Anımsatıcılar</string>
-    <string name="TEA_control_timer">Kronometre Denetimleri</string>
     <string name="TEA_control_hidden_section">----Sürekli Gizle----</string>
     <string name="none">Hiçbiri</string>
     <string name="EPr_beastMode_reset">Öntanımlılara sıfırla</string>
@@ -120,11 +113,6 @@
     <string name="new_tag">Yeni etiket oluştur</string>
     <string name="new_list">Yeni liste oluştur</string>
     <string name="delete_tag_confirmation">%s silinsin mi?</string>
-    <string name="TPl_notification">%s için kronometre etkin!</string>
-    <string name="TEA_timer_controls">Kronometre</string>
-    <string name="TEA_timer_comment_started">başlanan görev:</string>
-    <string name="TEA_timer_comment_stopped">bu görevden vazgeç:</string>
-    <string name="TEA_timer_comment_spent">Harcanan zaman:</string>
     <string name="voice_create_prompt">Yeni görev için konuş</string>
     <string name="EPr_voiceInputEnabled_title">Ses Girişi</string>
     <string name="voice_command_added_task">Görev eklendi</string>

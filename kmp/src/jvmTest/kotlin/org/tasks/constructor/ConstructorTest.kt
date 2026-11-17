@@ -1,8 +1,6 @@
 package org.tasks.constructor
 
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.data.entity.Alarm
@@ -10,27 +8,25 @@ import org.tasks.time.ONE_DAY
 
 class ConstructorTest {
     @Test
-    fun presetsMatchTheirFlags() {
-        assertEquals(Preset.Simple, matchingPreset(Preset.Simple.flags, true, true))
-        assertEquals(Preset.Reminders, matchingPreset(Preset.Reminders.flags, true, true))
-        assertEquals(Preset.Tasks, matchingPreset(Preset.Tasks.flags, true, true))
-        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, true, true))
+    fun allOffClearsCapabilityFlagsAndKeepsTheLocalListsToggle() {
+        val next = Constructor(repeat = true, lists = true, localLists = true).withPreset(Preset.Simple)
+        assertFalse(next.repeat)
+        assertFalse(next.lists)
+        assertTrue(next.localLists)
     }
 
     @Test
-    fun repeatAloneMatchesNothing() {
-        assertNull(matchingPreset(Constructor(repeat = true), true, true))
+    fun allOnSetsCapabilityFlagsAndKeepsTheLocalListsToggle() {
+        val next = Constructor(localLists = true).withPreset(Preset.Full)
+        assertTrue(next.repeat)
+        assertTrue(next.lists)
+        assertTrue(next.geo)
+        assertTrue(next.localLists)
     }
 
     @Test
-    fun fullStillMatchesWhenThePlatformHasNoGeofences() {
-        assertEquals(Preset.Full, matchingPreset(Preset.Full.flags, geofences = false, calendarEvents = true))
-    }
-
-    @Test
-    fun syncNeverChangesTheSelectedSetup() {
+    fun syncDoesNotTurnListsOn() {
         val raw = Constructor(localLists = true)
-        assertEquals(Preset.Simple, matchingPreset(raw, geofences = true, calendarEvents = true))
         assertFalse(raw.effective(sync = true, geofences = true, calendarEvents = true).lists)
     }
 
@@ -91,6 +87,29 @@ class ConstructorTest {
         val alarm = Alarm(type = Alarm.TYPE_REL_END, time = -60_000)
         assertFalse(Constructor(overdue = true).schedules(alarm))
         assertTrue(Constructor(extraReminders = true).schedules(alarm))
+    }
+
+    @Test
+    fun anEarlyAlarmRingsWithAdvanceOrExtraReminders() {
+        val alarm = Alarm(type = Alarm.TYPE_REL_END, time = -15 * 60_000L)
+        assertFalse(Constructor().schedules(alarm))
+        assertTrue(Constructor(advance = true).schedules(alarm))
+        assertTrue(Constructor(extraReminders = true).schedules(alarm))
+    }
+
+    @Test
+    fun aRepeatingEarlyAlarmStaysAnExtraReminder() {
+        val alarm = Alarm(type = Alarm.TYPE_REL_END, time = -60_000, repeat = 2, interval = 60_000)
+        assertFalse(Constructor(advance = true).schedules(alarm))
+        assertTrue(Constructor(extraReminders = true).schedules(alarm))
+    }
+
+    @Test
+    fun allOnTurnsAdvanceOnAndLeavesStartDateOff() {
+        val full = Constructor().withPreset(Preset.Full)
+        assertTrue(full.advance)
+        assertFalse(full.startDate)
+        assertFalse(full.extraReminders)
     }
 
     @Test

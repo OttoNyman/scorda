@@ -18,9 +18,9 @@ fun SubtaskChip(
 ) {
     Chip(
         icon = if (collapsed)
-            TasksIcons.KEYBOARD_ARROW_DOWN
+            TasksIcons.KEYBOARD_ARROW_RIGHT
         else
-            TasksIcons.KEYBOARD_ARROW_UP,
+            TasksIcons.KEYBOARD_ARROW_DOWN,
         text = formatNumber(children),
         color = chipColor,
         onClick = onClick,
