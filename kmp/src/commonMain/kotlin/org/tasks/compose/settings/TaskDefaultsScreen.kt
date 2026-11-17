@@ -45,9 +45,7 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.TEA_control_location
 import tasks.kmp.generated.resources.TEA_control_reminders
 import tasks.kmp.generated.resources.TEA_control_repeat
-import tasks.kmp.generated.resources.day_after_tomorrow
 import tasks.kmp.generated.resources.day_before_due
-import tasks.kmp.generated.resources.default_due_date
 import tasks.kmp.generated.resources.default_list
 import tasks.kmp.generated.resources.default_location
 import tasks.kmp.generated.resources.default_location_reminder_on_arrival
@@ -65,8 +63,6 @@ import tasks.kmp.generated.resources.location_update_interval_2_hours
 import tasks.kmp.generated.resources.location_update_interval_30_minutes
 import tasks.kmp.generated.resources.location_update_interval_disabled
 import tasks.kmp.generated.resources.location_update_interval_title
-import tasks.kmp.generated.resources.next_week
-import tasks.kmp.generated.resources.no_due_date
 import tasks.kmp.generated.resources.no_reminders
 import tasks.kmp.generated.resources.no_start_date
 import tasks.kmp.generated.resources.none
@@ -75,8 +71,6 @@ import tasks.kmp.generated.resources.priority_low
 import tasks.kmp.generated.resources.priority_medium
 import tasks.kmp.generated.resources.repeat_type_completion_capitalized
 import tasks.kmp.generated.resources.repeats_from
-import tasks.kmp.generated.resources.today
-import tasks.kmp.generated.resources.tomorrow
 import tasks.kmp.generated.resources.week_before_due
 
 val PriorityOptions: List<Pair<Int, StringResource>> = listOf(
@@ -92,14 +86,6 @@ val StartDateOptions: List<Pair<Int, StringResource>> = listOf(
     Task.HIDE_UNTIL_DUE_TIME to Res.string.due_time,
     Task.HIDE_UNTIL_DAY_BEFORE to Res.string.day_before_due,
     Task.HIDE_UNTIL_WEEK_BEFORE to Res.string.week_before_due,
-)
-
-val DueDateOptions: List<Pair<Int, StringResource>> = listOf(
-    Task.URGENCY_NONE to Res.string.no_due_date,
-    Task.URGENCY_TODAY to Res.string.today,
-    Task.URGENCY_TOMORROW to Res.string.tomorrow,
-    Task.URGENCY_DAY_AFTER to Res.string.day_after_tomorrow,
-    Task.URGENCY_NEXT_WEEK to Res.string.next_week,
 )
 
 val RepeatFromOptions: List<Pair<Int, StringResource>> = listOf(
@@ -148,7 +134,6 @@ fun TaskDefaultsScreen(
     onDefaultTags: () -> Unit,
     onImportance: () -> Unit,
     onStartDate: () -> Unit,
-    onDueDate: () -> Unit,
     onRecurrence: () -> Unit,
     onRecurrenceFrom: () -> Unit,
     onLocation: () -> Unit,
@@ -183,7 +168,6 @@ fun TaskDefaultsScreen(
                 DefaultRow.TAGS.takeIf { features.tags },
                 DefaultRow.IMPORTANCE.takeIf { features.priority },
                 DefaultRow.START_DATE.takeIf { features.startDate },
-                DefaultRow.DUE_DATE,
             )
         ) { row ->
             when (row) {
@@ -214,13 +198,6 @@ fun TaskDefaultsScreen(
                         icon = TasksIcons.PENDING_ACTIONS,
                         summary = StartDateOptions.label(settings.defaultHideUntil),
                         onClick = onStartDate,
-                    )
-                DefaultRow.DUE_DATE ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.default_due_date),
-                        icon = TasksIcons.SCHEDULE,
-                        summary = DueDateOptions.label(settings.defaultDueDate),
-                        onClick = onDueDate,
                     )
             }
         }
@@ -310,7 +287,6 @@ private enum class DefaultRow {
     TAGS,
     IMPORTANCE,
     START_DATE,
-    DUE_DATE,
 }
 
 private enum class RecurrenceRow {

@@ -37,6 +37,7 @@ import tasks.kmp.generated.resources.preferences_look_and_feel
 import tasks.kmp.generated.resources.screen_settings
 import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.task_defaults
+import tasks.kmp.generated.resources.trash
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
 import tasks.kmp.generated.resources.link_desktop_description
@@ -124,6 +125,8 @@ fun MainSettingsScreen(
     showDesktopLinking: Boolean = false,
     showWorksWith: Boolean = false,
     onLinkDesktopClick: () -> Unit = {},
+    /** Opens the trash. Null hides the row. */
+    onTrash: (() -> Unit)? = null,
     bottomContent: @Composable () -> Unit = {},
 ) {
     Column(
@@ -195,6 +198,7 @@ fun MainSettingsScreen(
             showNavigationDrawer = showNavigationDrawer,
             isDebug = isDebug,
             onSettingsClick = onSettingsClick,
+            onTrash = onTrash,
         )
 
         bottomContent()
@@ -208,6 +212,7 @@ fun SettingsCategories(
     showNavigationDrawer: Boolean = true,
     isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
+    onTrash: (() -> Unit)? = null,
 ) {
     // Appearance island
     Column(
@@ -306,6 +311,17 @@ fun SettingsCategories(
     }
 
     Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+    if (onTrash != null) {
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = stringResource(Res.string.trash),
+                icon = TasksIcons.DELETE,
+                onClick = onTrash,
+            )
+        }
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+    }
 
     // About card group
     Column(

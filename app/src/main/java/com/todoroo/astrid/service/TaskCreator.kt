@@ -177,9 +177,8 @@ class TaskCreator @Inject constructor(
             }
         }
         if (applyDefaults && values?.containsKey(DUE_DATE.name) != true) {
-            task.dueDate = createDueDate(
-                    preferences.getIntegerFromString(R.string.p_default_urgency_key, Task.URGENCY_NONE),
-                    0)
+            // No setting: a new task is due today unless it says otherwise.
+            task.dueDate = createDueDate(Task.URGENCY_TODAY, 0)
         }
         if (applyDefaults && featureGate.current.startDate && values?.containsKey(HIDE_UNTIL.name) != true) {
             task.hideUntil = task.createHideUntil(

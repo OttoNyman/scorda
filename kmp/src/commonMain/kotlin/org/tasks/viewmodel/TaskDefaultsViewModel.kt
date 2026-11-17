@@ -46,7 +46,6 @@ open class TaskDefaultsViewModel(
     enum class ListPickerTarget {
         PRIORITY,
         START_DATE,
-        DUE_DATE,
         REPEAT_FROM,
         RING_MODE,
         LOCATION_REMINDER,
@@ -228,7 +227,6 @@ open class TaskDefaultsViewModel(
     fun listPickerValue(target: ListPickerTarget): Int = when (target) {
         ListPickerTarget.PRIORITY -> settings.defaultPriority
         ListPickerTarget.START_DATE -> settings.defaultHideUntil
-        ListPickerTarget.DUE_DATE -> settings.defaultDueDate
         ListPickerTarget.REPEAT_FROM -> settings.defaultRecurrenceFrom
         ListPickerTarget.RING_MODE -> settings.defaultRingMode
         ListPickerTarget.LOCATION_REMINDER -> settings.defaultLocationReminder
@@ -244,10 +242,6 @@ open class TaskDefaultsViewModel(
             ListPickerTarget.START_DATE -> {
                 settings = settings.copy(defaultHideUntil = value)
                 persist { appPreferences.setDefaultHideUntil(value) }
-            }
-            ListPickerTarget.DUE_DATE -> {
-                settings = settings.copy(defaultDueDate = value)
-                persist { appPreferences.setDefaultDueDate(value) }
             }
             ListPickerTarget.REPEAT_FROM -> {
                 settings = settings.copy(defaultRecurrenceFrom = value)

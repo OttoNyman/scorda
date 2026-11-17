@@ -4,5 +4,6 @@
   <item
     android:id="@+id/menu_location_settings"
     android:title="@string/place_settings"
-    app:showAsAction="never"/>
+    android:icon="@drawable/ic_outline_edit_24px"
+    app:showAsAction="always"/>
 </menu>

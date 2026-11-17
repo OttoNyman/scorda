@@ -222,10 +222,7 @@ val coreModule: Module = module {
                         TasksPreferences.defaultHideUntil,
                         taskSettingDefaults.defaultHideUntil
                     ),
-                    defaultDueDate = prefs.get(
-                        TasksPreferences.defaultDueDate,
-                        taskSettingDefaults.defaultDueDate
-                    ),
+                    defaultDueDate = org.tasks.data.entity.Task.URGENCY_TODAY,
                     defaultRecurrence = prefs.get(TasksPreferences.defaultRecurrence, "").orNull(),
                     defaultRecurrenceFrom = prefs.get(
                         TasksPreferences.defaultRecurrenceFrom,
@@ -259,8 +256,6 @@ val coreModule: Module = module {
                 tasksPreferences.set(TasksPreferences.defaultPriority, value)
             override suspend fun setDefaultHideUntil(value: Int) =
                 tasksPreferences.set(TasksPreferences.defaultHideUntil, value)
-            override suspend fun setDefaultDueDate(value: Int) =
-                tasksPreferences.set(TasksPreferences.defaultDueDate, value)
             override suspend fun setDefaultRecurrence(value: String?) =
                 tasksPreferences.set(TasksPreferences.defaultRecurrence, value.orEmpty())
             override suspend fun setDefaultRecurrenceFrom(value: Int) =

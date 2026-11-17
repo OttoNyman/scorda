@@ -52,7 +52,9 @@ import org.tasks.preferences.fragments.LocalAccount.Companion.newLocalAccountPre
 import org.tasks.preferences.fragments.OpenTaskAccountFragment.Companion.newOpenTaskAccountFragment
 import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAccountPreference
 import org.tasks.preferences.fragments.TasksAccount.Companion.newTasksAccountPreference
+import com.todoroo.astrid.activity.MainActivity
 import org.tasks.PlatformConfiguration
+import org.tasks.filters.TrashFilter
 import org.tasks.analytics.Firebase
 import org.tasks.billing.Inventory
 import org.tasks.billing.LinkDesktopActivity
@@ -95,6 +97,7 @@ class MainSettingsComposeFragment : Fragment() {
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
                 onLinkDesktopClick = { linkDesktop() },
+                onTrash = { openTrash() },
                 onProCardClick = {
                     val state = proCardState ?: return@AndroidMainSettingsScreen
                     val type = when (state) {
@@ -245,6 +248,18 @@ class MainSettingsComposeFragment : Fragment() {
                 )
             }
             else -> {}
+        }
+    }
+
+    // A fresh main screen opened on the trash. OPEN_FILTER is not remembered, so back and the next
+    // launch return to the last list.
+    private fun openTrash() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java)
+                    .putExtra(MainActivity.OPEN_FILTER, TrashFilter.create())
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            )
         }
     }
 

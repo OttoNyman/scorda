@@ -20,6 +20,7 @@ fun AndroidMainSettingsScreen(
     showDesktopLinking: Boolean = false,
     showNavigationDrawer: Boolean = true,
     onLinkDesktopClick: () -> Unit = {},
+    onTrash: () -> Unit = {},
 ) {
     MainSettingsScreen(
         proCardState = proCardState,
@@ -32,6 +33,7 @@ fun AndroidMainSettingsScreen(
         onProCardClick = onProCardClick,
         showDesktopLinking = showDesktopLinking,
         onLinkDesktopClick = onLinkDesktopClick,
+        onTrash = onTrash,
         bottomContent = {
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         },

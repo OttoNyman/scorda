@@ -331,10 +331,8 @@ class Preferences @JvmOverloads constructor(
             R.string.p_default_hideUntil_key,
             taskSettingDefaults.defaultHideUntil
         ),
-        defaultDueDate = getIntegerFromString(
-            R.string.p_default_urgency_key,
-            taskSettingDefaults.defaultDueDate
-        ),
+        // Not a setting any more: a new task is due today.
+        defaultDueDate = Task.URGENCY_TODAY,
         defaultRecurrence = getStringValue(R.string.p_default_recurrence)?.takeIf { it.isNotBlank() },
         defaultRecurrenceFrom = getIntegerFromString(
             R.string.p_default_recurrence_from,
@@ -369,9 +367,6 @@ class Preferences @JvmOverloads constructor(
 
     override suspend fun setDefaultHideUntil(value: Int) =
         setStringFromInteger(R.string.p_default_hideUntil_key, value)
-
-    override suspend fun setDefaultDueDate(value: Int) =
-        setStringFromInteger(R.string.p_default_urgency_key, value)
 
     override suspend fun setDefaultRecurrence(value: String?) =
         setString(R.string.p_default_recurrence, value)

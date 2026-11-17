@@ -20,7 +20,6 @@ import tasks.kmp.generated.resources.EPr_default_importance_title
 import tasks.kmp.generated.resources.EPr_default_location_reminder_title
 import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.default_due_date
 import tasks.kmp.generated.resources.default_start_date
 import tasks.kmp.generated.resources.location_update_interval_title
 import tasks.kmp.generated.resources.no_reminders
@@ -63,7 +62,6 @@ fun TaskDefaultsContent(
         onDefaultTags = onDefaultTags,
         onImportance = { viewModel.openListPicker(ListPickerTarget.PRIORITY) },
         onStartDate = { viewModel.openListPicker(ListPickerTarget.START_DATE) },
-        onDueDate = { viewModel.openListPicker(ListPickerTarget.DUE_DATE) },
         onRecurrence = onRecurrence,
         onRecurrenceFrom = { viewModel.openListPicker(ListPickerTarget.REPEAT_FROM) },
         onLocation = onLocation,
@@ -102,7 +100,6 @@ private val ListPickerTarget.title: StringResource
     get() = when (this) {
         ListPickerTarget.PRIORITY -> Res.string.EPr_default_importance_title
         ListPickerTarget.START_DATE -> Res.string.default_start_date
-        ListPickerTarget.DUE_DATE -> Res.string.default_due_date
         ListPickerTarget.REPEAT_FROM -> Res.string.repeats_from
         ListPickerTarget.RING_MODE -> Res.string.EPr_default_reminders_mode_title
         ListPickerTarget.LOCATION_REMINDER -> Res.string.EPr_default_location_reminder_title
@@ -113,7 +110,6 @@ private val ListPickerTarget.options: List<Pair<Int, StringResource>>
     get() = when (this) {
         ListPickerTarget.PRIORITY -> PriorityOptions
         ListPickerTarget.START_DATE -> StartDateOptions
-        ListPickerTarget.DUE_DATE -> DueDateOptions
         ListPickerTarget.REPEAT_FROM -> RepeatFromOptions
         ListPickerTarget.RING_MODE -> RingModeOptions
         ListPickerTarget.LOCATION_REMINDER -> LocationReminderOptions

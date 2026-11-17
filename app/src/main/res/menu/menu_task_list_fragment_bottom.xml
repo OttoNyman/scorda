@@ -8,10 +8,6 @@
         android:title="@string/completed_to_trash"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_trash"
-        android:title="@string/trash"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_empty_trash"
         android:title="@string/trash_empty"
         app:showAsAction="never" />

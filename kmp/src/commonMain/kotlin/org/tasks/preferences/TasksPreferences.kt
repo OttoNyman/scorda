@@ -130,7 +130,6 @@ class TasksPreferences(private val dataStore: DataStore<Preferences>) {
         val defaultTags = stringPreferencesKey("default_tags")
         val defaultPriority = intPreferencesKey("default_priority")
         val defaultHideUntil = intPreferencesKey("default_hide_until")
-        val defaultDueDate = intPreferencesKey("default_due_date")
         val defaultRecurrence = stringPreferencesKey("default_recurrence")
         val defaultRecurrenceFrom = intPreferencesKey("default_recurrence_from")
         val defaultAlarms = stringSetPreferencesKey("default_alarms")

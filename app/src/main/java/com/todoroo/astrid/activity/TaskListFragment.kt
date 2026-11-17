@@ -695,7 +695,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private fun setupToolbarMenu() {
         val toolbar = binding.toolbar
         toolbar.setOnMenuItemClickListener(this)
-        toolbar.overflowIcon = getDrawable(requireContext(), R.drawable.ic_outline_settings_24px)
         val menu = toolbar.menu
         menu.clear()
         toolbar.inflateMenu(R.menu.menu_task_list_fragment_top)
@@ -739,7 +738,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             }
         }
         val trash = filter is TrashFilter
-        menu.findItem(R.id.menu_trash).isVisible = !trash
         menu.findItem(R.id.menu_empty_trash).isVisible = trash
         if (trash) {
             // search and share only know live tasks
@@ -802,13 +800,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                         withContext(NonCancellable) { listViewModel.markDeleted(tasks) }
                     }
                     makeSnackbar(R.string.trash_moved, tasks.size.toString())?.show()
-                }
-                true
-            }
-            R.id.menu_trash -> {
-                lifecycleScope.launch {
-                    // not remembered: back, and the next launch, return to the list it was opened from
-                    mainViewModel.setFilter(TrashFilter.create(), remember = false)
                 }
                 true
             }
