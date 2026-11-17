@@ -26,15 +26,11 @@ import tasks.kmp.generated.resources.reset_trusted_certificates_summary
 @Composable
 fun AdvancedScreen(
     attachmentDirSummary: String,
-    calendarEndAtDueTime: Boolean,
     badgesEnabled: Boolean,
     badgeFilterName: String,
     onAttachmentDir: () -> Unit,
-    onCalendarEndAtDueTime: (Boolean) -> Unit,
     onBadges: (Boolean) -> Unit,
     onBadgeList: () -> Unit,
-    onDeleteCompletedEvents: () -> Unit,
-    onDeleteAllEvents: () -> Unit,
     onResetPreferences: () -> Unit,
     onResetTrustedCertificates: () -> Unit,
     onDeleteTaskData: () -> Unit,
@@ -57,38 +53,6 @@ fun AdvancedScreen(
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        // Calendar island
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.EPr_cal_end_or_start_at_due_time),
-                    icon = TasksIcons.EVENT,
-                    summary = if (calendarEndAtDueTime)
-                        stringResource(R.string.EPr_cal_start_at_due_time)
-                    else
-                        stringResource(R.string.EPr_cal_end_at_due_time),
-                    checked = calendarEndAtDueTime,
-                    onCheckedChange = onCalendarEndAtDueTime,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.EPr_manage_delete_completed_gcal),
-                    titleMaxLines = 2,
-                    onClick = onDeleteCompletedEvents,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.EPr_manage_delete_all_gcal),
-                    onClick = onDeleteAllEvents,
-                )
-            }
-        }
 
         // Badges section
         SectionHeader(

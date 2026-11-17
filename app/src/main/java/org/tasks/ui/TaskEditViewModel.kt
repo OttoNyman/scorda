@@ -13,7 +13,6 @@ import com.todoroo.astrid.alarms.AlarmService
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.TaskSaver
 import com.todoroo.astrid.files.FilesControlSet
-import com.todoroo.astrid.gcal.GCalHelper
 import com.todoroo.astrid.repeats.RepeatControlSet
 import org.tasks.resources.getString
 import org.tasks.service.TaskCompleter
@@ -42,7 +41,6 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.no_title
 import org.tasks.Strings
 import org.tasks.analytics.Firebase
-import org.tasks.calendars.CalendarEventProvider
 import org.tasks.data.Location
 import org.tasks.data.createDueDate
 import org.tasks.data.dao.AlarmDao
@@ -81,7 +79,6 @@ import org.tasks.filters.CaldavFilter
 import org.tasks.kmp.org.tasks.taskedit.TaskEditViewState
 import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
-import org.tasks.preferences.PermissionChecker
 import org.tasks.preferences.Preferences
 import org.tasks.repeats.Frequency
 import org.tasks.reminders.acceptsDefault
@@ -93,7 +90,6 @@ import org.tasks.repeats.anchoredToDueDate
 import org.tasks.time.DateTime
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.startOfDay
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,9 +99,6 @@ class TaskEditViewModel @Inject constructor(
     private val taskDao: TaskDao,
     private val taskSaver: TaskSaver,
     private val taskDeleter: TaskDeleter,
-    private val permissionChecker: PermissionChecker,
-    private val calendarEventProvider: CalendarEventProvider,
-    private val gCalHelper: GCalHelper,
     private val taskMover: TaskMover,
     private val locationDao: LocationDao,
     private val locationService: LocationService,
@@ -166,11 +159,7 @@ class TaskEditViewModel @Inject constructor(
             linkify = preferences.linkify,
             alwaysDisplayFullDate = preferences.alwaysDisplayFullDate,
             showEditScreenWithoutUnlock = preferences.showEditScreenWithoutUnlock,
-            calendar = if (task.isNew && permissionChecker.canAccessCalendars()) {
-                preferences.defaultCalendar
-            } else {
-                null
-            },
+            calendar = null,
             displayOrder = displayOrder(featureGate.current),
             alarms = if (task.isNew) {
                 task.getDefaultAlarms(runBlocking { preferences.isDefaultDueTimeEnabled() })
@@ -198,8 +187,6 @@ class TaskEditViewModel @Inject constructor(
             )
         }
     }
-
-    var eventUri = MutableStateFlow(task.calendarURI)
 
     val dueDate = MutableStateFlow(task.dueDate)
 
@@ -335,11 +322,6 @@ class TaskEditViewModel @Inject constructor(
                 (viewState.isNew && viewState.task.title?.isNotBlank() == true) || // text shared to tasks
                 task.dueDate != dueDate.value ||
                 task.hideUntil != startDate.value ||
-                if (task.calendarURI.isNullOrBlank()) {
-                    !eventUri.value.isNullOrBlank()
-                } else {
-                    task.calendarURI != eventUri.value
-                } ||
                 getRingFlags() != when {
             task.isNotifyModeSilent -> NOTIFY_MODE_SILENT
             task.isNotifyModeFive -> NOTIFY_MODE_FIVE
@@ -388,7 +370,6 @@ class TaskEditViewModel @Inject constructor(
         }
         task.ringFlags = getRingFlags()
 
-        applyCalendarChanges()
         if (isNew) {
             taskDao.createNew(task)
         }
@@ -535,32 +516,9 @@ class TaskEditViewModel @Inject constructor(
         }
 
         if (isNew) {
-            val model = task
-            taskListEvents.emit(TaskListEvent.TaskCreated(model.uuid))
-            model.calendarURI?.takeIf { it.isNotBlank() }?.let {
-                taskListEvents.emit(TaskListEvent.CalendarEventCreated(model.title, it))
-            }
+            taskListEvents.emit(TaskListEvent.TaskCreated(task.uuid))
         }
         true
-    }
-
-    private suspend fun applyCalendarChanges() {
-        if (!permissionChecker.canAccessCalendars()) {
-            return
-        }
-        if (eventUri.value == null) {
-            calendarEventProvider.deleteEvent(task)
-        }
-        if (!task.hasDueDate()) {
-            return
-        }
-        _viewState.value.calendar?.let {
-            try {
-                task.calendarURI = gCalHelper.createTaskEvent(task, it)?.toString()
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-        }
     }
 
     private fun getRingFlags() = when {
@@ -702,10 +660,6 @@ class TaskEditViewModel @Inject constructor(
         _viewState.update { it.copy(location = location) }
     }
 
-    fun setCalendar(calendar: String?) {
-        _viewState.update { it.copy(calendar = calendar) }
-    }
-
     fun setAttachments(attachments: Set<TaskAttachment>) {
         _viewState.update { it.copy(attachments = attachments.toPersistentSet()) }
     }
@@ -816,7 +770,6 @@ class TaskEditViewModel @Inject constructor(
             com.todoroo.astrid.ui.StartDateControlSet.TAG to features.startDate,
             com.todoroo.astrid.ui.ReminderControlSet.TAG to features.extraReminders,
             org.tasks.ui.LocationControlSet.TAG to features.geo,
-            org.tasks.ui.CalendarControlSet.TAG to features.calendar,
             com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
         ).filter { it.second }.map { it.first }.toPersistentList()
 
@@ -825,7 +778,6 @@ class TaskEditViewModel @Inject constructor(
             TAG_DUE_DATE,
             TAG_ADVANCE,
             TAG_DESCRIPTION,
-            CalendarControlSet.TAG,
             TAG_PRIORITY,
             StartDateControlSet.TAG,
             ReminderControlSet.TAG,

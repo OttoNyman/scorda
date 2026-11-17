@@ -75,7 +75,6 @@ import org.tasks.markdown.MarkdownProvider
 import org.tasks.preferences.Preferences
 import org.tasks.repeats.SeriesEditScope
 import org.tasks.themes.TasksTheme
-import org.tasks.ui.CalendarControlSet
 import org.tasks.ui.LocationControlSet
 import org.tasks.ui.SubtaskControlSet
 import org.tasks.ui.TaskEditViewModel
@@ -332,7 +331,6 @@ fun TaskEditScreen(
                             locale = locale,
                         )
 
-                    CalendarControlSet.TAG -> AndroidFragment<CalendarControlSet>()
                     StartDateControlSet.TAG -> AndroidFragment<StartDateControlSet>()
                     ReminderControlSet.TAG -> AndroidFragment<ReminderControlSet>()
                     LocationControlSet.TAG -> AndroidFragment<LocationControlSet>()

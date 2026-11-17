@@ -27,13 +27,13 @@ class ConstructorTest {
     @Test
     fun syncDoesNotTurnListsOn() {
         val raw = Constructor(localLists = true)
-        assertFalse(raw.effective(sync = true, geofences = true, calendarEvents = true).lists)
+        assertFalse(raw.effective(sync = true, geofences = true).lists)
     }
 
     @Test
     fun theLocalBlockNeedsListsAndEitherNoSyncOrTheToggle() {
         fun shown(lists: Boolean, local: Boolean, sync: Boolean) =
-            Constructor(lists = lists, localLists = local).effective(sync, true, true).localLists
+            Constructor(lists = lists, localLists = local).effective(sync, true).localLists
         assertFalse(shown(lists = false, local = true, sync = false))
         assertTrue(shown(lists = true, local = false, sync = false))
         assertFalse(shown(lists = true, local = false, sync = true))

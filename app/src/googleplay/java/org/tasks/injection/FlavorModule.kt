@@ -51,7 +51,7 @@ class FlavorModule {
         supportsEteSync = false,
         supportsBackupImport = true,
         supportsGeofences = true,
-        supportsCalendarEvents = true,
+        supportsCalendarEvents = false,
         billingProvider = org.tasks.billing.BillingProvider.GOOGLE_PLAY,
         appStore = AppStore.GOOGLE_PLAY,
         isAndroid = true,

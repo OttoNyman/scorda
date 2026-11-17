@@ -68,7 +68,6 @@ class Advanced : Fragment() {
         ) {
             AdvancedScreen(
                 attachmentDirSummary = viewModel.attachmentDirSummary,
-                calendarEndAtDueTime = viewModel.calendarEndAtDueTime,
                 badgesEnabled = viewModel.badgesEnabled,
                 badgeFilterName = viewModel.badgeFilterName,
                 onAttachmentDir = {
@@ -79,7 +78,6 @@ class Advanced : Fragment() {
                         )
                     )
                 },
-                onCalendarEndAtDueTime = { viewModel.updateCalendarEndAtDueTime(it) },
                 onBadges = { viewModel.updateBadges(it) },
                 onBadgeList = {
                     lifecycleScope.launch {
@@ -89,8 +87,6 @@ class Advanced : Fragment() {
                         )
                     }
                 },
-                onDeleteCompletedEvents = { viewModel.openDeleteCompletedDialog() },
-                onDeleteAllEvents = { viewModel.openDeleteAllDialog() },
                 onResetPreferences = { viewModel.openResetDialog() },
                 onResetTrustedCertificates = { viewModel.openResetCertificatesDialog() },
                 onDeleteTaskData = { viewModel.openDeleteDataDialog() },
@@ -108,54 +104,6 @@ class Advanced : Fragment() {
                     dismissButton = {
                         TextButton(onClick = { viewModel.dismissRestartDialog() }) {
                             Text(stringResource(R.string.restart_later))
-                        }
-                    },
-                )
-            }
-
-            if (viewModel.showDeleteCompletedDialog) {
-                AlertDialog(
-                    onDismissRequest = { viewModel.dismissDeleteCompletedDialog() },
-                    text = {
-                        Text(stringResource(R.string.EPr_manage_delete_completed_gcal_message))
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            viewModel.dismissDeleteCompletedDialog()
-                            viewModel.deleteCompletedEvents { count ->
-                                context?.toast(R.string.EPr_manage_delete_gcal_status, count)
-                            }
-                        }) {
-                            Text(stringResource(R.string.ok))
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { viewModel.dismissDeleteCompletedDialog() }) {
-                            Text(stringResource(R.string.cancel))
-                        }
-                    },
-                )
-            }
-
-            if (viewModel.showDeleteAllDialog) {
-                AlertDialog(
-                    onDismissRequest = { viewModel.dismissDeleteAllDialog() },
-                    text = {
-                        Text(stringResource(R.string.EPr_manage_delete_all_gcal_message))
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            viewModel.dismissDeleteAllDialog()
-                            viewModel.deleteAllCalendarEvents { count ->
-                                context?.toast(R.string.EPr_manage_delete_gcal_status, count)
-                            }
-                        }) {
-                            Text(stringResource(R.string.ok))
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { viewModel.dismissDeleteAllDialog() }) {
-                            Text(stringResource(R.string.cancel))
                         }
                     },
                 )

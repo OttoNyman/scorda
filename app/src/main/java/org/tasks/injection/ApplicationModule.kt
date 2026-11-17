@@ -16,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
 import org.tasks.LocalBroadcastManager
-import com.todoroo.astrid.gcal.GCalHelper
 import com.todoroo.astrid.repeats.RepeatTaskHelper
 import org.tasks.analytics.Firebase
 import org.tasks.audio.SoundPlayer
@@ -325,7 +324,7 @@ class ApplicationModule {
     fun providesPurchaseState(inventory: Inventory): PurchaseState = inventory
 
     @Provides
-    fun providesCalendarHelper(gcalHelper: GCalHelper): CalendarHelper = gcalHelper
+    fun providesCalendarHelper(): CalendarHelper = object : CalendarHelper {}
 
     @Provides
     fun providesRepeatTaskHelper(

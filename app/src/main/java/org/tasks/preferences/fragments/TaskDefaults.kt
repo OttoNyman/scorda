@@ -25,8 +25,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.tasks.R
-import org.tasks.calendars.CalendarPicker
-import org.tasks.calendars.CalendarPicker.Companion.newCalendarPicker
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.FilterSelectionActivity.Companion.registerForListPickerResult
 import org.tasks.compose.settings.DefaultRemindersDialog
@@ -44,8 +42,6 @@ import org.tasks.tags.TagPickerActivity.Companion.EXTRA_SELECTED
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import javax.inject.Inject
-
-private const val FRAG_TAG_CALENDAR_PICKER = "frag_tag_calendar_picker"
 
 @AndroidEntryPoint
 class TaskDefaults : Fragment() {
@@ -76,11 +72,6 @@ class TaskDefaults : Fragment() {
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener(
-            CalendarPicker.REQUEST_KEY, this
-        ) { _, bundle ->
-            viewModel.setDefaultCalendar(bundle.getString(CalendarPicker.EXTRA_CALENDAR_ID))
-        }
         parentFragmentManager.setFragmentResultListener(
             BasicRecurrenceDialog.REQUEST_KEY, this
         ) { _, bundle ->
@@ -119,10 +110,7 @@ class TaskDefaults : Fragment() {
                         tagsLauncher.launch(intent)
                     }
                 },
-                onCalendar = {
-                    newCalendarPicker(viewModel.settings.defaultCalendar)
-                        .show(parentFragmentManager, FRAG_TAG_CALENDAR_PICKER)
-                },
+                onCalendar = {},
                 onRecurrence = {
                     BasicRecurrenceDialog
                         .newBasicRecurrenceDialog(

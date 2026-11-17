@@ -5,13 +5,13 @@ import com.natpryce.makeiteasy.PropertyValue
 import com.todoroo.astrid.alarms.AlarmService
 import org.tasks.data.TaskSaver
 import org.tasks.data.entity.Task
-import com.todoroo.astrid.gcal.GCalHelper
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.mockito.Mockito.anyLong
 import org.mockito.Mockito.anySet
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.tasks.calendars.CalendarHelper
 import org.tasks.LocalBroadcastManager
 import org.tasks.data.createDueDate
 import org.tasks.makers.TaskMaker
@@ -20,7 +20,7 @@ import org.tasks.time.DateTime
 abstract class RepeatTests {
     private val alarmService = mock(AlarmService::class.java)
     private val helper = RepeatTaskHelper(
-            mock(GCalHelper::class.java),
+            mock(CalendarHelper::class.java),
             alarmService,
             mock(TaskSaver::class.java),
     )

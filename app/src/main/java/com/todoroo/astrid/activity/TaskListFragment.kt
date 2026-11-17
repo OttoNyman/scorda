@@ -283,12 +283,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private suspend fun process(event: TaskListEvent) = when (event) {
         is TaskListEvent.TaskCreated ->
             onTaskCreated(event.uuid)
-        is TaskListEvent.CalendarEventCreated -> {
-            val open = getString(Res.string.action_open)
-            makeSnackbar(R.string.calendar_event_created, event.title)
-                ?.setAction(open) { context?.openUri(event.uri) }
-                ?.show()
-        }
     }
 
     override fun onRefresh() {

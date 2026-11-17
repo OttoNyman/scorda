@@ -98,7 +98,6 @@ class ConstructorPreferences : Fragment() {
                 effective = effective,
                 sync = repository.sync,
                 geofences = configuration.supportsGeofences,
-                calendarEvents = configuration.supportsCalendarEvents,
                 counts = counts,
                 markdown = markdown,
                 comments = comments,

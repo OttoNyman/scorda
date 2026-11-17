@@ -70,12 +70,7 @@ class WorkManagerImpl(
     private val alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private val workManager = androidx.work.WorkManager.getInstance(context)
 
-    override fun updateCalendar(task: Task) {
-        enqueue(
-            OneTimeWorkRequest.Builder(UpdateCalendarWork::class.java)
-                .setInputData(UpdateCalendarWork.EXTRA_ID to task.id)
-        )
-    }
+    override fun updateCalendar(task: Task) = Unit
 
     @SuppressLint("EnqueueWork")
     override fun migrateLocalTasks(localAccount: CaldavAccount, tasksAccount: CaldavAccount) {

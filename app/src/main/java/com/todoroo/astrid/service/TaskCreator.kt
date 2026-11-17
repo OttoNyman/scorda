@@ -1,10 +1,8 @@
 package com.todoroo.astrid.service
 
 import com.todoroo.astrid.api.PermaSql
-import com.todoroo.astrid.gcal.GCalHelper
 import com.todoroo.astrid.utility.TitleParser.parse
 import org.tasks.R
-import org.tasks.Strings.isNullOrEmpty
 import org.tasks.data.GoogleTask
 import org.tasks.data.TaskSaver
 import org.tasks.data.UUIDHelper
@@ -39,7 +37,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class TaskCreator @Inject constructor(
-    private val gcalHelper: GCalHelper,
     private val preferences: Preferences,
     private val tagDataDao: TagDataDao,
     private val taskDao: TaskDao,
@@ -62,14 +59,6 @@ class TaskCreator @Inject constructor(
         val task = createWithValues(filter, title.trim { it <= ' ' }, parseTitle, applyDefaults)
         configure(task)
         taskDao.createNew(task)
-        val gcalCreateEventEnabled = featureGate.current.calendar &&
-            preferences.isDefaultCalendarSet && task.hasDueDate()
-        if (!isNullOrEmpty(task.title)
-                && gcalCreateEventEnabled
-                && isNullOrEmpty(task.calendarURI)) {
-            val calendarUri = gcalHelper.createTaskEvent(task, preferences.defaultCalendar)
-            task.calendarURI = calendarUri.toString()
-        }
         tagDao.insert(task, task.tags)
         val addToTop = preferences.addTasksToTop()
         if (task.hasTransitory(GoogleTask.KEY)) {

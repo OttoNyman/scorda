@@ -116,7 +116,6 @@ class ConstructorRepository @Inject constructor(
                 WHERE tasks.deleted = 0 AND tasks.completed = 0
                 """.trimIndent()
             ),
-            calendar = taskDao.count(open("calendarUri IS NOT NULL AND calendarUri != ''")),
             extraReminders = taskDao.count(
                 """
                 SELECT COUNT(DISTINCT tasks._id) FROM tasks
@@ -142,7 +141,6 @@ class ConstructorRepository @Inject constructor(
     private fun compute(raw: Constructor) = raw.effective(
         sync = sync,
         geofences = configuration.supportsGeofences,
-        calendarEvents = configuration.supportsCalendarEvents,
     )
 
     @Synchronized

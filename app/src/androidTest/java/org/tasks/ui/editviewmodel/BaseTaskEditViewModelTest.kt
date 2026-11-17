@@ -5,7 +5,6 @@ import com.todoroo.astrid.activity.TaskEditFragment
 import com.todoroo.astrid.alarms.AlarmService
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.TaskSaver
-import com.todoroo.astrid.gcal.GCalHelper
 import org.tasks.service.TaskCompleter
 import org.tasks.service.TaskDeleter
 import org.tasks.data.TaskMover
@@ -13,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.tasks.calendars.CalendarEventProvider
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.LocationDao
@@ -26,7 +24,6 @@ import org.tasks.data.newLocalAccount
 import org.tasks.injection.InjectingTestCase
 import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
-import org.tasks.preferences.PermissivePermissionChecker
 import org.tasks.preferences.Preferences
 import org.tasks.ui.TaskEditViewModel
 import javax.inject.Inject
@@ -36,9 +33,9 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var taskSaver: TaskSaver
     @Inject lateinit var taskDeleter: TaskDeleter
-    @Inject lateinit var calendarEventProvider: CalendarEventProvider
-    @Inject lateinit var gCalHelper: GCalHelper
     @Inject lateinit var taskMover: TaskMover
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
+    @Inject lateinit var seriesScheduler: org.tasks.repeats.SeriesScheduler
     @Inject lateinit var locationService: LocationService
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var taskCompleter: TaskCompleter
@@ -70,9 +67,6 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
             taskDao,
             taskSaver,
             taskDeleter,
-            PermissivePermissionChecker(context),
-            calendarEventProvider,
-            gCalHelper,
             taskMover,
             db.locationDao(),
             locationService,
@@ -88,6 +82,9 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
             taskAttachmentDao = db.taskAttachmentDao(),
             alarmDao = db.alarmDao(),
             defaultFilterProvider = defaultFilterProvider,
+            featureGate = featureGate,
+            seriesDao = db.seriesDao(),
+            seriesScheduler = seriesScheduler,
         )
     }
 

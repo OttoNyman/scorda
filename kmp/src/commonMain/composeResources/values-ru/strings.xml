@@ -11,7 +11,7 @@
     <string name="help_and_feedback">Помощь и обратная связь</string>
     <string name="settings">Настройки</string>
     <string name="drawer_filters">Фильтры</string>
-    <string name="drawer_tags">Метки</string>
+    <string name="drawer_tags">Теги</string>
     <string name="drawer_places">Места</string>
     <string name="tmrw">Завтра</string>
     <string name="tomorrow_abbrev_lowercase">завтра</string>
@@ -83,7 +83,7 @@
     <string name="sort_descending">По убыванию</string>
     <string name="completed_tasks_at_bottom">Переместить выполненные задачи вниз</string>
     <string name="subtasks">Подзадачи</string>
-    <string name="sort_not_available">Недоступно для меток, фильтров или мест</string>
+    <string name="sort_not_available">Недоступно для тегов, фильтров или мест</string>
     <string name="none">Нет</string>
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
@@ -209,10 +209,10 @@
     <string name="dismiss">Отклонить</string>
     <string name="add_shortcut_to_home_screen">Добавить ярлык на домашний экран</string>
     <string name="add_widget_to_home_screen">Добавить виджет на домашний экран</string>
-    <string name="new_tag">Создать новую метку</string>
-    <string name="enter_tag_name">Введите название метки</string>
+    <string name="new_tag">Создать новый тег</string>
+    <string name="enter_tag_name">Введите название тега</string>
     <string name="tag_already_exists">Тег уже существует</string>
-    <string name="tag_settings">Настройки метки</string>
+    <string name="tag_settings">Настройки тега</string>
     <string name="priority_high">Высокий</string>
     <string name="priority_medium">Средний</string>
     <string name="priority_low">Низкий</string>
@@ -511,7 +511,7 @@
     <string name="subtasks_multilevel_microsoft">Многоуровневые подзадачи не поддерживаются Microsoft To Do</string>
     <string name="customize_drawer">Настроить панель</string>
     <string name="customize_drawer_summary">Перетаскивайте элементы меню, чтобы изменить их порядок</string>
-    <string name="hide_unused_tags">Скрыть неиспользуемые метки</string>
+    <string name="hide_unused_tags">Скрыть неиспользуемые теги</string>
     <string name="hide_unused_places">Скрыть неиспользуемые места</string>
     <string name="language">Язык</string>
     <string name="launcher_icon">Иконка запуска</string>
@@ -561,7 +561,7 @@
     <string name="failed_to_load_task">Не удалось загрузить задачу</string>
     <string name="legal_disclosure_prefix_continuing">Продолжив работу с помощью любой из кнопок ниже</string>
     <string name="terms_of_service_proper">Условия предоставления услуг</string>
-    <string name="metadata_not_supported">Этот сервер не поддерживает синхронизацию метаданных меток</string>
+    <string name="metadata_not_supported">Этот сервер не поддерживает синхронизацию метаданных тегов</string>
     <string name="undo_delete">Отменить удаление</string>
     <string name="link_desktop">Привязать приложение для ПК</string>
     <string name="works_with_filter_all">Все</string>
@@ -638,7 +638,7 @@
     <string name="constructor_local_lists">Локальные списки</string>
     <string name="constructor_local_lists_summary">Только на этом телефоне, в Google не уходят</string>
     <string name="move_lists_title">Перенести списки в Google Tasks?</string>
-    <string name="move_lists_text">Локальных списков: %1$d. Они переедут в Google Tasks вместе с задачами. Метки, напоминания и места останутся на телефоне.</string>
+    <string name="move_lists_text">Локальных списков: %1$d. Они переедут в Google Tasks вместе с задачами. Теги, напоминания и места останутся на телефоне.</string>
     <string name="move_lists_move">Перенести</string>
     <string name="move_lists_keep">Оставить на телефоне</string>
     <string name="move_target_title">Куда перенести задачи?</string>
@@ -647,7 +647,7 @@
     <string name="inbox_list">Входящие</string>
     <string name="lists_on_message">Все задачи — в списке «%1$s»</string>
     <string name="constructor_subtasks">Подзадачи</string>
-    <string name="constructor_tags">Метки</string>
+    <string name="constructor_tags">Теги</string>
     <string name="constructor_filters">Фильтры</string>
     <string name="constructor_priority">Приоритет</string>
     <string name="constructor_geo">Места</string>

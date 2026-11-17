@@ -35,8 +35,6 @@ import tasks.kmp.generated.resources.constructor_all_off
 import tasks.kmp.generated.resources.constructor_all_off_confirm
 import tasks.kmp.generated.resources.constructor_all_on
 import tasks.kmp.generated.resources.constructor_all_on_confirm
-import tasks.kmp.generated.resources.constructor_calendar
-import tasks.kmp.generated.resources.constructor_calendar_count
 import tasks.kmp.generated.resources.constructor_comments
 import tasks.kmp.generated.resources.constructor_files
 import tasks.kmp.generated.resources.constructor_filters
@@ -74,7 +72,6 @@ fun ConstructorScreen(
     effective: Constructor,
     sync: Boolean,
     geofences: Boolean,
-    calendarEvents: Boolean,
     counts: ConstructorCounts,
     markdown: Boolean,
     comments: Boolean,
@@ -150,13 +147,6 @@ fun ConstructorScreen(
                 checked = effective.geo,
                 summary = count(counts.geo, Res.plurals.constructor_geo_count),
             ) { onChange(raw.copy(geo = it)) }
-        }
-        if (calendarEvents) {
-            Toggle(
-                title = Res.string.constructor_calendar,
-                checked = effective.calendar,
-                summary = count(counts.calendar, Res.plurals.constructor_calendar_count),
-            ) { onChange(raw.copy(calendar = it)) }
         }
         Group(Res.string.constructor_group_time)
         Toggle(

@@ -67,8 +67,8 @@
     <string name="CFC_importance_name">Приоритет…</string>
     <string name="CFC_tag_text">Тег: ? </string>
     <string name="CFC_tag_name">Тег…</string>
-    <string name="CFC_tag_contains_name">Название метки содержит…</string>
-    <string name="CFC_tag_contains_text">Название метки содержит: ?</string>
+    <string name="CFC_tag_contains_name">Название тега содержит…</string>
+    <string name="CFC_tag_contains_text">Название тега содержит: ?</string>
     <string name="CFC_title_contains_name">Название содержит…</string>
     <string name="CFC_title_contains_text">Название содержит: ?</string>
     <string name="gcal_TEA_error">Ошибка при добавлении задачи в календарь!</string>
@@ -116,7 +116,7 @@
         <item quantity="many">%d недель</item>
     </plurals>
     <string name="repeat_snackbar">%1$s перенесено на %2$s</string>
-    <string name="new_tag">Создать новую метку</string>
+    <string name="new_tag">Создать новый тег</string>
     <string name="new_list">Создать новый список</string>
     <string name="delete_tag_confirmation">Удалить %s?</string>
     <string name="voice_create_prompt">Говорите, чтобы создать задачу</string>
@@ -151,7 +151,7 @@
     <string name="google_list_pick">Подключить этот список</string>
     <string name="sync_help_drive">Файл на Drive. Кнопка «Сохранить на Drive сейчас» пишет user. Галочка пишет auto. каждую ночь. На tasks.google.com ничего не появляется. Импорт добавляет недостающее и не откатывает уже существующие задачи.</string>
     <string name="sync_help_file">Файл вручную. Тот же JSON, без аккаунта Google. Файл переносите сами. Импорт работает так же.</string>
-    <string name="sync_help_tasks">Вход в Google Tasks. Список виден на tasks.google.com и обновляется по ходу дня. Не переносятся метки, напоминания, места, вложения и подзадачи глубже одного уровня. Время, приоритет, начало и повтор едут в строке заметки.</string>
+    <string name="sync_help_tasks">Вход в Google Tasks. Список виден на tasks.google.com и обновляется по ходу дня. Не переносятся теги, напоминания, места, вложения и подзадачи глубже одного уровня. Время, приоритет, начало и повтор едут в строке заметки.</string>
     <string name="sync_help_title">Как перенести задачи</string>
     <string name="sync_and_backup">Синхронизация и бэкап</string>
     <string name="google_account">Аккаунт Google</string>
@@ -181,7 +181,7 @@
     <string name="date_shortcut_must_come_before">%1$s должно идти перед %2$s</string>
     <string name="date_shortcut_must_come_after">%1$s должно идти после %2$s</string>
     <string name="discard_changes">Отменить изменения\?</string>
-    <string name="tag_settings">Настройки метки</string>
+    <string name="tag_settings">Настройки тега</string>
     <string name="list_settings">Настройки списка</string>
     <string name="delete">Удалить</string>
     <string name="copy">Копировать</string>
@@ -323,8 +323,8 @@
     <string name="filter_low_priority">Низкий приоритет</string>
     <string name="filter_medium_priority">Средний приоритет</string>
     <string name="filter_high_priority">Высокий приоритет</string>
-    <string name="add_tags">Добавить метки</string>
-    <string name="filter_no_tags">Без меток</string>
+    <string name="add_tags">Добавить теги</string>
+    <string name="filter_no_tags">Без тегов</string>
     <string name="filter_after_today">После сегодняшнего дня</string>
     <string name="filter_any_due_date">Любая дата завершения</string>
     <string name="filter_today_only">Только сегодняшнее</string>
@@ -456,7 +456,7 @@
     <string name="p_per_list_sort">индивидуальная_сортировка_списков</string>
     <string name="per_list_sort_title">Индивидуальная сортировка списков</string>
     <string name="per_list_sort_summary">Сохранять параметры сортировки и группировки независимо для каждого списка</string>
-    <string name="permission_write_tasks">Добавление, изменение и удаление ваших задач, списков, меток и мест</string>
+    <string name="permission_write_tasks">Добавление, изменение и удаление ваших задач, списков, тегов и мест</string>
     <string name="email_to_task">Создать задачу через Email</string>
     <string name="upgrade_friends_and_family_description">До 5 бесплатных участников в общих списках. Интеграция с Напоминаниями Apple</string>
     <string name="upgrade_email_to_task_description">Создавайте задачи из электронных писем, пересылая их на ваш личный почтовый ящик</string>

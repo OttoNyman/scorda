@@ -15,8 +15,6 @@ import org.tasks.R
 import org.tasks.analytics.Firebase
 import org.tasks.broadcast.RefreshBroadcaster
 import org.tasks.caldav.VtodoCache
-import org.tasks.calendars.CalendarEventProvider
-import org.tasks.data.dao.TaskDao
 import org.tasks.data.db.Database
 import org.tasks.etebase.EtebaseLocalCache
 import org.tasks.files.FileHelper
@@ -31,8 +29,6 @@ class AdvancedViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferences: Preferences,
     private val database: Database,
-    private val taskDao: TaskDao,
-    private val calendarEventProvider: CalendarEventProvider,
     private val vtodoCache: VtodoCache,
     private val firebase: Firebase,
     private val defaultFilterProvider: DefaultFilterProvider,
@@ -40,12 +36,6 @@ class AdvancedViewModel @Inject constructor(
 ) : ViewModel() {
 
     var attachmentDirSummary by mutableStateOf("")
-        private set
-    var calendarEndAtDueTime by mutableStateOf(true)
-        private set
-    var showDeleteCompletedDialog by mutableStateOf(false)
-        private set
-    var showDeleteAllDialog by mutableStateOf(false)
         private set
     var showResetDialog by mutableStateOf(false)
         private set
@@ -66,7 +56,6 @@ class AdvancedViewModel @Inject constructor(
 
     fun refreshState() {
         refreshAttachmentDirectory()
-        calendarEndAtDueTime = preferences.getBoolean(R.string.p_end_at_deadline, true)
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
         viewModelScope.launch {
             val filter = defaultFilterProvider.getBadgeFilter()
@@ -76,11 +65,6 @@ class AdvancedViewModel @Inject constructor(
 
     val attachmentsDirectory: Uri?
         get() = preferences.attachmentsDirectory
-
-    fun updateCalendarEndAtDueTime(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_end_at_deadline, enabled)
-        calendarEndAtDueTime = enabled
-    }
 
     fun updateBadges(enabled: Boolean) {
         preferences.setBoolean(R.string.p_badges_enabled, enabled)
@@ -102,10 +86,6 @@ class AdvancedViewModel @Inject constructor(
 
     fun dismissRestartDialog() { showRestartDialog = false }
 
-    fun openDeleteCompletedDialog() { showDeleteCompletedDialog = true }
-    fun dismissDeleteCompletedDialog() { showDeleteCompletedDialog = false }
-    fun openDeleteAllDialog() { showDeleteAllDialog = true }
-    fun dismissDeleteAllDialog() { showDeleteAllDialog = false }
     fun openResetDialog() { showResetDialog = true }
     fun dismissResetDialog() { showResetDialog = false }
     fun openResetCertificatesDialog() { showResetCertificatesDialog = true }
@@ -116,32 +96,6 @@ class AdvancedViewModel @Inject constructor(
     fun handleFilesDirResult(uri: Uri) {
         preferences.setUri(R.string.p_attachment_dir, uri)
         refreshAttachmentDirectory()
-    }
-
-    fun deleteCompletedEvents(onComplete: (Int) -> Unit) {
-        firebase.logEvent(
-            R.string.event_settings_click,
-            R.string.param_type to "delete_completed_calendar_events",
-        )
-        viewModelScope.launch {
-            val events = taskDao.getCompletedCalendarEvents()
-            calendarEventProvider.deleteEvents(events)
-            taskDao.clearCompletedCalendarEvents()
-            onComplete(events.size)
-        }
-    }
-
-    fun deleteAllCalendarEvents(onComplete: (Int) -> Unit) {
-        firebase.logEvent(
-            R.string.event_settings_click,
-            R.string.param_type to "delete_all_calendar_events",
-        )
-        viewModelScope.launch {
-            val events = taskDao.getAllCalendarEvents()
-            calendarEventProvider.deleteEvents(events)
-            taskDao.clearAllCalendarEvents()
-            onComplete(events.size)
-        }
     }
 
     fun resetPreferences() {

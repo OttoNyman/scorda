@@ -31,7 +31,7 @@ class FlavorModule {
         supportsEteSync = false,
         supportsBackupImport = true,
         supportsGeofences = true,
-        supportsCalendarEvents = true,
+        supportsCalendarEvents = false,
         appStore = AppStore.FDROID,
         isAndroid = true,
         isLibre = true,

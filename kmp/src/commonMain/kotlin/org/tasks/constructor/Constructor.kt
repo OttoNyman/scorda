@@ -16,7 +16,6 @@ data class Constructor(
     val extraReminders: Boolean = false,
     /** One extra ring before the reminder time. */
     val advance: Boolean = false,
-    val calendar: Boolean = false,
     val files: Boolean = false,
     /** Raw: keep local lists next to synced ones. Effective: the local block is shown. */
     val localLists: Boolean = false,
@@ -24,11 +23,9 @@ data class Constructor(
     fun effective(
         sync: Boolean,
         geofences: Boolean,
-        calendarEvents: Boolean,
     ): Constructor = copy(
         localLists = lists && (!sync || localLists),
         geo = geo && geofences,
-        calendar = calendar && calendarEvents,
     )
 
     /** While syncing, a state without the local block keeps every task in Google. */
@@ -59,7 +56,6 @@ data class ConstructorCounts(
     val repeat: Int = 0,
     val overdue: Int = 0,
     val geo: Int = 0,
-    val calendar: Int = 0,
     val extraReminders: Int = 0,
     val startDate: Int = 0,
     /** Local lists that would move to Google. */
@@ -81,9 +77,8 @@ val Preset.flags: Constructor
             filters = true,
             priority = true,
             geo = true,
-            // start date and "more reminders" are retired: one time per task, plus "in advance"
+            // start date, extra reminders and the device calendar are retired
             advance = true,
-            calendar = true,
             files = true,
         )
     }

@@ -188,7 +188,6 @@ fun TaskDefaultsScreen(
                 DefaultRow.IMPORTANCE.takeIf { features.priority },
                 DefaultRow.START_DATE.takeIf { features.startDate },
                 DefaultRow.DUE_DATE,
-                DefaultRow.CALENDAR.takeIf { showCalendar && features.calendar },
             )
         ) { row ->
             when (row) {

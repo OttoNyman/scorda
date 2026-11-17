@@ -2,7 +2,6 @@ package com.todoroo.astrid.service
 
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.TaskSaver
-import com.todoroo.astrid.gcal.GCalHelper
 import org.tasks.broadcast.RefreshBroadcaster
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
@@ -23,7 +22,6 @@ import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import javax.inject.Inject
 
 class TaskDuplicator @Inject constructor(
-    private val gcalHelper: GCalHelper,
     private val taskDao: TaskDao,
     private val taskSaver: TaskSaver,
     private val refreshBroadcaster: RefreshBroadcaster,
@@ -103,7 +101,6 @@ class TaskDuplicator @Inject constructor(
         if (alarms.isNotEmpty()) {
             alarmDao.insert(alarms.map { it.copy(id = 0, task = clone.id) })
         }
-        gcalHelper.createTaskEventIfEnabled(clone)
         taskSaver.save(clone, null) // TODO: delete me
         taskAttachmentDao
             .getAttachmentsForTask(task.id)

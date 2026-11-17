@@ -17,7 +17,6 @@ import com.todoroo.astrid.activity.MainActivity.Companion.finishAffinity
 import com.todoroo.astrid.activity.MainActivity.Companion.removeTask
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.tasks.calendars.CalendarPicker
 import org.tasks.compose.edit.TaskEditScreen
 import org.tasks.repeats.BasicRecurrenceDialog
 import org.tasks.repeats.RepeatRuleToString
@@ -56,11 +55,6 @@ class TaskEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener(
-            CalendarPicker.REQUEST_KEY, this
-        ) { _, bundle ->
-            editViewModel.setCalendar(bundle.getString(CalendarPicker.EXTRA_CALENDAR_ID))
-        }
         parentFragmentManager.setFragmentResultListener(
             BasicRecurrenceDialog.REQUEST_KEY, this
         ) { _, bundle ->

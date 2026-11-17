@@ -497,7 +497,6 @@ class Preferences @JvmOverloads constructor(
         // retired: "in advance" replaced it; the tasks' extra reminders stay in the database
         extraReminders = false,
         advance = getBoolean("constructor_advance", false),
-        calendar = getBoolean("constructor_calendar", false),
         files = getBoolean("constructor_files", false),
         localLists = getBoolean("constructor_local_lists", false),
     )
@@ -513,7 +512,6 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_priority", value.priority)
         setBoolean("constructor_geo", value.geo)
         setBoolean("constructor_advance", value.advance)
-        setBoolean("constructor_calendar", value.calendar)
         setBoolean("constructor_files", value.files)
         setBoolean("constructor_local_lists", value.localLists)
     }
