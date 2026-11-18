@@ -44,6 +44,7 @@ import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.kmp.formatTime
 import org.tasks.markdown.Markdown
 import org.tasks.preferences.Preferences
+import org.tasks.icons.MaterialSymbolsGlyphs
 import org.tasks.themes.TasksIcons
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
@@ -172,11 +173,23 @@ class TaskViewHolder internal constructor(
         indent = if (featureGate.current.subtasks) task.indent else 0
         markdown.setMarkdown(nameView, task.title)
         if (task.task.memo) {
-            completeBox.visibility = View.GONE
+            completeBox.visibility = View.VISIBLE
+            completeBox.isClickable = false
+            completeBox.isFocusable = false
+            val color = MaterialColors.getColor(
+                context,
+                com.google.android.material.R.attr.colorOnSurfaceVariant,
+                0,
+            )
+            completeBox.setImageDrawable(
+                MaterialSymbolsGlyphs.drawable(context, TasksIcons.NOTE, 24, color),
+            )
             dueDate.visibility = View.GONE
             setupMemoTitle()
         } else {
             completeBox.visibility = View.VISIBLE
+            completeBox.isClickable = true
+            completeBox.isFocusable = true
             setupTitleAndCheckbox()
             setupDueDate(sortMode == SORT_DUE)
         }
@@ -431,6 +444,7 @@ class TaskViewHolder internal constructor(
     }
 
     private fun onCompleteBoxClick() {
+        if (task.task.memo) return
         val newState = completeBox.isChecked
         if (newState != task.isCompleted) {
             callback.onCompletedTask(task, newState)

@@ -36,14 +36,12 @@ class TaskEditPreferences : Fragment() {
                 showWithoutUnlockVisible = atLeastOreoMR1(),
                 showLinks = viewModel.showLinks,
                 backButtonSaves = viewModel.backButtonSaves,
-                multilineTitle = viewModel.multilineTitle,
                 showComments = viewModel.showComments,
                 // Lives under Description on the Capabilities screen.
                 showCommentsRow = false,
                 showWithoutUnlock = viewModel.showWithoutUnlock,
                 onShowLinks = { viewModel.updateShowLinks(it) },
                 onBackButtonSaves = { viewModel.updateBackButtonSaves(it) },
-                onMultilineTitle = { viewModel.updateMultilineTitle(it) },
                 onShowComments = { viewModel.updateShowComments(it) },
                 onShowWithoutUnlock = { viewModel.updateShowWithoutUnlock(it) },
             )

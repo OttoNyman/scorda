@@ -811,9 +811,6 @@ class Preferences @JvmOverloads constructor(
     val linkify: Boolean
         get() = getBoolean(R.string.p_linkify_task_edit, false)
 
-    val multilineTitle: Boolean
-        get() = getBoolean(R.string.p_multiline_title, false)
-
     @OptIn(ExperimentalMaterial3Api::class)
     var calendarDisplayMode: DisplayMode
         get() = if (getIntegerFromString(R.string.p_picker_mode_date, 0) == 1)

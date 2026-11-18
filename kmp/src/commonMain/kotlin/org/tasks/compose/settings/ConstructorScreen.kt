@@ -126,13 +126,8 @@ fun ConstructorScreen(
                 nested = true,
                 onChange = onMarkdown,
             )
-            Toggle(
-                title = Res.string.constructor_comments,
-                checked = comments,
-                nested = true,
-                onChange = onComments,
-            )
         }
+        Toggle(Res.string.constructor_comments, comments, onChange = onComments)
         Toggle(Res.string.constructor_subtasks, effective.subtasks) { onChange(raw.copy(subtasks = it)) }
         // a repeat is part of the task (its schedule), not a reminder setting
         Toggle(

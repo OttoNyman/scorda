@@ -72,7 +72,8 @@ fun EditTextView(
                     )
                     imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI
                 } else {
-                    // Single line with Done button
+                    isSingleLine = true
+                    maxLines = 1
                     setRawInputType(
                         InputType.TYPE_CLASS_TEXT or
                                 InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or

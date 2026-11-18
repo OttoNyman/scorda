@@ -327,7 +327,7 @@ fun TaskEditScreen(
                             ),
                         ) {
                             SymbolIcon(
-                                name = if (switchToMemo) TasksIcons.NOTE else TasksIcons.CHECK_BOX_OUTLINE_BLANK,
+                                name = if (switchToMemo) TasksIcons.NOTE else TasksIcons.CHECKLIST,
                                 contentDescription = org.jetbrains.compose.resources.stringResource(
                                     if (switchToMemo) Res.string.draft_switch_to_memo
                                     else Res.string.draft_switch_to_task
@@ -379,7 +379,6 @@ fun TaskEditScreen(
                                 }
                             },
                             requestFocus = viewState.showKeyboard,
-                            multiline = viewState.multilineTitle,
                             save = {
                                 scope.launch {
                                     requestSaveButton()

@@ -29,7 +29,6 @@ data class TaskEditViewState(
     val attachments: ImmutableSet<TaskAttachment> = persistentSetOf(),
     val alarms: ImmutableSet<Alarm>,
     val newSubtasks: ImmutableList<Task> = persistentListOf(),
-    val multilineTitle: Boolean,
 ) {
     val isNew: Boolean
         get() = task.isNew

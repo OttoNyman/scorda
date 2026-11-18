@@ -23,13 +23,11 @@ fun TaskEditScreen(
     showWithoutUnlockVisible: Boolean,
     showLinks: Boolean,
     backButtonSaves: Boolean,
-    multilineTitle: Boolean,
     showComments: Boolean,
     showCommentsRow: Boolean,
     showWithoutUnlock: Boolean,
     onShowLinks: (Boolean) -> Unit,
     onBackButtonSaves: (Boolean) -> Unit,
-    onMultilineTitle: (Boolean) -> Unit,
     onShowComments: (Boolean) -> Unit,
     onShowWithoutUnlock: (Boolean) -> Unit,
 ) {
@@ -46,7 +44,7 @@ fun TaskEditScreen(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            val total = (if (showWithoutUnlockVisible) 4 else 3) + if (showCommentsRow) 1 else 0
+            val total = (if (showWithoutUnlockVisible) 3 else 2) + if (showCommentsRow) 1 else 0
             var i = 0
 
             SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
@@ -62,17 +60,6 @@ fun TaskEditScreen(
                     title = stringResource(R.string.back_button_saves_task),
                     checked = backButtonSaves,
                     onCheckedChange = onBackButtonSaves,
-                )
-            }
-            SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.multiline_title),
-                    summary = if (multilineTitle)
-                        stringResource(R.string.multiline_title_on)
-                    else
-                        stringResource(R.string.multiline_title_off),
-                    checked = multilineTitle,
-                    onCheckedChange = onMultilineTitle,
                 )
             }
             if (showCommentsRow) {

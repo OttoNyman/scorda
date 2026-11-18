@@ -157,8 +157,7 @@ class TaskEditViewModel @Inject constructor(
         TaskEditViewState(
             task = series?.let { task.copy(recurrence = it.recurrence, repeatFrom = it.repeatFrom) } ?: task,
             showBeastModeHint = false,
-            showComments = featureGate.current.notes &&
-                preferences.getBoolean(R.string.p_show_task_edit_comments, false),
+            showComments = showsComments(task.memo),
             showKeyboard = task.isNew && task.title.isNullOrBlank(),
             backButtonSavesTask = preferences.backButtonSavesTask(),
             isReadOnly = task.readOnly,
@@ -173,7 +172,6 @@ class TaskEditViewModel @Inject constructor(
             } else {
                 emptyList()
             }.toPersistentSet(),
-            multilineTitle = preferences.multilineTitle,
             location = null,
             tags = persistentSetOf(),
             list = CaldavFilter(calendar = CaldavCalendar(), account = CaldavAccount()),
@@ -673,6 +671,9 @@ class TaskEditViewModel @Inject constructor(
     val memosEnabled: Boolean
         get() = featureGate.current.memos
 
+    private fun showsComments(memo: Boolean): Boolean =
+        !memo && preferences.getBoolean(R.string.p_show_task_edit_comments, false)
+
     suspend fun switchDraftType(memo: Boolean, filter: Filter) {
         val state = _viewState.value
         if (!state.isNew || state.task.memo == memo) {
@@ -710,7 +711,7 @@ class TaskEditViewModel @Inject constructor(
         val cleared = TaskEditViewState(
             task = fresh,
             showBeastModeHint = state.showBeastModeHint,
-            showComments = state.showComments,
+            showComments = showsComments(memo),
             showKeyboard = state.showKeyboard,
             backButtonSavesTask = state.backButtonSavesTask,
             isReadOnly = state.isReadOnly,
@@ -720,7 +721,6 @@ class TaskEditViewModel @Inject constructor(
             calendar = state.calendar,
             displayOrder = order,
             alarms = alarms,
-            multilineTitle = state.multilineTitle,
             location = location,
             tags = tags,
             list = list,
@@ -814,7 +814,7 @@ class TaskEditViewModel @Inject constructor(
         val cleared = TaskEditViewState(
             task = fresh,
             showBeastModeHint = _viewState.value.showBeastModeHint,
-            showComments = _viewState.value.showComments,
+            showComments = showsComments(fresh.memo),
             showKeyboard = false,
             backButtonSavesTask = _viewState.value.backButtonSavesTask,
             isReadOnly = fresh.readOnly,
@@ -824,7 +824,6 @@ class TaskEditViewModel @Inject constructor(
             calendar = _viewState.value.calendar,
             displayOrder = displayOrder(features, fresh.memo),
             alarms = alarms,
-            multilineTitle = _viewState.value.multilineTitle,
             location = location,
             tags = tags,
             list = list,

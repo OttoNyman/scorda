@@ -33,7 +33,6 @@ fun TitleRow(
     priority: Int,
     onComplete: () -> Unit,
     requestFocus: Boolean,
-    multiline: Boolean,
     save: () -> Unit,
     /** The save button was pressed on a new task without a title. */
     missing: Boolean = false,
@@ -70,7 +69,6 @@ fun TitleRow(
                     markdownProvider = markdownProvider,
                     strikethrough = isCompleted,
                     requestFocus = requestFocus,
-                    multiline = multiline,
                     onDone = save,
                 )
                 if (missing) {
@@ -102,7 +100,6 @@ fun EmptyTitlePreview() {
             priority = 0,
             onComplete = {},
             requestFocus = false,
-            multiline = false,
             save = {},
         )
     }
@@ -128,7 +125,6 @@ fun TitlePreview() {
             priority = 0,
             onComplete = {},
             requestFocus = false,
-            multiline = false,
             save = {},
         )
     }
