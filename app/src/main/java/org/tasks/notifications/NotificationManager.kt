@@ -451,7 +451,7 @@ class NotificationManager @Inject constructor(
 
         // read properties
         val localized = localeContext
-        val markdown = markdownProvider.markdown(force = true)
+        val markdown = markdownProvider.markdown()
         val taskTitle = markdown.toMarkdown(task.title)?.toString()
         val features = featureGate.current
         val taskDescription = if (features.notes) markdown.toMarkdown(task.notes)?.toString() else null

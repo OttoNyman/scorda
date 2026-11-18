@@ -82,7 +82,7 @@ class NotificationManagerCharacterizationTest {
             on { getBoolean(any<Int>(), any()) } doReturn false
         }
         markdownProvider.stub {
-            on { markdown(anyBoolean(), anyBoolean()) } doReturn PassThroughMarkdown
+            on { markdown(anyBoolean()) } doReturn PassThroughMarkdown
         }
         whenever(permissionChecker.canNotify()) doReturn true
         taskDao.stub {
