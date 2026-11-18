@@ -19,6 +19,7 @@ data class Constructor(
     val files: Boolean = false,
     /** Raw: keep local lists next to synced ones. Effective: the local block is shown. */
     val localLists: Boolean = false,
+    val memos: Boolean = false,
 ) {
     fun effective(
         sync: Boolean,
@@ -77,6 +78,7 @@ val Preset.flags: Constructor
             // start date, extra reminders and the device calendar are retired
             advance = true,
             files = true,
+            memos = true,
         )
     }
 

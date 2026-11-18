@@ -27,7 +27,26 @@ class ContentProviderDaoBlocking @Inject constructor(
         dao.tagDataOrderedByName()
     }
 
-    fun getTasks(): Cursor = runBlocking { rawQuery("SELECT * FROM tasks") }
+    fun getTasks(): Cursor = runBlocking { rawQuery("SELECT * FROM tasks WHERE memo = 0") }
+
+    fun queryTodoAgenda(selection: String?, selectionArgs: Array<out String>?): Cursor = runBlocking {
+        val memoClause = "memo = 0"
+        val combined = when {
+            selection.isNullOrBlank() -> memoClause
+            else -> "$memoClause AND ($selection)"
+        }
+        rawQuery(
+            androidx.sqlite.db.SupportSQLiteQueryBuilder
+                .builder(
+                    """${Task.TABLE_NAME}
+                        LEFT JOIN caldav_tasks ON cd_task = _id
+                        LEFT JOIN caldav_lists ON cdl_uuid = cd_calendar""".trimIndent(),
+                )
+                .selection(combined, selectionArgs)
+                .create()
+                .sql,
+        )
+    }
 
     fun getLists(): Cursor = runBlocking {
         rawQuery("""

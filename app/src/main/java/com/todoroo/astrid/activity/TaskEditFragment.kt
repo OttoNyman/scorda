@@ -72,6 +72,7 @@ class TaskEditFragment : Fragment() {
             primary = theme.themeColor.primaryColor,
         ) {
             val viewState = editViewModel.viewState.collectAsStateWithLifecycle().value
+            val draftListFilter = mainViewModel.state.collectAsStateWithLifecycle().value.filter
             LaunchedEffect(viewState.isNew) {
                 if (!viewState.isNew) {
                     notificationManager.cancel(viewState.task.id, CancelReason.EDIT)
@@ -122,6 +123,7 @@ class TaskEditFragment : Fragment() {
                 repeatRuleToString = { repeatRuleToString.toStringBlocking(it) },
                 colorProvider = { chipProvider.getColor(it) },
                 locale = remember { locale },
+                draftListFilter = draftListFilter,
             )
         }
     }

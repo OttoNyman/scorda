@@ -722,6 +722,40 @@ class ApplicationModule {
 
     @Provides
     @Singleton
+    fun providesMemosOrderWriter(taskDao: org.tasks.data.dao.TaskDao) =
+        org.tasks.memos.MemosOrderWriter(taskDao)
+
+    @Provides
+    fun providesMemoConverter(
+        taskDao: TaskDao,
+        caldavDao: CaldavDao,
+        alarmDao: AlarmDao,
+        locationDao: LocationDao,
+        taskDeleter: org.tasks.service.TaskDeleter,
+        taskMover: org.tasks.data.TaskMover,
+        taskSaver: TaskSaver,
+        alarmService: com.todoroo.astrid.alarms.AlarmService,
+        preferences: Preferences,
+        locationService: LocationService,
+        featureGate: org.tasks.constructor.FeatureGate,
+        defaultFilterProvider: DefaultFilterProvider,
+    ) = org.tasks.memos.MemoConverter(
+        taskDao = taskDao,
+        caldavDao = caldavDao,
+        alarmDao = alarmDao,
+        locationDao = locationDao,
+        taskDeleter = taskDeleter,
+        taskMover = taskMover,
+        taskSaver = taskSaver,
+        alarmService = alarmService,
+        appPreferences = preferences,
+        locationService = locationService,
+        features = { featureGate.current },
+        defaultList = { defaultFilterProvider.getDefaultList() },
+    )
+
+    @Provides
+    @Singleton
     fun providesSeriesTemplates(
         taskDao: TaskDao,
         taskSaver: TaskSaver,

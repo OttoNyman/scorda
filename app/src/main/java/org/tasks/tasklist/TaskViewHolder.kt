@@ -171,8 +171,15 @@ class TaskViewHolder internal constructor(
         }
         indent = if (featureGate.current.subtasks) task.indent else 0
         markdown.setMarkdown(nameView, task.title)
-        setupTitleAndCheckbox()
-        setupDueDate(sortMode == SORT_DUE)
+        if (task.task.memo) {
+            completeBox.visibility = View.GONE
+            dueDate.visibility = View.GONE
+            setupMemoTitle()
+        } else {
+            completeBox.visibility = View.VISIBLE
+            setupTitleAndCheckbox()
+            setupDueDate(sortMode == SORT_DUE)
+        }
         setupChips(
             filter = filter,
             sortByStartDate = sortMode == SORT_START,
@@ -212,6 +219,12 @@ class TaskViewHolder internal constructor(
                 setBottomPadding(rowPaddingPx, nameView)
             }
         }
+    }
+
+    private fun setupMemoTitle() {
+        val onSurface = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, 0)
+        nameView.setTextColor(onSurface)
+        nameView.paintFlags = nameView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }
 
     private fun setupTitleAndCheckbox() {

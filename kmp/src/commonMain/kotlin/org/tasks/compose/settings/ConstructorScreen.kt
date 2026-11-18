@@ -41,8 +41,10 @@ import tasks.kmp.generated.resources.constructor_filters
 import tasks.kmp.generated.resources.constructor_geo
 import tasks.kmp.generated.resources.constructor_geo_count
 import tasks.kmp.generated.resources.constructor_group_content
+import tasks.kmp.generated.resources.constructor_group_memos
 import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
+import tasks.kmp.generated.resources.constructor_memos
 import tasks.kmp.generated.resources.constructor_lists
 import tasks.kmp.generated.resources.constructor_local_lists
 import tasks.kmp.generated.resources.constructor_local_lists_summary
@@ -183,6 +185,8 @@ fun ConstructorScreen(
             ) { onChange(raw.copy(localLists = it)) }
         }
         Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
+        Group(Res.string.constructor_group_memos)
+        Toggle(Res.string.constructor_memos, effective.memos) { onChange(raw.copy(memos = it)) }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }
     pending?.let { preset ->

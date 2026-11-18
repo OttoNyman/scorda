@@ -17,9 +17,12 @@ import org.tasks.data.entity.TaskListMetadata
 import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
+import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.TagFilter
 import org.tasks.filters.TodayFilter
+import org.tasks.constructor.FeatureGate
+import org.tasks.memos.MemosOrderWriter
 import org.tasks.filters.key
 import org.tasks.preferences.FilterPreferences
 import org.tasks.preferences.Preferences
@@ -38,8 +41,24 @@ class TaskAdapterProvider @Inject constructor(
     private val caldavDao: CaldavDao,
     private val localBroadcastManager: LocalBroadcastManager,
     private val taskMover: TaskMover,
+    private val memosOrderWriter: MemosOrderWriter,
+    private val featureGate: FeatureGate,
 ) {
     fun createTaskAdapter(filter: Filter): TaskAdapter {
+        if (filter is MemosFilter) {
+            return MemosTaskAdapter(
+                googleTaskDao,
+                caldavDao,
+                taskDao,
+                taskSaver,
+                dirtyDao,
+                localBroadcastManager,
+                taskMover,
+                memosOrderWriter,
+                localBroadcastManager,
+                ignorePriority = { !featureGate.current.priority },
+            )
+        }
         val queryPreferences: QueryPreferences = if (preferences.isPerListSortEnabled) {
             FilterPreferences(preferences, tasksPreferences, filter.key())
         } else {

@@ -166,6 +166,12 @@ open class TaskAdapter(
 
     fun isHeader(position: Int): Boolean = dataSource.isHeader(position)
 
+    protected fun adapterIsHeader(position: Int): Boolean = dataSource.isHeader(position)
+
+    protected fun adapterSortMode(): Int = dataSource.sortMode
+
+    protected fun adapterNearestHeader(position: Int): Long = dataSource.nearestHeader(position)
+
     fun getTask(position: Int): TaskContainer = dataSource.getItem(position)!!
 
     fun getItemUuid(position: Int): String = getTask(position).uuid

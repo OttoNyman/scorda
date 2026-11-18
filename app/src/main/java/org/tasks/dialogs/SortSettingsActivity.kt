@@ -32,8 +32,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.tasks.compose.sort.BottomSheetContent
+import org.tasks.compose.sort.MemosSortSheetContent
 import org.tasks.compose.sort.SortPicker
 import org.tasks.compose.sort.SortSheetContent
+import org.tasks.filters.MemosFilter
 import org.tasks.compose.sort.completedOptions
 import org.tasks.compose.sort.groupOptions
 import org.tasks.compose.sort.subtaskOptions
@@ -49,6 +51,11 @@ class SortSettingsActivity : ComponentActivity() {
     @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val viewModel: SortSettingsViewModel by viewModels()
+    private val memosViewModel: MemosSortViewModel by viewModels()
+
+    private val isMemosSort: Boolean by lazy {
+        intent.getStringExtra(EXTRA_FILTER_KEY) == MemosFilter.FILTER_KEY
+    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +70,36 @@ class SortSettingsActivity : ComponentActivity() {
                     Color(0x52454545)
                 else
                     MaterialTheme.colorScheme.onSurface.copy(.5f)
+                if (isMemosSort) {
+                    val sortMode = memosViewModel.sortMode.collectAsStateWithLifecycle().value
+                    val mainSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                    ModalBottomSheet(
+                        modifier = Modifier.statusBarsPadding(),
+                        onDismissRequest = {
+                            setResult(
+                                RESULT_OK,
+                                Intent().putExtra(EXTRA_CHANGED_GROUP, memosViewModel.changed),
+                            )
+                            finish()
+                            overridePendingTransition(0, 0)
+                        },
+                        sheetState = mainSheetState,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        scrimColor = scrimColor,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                        content = {
+                            MemosSortSheetContent(
+                                selected = sortMode,
+                                onSelect = memosViewModel::setSortMode,
+                                showImportance = featureGate.current.priority,
+                            )
+                        },
+                    )
+                    LaunchedEffect(Unit) {
+                        mainSheetState.show()
+                    }
+                    return@TasksTheme
+                }
                 val state = viewModel.state.collectAsStateWithLifecycle().value
                 val mainSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
                 val scope = rememberCoroutineScope()

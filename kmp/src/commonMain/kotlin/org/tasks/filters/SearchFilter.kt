@@ -84,6 +84,7 @@ data class SearchFilter(
                 .where(
                     Criterion.and(
                         Task.DELETION_DATE.eq(0),
+                        Task.MEMO.eq(0),
                         Criterion.or(clauses.first(), *clauses.drop(1).toTypedArray())
                     )
                 )

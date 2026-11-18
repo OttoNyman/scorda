@@ -42,6 +42,7 @@ File %1$s contained %2$s.\n\n
   <string name="FLA_search_filter">Matching \'%s\'</string>
   <string name="FLA_new_filter">Create new filter</string>
   <string name="TEA_title_hint">Task name</string>
+  <string name="title_required">Enter a name</string>
   <string name="TEA_importance_label">Priority</string>
   <string name="TEA_note_label">Description</string>
   <string name="save">Save</string>
@@ -375,6 +376,7 @@ File %1$s contained %2$s.\n\n
   <string name="filter_eisenhower_box_4">Not important and not urgent</string>
   <string name="banner_subscription_required_body">Pay whatever you want to unlock %s synchronization</string>
   <string name="p_per_list_sort">per_list_sort</string>
+  <string name="p_memos_sort_mode">p_memos_sort_mode</string>
   <string name="per_list_sort_title">Per-list sorting</string>
   <string name="per_list_sort_summary">Remember sort and group settings for each list independently</string>
   <string name="sort_created_group">Created %s</string>

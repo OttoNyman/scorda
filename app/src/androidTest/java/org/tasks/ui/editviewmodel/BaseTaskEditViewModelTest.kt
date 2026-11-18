@@ -3,6 +3,7 @@ package org.tasks.ui.editviewmodel
 import androidx.lifecycle.SavedStateHandle
 import com.todoroo.astrid.activity.TaskEditFragment
 import com.todoroo.astrid.alarms.AlarmService
+import com.todoroo.astrid.service.TaskCreator
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.TaskSaver
 import org.tasks.service.TaskCompleter
@@ -25,6 +26,7 @@ import org.tasks.injection.InjectingTestCase
 import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
+import org.tasks.memos.MemoConverter
 import org.tasks.ui.TaskEditViewModel
 import javax.inject.Inject
 
@@ -46,6 +48,8 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
     @Inject lateinit var alarmDao: AlarmDao
     @Inject lateinit var userActivityDao: UserActivityDao
     @Inject lateinit var caldavDao: CaldavDao
+    @Inject lateinit var taskCreator: TaskCreator
+    @Inject lateinit var memoConverter: MemoConverter
 
     protected lateinit var viewModel: TaskEditViewModel
 
@@ -85,6 +89,8 @@ open class BaseTaskEditViewModelTest : InjectingTestCase() {
             featureGate = featureGate,
             seriesDao = db.seriesDao(),
             seriesScheduler = seriesScheduler,
+            taskCreator = taskCreator,
+            memoConverter = memoConverter,
         )
     }
 

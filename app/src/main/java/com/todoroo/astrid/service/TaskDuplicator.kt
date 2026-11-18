@@ -65,41 +65,43 @@ class TaskDuplicator @Inject constructor(
         clone.suppressRefresh()
         val newId = taskDao.createNew(clone)
         tagDao.insert(clone, tagDataDao.getTagDataForTask(task.id))
-        val googleTask = googleTaskDao.getByTaskId(task.id)
-        val caldavTask = caldavDao.getTask(task.id)
-        if (googleTask != null) {
-            googleTaskDao.insertAndShift(
-                clone,
-                CaldavTask(
+        if (!task.memo) {
+            val googleTask = googleTaskDao.getByTaskId(task.id)
+            val caldavTask = caldavDao.getTask(task.id)
+            if (googleTask != null) {
+                googleTaskDao.insertAndShift(
+                    clone,
+                    CaldavTask(
+                        task = clone.id,
+                        calendar = googleTask.calendar,
+                        remoteId = null
+                    ),
+                    preferences.addTasksToTop()
+                )
+            } else if (caldavTask != null) {
+                val newDavTask = CaldavTask(
                     task = clone.id,
-                    calendar = googleTask.calendar,
-                    remoteId = null
-                ),
-                preferences.addTasksToTop()
-            )
-        } else if (caldavTask != null) {
-            val newDavTask = CaldavTask(
-                task = clone.id,
-                calendar = caldavTask.calendar
-            )
-            if (parentId != 0L && pushesRemoteParent(caldavDao.getAccountType(task.id))) {
-                newDavTask.remoteParent = caldavDao.getRemoteIdForTask(parentId)
+                    calendar = caldavTask.calendar
+                )
+                if (parentId != 0L && pushesRemoteParent(caldavDao.getAccountType(task.id))) {
+                    newDavTask.remoteParent = caldavDao.getRemoteIdForTask(parentId)
+                }
+                caldavDao.insert(clone, newDavTask, preferences.addTasksToTop())
             }
-            caldavDao.insert(clone, newDavTask, preferences.addTasksToTop())
-        }
-        for (g in locationDao.getGeofencesForTask(task.id)) {
-            locationDao.insert(
+            for (g in locationDao.getGeofencesForTask(task.id)) {
+                locationDao.insert(
                     Geofence(
                         task = clone.id,
                         place = g.place,
                         isArrival = g.isArrival,
                         isDeparture = g.isDeparture,
                     )
-            )
-        }
-        val alarms = alarmDao.getAlarms(task.id)
-        if (alarms.isNotEmpty()) {
-            alarmDao.insert(alarms.map { it.copy(id = 0, task = clone.id) })
+                )
+            }
+            val alarms = alarmDao.getAlarms(task.id)
+            if (alarms.isNotEmpty()) {
+                alarmDao.insert(alarms.map { it.copy(id = 0, task = clone.id) })
+            }
         }
         taskSaver.save(clone, null) // TODO: delete me
         taskAttachmentDao

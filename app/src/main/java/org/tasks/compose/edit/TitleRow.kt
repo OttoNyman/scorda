@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,6 +35,8 @@ fun TitleRow(
     requestFocus: Boolean,
     multiline: Boolean,
     save: () -> Unit,
+    /** The save button was pressed on a new task without a title. */
+    missing: Boolean = false,
 ) {
     TaskEditRow(
         icon = {
@@ -69,6 +73,13 @@ fun TitleRow(
                     multiline = multiline,
                     onDone = save,
                 )
+                if (missing) {
+                    Text(
+                        text = stringResource(R.string.title_required),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
                 Spacer(modifier = Modifier.height(11.dp))
             }
         },

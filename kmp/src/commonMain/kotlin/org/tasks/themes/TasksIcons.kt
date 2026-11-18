@@ -78,6 +78,7 @@ object TasksIcons {
     const val MOVIE = "movie"
     const val MUSIC_NOTE = "music_note"
     const val NEW_RELEASES = "new_releases"
+    const val NOTE = "sticky_note_2"
     const val NEXT_WEEK = "next_week"
     const val NIGHTS_STAY = "nights_stay"
     const val NOTIFICATIONS_OFF = "notifications_off"

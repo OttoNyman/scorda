@@ -5,6 +5,8 @@ import com.todoroo.astrid.service.Upgrade_15_13
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.BuildConfig
 import org.tasks.data.dao.CaldavDao
@@ -313,5 +315,36 @@ class TasksJsonImporterTest : InjectingTestCase() {
 
         assertEquals(1, tagDataDao.getAll().size)
         assertEquals("important", tagDataDao.getAll()[0].name)
+    }
+
+    @Test
+    fun backupAndRestorePreservesMemo() = runBlocking {
+        taskDao.createNew(Task(title = "memo note", memo = true))
+        taskDao.createNew(Task(title = "regular task"))
+
+        val backup = export()
+        database.clearAllTables()
+
+        import(backup)
+
+        val byTitle = taskDao.getAll().associateBy { it.title }
+        assertTrue(byTitle["memo note"]!!.memo)
+        assertFalse(byTitle["regular task"]!!.memo)
+    }
+
+    @Test
+    fun importWithoutMemoFieldDefaultsToTask() = runBlocking {
+        taskDao.createNew(Task(title = "legacy task"))
+
+        val backup = String(export(), Charsets.UTF_8)
+            .replace(Regex("\"memo\":(true|false),"), "")
+            .toByteArray(Charsets.UTF_8)
+
+        database.clearAllTables()
+        import(backup)
+
+        val restored = taskDao.getAll().single()
+        assertEquals("legacy task", restored.title)
+        assertFalse(restored.memo)
     }
 }

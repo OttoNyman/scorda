@@ -23,6 +23,9 @@ interface DrawerConfiguration {
     val recentlyModifiedFilter: Boolean
         get() = true
 
+    val memosEnabled: Boolean
+        get() = false
+
     val listsEnabled: Boolean
         get() = true
 

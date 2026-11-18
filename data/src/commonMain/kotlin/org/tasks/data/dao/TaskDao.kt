@@ -157,6 +157,9 @@ FROM (
     @Query("SELECT reminderDismissed FROM tasks WHERE _id = :id")
     internal abstract suspend fun getReminderDismissed(id: Long): Long?
 
+    @Query("UPDATE tasks SET parent = 0 WHERE parent = :id AND deleted > 0")
+    abstract suspend fun detachDeletedChildren(id: Long)
+
     suspend fun getChildren(id: Long): List<Long> = getChildren(listOf(id))
 
     @Query("""
@@ -263,6 +266,7 @@ FROM tasks
          LEFT JOIN caldav_tasks ON _id = cd_task AND cd_deleted = 0
 WHERE cd_id IS NULL
   AND parent = 0
+  AND memo = 0
     """)
     abstract suspend fun getLocalTasks(): List<Long>
 
@@ -273,6 +277,7 @@ WHERE cd_id IS NULL
         fun activeAndVisible(): Criterion = Criterion.and(
             Task.COMPLETION_DATE.lte(0),
             Task.DELETION_DATE.lte(0),
+            Task.MEMO.eq(0),
             Criterion.or(
                 Task.HIDE_UNTIL.lte(Functions.now()),
                 Task.COMPLETION_DATE.gt(0),

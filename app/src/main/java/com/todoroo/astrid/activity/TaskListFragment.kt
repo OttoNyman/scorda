@@ -142,6 +142,7 @@ import org.tasks.filters.CustomFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterImpl
 import org.tasks.constructor.fits
+import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.SearchFilter
@@ -730,18 +731,20 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             menu.findItem(R.id.menu_collapse_subtasks).isVisible = false
             menu.findItem(R.id.menu_expand_subtasks).isVisible = false
         }
-        menu.findItem(R.id.menu_voice_add).isVisible = device.voiceInputAvailable() && filter.isWritable
+        val memos = filter is MemosFilter
+        menu.findItem(R.id.menu_voice_add).isVisible = !memos && device.voiceInputAvailable() && filter.isWritable
         menu.findItem(R.id.menu_clear_completed).apply {
-            isVisible = filter.isWritable
+            isVisible = !memos && filter.isWritable
             if (filter is CompletedFilter) {
                 setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
             }
         }
         val trash = filter is TrashFilter
         menu.findItem(R.id.menu_empty_trash).isVisible = trash
-        if (trash) {
-            // search and share only know live tasks
+        if (trash || memos) {
             menu.findItem(R.id.menu_search).isVisible = false
+        }
+        if (trash) {
             menu.findItem(R.id.menu_share).isVisible = false
         }
     }
@@ -784,6 +787,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                         filter.supportsManualSort(),
                         filter is AstridOrderingFilter && preferences.isAstridSortEnabled,
                         filterKey = filter.key(),
+                        showCompletedAndHiddenOptions = filter !is MemosFilter,
                         completedAndHiddenEnabled =
                             taskAdapter.supportsHiddenTasks() && filter.supportsHiddenTasks(),
                     )
@@ -899,9 +903,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
     }
 
-    private suspend fun addTask(title: String): Task {
-        return taskCreator.createWithValues(filter, title)
-    }
+    private suspend fun addTask(title: String): Task =
+        if (filter is MemosFilter) taskCreator.createMemo(title) else taskCreator.createWithValues(filter, title)
 
     private fun setupRefresh(layout: SwipeRefreshLayout) {
         layout.setOnRefreshListener(this)
@@ -962,6 +965,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     fun getFilter(): Filter {
         return requireArguments().getParcelable(EXTRA_FILTER)!!
     }
+
+    fun memosDragEnabled(): Boolean = listViewModel.memosDragEnabled()
 
     private fun onTaskCreated(tasks: List<Task>) {
         for (task in tasks) {
@@ -1048,6 +1053,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         val trash = filter is TrashFilter
         listOf(R.id.restore, R.id.delete_forever).forEach { menu.findItem(it).isVisible = trash }
         menu.findItem(R.id.finish_series).isVisible = filter.isWritable && featureGate.current.repeat
+        if (filter is MemosFilter) {
+            listOf(R.id.move_tasks, R.id.reschedule, R.id.finish_series)
+                .forEach { menu.findItem(it).isVisible = false }
+        }
         if (trash) {
             listOf(R.id.edit_priority, R.id.menu_share).forEach { menu.findItem(it).isVisible = false }
         }
@@ -1346,7 +1355,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     }
 
     override fun onCompletedTask(task: TaskContainer, newState: Boolean) {
-        if (task.isReadOnly || filter is TrashFilter) {
+        if (task.isReadOnly || filter is TrashFilter || task.task.memo) {
             return
         }
         lifecycleScope.launch {

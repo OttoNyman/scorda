@@ -55,6 +55,11 @@ import tasks.kmp.generated.resources.show_completed
 import tasks.kmp.generated.resources.show_unstarted
 import tasks.kmp.generated.resources.subtasks
 
+val memosSortOptions = linkedMapOf(
+    Res.string.SSD_sort_importance to SortHelper.SORT_IMPORTANCE,
+    Res.string.SSD_sort_modified to SortHelper.SORT_MODIFIED,
+)
+
 val sortOptions = linkedMapOf(
     Res.string.SSD_sort_due to SortHelper.SORT_DUE,
     Res.string.SSD_sort_start to SortHelper.SORT_START,
@@ -110,6 +115,32 @@ val Int.modeString: StringResource
         SortHelper.SORT_MANUAL -> Res.string.SSD_sort_my_order
         else -> Res.string.SSD_sort_auto
     }
+
+@Composable
+fun MemosSortSheetContent(
+    selected: Int,
+    onSelect: (Int) -> Unit,
+    showImportance: Boolean = true,
+) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+    ) {
+        SortPicker(
+            selected = selected,
+            options = if (showImportance) {
+                memosSortOptions
+            } else {
+                linkedMapOf(
+                    Res.string.SSD_sort_my_order to SortHelper.SORT_IMPORTANCE,
+                    Res.string.SSD_sort_modified to SortHelper.SORT_MODIFIED,
+                )
+            },
+            onClick = onSelect,
+        )
+    }
+}
 
 @Composable
 fun SortSheetContent(

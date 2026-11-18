@@ -74,6 +74,22 @@ class TaskDuplicatorTest : InjectingTestCase() {
     }
 
     @Test
+    fun duplicatingMemoSkipsCaldavAlarmsAndGeofences() = runBlocking {
+        val task = Task(title = "memo", memo = true, remoteId = "uuid-memo")
+        taskDao.createNew(task)
+        caldavDao.insert(
+            task = task,
+            caldavTask = CaldavTask(task = task.id, calendar = CALDAV_LIST, remoteId = "uuid-memo"),
+            addToTop = false,
+        )
+
+        val copy = taskDuplicator.duplicate(listOf(task.id)).single()
+
+        assertTrue(copy.memo)
+        assertNull(caldavDao.getTask(copy.id))
+    }
+
+    @Test
     fun theListATaskHasLeftDoesNotDecideHowItsCopyIsFiled() = runBlocking {
         val parent = newTask("parent", CALDAV_LIST)
         val child = newTask("child", CALDAV_LIST, parent = parent.id)

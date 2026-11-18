@@ -15,6 +15,7 @@ interface Astrid2ContentProviderDao {
         FROM tasks
         WHERE completed = 0
           AND deleted = 0
+          AND memo = 0
           AND hideUntil < (strftime('%s', 'now') * 1000)
         ORDER BY (CASE
                       WHEN (dueDate = 0) THEN

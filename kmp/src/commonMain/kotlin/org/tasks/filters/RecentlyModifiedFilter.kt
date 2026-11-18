@@ -25,6 +25,7 @@ data class RecentlyModifiedFilter(
             .where(
                 and(
                     Task.DELETION_DATE.lte(0),
+                    Task.MEMO.eq(0),
                     Task.MODIFICATION_DATE.gt(
                         currentTimeMillis().minusDays(1).startOfMinute()
                     )

@@ -481,6 +481,7 @@ class Preferences @JvmOverloads constructor(
         advance = getBoolean("constructor_advance", false),
         files = getBoolean("constructor_files", false),
         localLists = getBoolean("constructor_local_lists", false),
+        memos = getBoolean("constructor_memos", false),
     )
 
     fun writeConstructor(value: org.tasks.constructor.Constructor) {
@@ -496,6 +497,7 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_advance", value.advance)
         setBoolean("constructor_files", value.files)
         setBoolean("constructor_local_lists", value.localLists)
+        setBoolean("constructor_memos", value.memos)
     }
 
     fun getInt(resourceId: Int, defValue: Int): Int =

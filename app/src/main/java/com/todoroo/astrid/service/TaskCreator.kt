@@ -119,6 +119,12 @@ class TaskCreator @Inject constructor(
         return task
     }
 
+    suspend fun createMemo(title: String?): Task =
+        create(null, title, parseTitle = false, applyDefaults = false).apply {
+            memo = true
+            parent = 0
+        }
+
     suspend fun createWithValues(title: String?): Task {
         return create(null, title)
     }

@@ -16,6 +16,8 @@ import org.junit.Test
 import org.tasks.R
 import org.tasks.SuspendFreeze.Companion.freezeAt
 import org.tasks.data.createDueDate
+import org.tasks.data.dao.CaldavDao
+import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
 import org.tasks.data.getDefaultAlarms
 import org.tasks.injection.InjectingTestCase
@@ -27,6 +29,8 @@ import javax.inject.Inject
 class TaskCreatorTest : InjectingTestCase() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var taskCreator: TaskCreator
+    @Inject lateinit var taskDao: TaskDao
+    @Inject lateinit var caldavDao: CaldavDao
 
     @Test
     fun setStartAndDueFromFilter() = runBlocking {
@@ -139,5 +143,30 @@ class TaskCreatorTest : InjectingTestCase() {
         val task = taskCreator.create(null, "test", applyDefaults = false)
 
         assertTrue(task.getDefaultAlarms(defaultRemindersEnabled = true).isEmpty())
+    }
+
+    @Test
+    fun createMemoIgnoresTomorrowInTitle() = runBlocking {
+        preferences.setString(R.string.p_default_urgency_key, Task.URGENCY_TODAY.toString())
+        preferences.setDefaultAlarms(listOf(Alarm.whenDue(0)))
+
+        for (title in listOf("позвонить завтра", "call tomorrow")) {
+            val task = freezeAt(DateTime(2021, 2, 4, 14, 56, 34, 126)) {
+                taskCreator.createMemo(title)
+            }
+            assertEquals(0L, task.dueDate)
+            assertEquals(0L, task.hideUntil)
+            assertTrue(task.memo)
+            assertEquals(Task.Priority.NONE, task.priority)
+            assertTrue(task.getDefaultAlarms(defaultRemindersEnabled = true).isEmpty())
+        }
+    }
+
+    @Test
+    fun createMemoHasNoListRow() = runBlocking {
+        val task = taskCreator.createMemo("scratch note")
+        assertTrue(task.memo)
+        taskDao.createNew(task)
+        assertNull(caldavDao.getTask(task.id))
     }
 }

@@ -31,6 +31,9 @@ class PreferenceDrawerConfiguration(
     override val recentlyModifiedFilter: Boolean
         get() = features.filters && preferences.getBoolean(R.string.p_show_recently_modified_filter, super.recentlyModifiedFilter)
 
+    override val memosEnabled: Boolean
+        get() = features.memos
+
     override val listsEnabled: Boolean
         get() = features.lists
 

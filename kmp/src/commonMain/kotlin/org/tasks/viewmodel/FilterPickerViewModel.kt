@@ -89,7 +89,7 @@ open class FilterPickerViewModel(
                 allFilters = if (listsOnly) {
                     filterProvider.allLists().filterNot { it.isReadOnly }
                 } else {
-                    filterProvider.allFilters()
+                    filterProvider.allFilters(forPicker = true)
                 },
             )
         }

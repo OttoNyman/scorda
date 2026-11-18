@@ -5,8 +5,6 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import androidx.sqlite.db.SupportSQLiteQueryBuilder
-import org.tasks.data.entity.Task
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -51,13 +49,7 @@ class TasksContentProvider : ContentProvider() {
             }
         )
         return when (URI_MATCHER.match(uri)) {
-            URI_TODO_AGENDA -> hilt.contentProviderDao.rawQuery(
-                SupportSQLiteQueryBuilder
-                    .builder(TODO_AGENDA_TABLES)
-                    .selection(selection, selectionArgs)
-                    .create()
-                    .sql
-            )
+            URI_TODO_AGENDA -> hilt.contentProviderDao.queryTodoAgenda(selection, selectionArgs)
             URI_TASKS -> hilt.contentProviderDao.getTasks()
             URI_LISTS -> hilt.contentProviderDao.getLists()
             URI_GOOGLE_TASK_LISTS -> null
@@ -96,10 +88,6 @@ class TasksContentProvider : ContentProvider() {
                     TasksContentProviderEntryPoint::class.java)
 
     companion object {
-        private const val TODO_AGENDA_TABLES =
-                """${Task.TABLE_NAME}
-                LEFT JOIN caldav_tasks ON cd_task = _id
-                LEFT JOIN caldav_lists ON cdl_uuid = cd_calendar"""
         private const val AUTHORITY = BuildConfig.APPLICATION_ID
         private const val PURE_CALENDAR_WIDGET = "org.tasks.tasksprovider"
         @JvmField val CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY")

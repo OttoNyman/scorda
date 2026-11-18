@@ -75,12 +75,22 @@ class FilterProvider(
         caldavFilters(showCreate = false, forceExpand = true)
             .filterIsInstance<Filter>()
 
-    suspend fun allFilters(): List<Filter> =
-        getAllFilters(showCreate = false, hideUnused = false, forceExpand = true)
+    suspend fun allFilters(forPicker: Boolean = false): List<Filter> =
+        getAllFilters(
+            showCreate = false,
+            hideUnused = false,
+            forceExpand = true,
+            forPicker = forPicker,
+        )
             .filterIsInstance<Filter>()
 
     suspend fun filterPickerItems(): List<FilterListItem> =
-            getAllFilters(showCreate = false, showCreateList = true, showSignIn = true)
+            getAllFilters(
+                showCreate = false,
+                showCreateList = true,
+                showSignIn = true,
+                forPicker = true,
+            )
 
     suspend fun wearableFilters(): List<FilterListItem> =
             getAllFilters(showCreate = false, forceExpand = true, hideUnused = true)
@@ -216,9 +226,16 @@ class FilterProvider(
         forceExpand: Boolean = false,
         showCreateList: Boolean = showCreate,
         showSignIn: Boolean = false,
+        forPicker: Boolean = false,
     ): List<FilterListItem> =
             if (showBuiltIn) {
-                arrayListOf(MyTasksFilter.create(), CompletedFilter.create())
+                buildList {
+                    add(MyTasksFilter.create())
+                    add(CompletedFilter.create())
+                    if (!forPicker && configuration.memosEnabled) {
+                        add(MemosFilter.create())
+                    }
+                }
             } else {
                 ArrayList<FilterListItem>()
             }

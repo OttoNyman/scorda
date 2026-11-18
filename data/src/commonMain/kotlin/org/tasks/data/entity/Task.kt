@@ -94,6 +94,8 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     var series: String? = null,
     @ColumnInfo(name = "scheduled", defaultValue = "0")
     var scheduled: Long = 0L,
+    @ColumnInfo(name = "memo", defaultValue = "0")
+    var memo: Boolean = false,
     @Ignore
     @Transient
     private var transitoryData: @CommonRawValue HashMap<String, Any>? = null,
@@ -313,6 +315,7 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
         val RECURRENCE = TABLE.column("recurrence")
         val SERIES = TABLE.column("series")
         val SCHEDULED = TABLE.column("scheduled")
+        val MEMO = TABLE.column("memo")
 
         /** constant value for no uuid  */
         const val NO_UUID = "0" // $NON-NLS-1$

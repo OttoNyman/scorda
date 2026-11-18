@@ -113,6 +113,12 @@ class ConstructorTest {
     }
 
     @Test
+    fun allOnTurnsMemosOn() {
+        assertFalse(Constructor().memos)
+        assertTrue(Constructor().withPreset(Preset.Full).memos)
+    }
+
+    @Test
     fun repeatingAtTheDueTimeIsAnExtraReminder() {
         val alarm = Alarm(type = Alarm.TYPE_REL_END, time = 0, repeat = 3, interval = 60_000)
         assertFalse(Constructor(overdue = true).schedules(alarm))

@@ -29,8 +29,12 @@ import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.EmptyFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterImpl
+import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.SearchFilter
+import com.todoroo.astrid.core.SortHelper
+import org.tasks.memos.MemosPreferences
+import org.tasks.memos.MemosQueryPreferences
 import org.tasks.filters.key
 import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.preferences.DefaultQueryPreferences
@@ -122,12 +126,28 @@ open class TaskListViewModel(
         return completed
     }
 
-    fun queryPreferences(filter: Filter): QueryPreferences =
-        if (isPerListSortEnabled) {
+    fun memosDragEnabled(): Boolean {
+        val filter = _state.value.filter
+        return filter is MemosFilter &&
+            MemosPreferences.isImportanceMode(MemosPreferences.read(tasksPreferences))
+    }
+
+    fun queryPreferences(filter: Filter): QueryPreferences {
+        val base = if (isPerListSortEnabled) {
             FilterPreferences(queryPreferences, tasksPreferences, filter.key())
         } else {
             queryPreferences
         }
+        return if (filter is MemosFilter) {
+            MemosQueryPreferences(
+                base,
+                MemosPreferences.read(tasksPreferences),
+                groupByPriority = features()?.priority != false,
+            )
+        } else {
+            base
+        }
+    }
 
     fun onCompleteTask(taskContainer: TaskContainer, newState: Boolean) {
         viewModelScope.launch {
@@ -197,9 +217,12 @@ open class TaskListViewModel(
                 Triple(taskDao.fetchTasks(prefs, filter, features()), prefs, queriedState)
             }
             .onEach { (tasks, prefs, queriedState) ->
+                val memosFlatSort = queriedState.filter is MemosFilter &&
+                        MemosPreferences.read(tasksPreferences) == SortHelper.SORT_MODIFIED
                 val dataSource = SectionedDataSource(
                     tasks = tasks,
                     disableHeaders = queriedState.filter.disableHeaders()
+                            || memosFlatSort
                             || (queriedState.filter.supportsManualSort() && prefs.isManualSort)
                             || (queriedState.filter is AstridOrderingFilter && prefs.isAstridSort),
                     groupMode = prefs.groupMode,

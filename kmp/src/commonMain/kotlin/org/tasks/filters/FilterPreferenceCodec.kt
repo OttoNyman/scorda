@@ -54,6 +54,7 @@ class FilterPreferenceCodec(
         FILTER_SNOOZED -> SnoozedFilter.create()
         FILTER_NOTIFICATIONS -> NotificationsFilter.create()
         FILTER_COMPLETED -> CompletedFilter.create()
+        FILTER_MEMOS -> MemosFilter.create()
         else -> MyTasksFilter.create()
     }
 
@@ -63,6 +64,7 @@ class FilterPreferenceCodec(
         is SnoozedFilter -> FILTER_SNOOZED
         is NotificationsFilter -> FILTER_NOTIFICATIONS
         is CompletedFilter -> FILTER_COMPLETED
+        is MemosFilter -> FILTER_MEMOS
         else -> FILTER_MY_TASKS
     }
 
@@ -85,6 +87,7 @@ class FilterPreferenceCodec(
         const val FILTER_SNOOZED = 4
         const val FILTER_NOTIFICATIONS = 5
         const val FILTER_COMPLETED = 6
+        const val FILTER_MEMOS = 7
 
         private const val TAG = "FilterPreferenceCodec"
     }
