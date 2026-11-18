@@ -112,7 +112,6 @@ class Firebase @Inject constructor(
         R.string.p_show_full_description,
         R.string.p_linkify_task_list,
         R.string.p_chip_appearance,
-        R.string.p_subtask_chips,
         R.string.p_start_date_chip,
         R.string.p_place_chips,
         R.string.p_list_chips,
@@ -121,7 +120,6 @@ class Firebase @Inject constructor(
         R.string.p_beast_mode_order,
         R.string.p_linkify_task_edit,
         R.string.p_back_button_saves_task,
-        R.string.p_multiline_title,
         R.string.p_show_task_edit_comments,
         R.string.p_show_edit_screen_without_unlock,
         // Date and time

@@ -19,7 +19,6 @@ import org.tasks.filters.PlaceFilter
 import org.tasks.filters.TagFilter
 import org.tasks.filters.getIcon
 import org.tasks.kmp.org.tasks.time.DateFormatter
-import org.tasks.kmp.formatNumber
 import org.tasks.kmp.formatTime
 import org.tasks.time.startOfDay
 import org.tasks.compose.chips.ChipDataProvider
@@ -32,19 +31,11 @@ class WidgetChipProvider @Inject constructor(
 ) {
     var isDark = false
 
-    fun getSubtaskChip(task: TaskContainer): RemoteViews {
-        return newChip().apply {
-            setTextViewText(R.id.chip_text, formatNumber(task.chipCount))
-            setImageViewResource(
-                R.id.chip_icon,
-                if (task.isCollapsed) {
-                    R.drawable.ic_keyboard_arrow_right_black_24dp
-                } else {
-                    R.drawable.ic_keyboard_arrow_down_black_24dp
-                }
-            )
+    fun getChecklistChip(done: Int, total: Int): RemoteViews =
+        newChip().apply {
+            setTextViewText(R.id.chip_text, "$done/$total")
+            setImageViewResource(R.id.chip_icon, R.drawable.ic_outline_check_box_24px)
         }
-    }
 
     fun getStartDateChip(
         task: TaskContainer,

@@ -34,6 +34,7 @@ fun TitleRow(
     onComplete: () -> Unit,
     requestFocus: Boolean,
     save: () -> Unit,
+    hint: Int = R.string.TEA_title_hint,
     /** The save button was pressed on a new task without a title. */
     missing: Boolean = false,
 ) {
@@ -63,7 +64,7 @@ fun TitleRow(
                 EditTextView(
                     viewId = R.id.task_title,
                     text = text,
-                    hint = stringResource(R.string.TEA_title_hint),
+                    hint = stringResource(hint),
                     onChanged = onChanged,
                     linkify = linkify,
                     markdownProvider = markdownProvider,

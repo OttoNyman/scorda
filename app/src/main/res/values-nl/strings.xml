@@ -214,9 +214,6 @@
     <string name="help">Hulp</string>
     <string name="icon">Pictogram</string>
     <string name="SSD_sort_my_order">Mijn volgorde</string>
-    <string name="expand_subtasks">Subtaken uitklappen</string>
-    <string name="collapse_subtasks">Subtaken inklappen</string>
-    <string name="subtasks">Subtaken</string>
     <string name="display_name">Weergavenaam</string>
     <string name="choose_synchronization_service">Een platform kiezen</string>
     <string name="caldav_selection_description">Synchroniseren op eigen open source CalDAV-server of bij derden</string>
@@ -367,10 +364,8 @@
     <string name="price_per_month_with_currency">%s per maand</string>
     <string name="enable_alarms_description">Om zeker te zijn dat je meldingen op het juiste moment komen, geef toestemming voor \"Wekkers en herinneringen\" in Instellingen</string>
     <string name="comment">Commentaar</string>
-    <string name="multiline_title">Meerregelige titels toestaan</string>
     <string name="price_per_year_with_currency">%s per jaar</string>
     <string name="enable_alarms">Krijg meldingen op het juiste moment</string>
-    <string name="multiline_title_on">Druk Enter om regelafbrekingen toe te voegen</string>
     <string name="sync_warning_google_tasks">Niet alle taak-details synchroniseren met Google Tasks</string>
     <string name="sync_warning_microsoft">Niet alle taak-details synchroniseren met Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Over synchronisatie met Google Tasks</string>
@@ -379,7 +374,6 @@
     <string name="app_settings">App-instellingen</string>
     <string name="banner_app_updated_title">App geüpdatet</string>
     <string name="banner_app_updated_description">Tasks is zojuist geüpdatet naar %s. Wil je de release-opmerkingen zien?</string>
-    <string name="multiline_title_off">Druk op Gereed om de taak op te slaan</string>
     <string name="delete_tasks_warning">%s wordt verwijderd. Dit kan niet ongedaan worden gemaakt!</string>
     <string name="widget_view_more_tasks">Meer taken zien</string>
     <string name="import_failed">Import mislukt</string>

@@ -42,9 +42,14 @@ File %1$s contained %2$s.\n\n
   <string name="FLA_search_filter">Matching \'%s\'</string>
   <string name="FLA_new_filter">Create new filter</string>
   <string name="TEA_title_hint">Task name</string>
+  <string name="memo_title_hint">Note name</string>
+  <string name="memo_change_priority">Change priority?</string>
   <string name="title_required">Enter a name</string>
   <string name="TEA_importance_label">Priority</string>
   <string name="TEA_note_label">Description</string>
+  <string name="checklist">Checklist</string>
+  <string name="checklist_add_item">Add item</string>
+  <string name="checklist_move_item">Move item</string>
   <string name="save">Save</string>
   <string name="due_date">Reminder time</string>
   <string name="due_time">Reminder time</string>
@@ -194,7 +199,6 @@ File %1$s contained %2$s.\n\n
   <string name="share_backup_send">Send</string>
   <string name="share_backup_skip">Not now</string>
   <string name="miscellaneous">Miscellaneous</string>
-  <string name="subtasks">Subtasks</string>
   <string name="enabled">Enabled</string>
   <string name="font_size">Font size</string>
   <string name="header_spacing">Spacing</string>
@@ -320,8 +324,6 @@ File %1$s contained %2$s.\n\n
   <string name="banner_app_updated_description">Tasks was just updated to %s. Would you like to see the release notes?</string>
   <string name="whats_new">What\'s New</string>
   <string name="invalid_backup_file">Invalid backup file</string>
-  <string name="expand_subtasks">Expand subtasks</string>
-  <string name="collapse_subtasks">Collapse subtasks</string>
   <string name="choose_synchronization_service">Select a platform</string>
   <string name="caldav_selection_description">Synchronization based on open internet standards</string>
   <string name="etesync_selection_description">End-to-end encrypted synchronization</string>
@@ -456,9 +458,6 @@ File %1$s contained %2$s.\n\n
   <string name="returning_user">Returning user?</string>
   <string name="cost_money">Cost: $</string>
   <string name="cost_more_money">Cost: $$$</string>
-  <string name="multiline_title">Allow multiline titles</string>
-  <string name="multiline_title_on">Press Enter key to add line breaks</string>
-  <string name="multiline_title_off">Press Done to save task</string>
   <string name="sync_warning_microsoft_title">About Microsoft To Do sync</string>
   <string name="sync_warning_microsoft">Not all task details sync with Microsoft To Do.</string>
   <string name="sync_warning_google_tasks_title">About Google Task sync</string>

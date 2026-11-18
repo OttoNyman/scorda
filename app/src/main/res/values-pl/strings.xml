@@ -221,9 +221,6 @@
     <string name="invalid_backup_file">Nieprawidłowy plik kopii zapasowej</string>
     <string name="icon">Ikona</string>
     <string name="SSD_sort_my_order">Ręczne</string>
-    <string name="expand_subtasks">Rozwiń podzadania</string>
-    <string name="collapse_subtasks">Zwiń podzadania</string>
-    <string name="subtasks">Podzadania</string>
     <string name="display_name">Nazwa wyświetlana</string>
     <string name="choose_synchronization_service">Wybierz platformę</string>
     <string name="caldav_selection_description">Synchronizacja oparta na otwartych standardach</string>

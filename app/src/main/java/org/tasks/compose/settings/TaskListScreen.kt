@@ -36,7 +36,6 @@ fun TaskListScreen(
     showLinks: Boolean,
     perListSort: Boolean,
     chipAppearanceSummary: String,
-    subtaskChips: Boolean,
     startDateChips: Boolean,
     placeChips: Boolean,
     listChips: Boolean,
@@ -49,7 +48,6 @@ fun TaskListScreen(
     onShowLinks: (Boolean) -> Unit,
     onPerListSort: (Boolean) -> Unit,
     onChipAppearance: () -> Unit,
-    onSubtaskChips: (Boolean) -> Unit,
     onStartDateChips: (Boolean) -> Unit,
     onPlaceChips: (Boolean) -> Unit,
     onListChips: (Boolean) -> Unit,
@@ -158,13 +156,6 @@ fun TaskListScreen(
                     title = stringResource(R.string.chip_appearance),
                     summary = chipAppearanceSummary,
                     onClick = onChipAppearance,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.subtasks),
-                    checked = subtaskChips,
-                    onCheckedChange = onSubtaskChips,
                 )
             }
             SettingsItemCard(position = CardPosition.Middle) {

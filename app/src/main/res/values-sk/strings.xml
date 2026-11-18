@@ -250,7 +250,6 @@
     <string name="yesterday">Včera</string>
     <string name="widget_show_menu">Zobraziť ponuku</string>
     <string name="widget_show_dividers">Zobraziť oddeľovače</string>
-    <string name="subtasks">Podúlohy</string>
     <string name="filter_criteria_unstarted">Nespustené</string>
     <string name="opacity_footer">Priehľadnosť päty</string>
     <string name="customize_edit_screen_summary">Preorganizujte alebo odstráňte polia</string>
@@ -269,7 +268,6 @@
     <string name="custom_filter_has_subtask">Má podúlohy</string>
     <string name="sort_created_group">Vytvorené %s</string>
     <string name="caldav_selection_description">Synchronizácia založená na otvorených štandardoch</string>
-    <string name="collapse_subtasks">Zbaliť podúlohy</string>
     <string name="preferences_advanced">Pokročilé možnosti</string>
     <string name="account">Účet</string>
     <string name="your_subscription_expired">Platnosť vášho predplatného skončila. Ak chcete službu používať i naďalej, obnovte odber.</string>
@@ -279,7 +277,6 @@
     <string name="background_location">Umiestnenie na pozadí</string>
     <string name="backups_ignore_warnings_summary">Ignorujte varovania týkajúce sa zálohovania, ak ich nepotrebujete alebo riešite zálohovanie po svojom</string>
     <string name="no_google_play_subscription">Nenájdené žiadne predplatné Google Play</string>
-    <string name="expand_subtasks">Rozbaliť podúlohy</string>
     <string name="action_new_task">Nová úloha</string>
     <string name="background_location_permission_required">Táto aplikácia zbiera údaje o vašej polohe, aby fungovali upozornenia podľa polohy aj keď aplikáciu práve nepoužívate.</string>
     <string name="invalid_backup_file">Neplatný súbor zálohy</string>
@@ -367,8 +364,6 @@
     <string name="app_password">Heslo aplikácie</string>
     <string name="sign_in_with_google">Prihlásenie účtom Google</string>
     <string name="app_passwords_more_info">Synchronizujte svoje úlohy a kalendáre s desktopovými a mobilnými aplikáciami tretích strán. Pre viac informácii kliknite sem</string>
-    <string name="multiline_title">Povoliť názvy na viac riadkov</string>
-    <string name="multiline_title_on">Stlačením Enter pridáte konce riadkov</string>
     <string name="hint_customize_edit_body">Túto obrazovku si môžete prispôsobiť preskupením alebo odobraním polí</string>
     <string name="upgrade_tasks_org_account_description">Synchronizujte s Scorda a spolupracujte s ostatnými používateľmi</string>
     <string name="pro_free_trial">Noví predplatitelia dostanú 7 dní na bezplatné otestovanie. Predplatné je možné kedykoľvek zrušiť</string>
@@ -384,7 +379,6 @@
     <string name="hint_customize_edit_title">Príliš veľa informácií?</string>
     <string name="help_and_feedback">Pomoc a spätná väzba</string>
     <string name="app_settings">Nastavenia aplikácie</string>
-    <string name="multiline_title_off">Pre uloženie úlohy kliknite na Hotovo</string>
     <string name="banner_app_updated_title">Aplikácia bola aktualizovaná</string>
     <string name="banner_app_updated_description">Aplikácia Tasks bola práve aktualizovaná na verziu %s. Chcete vidieť zoznam noviniek?</string>
 </resources>

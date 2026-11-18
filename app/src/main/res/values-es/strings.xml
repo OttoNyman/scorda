@@ -221,9 +221,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="icon">Icono</string>
     <string name="SSD_sort_my_order">Mi orden</string>
-    <string name="expand_subtasks">Expandir subtareas</string>
-    <string name="collapse_subtasks">Contraer subtareas</string>
-    <string name="subtasks">Subtareas</string>
     <string name="display_name">Mostrar el nombre</string>
     <string name="choose_synchronization_service">Seleccione una plataforma</string>
     <string name="caldav_selection_description">Sincronización basada en estándares abiertos de Internet</string>
@@ -369,8 +366,6 @@
     <string name="customize_drawer">Personalizar menú</string>
     <string name="enable_alarms_description">Para asegurarse de recibir notificaciones en el momento adecuado, otorgue permiso para configurar alarmas y recordatorios en Configuración</string>
     <string name="enable_alarms">Recibe notificaciones en el momento adecuado</string>
-    <string name="multiline_title">Permitir títulos de varias líneas</string>
-    <string name="multiline_title_on">Presione Enter para insertar saltos de línea</string>
     <string name="price_per_year_with_currency">%s/año</string>
     <string name="app_settings">Ajustes de la aplicación</string>
     <string name="delete_comment">comentario</string>
@@ -385,7 +380,6 @@
     <string name="sync_warning_microsoft_title">Acerca de la sincronización de Microsoft To Do</string>
     <string name="sync_warning_microsoft">No todos los detalles de las tareas se sincronizan con Microsoft To Do.</string>
     <string name="price_per_month_with_currency">%s/mes</string>
-    <string name="multiline_title_off">Presione en Hecho para guardar la tarea</string>
     <string name="comment">Comentario</string>
     <string name="delete_tasks_warning">%s será eliminado. ¡Esto no se puede deshacer!</string>
     <string name="widget_view_more_tasks">Ver más tareas</string>

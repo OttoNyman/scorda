@@ -12,14 +12,6 @@
         android:title="@string/trash_empty"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_collapse_subtasks"
-        android:title="@string/collapse_subtasks"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_expand_subtasks"
-        android:title="@string/expand_subtasks"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_share"
         android:icon="@drawable/ic_outline_send_24px"
         android:title="@string/share" />

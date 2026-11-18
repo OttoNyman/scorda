@@ -215,9 +215,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="icon">Symbol</string>
     <string name="SSD_sort_my_order">Eigene Sortierung</string>
-    <string name="expand_subtasks">Teilaufgaben ausklappen</string>
-    <string name="collapse_subtasks">Teilaufgaben einklappen</string>
-    <string name="subtasks">Teilaufgaben</string>
     <string name="display_name">Anzeigename</string>
     <string name="help_and_feedback">Hilfe &amp; Rückmeldung</string>
     <string name="theme_system_default">Systemstandard</string>
@@ -368,8 +365,6 @@
     <string name="yesterday">Gestern</string>
     <string name="cost_more_money">Kosten: €€€</string>
     <string name="cost_money">Kosten: €</string>
-    <string name="multiline_title">Mehrzeilige Titel zulassen</string>
-    <string name="multiline_title_on">Eingabetaste drücken, um Zeilenumbrüche einzufügen</string>
     <string name="comment">Kommentar</string>
     <string name="sync_warning_google_tasks_title">Über die Synchronisierung mit „Google Tasks“</string>
     <string name="sync_warning_google_tasks">Nicht alle Aufgabendetails können mit Google Tasks synchronisiert werden</string>
@@ -379,7 +374,6 @@
     <string name="app_settings">App-Einstellungen</string>
     <string name="banner_app_updated_title">App aktualisiert</string>
     <string name="banner_app_updated_description">Tasks wurde gerade auf %s aktualisiert. Möchtest du dir die Änderungsnotizen ansehen?</string>
-    <string name="multiline_title_off">Erledigt drücken, um Aufgabe zu speichern</string>
     <string name="delete_tasks_warning">%s wird/werden gelöscht. Dies kann nicht rückgängig gemacht werden!</string>
     <string name="widget_view_more_tasks">Mehr Aufgaben anzeigen</string>
     <string name="legal_disclosure_prefix_using">Durch die Nutzung von Scorda</string>

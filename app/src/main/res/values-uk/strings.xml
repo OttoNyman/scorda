@@ -222,7 +222,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="url">URL</string>
     <string name="icon">Піктограма</string>
-    <string name="subtasks">Підзавдання</string>
     <string name="SSD_sort_my_order">Мій порядок</string>
     <string name="display_name">Показувана назва</string>
     <string name="preferences_advanced">Розширені</string>
@@ -232,8 +231,6 @@
     <string name="etesync_selection_description">Захищена наскрізним шифруванням синхронізація</string>
     <string name="caldav_selection_description">Синхронізація на основі стандартів відкритого інтернету</string>
     <string name="choose_synchronization_service">Обрати платформу</string>
-    <string name="collapse_subtasks">Згорнути підзавдання</string>
-    <string name="expand_subtasks">Розгорнути підзавдання</string>
     <string name="share">Поділитися</string>
     <string name="select_all">Обрати всі</string>
     <string name="calendar_event_created">В календарі створено подію для %s</string>
@@ -372,8 +369,6 @@
     <string name="comment">Коментар</string>
     <string name="yesterday">Учора</string>
     <string name="cost_more_money">Вартість: $$$</string>
-    <string name="multiline_title">Дозволити багаторядкові заголовки</string>
-    <string name="multiline_title_on">Натисніть Enter, щоб перенести рядок</string>
     <string name="sync_warning_microsoft">Не всі відомості про завдання синхронізуються з Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Про синхронізацію з Google Task</string>
     <string name="sync_warning_microsoft_title">Про синхронізацію з Microsoft To Do</string>
@@ -387,7 +382,6 @@
     <string name="app_settings">Налаштування застосунку</string>
     <string name="banner_app_updated_title">Застосунок оновлено</string>
     <string name="banner_app_updated_description">Tasks щойно оновлено до %s. Переглянете примітки до випуску?</string>
-    <string name="multiline_title_off">Натисніть готово, щоб зберегти завдання</string>
     <string name="delete_tasks_warning">%s буде видалено. Дію неможливо скасувати!</string>
     <string name="widget_view_more_tasks">Переглянути інші завдання</string>
     <string name="rmd_EPr_rmd_time_desc">Сповіщення про завдання на весь день з’являтимуться о %1$s</string>

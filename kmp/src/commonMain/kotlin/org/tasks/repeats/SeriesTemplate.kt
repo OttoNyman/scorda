@@ -2,6 +2,7 @@ package org.tasks.repeats
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.tasks.checklist.Checklist
 import org.tasks.data.TaskSaver
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
@@ -36,6 +37,7 @@ data class SeriesTemplate(
     val departure: Boolean = false,
     /** Calendar uuid. */
     val list: String? = null,
+    /** Only in templates saved before subtasks were retired; never captured or emitted. */
     val subtasks: List<SeriesTemplate> = emptyList(),
     /** Subtasks only: `subtask.dueDate - parent.dueDate`, null means no due date. */
     val dueOffset: Long? = null,
@@ -74,11 +76,6 @@ class SeriesTemplates(
         // emit gives this row a due date only when it has one itself and (for subtasks) so does its parent
         val hasDue = task.hasDueDate() && (parentDue == null || parentDue > 0)
         val geofence = locationDao.getGeofencesForTask(task.id).firstOrNull()
-        val subtasks = taskDao
-            .fetch(taskDao.getChildren(task.id))
-            .filter { it.parent == task.id }
-            .sortedBy { it.order ?: Long.MAX_VALUE }
-            .map { capture(it, task.dueDate) }
         return SeriesTemplate(
             title = task.title,
             notes = task.notes,
@@ -96,7 +93,6 @@ class SeriesTemplates(
             arrival = geofence?.isArrival ?: false,
             departure = geofence?.isDeparture ?: false,
             list = caldavDao.getTask(task.id)?.calendar,
-            subtasks = subtasks,
             dueOffset = if (parentDue != null && parentDue > 0 && task.hasDueDate()) task.dueDate - parentDue else null,
         )
     }
@@ -134,7 +130,7 @@ class SeriesTemplates(
     ): Task {
         val task = Task(
             title = t.title,
-            notes = t.notes,
+            notes = Checklist.uncheckAll(t.notes),
             priority = t.priority,
             dueDate = due,
             hideUntil = if (t.startOffset != null && due > 0) due + t.startOffset else 0,
@@ -162,9 +158,6 @@ class SeriesTemplates(
             alarmDao.insert(t.alarms.map { Alarm(0, task.id, if (it.type == Alarm.TYPE_DATE_TIME) it.time + due else it.time, it.type, it.repeat, it.interval) })
         }
         taskSaver.save(task, null)
-        t.subtasks.forEach { sub ->
-            create(sub, null, 0, sub.dueOffset?.let { task.dueDate + it } ?: 0, parent = task)
-        }
         return task
     }
 

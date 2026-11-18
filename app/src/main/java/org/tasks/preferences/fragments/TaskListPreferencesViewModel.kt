@@ -34,8 +34,6 @@ class TaskListPreferencesViewModel @Inject constructor(
         private set
     var chipAppearanceSummary by mutableStateOf("")
         private set
-    var subtaskChips by mutableStateOf(true)
-        private set
     var startDateChips by mutableStateOf(true)
         private set
     var placeChips by mutableStateOf(true)
@@ -63,7 +61,6 @@ class TaskListPreferencesViewModel @Inject constructor(
         showLinks = preferences.getBoolean(R.string.p_linkify_task_list, false)
         perListSort = preferences.getBoolean(R.string.p_per_list_sort, false)
         refreshChipAppearance()
-        subtaskChips = preferences.getBoolean(R.string.p_subtask_chips, true)
         startDateChips = preferences.getBoolean(R.string.p_start_date_chip, true)
         placeChips = preferences.getBoolean(R.string.p_place_chips, true)
         listChips = preferences.getBoolean(R.string.p_list_chips, true)
@@ -125,10 +122,6 @@ class TaskListPreferencesViewModel @Inject constructor(
     fun getChipAppearanceCurrentValue(): String =
         preferences.getIntegerFromString(R.string.p_chip_appearance, 0).toString()
 
-    fun updateSubtaskChips(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_subtask_chips, enabled)
-        subtaskChips = enabled
-    }
 
     fun updateStartDateChips(enabled: Boolean) {
         preferences.setBoolean(R.string.p_start_date_chip, enabled)

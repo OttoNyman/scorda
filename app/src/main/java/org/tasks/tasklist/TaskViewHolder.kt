@@ -25,17 +25,15 @@ import org.tasks.compose.chips.Chip
 import org.tasks.compose.chips.ChipGroup
 import org.tasks.compose.chips.FilterChip
 import org.tasks.compose.StartDateChip
-import org.tasks.compose.chips.SubtaskChip
+import org.tasks.checklist.Checklist
 import org.tasks.data.INDENT_STEP_DP
 import org.tasks.data.TaskContainer
-import org.tasks.data.hasNotes
 import org.tasks.data.isHidden
 import org.tasks.data.isOverdue
 import org.tasks.databinding.TaskAdapterRowBinding
 import org.tasks.dialogs.Linkify
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.filters.CaldavFilter
-import org.tasks.filters.CompletedFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.TagFilter
@@ -44,7 +42,6 @@ import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.kmp.formatTime
 import org.tasks.markdown.Markdown
 import org.tasks.preferences.Preferences
-import org.tasks.icons.MaterialSymbolsGlyphs
 import org.tasks.themes.TasksIcons
 import org.tasks.themes.TasksTheme
 import org.tasks.themes.Theme
@@ -170,20 +167,13 @@ class TaskViewHolder internal constructor(
         } else {
             debugDirty.visibility = View.GONE
         }
-        indent = if (featureGate.current.subtasks) task.indent else 0
+        indent = 0 // subtasks are retired: rows never nest
         markdown.setMarkdown(nameView, task.title)
         if (task.task.memo) {
             completeBox.visibility = View.VISIBLE
             completeBox.isClickable = false
             completeBox.isFocusable = false
-            val color = MaterialColors.getColor(
-                context,
-                com.google.android.material.R.attr.colorOnSurfaceVariant,
-                0,
-            )
-            completeBox.setImageDrawable(
-                MaterialSymbolsGlyphs.drawable(context, TasksIcons.NOTE, 24, color),
-            )
+            completeBox.setImageDrawable(checkBoxProvider.getMemoIcon(task.task, featureGate.current))
             dueDate.visibility = View.GONE
             setupMemoTitle()
         } else {
@@ -199,8 +189,10 @@ class TaskViewHolder internal constructor(
             sortByList = sortMode == SORT_LIST
         )
         if (preferences.getBoolean(R.string.p_show_description, true)) {
-            markdown.setMarkdown(description, task.notes)
-            description.visibility = if (task.task.hasNotes()) View.VISIBLE else View.GONE
+            // checklist lines show as the counter chip, not in the preview
+            val notes = if (featureGate.current.checklist) Checklist.parse(task.notes).text else task.notes
+            markdown.setMarkdown(description, notes)
+            description.visibility = if (notes.isNullOrBlank()) View.GONE else View.VISIBLE
         }
         if (markdown.enabled || preferences.getBoolean(R.string.p_linkify_task_list, false)) {
             if (!markdown.enabled) {
@@ -291,16 +283,13 @@ class TaskViewHolder internal constructor(
 
     private fun setupChips(filter: Filter, sortByStartDate: Boolean, sortByList: Boolean) {
         val id = task.id
-        val children = task.children
-        val chipCount = task.chipCount
-        val collapsed = task.isCollapsed
+        val checklist = Checklist.parse(task.notes).takeIf { featureGate.current.checklist && it.items.isNotEmpty() }
         val isHidden = task.task.isHidden
         val sortGroup = task.sortGroup
         val startDate = task.task.hideUntil
         val place = task.location?.place
         val list = task.caldav
         val tagsString = task.tagsString
-        val parentTitle = task.parentTitle
         val appearance = preferences.getIntegerFromString(R.string.p_chip_appearance, 0)
         val showText = appearance != 2
         val showIcon = appearance != 1
@@ -313,7 +302,6 @@ class TaskViewHolder internal constructor(
                 dateFormatter.relativeDateTime(it.scheduled, DateStyle.SHORT),
             )
         }
-        val toggleSubtasks = { task: Long, collapsed: Boolean -> callback.toggleSubtasks(task, collapsed) }
         val onClick = { it: Filter -> callback.onClick(it) }
         chipGroup.setContent {
             TasksTheme(
@@ -327,18 +315,6 @@ class TaskViewHolder internal constructor(
                     )
                 ) {
                     val features = featureGate.current
-                    // Completed and Trash are flat lists: say whose subtask this is
-                    if (!parentTitle.isNullOrBlank() && (filter is CompletedFilter || filter is TrashFilter)) {
-                        Chip(
-                            icon = TasksIcons.SUBTASK,
-                            name = parentTitle,
-                            theme = 0,
-                            showText = true,
-                            showIcon = true,
-                            onClick = {},
-                            colorProvider = { chipProvider.getColor(it) },
-                        )
-                    }
                     if (filter is TrashFilter && task.task.isDeleted) {
                         Chip(
                             icon = TasksIcons.DELETE,
@@ -364,11 +340,15 @@ class TaskViewHolder internal constructor(
                             colorProvider = { chipProvider.getColor(it) },
                         )
                     }
-                    if (features.subtasks && children > 0 && remember { preferences.showSubtaskChip }) {
-                        SubtaskChip(
-                            collapsed = collapsed,
-                            children = chipCount,
-                            onClick = { toggleSubtasks(id, !collapsed) }
+                    if (checklist != null) {
+                        Chip(
+                            icon = TasksIcons.CHECKLIST,
+                            name = "${checklist.done}/${checklist.items.size}",
+                            theme = 0,
+                            showText = true,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
                         )
                     }
                     if (

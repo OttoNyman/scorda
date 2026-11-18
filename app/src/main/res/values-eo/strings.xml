@@ -58,7 +58,6 @@
     <string name="icon">Piktogramo</string>
     <string name="custom_filter_is_subtask">Estas subtasko</string>
     <string name="custom_filter_has_subtask">Kun subtaskoj</string>
-    <string name="subtasks">Subtaskoj</string>
     <string name="filter_today_only">Nur hodiaŭ</string>
     <string name="chip_appearance_text_only">Nur teksto</string>
     <string name="CFC_list_name">En listo…</string>
@@ -215,7 +214,6 @@
     <string name="filter_no_tags">Neniu etikedoj</string>
     <string name="support">Helpo</string>
     <string name="upgrade_open_source_description">Via abono subtenas daŭratan programadon</string>
-    <string name="collapse_subtasks">Maletendi subtaskojn</string>
     <string name="logout">Elsaluti</string>
     <string name="back">Reen</string>
     <string name="filter_no_priority">Neniu prioritato</string>
@@ -255,7 +253,6 @@
     <string name="filter_settings">Agordoj de filtrilo</string>
     <string name="filter_any_start_date">Ajna komencodato</string>
     <string name="attachment_directory">Dosierujo de Aldonaĵoj</string>
-    <string name="expand_subtasks">Etendi subtaskojn</string>
     <string name="list_separator_with_space">", "</string>
     <string name="tasker_create_task">Krei taskon</string>
     <string name="reinitialize_account">Repravalorizi</string>
@@ -369,15 +366,12 @@
     <string name="cost_more_money">Kosto: $$$</string>
     <string name="cost_money">Kosto: $</string>
     <string name="comment">Komento</string>
-    <string name="multiline_title">Permesi pluliniajn titolojn</string>
-    <string name="multiline_title_on">Premu enen-klavo por aldoni linisaltojn</string>
     <string name="sync_warning_google_tasks">Iuj detaloj de tasko ne sinkronigos per Google Tasks</string>
     <string name="sync_warning_microsoft_title">Pri sinkronigado de Microsoft To Do</string>
     <string name="sync_warning_google_tasks_title">Pri sinkronigado de Google</string>
     <string name="sync_warning_microsoft">Iuj detaloj de tasko ne sinkronigos per Microsoft To Do.</string>
     <string name="button_learn_more">Lerni Plu</string>
     <string name="app_settings">Agordoj de Aplikaĵo</string>
-    <string name="multiline_title_off">Premu Finite por konservi taskon</string>
     <string name="banner_app_updated_title">Ĝisdatigo de Aplikaĵo</string>
     <string name="banner_app_updated_description">Tasks estis ĝisdatigita al %s. Ĉu vi deziras legi la eldonajn notojn?</string>
     <string name="delete_tasks_warning">Forigas %s. Ne eblas malfari tion!</string>

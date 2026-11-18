@@ -8,7 +8,6 @@ package com.todoroo.astrid.adapter
 import com.todoroo.astrid.core.SortHelper.SORT_DUE
 import com.todoroo.astrid.core.SortHelper.SORT_IMPORTANCE
 import com.todoroo.astrid.core.SortHelper.SORT_LIST
-import com.todoroo.astrid.core.SortHelper.SORT_MANUAL
 import com.todoroo.astrid.core.SortHelper.SORT_START
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.TaskSaver
@@ -18,14 +17,11 @@ import org.tasks.broadcast.RefreshBroadcaster
 import org.tasks.data.TaskContainer
 import org.tasks.data.createDueDate
 import org.tasks.data.createHideUntil
-import org.tasks.data.deepestNestingUnder
 import org.tasks.data.findParentIndex
 import org.tasks.data.dao.CaldavDao
-import org.tasks.data.dao.CaldavDao.Companion.toAppleEpoch
 import org.tasks.data.dao.DirtyDao
 import org.tasks.data.dao.GoogleTaskDao
 import org.tasks.data.entity.CaldavAccount
-import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.Task.Companion.HIDE_UNTIL_SPECIFIC_DAY
 import org.tasks.date.DateTimeUtils.toDateTime
@@ -88,20 +84,8 @@ open class TaskAdapter(
         }
     }
 
-    open fun maxIndent(previousPosition: Int, task: TaskContainer): Int {
-        val previous = getTask(previousPosition)
-        var indent = if (previous.isSingleLevelSubtask) {
-            if (task.hasChildren()) 0 else 1
-        } else {
-            deepestNestingUnder(previous.indent)
-        }
-        while (!task.isCompleted && indent > 0 &&
-            findParent(indent, previousPosition + 1)?.isCompleted == true
-        ) {
-            indent--
-        }
-        return indent
-    }
+    // subtasks are retired: a sideways drag never makes one
+    open fun maxIndent(previousPosition: Int, task: TaskContainer): Int = 0
 
     fun minIndent(nextPosition: Int, task: TaskContainer): Int {
         (nextPosition until count).forEach {
@@ -135,33 +119,10 @@ open class TaskAdapter(
 
     open fun supportsAstridSorting(): Boolean = false
 
+    // Subtasks are retired: a drag only changes the sort group and never a parent, so a row
+    // nested from Google keeps its parent.
     open suspend fun moved(from: Int, to: Int, indent: Int) {
-        val task = getTask(from)
-        val newParent = findParent(indent, to)
-        if ((newParent?.id ?: 0) == task.parent || (indent > 0 && dataSource.subtaskSortMode == SORT_MANUAL)) {
-            if (indent == 0) {
-                changeSortGroup(task, if (from < to) to - 1 else to)
-            } else if (dataSource.subtaskSortMode == SORT_MANUAL) {
-                if (task.isGoogleTask) {
-                    moveGoogleTask(from, to, indent)
-                } else {
-                    moveCaldavTask(from, to, indent)
-                }
-            }
-            return
-        }
-        if (newParent?.caldav != null && task.caldav != newParent.caldav) {
-            taskMover.move(task = task.id, listUuid = newParent.caldav!!, newParent = newParent.id)
-            return
-        }
-        when {
-            newParent == null -> {
-                moveToTopLevel(task)
-                changeSortGroup(task, if (from < to) to - 1 else to)
-            }
-            newParent.isGoogleTask -> changeGoogleTaskParent(task, newParent)
-            newParent.isCaldavTask() -> changeCaldavParent(task, newParent)
-        }
+        changeSortGroup(getTask(from), if (from < to) to - 1 else to)
     }
 
     fun isHeader(position: Int): Boolean = dataSource.isHeader(position)
@@ -237,82 +198,6 @@ open class TaskAdapter(
         if (original.hideUntil != task.hideUntil) {
             taskSaver.save(task, original)
         }
-    }
-
-    private suspend fun moveToTopLevel(task: TaskContainer) {
-        when {
-            task.isGoogleTask -> changeGoogleTaskParent(task, null)
-            task.isCaldavTask() -> changeCaldavParent(task, null)
-        }
-    }
-
-    private suspend fun changeGoogleTaskParent(task: TaskContainer, newParent: TaskContainer?) {
-        val list = newParent?.caldav ?: task.caldav!!
-        if (newParent == null || task.caldav == newParent.caldav) {
-            googleTaskDao.move(
-                task.task,
-                list,
-                newParent?.id ?: 0,
-                if (newTasksOnTop) 0 else googleTaskDao.getBottom(list, newParent?.id ?: 0)
-            )
-        } else {
-            task.parent = newParent.id
-            googleTaskDao.insertAndShift(
-                task = task.task,
-                caldavTask = CaldavTask(
-                    task = task.id,
-                    calendar = list,
-                    remoteId = null
-                ),
-                top = newTasksOnTop
-            )
-        }
-        if (BuildConfig.DEBUG) {
-            googleTaskDao.validateSorting(list)
-        }
-    }
-
-    private suspend fun changeCaldavParent(task: TaskContainer, newParent: TaskContainer?) {
-        val list = newParent?.caldav ?: task.caldav!!
-        val caldavTask = task.caldavTask.takeIf { list == task.caldav } ?: CaldavTask(
-            task = task.id,
-            calendar = list,
-        )
-        val newParentId = newParent?.id ?: 0
-        if (CaldavAccount.pushesRemoteParent(task.accountType)) {
-            if (newParentId == 0L) {
-                caldavTask.remoteParent = ""
-            } else {
-                caldavTask.calendar = list
-                caldavTask.remoteParent = newParent?.caldavTask?.remoteId ?: return
-            }
-        }
-        task.task.order = if (newTasksOnTop) {
-            caldavDao.findFirstTask(list, newParentId)
-                    ?.takeIf { task.creationDate.toAppleEpoch() >= it}
-                    ?.minus(1)
-        } else {
-            caldavDao.findLastTask(list, newParentId)
-                    ?.takeIf { task.creationDate.toAppleEpoch() <= it }
-                    ?.plus(1)
-        }
-        taskDao.inTransaction {
-            if (caldavTask.id == 0L) {
-                caldavDao.insert(
-                    CaldavTask(
-                        task = task.id,
-                        calendar = list,
-                        remoteParent = caldavTask.remoteParent,
-                    )
-                )
-            } else {
-                caldavDao.update(caldavTask)
-            }
-            taskDao.setOrder(task.id, task.task.order)
-            taskDao.setParent(newParentId, listOf(task.id))
-            dirtyDao.setDirty(listOf(task.id))
-        }
-        refreshBroadcaster.broadcastRefresh()
     }
 
     protected suspend fun moveGoogleTask(from: Int, to: Int, indent: Int) {

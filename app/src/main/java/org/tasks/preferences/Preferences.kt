@@ -469,7 +469,7 @@ class Preferences @JvmOverloads constructor(
         overdue = getBoolean("constructor_overdue", false),
         notes = getBoolean("constructor_notes", false),
         lists = getBoolean("constructor_lists", false),
-        subtasks = getBoolean("constructor_subtasks", false),
+        checklist = getBoolean("constructor_checklist", false),
         tags = getBoolean("constructor_tags", false),
         filters = getBoolean("constructor_filters", false),
         priority = getBoolean("constructor_priority", false),
@@ -489,7 +489,7 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_overdue", value.overdue)
         setBoolean("constructor_notes", value.notes)
         setBoolean("constructor_lists", value.lists)
-        setBoolean("constructor_subtasks", value.subtasks)
+        setBoolean("constructor_checklist", value.checklist)
         setBoolean("constructor_tags", value.tags)
         setBoolean("constructor_filters", value.filters)
         setBoolean("constructor_priority", value.priority)
@@ -752,9 +752,6 @@ class Preferences @JvmOverloads constructor(
 
     val themeBase: Int
         get() = getInt(R.string.p_theme, ThemeBase.DEFAULT_BASE_THEME)
-
-    val showSubtaskChip: Boolean
-        get() = getBoolean(R.string.p_subtask_chips, true)
 
     val showStartDateChip: Boolean
         get() = getBoolean(R.string.p_start_date_chip, true)

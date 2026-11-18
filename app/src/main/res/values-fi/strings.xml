@@ -194,8 +194,6 @@
     <string name="etesync_selection_description">End-to-end-salattu synkronointi</string>
     <string name="caldav_selection_description">Avoimiin verkkostandardeihin pohjautuva synkronointi</string>
     <string name="choose_synchronization_service">Valitse alusta</string>
-    <string name="collapse_subtasks">Pienennä alitehtävät</string>
-    <string name="expand_subtasks">Laajenna alitehtävät</string>
     <string name="invalid_backup_file">Epäsopiva varmuuskopiotiedosto</string>
     <string name="choose_new_location">Valitse uusi sijainti</string>
     <string name="open_map">Avaa kartta</string>
@@ -225,7 +223,6 @@
     <string name="location_radius_meters">%s m</string>
     <string name="geofence_radius">Geofence-alue</string>
     <string name="add_location">Lisää sijainti</string>
-    <string name="subtasks">Alitehtävät</string>
     <string name="google_drive_backup">Google Driven varmuuskopio</string>
     <string name="TEA_control_location">Sijainti</string>
     <string name="SSD_sort_my_order">Oma järjestys</string>
@@ -373,9 +370,6 @@
     <string name="price_per_year_with_currency">%s/vuosi</string>
     <string name="cost_money">Hinta: $</string>
     <string name="cost_more_money">Hinta: $$$</string>
-    <string name="multiline_title">Salli moniriviset otsikot</string>
-    <string name="multiline_title_on">Paina Enter-näppäintä lisätäksesi rivinvaihdon</string>
-    <string name="multiline_title_off">Paina Valmis tallentaaksesi tehtävän</string>
     <string name="sync_warning_microsoft_title">Microsoft To Do synkronoinnista</string>
     <string name="sync_warning_microsoft">Kaikkia tehtävän tietoja ei voi synkronoida Microsoft To Do:n kanssa.</string>
     <string name="sync_warning_google_tasks_title">Google Taskista</string>

@@ -90,7 +90,6 @@
     <string name="customize_edit_screen">Prilagodi ekran za uređivanje</string>
     <string name="font_size">Veličina fonta</string>
     <string name="enabled">Omogućeno</string>
-    <string name="subtasks">Podzadaci</string>
     <string name="tomorrow">Sutra</string>
     <string name="local_lists">Popisi na uređaju</string>
     <string name="help">Pomoć</string>
@@ -149,8 +148,6 @@
     <string name="decsync_selection_description">Sinkronizacija pojedinačnih datoteka</string>
     <string name="etesync_selection_description">Obostrana šifrirana sinkronizacija</string>
     <string name="caldav_selection_description">Sinkronizacija temeljena na otvorenim internetskim standardima</string>
-    <string name="collapse_subtasks">Sklopi podzadatke</string>
-    <string name="expand_subtasks">Rasklopi podzadatke</string>
     <string name="invalid_backup_file">Neispravna datoteka sigurnosne kopije</string>
     <string name="choose_new_location">Odaberi novu lokaciju</string>
     <string name="open_map">Otvori kartu</string>
@@ -371,8 +368,6 @@
     <string name="enable_alarms">Dobij obavijest pravovremeno</string>
     <string name="cost_money">Cijena: $</string>
     <string name="cost_more_money">Cijena: $$$</string>
-    <string name="multiline_title">Dozvoli višeredne naslove</string>
-    <string name="multiline_title_on">Pritisni tipku Enter za dodavanje prijeloma retka</string>
     <string name="sync_warning_microsoft_title">O sinkronizaciji s Microsoft To Do</string>
     <string name="sync_warning_google_tasks_title">O sinkronizaciji s Google Tasks</string>
     <string name="button_learn_more">Saznaj više</string>
@@ -387,7 +382,6 @@
     <string name="delete_tasks_warning">%s će se izbrisati. Ovo se ne može opozvati!</string>
     <string name="banner_app_updated_title">Aplikacija je aktualizirana</string>
     <string name="banner_app_updated_description">Aplikacija Tasks je upravo aktualizirana na %s. Želiš li vidjeti bilješke o izdanju?</string>
-    <string name="multiline_title_off">Pritisni „Gotovo” za spremanje zadatka</string>
     <string name="widget_view_more_tasks">Prikaži više zadataka</string>
     <string name="import_failed">Uvoz neuspio</string>
     <string name="import_failed_message">Nije moguće čitati datoteku sigurnosne kopije</string>

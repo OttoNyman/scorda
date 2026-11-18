@@ -101,7 +101,7 @@ class SeriesTemplateTest : DatabaseTest() {
     @Test
     fun captureThenEmitCopiesEverything() = runBlocking {
         val task = newTask("water", LOCAL_LIST, hideUntil = DUE - HOUR)
-        task.notes = "plants"
+        task.notes = "plants\n\n- [x] water\n- [ ] feed"
         task.priority = Task.Priority.HIGH
         taskDao.update(task)
         alarmDao.insert(listOf(
@@ -121,7 +121,8 @@ class SeriesTemplateTest : DatabaseTest() {
 
         val row = taskDao.fetch(emitted.id)!!
         assertEquals("water", row.title)
-        assertEquals("plants", row.notes)
+        // a new occurrence starts with the checklist unchecked
+        assertEquals("plants\n\n- [ ] water\n- [ ] feed", row.notes)
         assertEquals(Task.Priority.HIGH, row.priority)
         assertEquals("series", row.series)
         assertEquals(NEXT, row.scheduled)
@@ -141,32 +142,18 @@ class SeriesTemplateTest : DatabaseTest() {
         assertTrue(geofence.isArrival)
         assertFalse(geofence.isDeparture)
 
-        val subtasks = taskDao.fetch(taskDao.getChildren(emitted.id))
-        assertEquals(setOf("open", "done"), subtasks.map { it.title }.toSet())
-        subtasks.forEach {
-            assertEquals(0L, it.completionDate)
-            assertNull(it.series)
-            assertEquals(0L, it.scheduled)
-            assertEquals(emitted.id, it.parent)
-            assertEquals(LOCAL_LIST, caldavDao.getTask(it.id)!!.calendar)
-        }
-        assertEquals(0L, subtasks.single { it.title == "open" }.dueDate)
-        assertEquals(NEXT + HOUR, subtasks.single { it.title == "done" }.dueDate)
+        // subtasks are retired: rows nested from Google are not copied
+        assertTrue(template.subtasks.isEmpty())
+        assertTrue(taskDao.getChildren(emitted.id).isEmpty())
     }
 
     @Test
-    fun subtaskOfUndatedParentHasNoDueOffset() = runBlocking {
-        val parent = newTask("p", LOCAL_LIST, due = 0)
-        val sub = newTask("s", LOCAL_LIST, parent = parent.id, due = DUE)
-        alarmDao.insert(Alarm(task = sub.id, type = Alarm.TYPE_DATE_TIME, time = DUE - HOUR))
+    fun legacyTemplateSubtasksAreNotEmitted() = runBlocking {
+        val legacy = SeriesTemplate(title = "p", subtasks = listOf(SeriesTemplate(title = "s")))
 
-        val template = templates.capture(parent.id)
-        val emitted = templates.emit(series, NEXT, template)
+        val emitted = templates.emit(series, NEXT, legacy)
 
-        assertNull(template.subtasks.single().dueOffset)
-        val emittedSub = taskDao.fetch(taskDao.getChildren(emitted.id)).single()
-        assertEquals(0L, emittedSub.dueDate)
-        assertEquals(DUE - HOUR, alarmDao.getAlarms(emittedSub.id).single().time)
+        assertTrue(taskDao.getChildren(emitted.id).isEmpty())
     }
 
     @Test

@@ -13,10 +13,10 @@ import com.todoroo.astrid.subtasks.SubtasksHelper
 import org.tasks.BuildConfig
 import org.tasks.R
 import org.tasks.constructor.Constructor
+import org.tasks.checklist.Checklist
 import org.tasks.data.TaskContainer
 import org.tasks.data.TaskListQuery.getQuery
 import org.tasks.data.dao.TaskDao
-import org.tasks.data.hasNotes
 import org.tasks.data.isHidden
 import org.tasks.data.isOverdue
 import org.tasks.extensions.Context.is24HourFormat
@@ -143,12 +143,15 @@ internal class TasksWidgetBuilder(
                     markdown.toMarkdown(task.title)
                 )
                 setTextColor(R.id.widget_text, textColorTitle)
-                if (settings.showDescription && task.hasNotes()) {
+                // checklist lines show as the counter chip, not in the description
+                val checklist = Checklist.parse(task.notes).takeIf { features.checklist }
+                val notes = checklist?.text ?: task.notes
+                if (settings.showDescription && !notes.isNullOrBlank()) {
                     setTextSize(R.id.widget_description, settings.textSize)
                     setTextColor(R.id.widget_description, onSurfaceVariant)
                     setTextViewText(
                         R.id.widget_description,
-                        markdown.toMarkdown(task.notes)
+                        markdown.toMarkdown(notes)
                     )
                     setViewVisibility(R.id.widget_description, View.VISIBLE)
                     if (settings.showFullDescription) {
@@ -191,19 +194,8 @@ internal class TasksWidgetBuilder(
                     setViewVisibility(R.id.divider, View.GONE)
                 }
                 removeAllViews(R.id.chips)
-                if (settings.showSubtaskChips && taskContainer.hasChildren()) {
-                    val chip = chipProvider.getSubtaskChip(taskContainer)
-                    addView(R.id.chips, chip)
-                    setOnClickFillInIntent(
-                        R.id.chip,
-                        Intent(WidgetClickActivity.TOGGLE_SUBTASKS)
-                            .putExtra(WidgetClickActivity.EXTRA_TASK_ID, task.id)
-                            .putExtra(
-                                WidgetClickActivity.EXTRA_COLLAPSED,
-                                !taskContainer.isCollapsed
-                            )
-                            .putExtra(WidgetClickActivity.EXTRA_WIDGET, widgetId)
-                    )
+                if (checklist != null && checklist.items.isNotEmpty()) {
+                    addView(R.id.chips, chipProvider.getChecklistChip(checklist.done, checklist.items.size))
                 }
                 if (taskContainer.task.isHidden && settings.showStartChips) {
                     val sortByDate = settings.groupMode == SortHelper.SORT_START && !disableGroups

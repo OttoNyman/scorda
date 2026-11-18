@@ -48,8 +48,6 @@ import tasks.kmp.generated.resources.constructor_memos
 import tasks.kmp.generated.resources.constructor_lists
 import tasks.kmp.generated.resources.constructor_local_lists
 import tasks.kmp.generated.resources.constructor_local_lists_summary
-import tasks.kmp.generated.resources.constructor_markdown
-import tasks.kmp.generated.resources.constructor_markdown_summary
 import tasks.kmp.generated.resources.constructor_notes
 import tasks.kmp.generated.resources.constructor_overdue
 import tasks.kmp.generated.resources.constructor_overdue_count
@@ -57,7 +55,7 @@ import tasks.kmp.generated.resources.constructor_overdue_summary
 import tasks.kmp.generated.resources.constructor_priority
 import tasks.kmp.generated.resources.constructor_repeat
 import tasks.kmp.generated.resources.constructor_repeat_count
-import tasks.kmp.generated.resources.constructor_subtasks
+import tasks.kmp.generated.resources.constructor_checklist
 import tasks.kmp.generated.resources.constructor_tags
 import tasks.kmp.generated.resources.move_lists_keep
 import tasks.kmp.generated.resources.move_lists_move
@@ -75,11 +73,9 @@ fun ConstructorScreen(
     sync: Boolean,
     geofences: Boolean,
     counts: ConstructorCounts,
-    markdown: Boolean,
     comments: Boolean,
     onPreset: (Preset) -> Unit,
     onChange: (Constructor) -> Unit,
-    onMarkdown: (Boolean) -> Unit,
     onComments: (Boolean) -> Unit,
     /** The advance new tasks get; null for none. */
     advanceDefault: Long?,
@@ -117,18 +113,8 @@ fun ConstructorScreen(
         // What a task can carry: everything below lives inside one task.
         Group(Res.string.constructor_group_content)
         Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
-        if (effective.notes) {
-            Toggle(
-                title = Res.string.constructor_markdown,
-                checked = markdown,
-                summary = stringResource(Res.string.constructor_markdown_summary),
-                summaryWhenOff = true,
-                nested = true,
-                onChange = onMarkdown,
-            )
-        }
         Toggle(Res.string.constructor_comments, comments, onChange = onComments)
-        Toggle(Res.string.constructor_subtasks, effective.subtasks) { onChange(raw.copy(subtasks = it)) }
+        Toggle(Res.string.constructor_checklist, effective.checklist) { onChange(raw.copy(checklist = it)) }
         // a repeat is part of the task (its schedule), not a reminder setting
         Toggle(
             title = Res.string.constructor_repeat,

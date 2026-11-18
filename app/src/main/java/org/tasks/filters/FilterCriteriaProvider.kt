@@ -125,8 +125,6 @@ class FilterCriteriaProvider @Inject constructor(
             add(recurringFilter())
             add(completedFilter())
             add(hiddenFilter)
-            add(parentFilter)
-            add(subtaskFilter)
             add(reminderFilter)
         }
         return result

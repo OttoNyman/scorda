@@ -82,10 +82,11 @@ import org.tasks.resources.getString
 import org.tasks.repeats.SeriesEditScope
 import org.tasks.themes.TasksTheme
 import org.tasks.ui.LocationControlSet
-import org.tasks.ui.SubtaskControlSet
 import org.tasks.ui.TaskEditViewModel
 import org.tasks.ui.TaskEditViewModel.MemoConvertBlock
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_CREATION
+import org.tasks.checklist.Checklist
+import org.tasks.ui.TaskEditViewModel.Companion.TAG_CHECKLIST
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DESCRIPTION
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DUE_DATE
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_ADVANCE
@@ -378,6 +379,7 @@ fun TaskEditScreen(
                                     }
                                 }
                             },
+                            hint = if (viewState.task.memo) R.string.memo_title_hint else R.string.TEA_title_hint,
                             requestFocus = viewState.showKeyboard,
                             save = {
                                 scope.launch {
@@ -415,12 +417,24 @@ fun TaskEditScreen(
                             onChangePriority = { editViewModel.setPriority(it) },
                         )
 
-                    TAG_DESCRIPTION ->
+                    TAG_DESCRIPTION -> {
+                        // with the checklist on, its lines live in their own block below
+                        val checklist = TAG_CHECKLIST in viewState.displayOrder
                         DescriptionRow(
-                            text = viewState.task.notes,
-                            onChanged = { text -> editViewModel.setDescription(text.toString().trim { it <= ' ' }) },
+                            text = if (checklist) Checklist.parse(viewState.task.notes).text else viewState.task.notes,
+                            onChanged = { text ->
+                                val trimmed = text.toString().trim { it <= ' ' }
+                                if (checklist) editViewModel.setDescriptionText(trimmed) else editViewModel.setDescription(trimmed)
+                            },
                             linkify = if (viewState.linkify) linkify else null,
                             markdownProvider = markdownProvider,
+                        )
+                    }
+
+                    TAG_CHECKLIST ->
+                        ChecklistRow(
+                            notes = viewState.task.notes,
+                            onChange = { editViewModel.setChecklist(it) },
                         )
 
                     TAG_LIST -> {
@@ -469,7 +483,6 @@ fun TaskEditScreen(
                             onRepeatFromChanged = { editViewModel.setRepeatFrom(it) },
                         )
                     }
-                    SubtaskControlSet.TAG -> AndroidFragment<SubtaskControlSet>()
                     else -> throw IllegalArgumentException("Unknown row: $tag")
                 }
                 HorizontalDivider()

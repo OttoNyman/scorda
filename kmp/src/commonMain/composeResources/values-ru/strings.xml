@@ -659,7 +659,7 @@
     <string name="move_target_same_summary">Каждый станет Google-списком с тем же именем</string>
     <string name="inbox_list">Входящие</string>
     <string name="lists_on_message">Все задачи — в списке «%1$s»</string>
-    <string name="constructor_subtasks">Подзадачи</string>
+    <string name="constructor_checklist">Чек-лист</string>
     <string name="constructor_tags">Теги</string>
     <string name="constructor_filters">Фильтры</string>
     <string name="constructor_priority">Приоритет</string>

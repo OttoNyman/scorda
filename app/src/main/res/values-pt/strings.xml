@@ -269,9 +269,6 @@
     <string name="etesync_selection_description">Sincronização com encriptação ponta-a-ponta</string>
     <string name="choose_synchronization_service">Selecione uma plataforma</string>
     <string name="display_name">Mostrar nome</string>
-    <string name="subtasks">Subtarefas</string>
-    <string name="collapse_subtasks">Colapsar subtarefas</string>
-    <string name="expand_subtasks">Expandir subtarefas</string>
     <string name="SSD_sort_my_order">Minha ordem</string>
     <string name="location_radius_meters">%s m</string>
     <string name="davx5_selection_description">Sincronize as suas tarefas com a aplicação DAVx⁵</string>
@@ -360,7 +357,6 @@
     <string name="theme_dynamic">Dinâmico</string>
     <string name="enable_alarms_description">Para garantir que você seja notificado na hora certa, conceda permissão para configurar alarmes e lembretes nas Configurações</string>
     <string name="yesterday">Ontem</string>
-    <string name="multiline_title_off">Pressione Concluído para salvar a tarefa</string>
     <string name="customize_drawer">Personalizar menu</string>
     <string name="show_edit_screen_without_unlock_summary">Permite o uso do bloco de Configurações Rápidas sem desbloquear o dispositivo</string>
     <string name="delete_comment">comentário</string>
@@ -373,8 +369,6 @@
     <string name="enable_alarms">Receba notificações na hora certa</string>
     <string name="banner_app_updated_title">Aplicação atualizada</string>
     <string name="cost_money">Custo: R$</string>
-    <string name="multiline_title">Permitir títulos em várias linhas</string>
-    <string name="multiline_title_on">Pressione a tecla Enter para adicionar quebras de linha</string>
     <string name="cost_more_money">Custo:R$$$</string>
     <string name="show_edit_screen_without_unlock">Mostrar tela de edição sem desbloquear</string>
     <string name="banner_app_updated_description">O Tasks foi atualizado para a versão %s. Gostaria de ver as notas de lançamento?</string>

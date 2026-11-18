@@ -163,7 +163,6 @@
     <string name="backup_directory">Φάκελος εφεδρικού αντιγράφου</string>
     <string name="google_drive_backup">Αντίγραφο ασφαλείας Google Drive</string>
     <string name="miscellaneous">Διάφορα</string>
-    <string name="subtasks">Υποεργασίες</string>
     <string name="enabled">Ενεργοποιημένο</string>
     <string name="font_size">Μέγεθος γραμματοσειράς</string>
     <string name="header_spacing">Κενά μεταξύ γραμμάτων</string>
@@ -223,8 +222,6 @@
     <string name="banner_app_updated_description">Η Tasks μόλις ενημερώθηκε στο %s. Θα θέλατε να δείτε της σημειώσεις έκδοσης;</string>
     <string name="whats_new">Τι καινούργιο υπάρχει</string>
     <string name="invalid_backup_file">Μη έγκυρο αρχείο αντιγράφου ασφαλείας</string>
-    <string name="expand_subtasks">Άνοιγμα υποεργασιών</string>
-    <string name="collapse_subtasks">Κλείσιμο υποεργασιών</string>
     <string name="choose_synchronization_service">Επιλογή πλατφόρμας</string>
     <string name="caldav_selection_description">Συγχρονισμός βασισμένος σε ανοιχτά πρότυπα διαδικτύου</string>
     <string name="etesync_selection_description">Κρυπτογραφημένος συγχρονισμός από άκρο σε άκρο</string>
@@ -332,9 +329,6 @@
     <string name="enable_alarms_description">Για να βεβαιωθείτε ότι θα ειδοποιηθείτε την κατάλληλη στιγμή, παραχωρήστε άδεια δημιουργίας υπενθυμίσεων και ειδοποιήσεων στις Ρυθμίσεις</string>
     <string name="cost_money">Κόστος: $</string>
     <string name="cost_more_money">Κόστος: $$$</string>
-    <string name="multiline_title">Επιτρέψτε τους τίτλους πολλαπλών γραμμών</string>
-    <string name="multiline_title_on">Πατήστε το πλήκτρο Enter για να προσθέσετε διακοπές γραμμής</string>
-    <string name="multiline_title_off">Πατήστε Τέλος για να αποθηκεύσετε την εργασία</string>
     <string name="sync_warning_microsoft_title">Σχετικά με τον συγχρονισμό Microsoft To Do</string>
     <string name="sync_warning_microsoft">Δεν συγχρονίζονται όλες οι λεπτομέρειες εργασίας με το Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Σχετικά με τον συγχρονισμό Google Task</string>

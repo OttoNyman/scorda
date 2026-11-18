@@ -18,6 +18,8 @@ class GoogleTaskManualSortAdapter internal constructor(
     taskMover: TaskMover,
 ) : TaskAdapter(false, googleTaskDao, caldavDao, taskDao, taskSaver, dirtyDao, localBroadcastManager, taskMover) {
     override suspend fun moved(from: Int, to: Int, indent: Int) {
+        // subtasks are retired: a row nested from Google keeps its parent, so it stays where it is
+        if (getTask(from).hasParent()) return
         moveGoogleTask(from, to, indent)
     }
 }

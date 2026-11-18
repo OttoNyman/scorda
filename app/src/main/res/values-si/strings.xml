@@ -269,8 +269,6 @@
     <string name="cancel">අවලංගු කරන්න</string>
     <string name="ok">හරි</string>
     <string name="choose_synchronization_service">සේවාවක් තෝරන්න</string>
-    <string name="collapse_subtasks">උප කාර්යයන් හකුළුවන්න</string>
-    <string name="expand_subtasks">උප කාර්යයන් පුළුල් කරන්න</string>
     <string name="invalid_backup_file">වලංගු නොවන උපස්ථ ගොනුවකි</string>
     <string name="whats_new">නව විශේෂාංග</string>
     <string name="choose_new_location">නව ස්ථානයක් තෝරන්න</string>
@@ -331,7 +329,6 @@
     <string name="header_spacing">පරතරය</string>
     <string name="font_size">අකුරු ප්‍රමාණය</string>
     <string name="enabled">සක්‍රීයයි</string>
-    <string name="subtasks">උප කාර්යයන්</string>
     <string name="miscellaneous">විවිධ</string>
     <string name="google_drive_backup">ගූගල් ඩ්‍රයිව් උපස්ථය</string>
     <string name="backup_directory">උපස්ථ ෆෝල්ඩරය</string>

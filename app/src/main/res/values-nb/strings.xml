@@ -219,9 +219,6 @@
     <string name="invalid_backup_file">Ugyldig sikkerhetskopifil</string>
     <string name="icon">Ikon</string>
     <string name="SSD_sort_my_order">Min bestilling</string>
-    <string name="expand_subtasks">Fold ut gjøremålssteg</string>
-    <string name="collapse_subtasks">Fold sammen gjøremålssteg</string>
-    <string name="subtasks">Gjøremålssteg</string>
     <string name="display_name">Visningsnavn</string>
     <string name="choose_synchronization_service">Velg en plattform</string>
     <string name="show_advanced_settings">Vis avanserte innstillinger</string>

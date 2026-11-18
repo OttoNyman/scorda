@@ -211,9 +211,6 @@
     <string name="icon">图标</string>
     <string name="list_separator_with_space">"， "</string>
     <string name="SSD_sort_my_order">我的顺序</string>
-    <string name="expand_subtasks">展开子任务</string>
-    <string name="collapse_subtasks">收起子任务</string>
-    <string name="subtasks">子任务</string>
     <string name="display_name">显示名称</string>
     <string name="choose_synchronization_service">选择平台</string>
     <string name="caldav_selection_description">基于开放的互联网标准的同步</string>
@@ -366,8 +363,6 @@
     <string name="cost_more_money">费用：$$$</string>
     <string name="cost_money">费用：$</string>
     <string name="comment">注释</string>
-    <string name="multiline_title">允许多行标题</string>
-    <string name="multiline_title_on">按 Enter 键添加换行符</string>
     <string name="sync_warning_microsoft">不是所有任务详情都与 Microsoft To Do 同步。</string>
     <string name="sync_warning_microsoft_title">关于 Microsoft To Do 同步</string>
     <string name="sync_warning_google_tasks_title">关于 Google Task 同步</string>
@@ -376,7 +371,6 @@
     <string name="app_settings">应用设置</string>
     <string name="banner_app_updated_description">Tasks 刚刚更新至 %s。是否要查看更新说明？</string>
     <string name="banner_app_updated_title">应用已更新</string>
-    <string name="multiline_title_off">按完成保存任务</string>
     <string name="delete_tasks_warning">%s 将会删除。此操作无法撤销！</string>
     <string name="widget_view_more_tasks">查看更多任务</string>
     <string name="subscription_required_fdroid">使用 Scorda 同步需要订阅。订阅必须通过 Google Play 版本的 Tasks 应用进行。</string>

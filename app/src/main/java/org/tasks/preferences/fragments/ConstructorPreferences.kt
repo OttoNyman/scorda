@@ -51,7 +51,6 @@ class ConstructorPreferences : Fragment() {
         var counts by remember { mutableStateOf(ConstructorCounts()) }
         var pending by remember { mutableStateOf<Constructor?>(null) }
         var targets by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
-        var markdown by remember { mutableStateOf(preferences.getBoolean(R.string.p_markdown, false)) }
         var comments by remember {
             mutableStateOf(preferences.getBoolean(R.string.p_show_task_edit_comments, false))
         }
@@ -99,14 +98,9 @@ class ConstructorPreferences : Fragment() {
                 sync = repository.sync,
                 geofences = configuration.supportsGeofences,
                 counts = counts,
-                markdown = markdown,
                 comments = comments,
                 onPreset = { change(raw.withPreset(it)) },
                 onChange = { change(it) },
-                onMarkdown = {
-                    preferences.setBoolean(R.string.p_markdown, it)
-                    markdown = it
-                },
                 onComments = {
                     preferences.setBoolean(R.string.p_show_task_edit_comments, it)
                     comments = it

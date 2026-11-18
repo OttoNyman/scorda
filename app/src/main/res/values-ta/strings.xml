@@ -130,8 +130,6 @@
     <string name="etesync_selection_description">திறந்த மூல, இறுதி முதல் இறுதி மறைகுறியாக்க ஒத்திசைவு</string>
     <string name="caldav_selection_description">திறந்த இணைய தரங்களின் அடிப்படையில் ஒத்திசைவு</string>
     <string name="choose_synchronization_service">ஒரு தளத்தைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="collapse_subtasks">துணை பணிகளைச் சுருக்கவும்</string>
-    <string name="expand_subtasks">துணை பணிகளை விரிவாக்குங்கள்</string>
     <string name="invalid_backup_file">தவறான காப்பு கோப்பு</string>
     <string name="whats_new">புதியது என்ன</string>
     <string name="choose_new_location">புதிய இருப்பிடத்தைத் தேர்வுசெய்க</string>
@@ -223,7 +221,6 @@
     <string name="row_spacing">வரிசை இடைவெளி</string>
     <string name="font_size">எழுத்துரு அளவு</string>
     <string name="enabled">இயக்கப்பட்டது</string>
-    <string name="subtasks">துணை பணிகள்</string>
     <string name="miscellaneous">இதர</string>
     <string name="google_drive_backup">Google Driveல் நகலெடுக்கவும்</string>
     <string name="backup_directory">காப்பு கோப்புறை</string>
@@ -343,8 +340,6 @@
     <string name="enable_alarms">சரியான நேரத்தில் அறிவிக்கப்படுங்கள்</string>
     <string name="cost_money">செலவு: $</string>
     <string name="cost_more_money">செலவு: $$$</string>
-    <string name="multiline_title">மல்டிலைன் தலைப்புகளை அனுமதிக்கவும்</string>
-    <string name="multiline_title_on">வரி இடைவெளிகளைச் சேர்க்க ENTER விசையை அழுத்தவும்</string>
     <string name="authentication_required">ஏற்பு தேவை</string>
     <string name="github_sponsor">ஒப்புரவாளர்</string>
     <string name="completed">முடிந்தது</string>
@@ -378,7 +373,6 @@
     <string name="open_source">திறந்த மூல</string>
     <string name="upgrade_more_customization">மேலும் தனிப்பயனாக்கம்</string>
     <string name="banner_app_updated_title">பயன் புதுப்பிக்கப்பட்டது</string>
-    <string name="multiline_title_off">பணியைச் சேமிக்க முடிந்தது என்பதை அழுத்தவும்</string>
     <string name="banner_app_updated_description">பணிகள் இப்போதுதான் %s ஆகப் புதுப்பிக்கப்பட்டது. வெளியீட்டுக் குறிப்புகளைப் பார்க்க விரும்புகிறீர்களா?</string>
     <string name="delete_tasks_warning">%s நீக்கப்படும். இதை செயல்தவிர்க்க முடியாது!</string>
 </resources>

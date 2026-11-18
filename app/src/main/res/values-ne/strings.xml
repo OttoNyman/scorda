@@ -13,7 +13,6 @@
     <string name="TEA_control_files">फाइलहरू</string>
     <string name="day_before_due">मितिभन्दा अघिल्लो दिन</string>
     <string name="display_name">डिस्प्ले नाम</string>
-    <string name="subtasks">उपकार्यहरू</string>
     <string name="TEA_title_hint">कार्यको नाम</string>
     <string name="TEA_importance_label">प्राथमिकता</string>
     <string name="TEA_note_label">विवरण</string>

@@ -214,9 +214,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="icon">Ikon</string>
     <string name="SSD_sort_my_order">Egyéni sorrend</string>
-    <string name="expand_subtasks">Részfeladatok kibontása</string>
-    <string name="collapse_subtasks">Részfeladatok összecsukása</string>
-    <string name="subtasks">Részfeladatok</string>
     <string name="display_name">Megjelenített név</string>
     <string name="choose_synchronization_service">Platform választása</string>
     <string name="caldav_selection_description">Nyílt Internetes szabványon alapuló szinkronizáció</string>
@@ -364,8 +361,6 @@
     <string name="show_edit_screen_without_unlock_summary">Gyorsbeállítások ikon engedélyezése a telefon feloldása nélkül</string>
     <string name="cost_money">Ár: $</string>
     <string name="cost_more_money">Ár: $$$</string>
-    <string name="multiline_title">Többsoros címek engedélyezése</string>
-    <string name="multiline_title_on">Sortöréshez nyomd meg az Enter-t</string>
     <string name="delete_comment">megjegyzés</string>
     <string name="comment">Megjegyzés</string>
     <string name="yesterday">Tegnap</string>
@@ -380,7 +375,6 @@
     <string name="banner_app_updated_title">Alkalmazás frissítve</string>
     <string name="banner_app_updated_description">A Tasks frissítve lett a(z) %s verzióra. Szeretné látni a változások listáját?</string>
     <string name="delete_tasks_warning">A(z) %s törlésre kerül. Ez a művelet nem visszavonható!</string>
-    <string name="multiline_title_off">Kattints a Kész gombra a feladat elmentéséhez</string>
     <string name="widget_view_more_tasks">További feladatok megtekintése</string>
     <string name="subscription_required_fdroid">A Scorda szinkronizáláshoz előfizetés szükséges. Az előfizetést a Tasks alkalmazás Google Play verziójából lehet kezdeményezni.</string>
     <string name="sponsorship_required_fdroid">A Scorda szinkronizáláshoz GitHub szponzori előfizetés szükséges. A szponzori tagsághoz kattints az alábbi linkre.</string>

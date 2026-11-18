@@ -49,15 +49,14 @@ import tasks.kmp.generated.resources.sort_descending
 import tasks.kmp.generated.resources.sort_grouping
 import tasks.kmp.generated.resources.sort_list
 import tasks.kmp.generated.resources.sort_not_available
-import tasks.kmp.generated.resources.show_completed_subtasks
 import tasks.kmp.generated.resources.sort_sorting
 import tasks.kmp.generated.resources.show_completed
 import tasks.kmp.generated.resources.show_unstarted
-import tasks.kmp.generated.resources.subtasks
 
 val memosSortOptions = linkedMapOf(
     Res.string.SSD_sort_importance to SortHelper.SORT_IMPORTANCE,
     Res.string.SSD_sort_modified to SortHelper.SORT_MODIFIED,
+    Res.string.sort_created to SortHelper.SORT_CREATED,
 )
 
 val sortOptions = linkedMapOf(
@@ -135,6 +134,7 @@ fun MemosSortSheetContent(
                 linkedMapOf(
                     Res.string.SSD_sort_my_order to SortHelper.SORT_IMPORTANCE,
                     Res.string.SSD_sort_modified to SortHelper.SORT_MODIFIED,
+                    Res.string.sort_created to SortHelper.SORT_CREATED,
                 )
             },
             onClick = onSelect,
@@ -286,18 +286,8 @@ fun BottomSheetContent(
         onClick = clickSortMode,
         setAscending = setSortAscending,
     )
+    // subtasks are retired: no subtask sort row and no "show completed subtasks"
     if (!astridSort) {
-        if (!manualSort) {
-            SortRow(
-                title = Res.string.subtasks,
-                icon = TasksIcons.SUBTASK,
-                ascending = subtaskAscending,
-                sortMode = subtaskMode,
-                onClick = clickSubtaskMode,
-                setAscending = setSubtaskAscending,
-                showAscending = subtaskMode != SortHelper.SORT_MANUAL
-            )
-        }
         if (showCompletedAndHiddenOptions) {
             HorizontalDivider()
             if (showUnstarted) {
@@ -319,11 +309,6 @@ fun BottomSheetContent(
             !showCompletedAndHiddenOptions || !completedAndHiddenEnabled || showCompleted
         if (showCompletedSection) {
             HorizontalDivider()
-            SwitchRow(
-                title = Res.string.show_completed_subtasks,
-                checked = showCompletedSubtasks,
-                onCheckedChange = setShowCompletedSubtasks,
-            )
             SwitchRow(
                 title = Res.string.completed_tasks_at_bottom,
                 checked = completedAtBottom,

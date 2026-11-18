@@ -181,11 +181,9 @@
     <string name="building_notifications">Generant notificacions</string>
     <string name="choose_a_location">Escolleix una ubicació</string>
     <string name="pick_this_location">Selecciona aquesta ubicació</string>
-    <string name="collapse_subtasks">Contraure subtasques</string>
     <string name="invalid_backup_file">Archiu de còpia de seguretat no vàlid</string>
     <string name="action_create_new_task">Crear una tasca nova</string>
     <string name="action_new_task">Tasca nova</string>
-    <string name="expand_subtasks">Expandir subtasques</string>
     <string name="tags">Etiquetes</string>
     <string name="password">Contrasenya</string>
     <string name="help_and_feedback">Ajuda i comentaris</string>
@@ -210,7 +208,6 @@
     <string name="attachment_directory">Carpeta d\'adjunts</string>
     <string name="backup_directory">Carpeta de la còpia de seguretat</string>
     <string name="miscellaneous">Miscel·lània</string>
-    <string name="subtasks">Subtasques</string>
     <string name="header_spacing">Espaiat</string>
     <string name="remove">Elimina</string>
     <string name="move">Mou</string>
@@ -380,9 +377,6 @@
     <string name="enable_alarms_description">Per assegurar-vos que us notifiqueu en el moment adequat, concediu permís per establir alarmes i recordatoris a la configuració</string>
     <string name="cost_money">Cost: $</string>
     <string name="cost_more_money">Cost: $$$</string>
-    <string name="multiline_title">Permeteu títols multilínies</string>
-    <string name="multiline_title_on">Premeu la tecla Retorn per a afegir salts de línia</string>
-    <string name="multiline_title_off">Premeu Fet per a desar la tasca</string>
     <string name="sync_warning_microsoft_title">Sobre la sincronització del Microsoft To Do</string>
     <string name="sync_warning_microsoft">No tots els detalls de la tasca se sincronitzen amb Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Sobre la sincronització de Google Tasks</string>

@@ -17,6 +17,7 @@ import org.tasks.constructor.Constructor
 import org.tasks.db.QueryUtils.showHidden
 import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.Filter
+import org.tasks.filters.MemosFilter
 import org.tasks.filters.SearchFilter
 import org.tasks.preferences.QueryPreferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -49,7 +50,8 @@ object TaskListQuery {
         features: Constructor? = null,
     ): String {
         val start = currentTimeMillis()
-        val flat = features?.subtasks == false
+        // Memos never nest, and only the recursive query orders by `order` inside priority bands.
+        val flat = features != null && filter !is MemosFilter
         val sql = when {
             flat -> getNonRecursiveQuery(filter, preferences, limit)
             filter.supportsManualSort() && preferences.isManualSort ->

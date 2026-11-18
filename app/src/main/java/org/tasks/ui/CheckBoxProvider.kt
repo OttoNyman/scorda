@@ -7,7 +7,9 @@ import androidx.appcompat.content.res.AppCompatResources
 import dagger.hilt.android.qualifiers.ActivityContext
 import org.tasks.R
 import org.tasks.data.entity.Task
+import org.tasks.icons.MaterialSymbolsGlyphs
 import org.tasks.themes.ColorProvider
+import org.tasks.themes.TasksIcons
 import javax.inject.Inject
 
 class CheckBoxProvider @Inject constructor(
@@ -18,6 +20,15 @@ class CheckBoxProvider @Inject constructor(
         task.getCheckboxRes(),
         if (features.priority) task.priority else Task.Priority.NONE,
     )
+
+    /** A memo shows a note icon where a task has its checkbox, in the same priority color. */
+    fun getMemoIcon(task: Task, features: org.tasks.constructor.Constructor): Drawable? =
+        MaterialSymbolsGlyphs.drawable(
+            context,
+            TasksIcons.NOTE,
+            24,
+            colorProvider.getPriorityColor(if (features.priority) task.priority else Task.Priority.NONE),
+        )
 
     private fun getDrawable(@DrawableRes resId: Int, priority: Int): Drawable {
         val original = AppCompatResources.getDrawable(context, resId)

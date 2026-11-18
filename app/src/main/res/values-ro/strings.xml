@@ -115,7 +115,6 @@
     <string name="header_spacing">Distanțare</string>
     <string name="font_size">Dimensiunea fontului</string>
     <string name="enabled">Activat</string>
-    <string name="subtasks">Sub-sarcini</string>
     <string name="miscellaneous">Diverse</string>
     <string name="google_drive_backup">Copie de rezervă Google Drive</string>
     <string name="backup_directory">Dosar de rezervă</string>
@@ -314,8 +313,6 @@
     <string name="etesync_selection_description">Sincronizare criptată end-to-end</string>
     <string name="caldav_selection_description">Sincronizare bazată pe standarde deschise de internet</string>
     <string name="choose_synchronization_service">Selectează o platformă</string>
-    <string name="collapse_subtasks">Restrânge sub-sarcinile</string>
-    <string name="expand_subtasks">Extinde sub-sarcinile</string>
     <string name="invalid_backup_file">Fișier de backup invalid</string>
     <string name="whats_new">Ce este nou</string>
     <string name="choose_new_location">Alege o nouă locație</string>
@@ -379,8 +376,6 @@
     <string name="price_per_month_with_currency">%s/lună</string>
     <string name="price_per_year_with_currency">%s/an</string>
     <string name="cost_more_money">Preț: $$$</string>
-    <string name="multiline_title">Permite titluri multiline</string>
-    <string name="multiline_title_on">Apasă tasta Enter pentru a adăuga o linie nouă</string>
     <string name="sync_warning_microsoft">Nu toate detaliile sarcinii se sincronizează cu Microsoft To Do.</string>
     <string name="cost_money">Preț: $</string>
     <string name="sync_warning_microsoft_title">Despre sincronizarea Microsoft To Do</string>
@@ -389,7 +384,6 @@
     <string name="button_learn_more">Află mai multe</string>
     <string name="enable_alarms">Fii notificat la momentul potrivit</string>
     <string name="enable_alarms_description">Pentru a te asigura că ești notificat la momentul potrivit, acordă permisiunea de a seta alarme și mementouri în Setări</string>
-    <string name="multiline_title_off">Apasă Finalizat pentru a salva sarcina</string>
     <string name="delete_tasks_warning">%s va fi șters. Acest lucru nu poate fi anulat!</string>
     <string name="banner_app_updated_title">Aplicație actualizată</string>
     <string name="banner_app_updated_description">Tasks a fost actualizată la versiunea %s. Dorești să vezi modificările făcute?</string>

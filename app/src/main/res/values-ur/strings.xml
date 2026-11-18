@@ -156,7 +156,6 @@
     <string name="header_spacing">سپیسنگ</string>
     <string name="font_size">فونٹ سائز</string>
     <string name="enabled">فعال</string>
-    <string name="subtasks">ذیلی ٹاسکس</string>
     <string name="miscellaneous">متفرقات</string>
     <string name="google_drive_backup">گوگل ڈرائیو بیک اپ</string>
     <string name="backup_directory">بیک اپ فولڈر</string>
@@ -245,8 +244,6 @@
     <string name="reinitialize_account">دوبارہ شروع کریں</string>
     <string name="logout">لاگ آؤٹ</string>
     <string name="pro_dashclock_extension">ڈیش لاک ایکسٹنشن</string>
-    <string name="collapse_subtasks">ذیلی ٹاسکس کو بند کریں</string>
-    <string name="expand_subtasks">ذیلی ٹاسکس کو کھولیں</string>
     <string name="invalid_backup_file">غلط بیک اپ فائل</string>
     <string name="whats_new">نیا کیا ہے</string>
     <string name="choose_new_location">نئی لوکیشن منتخب کریں</string>

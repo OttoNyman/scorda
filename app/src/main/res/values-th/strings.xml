@@ -93,8 +93,6 @@
     <string name="etesync_selection_description">การทําข้อมูลให้ตรงกันที่เข้ารหัสตั้งแต่ต้นจนจบ</string>
     <string name="caldav_selection_description">การซิงโครไนซ์ตามมาตรฐานอินเทอร์เน็ตแบบเปิด</string>
     <string name="choose_synchronization_service">เลือกแพลตฟอร์ม</string>
-    <string name="collapse_subtasks">ยุบงานย่อย</string>
-    <string name="expand_subtasks">ขยายงานย่อย</string>
     <string name="invalid_backup_file">แฟ้มสํารองข้อมูลไม่ถูกต้อง</string>
     <string name="whats_new">มีอะไรใหม่</string>
     <string name="choose_new_location">เลือกตําแหน่งที่ตั้งใหม่</string>
@@ -190,7 +188,6 @@
     <string name="header_spacing">ระยะ ห่าง</string>
     <string name="font_size">ขนาดแบบอักษร</string>
     <string name="enabled">เปิด</string>
-    <string name="subtasks">งานย่อย</string>
     <string name="miscellaneous">เบ็ดเตล็ด</string>
     <string name="google_drive_backup">การสํารองข้อมูลของ Google ไดรฟ์</string>
     <string name="backup_directory">โฟลเดอร์สำรอง</string>

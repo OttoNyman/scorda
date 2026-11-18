@@ -99,7 +99,6 @@
     <string name="backup_directory">Direktori cadangan</string>
     <string name="google_drive_backup">Cadangan Google Drive</string>
     <string name="miscellaneous">Lain-lain</string>
-    <string name="subtasks">Subtugas</string>
     <string name="enabled">Aktif</string>
     <string name="font_size">Ukuran huruf</string>
     <string name="row_spacing">Spasi baris</string>
@@ -188,7 +187,6 @@
     <string name="open_map">Buka peta</string>
     <string name="choose_new_location">Pilih lokasi baru</string>
     <string name="invalid_backup_file">Berkas cadangan tidak valid</string>
-    <string name="expand_subtasks">Lebarkan subtugas</string>
     <string name="choose_synchronization_service">Pilih sebuah platform</string>
     <string name="caldav_selection_description">Sinkronisasi yang berdasarkan pada standar internet terbuka</string>
     <string name="etesync_selection_description">Enkripsi klien-ke-klien bersumber terbuka</string>
@@ -306,7 +304,6 @@
     <string name="chips">Chip</string>
     <string name="color_wheel">Roda warna</string>
     <string name="decsync_selection_description">Sinkronisasi berdasarkan berkas</string>
-    <string name="collapse_subtasks">Ciutkan subtugas</string>
     <string name="location_departed">Berangkat pada %s</string>
     <string name="location_arrived">Datang pada %s</string>
     <string name="subscription">Langganan</string>
@@ -394,9 +391,6 @@
     <string name="returning_user">Pengguna lama?</string>
     <string name="cost_money">Biaya: $</string>
     <string name="cost_more_money">Biaya: $$$</string>
-    <string name="multiline_title">Izinkan judul multibaris</string>
-    <string name="multiline_title_on">Tekan tombol Enter untuk menambah jeda baris</string>
-    <string name="multiline_title_off">Tekan Selesai untuk menyimpan tugas</string>
     <string name="sync_warning_microsoft_title">Tentang sinkronisasi Microsoft To Do</string>
     <string name="sync_warning_microsoft">Tidak semua detail tugas tersinkronisasi dengan Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Tentang sinkronisasi Google Task</string>

@@ -780,7 +780,7 @@
     <string name="move_target_same_summary">Each list becomes a Google list with the same name</string>
     <string name="inbox_list">Inbox</string>
     <string name="lists_on_message">All tasks are in “%1$s”</string>
-    <string name="constructor_subtasks">Subtasks</string>
+    <string name="constructor_checklist">Checklist</string>
     <string name="constructor_tags">Tags</string>
     <string name="constructor_filters">Filters</string>
     <string name="constructor_priority">Priority</string>

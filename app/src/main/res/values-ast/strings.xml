@@ -152,7 +152,6 @@
     <string name="backup_directory">Cartafueyu de copies de seguranza</string>
     <string name="google_drive_backup">Copia de seguranza\'n Google Drive</string>
     <string name="miscellaneous">Varios</string>
-    <string name="subtasks">Subxeres</string>
     <string name="enabled">Activáu</string>
     <string name="font_size">Tamañu de la fonte</string>
     <string name="header_spacing">Espaciáu</string>
@@ -260,8 +259,6 @@
     <string name="banner_app_updated_description">Tasks ta acabantes d\'anovase a %s. Quies ver les notes de la versión?</string>
     <string name="whats_new">Novedaes</string>
     <string name="invalid_backup_file">Copia de seguranza invalida</string>
-    <string name="expand_subtasks">Espander subxeres</string>
-    <string name="collapse_subtasks">Encoyer subxeres</string>
     <string name="choose_synchronization_service">Selecciona una plataforma</string>
     <string name="caldav_selection_description">Sincronización basada en estándares abiertos d\'internet</string>
     <string name="etesync_selection_description">Sincronización con cifráu d\'estremu a estremu</string>

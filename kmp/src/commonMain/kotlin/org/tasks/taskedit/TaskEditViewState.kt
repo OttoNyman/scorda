@@ -2,7 +2,6 @@ package org.tasks.kmp.org.tasks.taskedit
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import org.tasks.data.Location
 import org.tasks.data.entity.Alarm
@@ -28,7 +27,6 @@ data class TaskEditViewState(
     val calendar: String?,
     val attachments: ImmutableSet<TaskAttachment> = persistentSetOf(),
     val alarms: ImmutableSet<Alarm>,
-    val newSubtasks: ImmutableList<Task> = persistentListOf(),
 ) {
     val isNew: Boolean
         get() = task.isNew

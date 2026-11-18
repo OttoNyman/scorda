@@ -242,8 +242,6 @@
     <string name="etesync_selection_description">Sincronização criptografada de ponta a ponta</string>
     <string name="caldav_selection_description">Sincronização usando protocolos padrões e livres da Internet</string>
     <string name="choose_synchronization_service">Escolha uma plataforma</string>
-    <string name="collapse_subtasks">Recolher sub-tarefas</string>
-    <string name="expand_subtasks">Expandir sub-tarefas</string>
     <string name="invalid_backup_file">Arquivo de backup inválido</string>
     <string name="whats_new">Novidades</string>
     <string name="action_new_task">Nova tarefa</string>
@@ -260,7 +258,6 @@
     <string name="opacity_row">Opacidade da linha</string>
     <string name="opacity_header">Opacidade do cabeçalho</string>
     <string name="location_radius_meters">%s m</string>
-    <string name="subtasks">Sub-tarefas</string>
     <string name="widget_show_dividers">Mostrar divisórias</string>
     <string name="widget_show_menu">Mostrar menu</string>
     <string name="CFC_list_name">Na lista…</string>
@@ -372,7 +369,6 @@
     <string name="app_settings">Configurações do aplicativo</string>
     <string name="cost_more_money">Preço: $$$</string>
     <string name="enable_alarms_description">Para garantir que você seja notificado no momento certo, conceda permissão para definir alarmes e lembretes em \'Configurações\'</string>
-    <string name="multiline_title_on">Pressione a tecla \'Enter\' para adicionar quebras de linha</string>
     <string name="sync_warning_microsoft">Nem todos os detalhes das tarefas são sincronizados com o Microsoft To Do.</string>
     <string name="delete_comment">comentário</string>
     <string name="price_per_year_with_currency">%s/anual</string>
@@ -382,11 +378,9 @@
     <string name="sync_warning_google_tasks">Nem todos os detalhes das tarefas são sincronizados com o Google Tarefas</string>
     <string name="yesterday">Ontem</string>
     <string name="enable_alarms">Seja notificado na hora certa</string>
-    <string name="multiline_title">Permitir títulos com múltiplas linhas</string>
     <string name="sync_warning_microsoft_title">Sobre a sincronização do Microsoft To Do</string>
     <string name="banner_app_updated_title">Aplicativo atualizado</string>
     <string name="banner_app_updated_description">As tarefas acabaram de ser atualizadas para %s. Gostaria de ver as notas de atualização?</string>
-    <string name="multiline_title_off">Pressione \'Concluir\' para salvar a tarefa</string>
     <string name="delete_tasks_warning">%s será excluído. Isso não pode ser desfeito!</string>
     <string name="import_failed">Importação falhou</string>
     <string name="import_failed_message">Erro ao ler arquivo de backup</string>

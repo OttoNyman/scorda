@@ -162,7 +162,6 @@
     <string name="account">Konto</string>
     <string name="above_average">Üle keskmise</string>
     <string name="premium_record_audio">Salvesta audiomärge</string>
-    <string name="expand_subtasks">Ava alamülesanded</string>
     <string name="preferences_advanced">Edasijõudnutele</string>
     <string name="multi_select_reschedule">Muuda ajastust</string>
     <string name="new_tag">Loo uus silt</string>
@@ -184,7 +183,6 @@
     <string name="filter_medium_priority">Keskmine prioriteet</string>
     <string name="open_source">Avatud lähtekood</string>
     <string name="authentication_required">Vajalik on autoriseerimine</string>
-    <string name="subtasks">Alamülesanne</string>
     <string name="widget_show_menu">Kuva menüü</string>
     <string name="widget_show_title">Kuva pealkirja</string>
     <string name="change_priority">Muuda prioriteeti</string>
@@ -195,7 +193,6 @@
     <string name="refresh_purchases">Värskenda ostud</string>
     <string name="action_new_task">Uus ülesanne</string>
     <string name="location_remind_arrival">Tuleta saabudes meelde</string>
-    <string name="collapse_subtasks">Sulge alamülesanded</string>
     <string name="places">Asukohad</string>
     <string name="back">Tagasi</string>
     <string name="color_wheel">Värviketas</string>
@@ -320,8 +317,6 @@
     <string name="linkify_description">Lisa veebisaitide, aadresside ja telefoninumbrite linke</string>
     <string name="subscription">Tellimus</string>
     <string name="cost_more_money">Hind: $$$</string>
-    <string name="multiline_title">Kasuta mitmerealisi pealkirju</string>
-    <string name="multiline_title_on">Kasuta sisestusklahvi reavahetuse lisamiseks</string>
     <string name="sync_warning_microsoft_title">Teave Microsoft To Do sünkroniseerimise kohta</string>
     <string name="sync_warning_microsoft">Ülesannete kõikide üksikasjade sünkroniseerimine ei toimi Microsoft To Do liidestusega.</string>
     <string name="list_separator_with_space">", "</string>
@@ -379,7 +374,6 @@
     <string name="app_settings">Rakenduse seadistused</string>
     <string name="banner_app_updated_description">Rakendus on uuendatud versioonini %s. Kas sa sooviksid lugeda, mis on siin hiljuti muutunud?</string>
     <string name="banner_app_updated_title">Rakendus on uuendatud</string>
-    <string name="multiline_title_off">Ülesande salvestamiseks vajuta nuppu „Valmis“</string>
     <string name="delete_tasks_warning">%s saab olema kustutatud. Seda tegevust ei saa tagasi pöörata!</string>
     <string name="widget_view_more_tasks">Vaata veel ülesandeid</string>
     <string name="subscription_required_fdroid">Scorda\'i sünkroonimisvõimaluste kasutamiseks on vajalik tellimus. Tellimused peavad olema lisatud Tasks-rakenduse Google Play versioonis.</string>

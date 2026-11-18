@@ -43,6 +43,7 @@ import tasks.kmp.generated.resources.no_title
 import org.tasks.Strings
 import org.tasks.analytics.Firebase
 import org.tasks.data.Location
+import org.tasks.checklist.Checklist
 import org.tasks.data.createDueDate
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
@@ -370,7 +371,7 @@ class TaskEditViewModel @Inject constructor(
             ?: task.title?.takeIf { it.isNotBlank() }
             ?: getString(Res.string.no_title)
         task.priority = viewState.task.priority
-        task.notes = viewState.task.notes
+        task.notes = Checklist.withoutBlankItems(viewState.task.notes)
         val savingMemo = viewState.task.memo
         if (savingMemo) {
             applyMemoSaveConstraints(task)
@@ -447,53 +448,6 @@ class TaskEditViewModel @Inject constructor(
         if (!savingMemo && (isNew || originalState.value.list != selectedList)) {
             task.parent = 0
             taskMover.move(listOf(task.id), selectedList)
-        }
-
-        if (!savingMemo) for (subtask in viewState.newSubtasks) {
-            if (Strings.isNullOrEmpty(subtask.title)) {
-                continue
-            }
-            if (!subtask.isCompleted) {
-                subtask.completionDate = task.completionDate
-            }
-            taskDao.createNew(subtask)
-            alarmDao.insert(
-                subtask.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
-                    .filter { featureGate.current.schedules(it) }
-            )
-            firebase?.addTask("subtasks")
-            when {
-                selectedList.isGoogleTasks -> {
-                    val googleTask = CaldavTask(
-                        task = subtask.id,
-                        calendar = selectedList.uuid,
-                        remoteId = null,
-                    )
-                    subtask.parent = task.id
-                    googleTask.isMoved = true
-                    googleTaskDao.insertAndShift(
-                        task = subtask,
-                        caldavTask = googleTask,
-                        top = if (isNew) false else preferences.addTasksToTop()
-                    )
-                }
-                else -> {
-                    val caldavTask = CaldavTask(
-                        task = subtask.id,
-                        calendar = selectedList.uuid,
-                    )
-                    subtask.parent = task.id
-                    if (selectedList.account.pushesRemoteParent) {
-                        caldavTask.remoteParent = caldavDao.getRemoteIdForTask(task.id)
-                    }
-                    taskSaver.save(subtask, null)
-                    caldavDao.insert(
-                        task = subtask,
-                        caldavTask = caldavTask,
-                        addToTop = if (isNew) false else preferences.addTasksToTop()
-                    )
-                }
-            }
         }
 
         if (originalState.value.attachments != _viewState.value.attachments) {
@@ -668,6 +622,21 @@ class TaskEditViewModel @Inject constructor(
         _viewState.update { state -> state.copy(task = state.task.copy(notes = description)) }
     }
 
+    /** The description field without the checklist block that rides at the end of the notes. */
+    fun setDescriptionText(text: String) {
+        _viewState.update { state ->
+            val items = Checklist.parse(state.task.notes).items
+            state.copy(task = state.task.copy(notes = Checklist.join(text, items)))
+        }
+    }
+
+    fun setChecklist(items: List<Checklist.Item>) {
+        _viewState.update { state ->
+            val text = Checklist.parse(state.task.notes).text
+            state.copy(task = state.task.copy(notes = Checklist.join(text, items)))
+        }
+    }
+
     val memosEnabled: Boolean
         get() = featureGate.current.memos
 
@@ -725,7 +694,6 @@ class TaskEditViewModel @Inject constructor(
             tags = tags,
             list = list,
             attachments = persistentSetOf(),
-            newSubtasks = kotlinx.collections.immutable.persistentListOf(),
         )
         _originalState.value = cleared
         _viewState.value = cleared
@@ -734,7 +702,6 @@ class TaskEditViewModel @Inject constructor(
     enum class MemoConvertBlock { NONE, CHILDREN, SERIES }
 
     suspend fun memoConvertBlock(): MemoConvertBlock {
-        if (_viewState.value.newSubtasks.isNotEmpty()) return MemoConvertBlock.CHILDREN
         val fresh = taskDao.fetch(task.id) ?: task
         if (memoConverter.canConvertToMemo(fresh)) return MemoConvertBlock.NONE
         return if (fresh.series != null) MemoConvertBlock.SERIES else MemoConvertBlock.CHILDREN
@@ -828,7 +795,6 @@ class TaskEditViewModel @Inject constructor(
             tags = tags,
             list = list,
             attachments = attachments,
-            newSubtasks = kotlinx.collections.immutable.persistentListOf(),
         )
         _originalState.value = cleared
         _viewState.value = cleared
@@ -850,9 +816,6 @@ class TaskEditViewModel @Inject constructor(
         _viewState.update { it.copy(attachments = attachments.toPersistentSet()) }
     }
 
-    fun setSubtasks(subtasks: List<Task>) {
-        _viewState.update { it.copy(newSubtasks = subtasks.toPersistentList()) }
-    }
 
     fun setComplete(completed: Boolean) {
         _viewState.update { state ->
@@ -942,11 +905,13 @@ class TaskEditViewModel @Inject constructor(
         val TAG_PRIORITY = R.string.TEA_ctrl_importance_pref
         val TAG_DUE_DATE = R.string.TEA_ctrl_when_pref
         val TAG_ADVANCE = R.string.TEA_ctrl_advance_pref
+        val TAG_CHECKLIST = R.string.checklist
 
         fun displayOrder(features: org.tasks.constructor.Constructor, memo: Boolean) = if (memo) {
             listOf(
                 TAG_TITLE to true,
                 TAG_DESCRIPTION to true,
+                TAG_CHECKLIST to features.checklist,
                 com.todoroo.astrid.tags.TagsControlSet.TAG to features.tags,
                 TAG_PRIORITY to features.priority,
                 com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
@@ -958,8 +923,8 @@ class TaskEditViewModel @Inject constructor(
                 TAG_ADVANCE to features.advance,
                 com.todoroo.astrid.repeats.RepeatControlSet.TAG to features.repeat,
                 TAG_DESCRIPTION to features.notes,
+                TAG_CHECKLIST to features.checklist,
                 TAG_LIST to features.lists,
-                org.tasks.ui.SubtaskControlSet.TAG to features.subtasks,
                 com.todoroo.astrid.tags.TagsControlSet.TAG to features.tags,
                 TAG_PRIORITY to features.priority,
                 com.todoroo.astrid.ui.StartDateControlSet.TAG to features.startDate,
@@ -994,7 +959,7 @@ class TaskEditViewModel @Inject constructor(
             RepeatControlSet.TAG,
             TAG_CREATION,
             TAG_LIST,
-            SubtaskControlSet.TAG
+            TAG_CHECKLIST
         )
     }
 }

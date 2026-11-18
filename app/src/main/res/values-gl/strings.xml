@@ -221,7 +221,6 @@
     <string name="snackbar_tasks_completed">%d tarefas finalizadas</string>
     <string name="now">Agora</string>
     <string name="header_spacing">Espazado</string>
-    <string name="subtasks">Subtarefas</string>
     <string name="user">Usuario/a</string>
     <string name="show_advanced_settings">Amosar configuración avanzada</string>
     <string name="preferences_advanced">Avanzada</string>
@@ -273,8 +272,6 @@
     <string name="location_permission_required_location">Non se precisa de permisos de posición para facer a busca da posición actual</string>
     <string name="whats_new">Que hai novo</string>
     <string name="invalid_backup_file">Copia de seguranza non válida</string>
-    <string name="expand_subtasks">Desencoller as subtarefas</string>
-    <string name="collapse_subtasks">Encoller as subtarefas</string>
     <string name="choose_synchronization_service">Escolle unha plataforma</string>
     <string name="etesync_selection_description">Sincronización con cifrado par a par</string>
     <string name="decsync_selection_description">Sincronización baseada en ficheiros</string>
@@ -357,9 +354,6 @@
     <string name="enable_alarms_description">Para asegurarte de que recibes notificacións no momento adecuado, concede permiso para configurar alarmas e recordatorios na Configuración</string>
     <string name="cost_money">Custo: $</string>
     <string name="cost_more_money">Custo: $$$</string>
-    <string name="multiline_title">Permitir títulos de varias liñas</string>
-    <string name="multiline_title_on">Preme a tecla Intro para engadir saltos de liña</string>
-    <string name="multiline_title_off">Preme Feito para gardar a tarefa</string>
     <string name="sync_warning_microsoft_title">Acerca da sincronización de Microsoft To Do</string>
     <string name="sync_warning_microsoft">Non todos os detalles da tarefa se sincronizan con Microsoft To Do.</string>
     <string name="sync_warning_google_tasks_title">Acerca da sincronización de Google Task</string>

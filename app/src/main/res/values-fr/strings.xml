@@ -221,9 +221,6 @@
     <string name="list_separator_with_space">", "</string>
     <string name="icon">Icône</string>
     <string name="SSD_sort_my_order">Mon tri</string>
-    <string name="expand_subtasks">Développer les sous-tâches</string>
-    <string name="collapse_subtasks">Réduire les sous-tâches</string>
-    <string name="subtasks">Sous-tâches</string>
     <string name="display_name">Afficher le nom</string>
     <string name="choose_synchronization_service">Sélectionner une plate-forme</string>
     <string name="caldav_selection_description">Synchronisation basée sur des normes d\'Internet ouvertes</string>
@@ -367,8 +364,6 @@
     <string name="customize_drawer">Personnaliser le tiroir</string>
     <string name="show_edit_screen_without_unlock">Afficher l\'écran d\'édition sans déverrouillage</string>
     <string name="show_edit_screen_without_unlock_summary">Permet d\'utiliser la fenêtre des réglages rapides sans déverrouiller l\'appareil</string>
-    <string name="multiline_title">Permettre des titres sur plusieurs lignes</string>
-    <string name="multiline_title_on">Appuyer sur la touche Entrée pour ajouter des sauts de ligne</string>
     <string name="comment">Commentaire</string>
     <string name="delete_comment">commentaire</string>
     <string name="yesterday">Hier</string>
@@ -387,7 +382,6 @@
     <string name="banner_app_updated_description">Tasks vient d\'être mis à jour vers %s. Souhaitez-vous consulter les notes de mise à jour ?</string>
     <string name="banner_app_updated_title">Application mise à jour</string>
     <string name="delete_tasks_warning">%s sera supprimé. Cette opération est irréversible !</string>
-    <string name="multiline_title_off">Appuyer sur Terminé pour enregistrer la tâche</string>
     <string name="widget_view_more_tasks">Voir plus de tâches</string>
     <string name="subscription_required_fdroid">Un abonnement est nécessaire pour utiliser la synchronisation avec Scorda. Les abonnements doivent être initiés à partir de la version Google Play de Tasks.</string>
     <string name="sponsorship_required_fdroid">Un parrainage GitHub est nécessaire pour utiliser la synchronisation avec Scorda. Cliquez ci-dessous pour devenir un parrain.</string>

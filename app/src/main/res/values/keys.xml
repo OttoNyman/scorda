@@ -147,7 +147,6 @@
     <item>@string/TEA_control_importance</item>
     <item>@string/lists</item>
     <item>@string/tags</item>
-    <item>@string/subtasks</item>
     <item>@string/TEA_control_reminders</item>
     <item>@string/TEA_control_notes</item>
     <item>@string/TEA_control_location</item>
@@ -164,7 +163,6 @@
     <item>@string/TEA_ctrl_importance_pref</item>
     <item>@string/TEA_ctrl_google_task_list</item>
     <item>@string/TEA_ctrl_lists_pref</item>
-    <item>@string/TEA_ctrl_subtask_pref</item>
     <item>@string/TEA_ctrl_reminders_pref</item>
     <item>@string/TEA_ctrl_notes_pref</item>
     <item>@string/TEA_ctrl_locations_pref</item>
@@ -179,7 +177,6 @@
   <string name="TEA_ctrl_advance_pref">TEA_ctrl_advance_pref</string>
   <string name="TEA_ctrl_repeat_pref">TEA_ctrl_repeat_pref</string>
   <string name="TEA_ctrl_importance_pref">TEA_ctrl_importance_pref</string>
-  <string name="TEA_ctrl_subtask_pref">TEA_ctrl_subtask_pref</string>
   <string name="TEA_ctrl_lists_pref">TEA_ctrl_lists_pref</string>
   <string name="TEA_ctrl_notes_pref">TEA_ctrl_notes_pref</string>
   <string name="TEA_ctrl_files_pref">TEA_ctrl_files_pref</string>
@@ -248,7 +245,6 @@
   <string name="p_widget_show_due_date">widget-show-due-date-</string>
   <string name="p_widget_show_full_task_title">widget-show-full-task-title-</string>
   <string name="p_widget_show_dividers">widget-show-dividers-</string>
-  <string name="p_widget_show_subtasks">widget-show-subtasks-</string>
   <string name="p_widget_show_start_dates">widget-show-start-dates-</string>
   <string name="p_widget_show_places">widget-show-places-</string>
   <string name="p_widget_show_lists">widget-show-lists-</string>
@@ -289,7 +285,6 @@
   <string name="p_wearable_notifications">wearable_notifications</string>
   <string name="p_notified_oauth_error">notified_oauth_error_%1$s_%2$s</string>
   <string name="p_chip_appearance">chip_appearance</string>
-  <string name="p_subtask_chips">chips_subtask</string>
   <string name="p_start_date_chip">chips_start_date</string>
   <string name="p_place_chips">chips_place</string>
   <string name="p_list_chips">chips_list</string>
@@ -376,7 +371,6 @@
   <string name="p_shown_beast_mode_hint">shown_beast_mode_hint</string>
   <string name="p_beast_mode_order">beast_mode_order_v6</string>
   <string name="p_last_sync">last_sync_time</string>
-  <string name="p_multiline_title">multiline_title</string>
   <string name="p_dynamic_color">dynamic_color</string>
   <string name="remote_config_tos_version">tos_version</string>
 </resources>

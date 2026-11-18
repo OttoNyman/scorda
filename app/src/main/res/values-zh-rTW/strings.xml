@@ -142,7 +142,6 @@
     <string name="customize_edit_screen">自訂編輯畫面</string>
     <string name="header_spacing">間距</string>
     <string name="font_size">字體大小</string>
-    <string name="subtasks">子任務</string>
     <string name="google_drive_backup">Google 雲端硬碟備份</string>
     <string name="attachment_directory">附件資料夾</string>
     <string name="widget_show_dividers">顯示分隔線</string>
@@ -209,8 +208,6 @@
     <string name="documentation">檔案</string>
     <string name="preferences_advanced">進階</string>
     <string name="choose_synchronization_service">選擇一個平臺</string>
-    <string name="collapse_subtasks">收起次工作</string>
-    <string name="expand_subtasks">展開副工作</string>
     <string name="invalid_backup_file">無效的備份檔</string>
     <string name="whats_new">有什麼新鮮事</string>
     <string name="choose_new_location">選擇心地點</string>
@@ -382,9 +379,6 @@
     <string name="returning_user">回歸使用者？</string>
     <string name="cost_money">費用：$</string>
     <string name="cost_more_money">費用：$$$</string>
-    <string name="multiline_title">允許多行標題</string>
-    <string name="multiline_title_on">按 Enter 鍵換行</string>
-    <string name="multiline_title_off">按完成儲存任務</string>
     <string name="sync_warning_microsoft_title">關於 Microsoft To Do 同步</string>
     <string name="sync_warning_microsoft">並非所有任務詳情都會與 Microsoft To Do 同步。</string>
     <string name="sync_warning_google_tasks_title">關於 Google Task 同步</string>

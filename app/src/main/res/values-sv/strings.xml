@@ -315,8 +315,6 @@
     <string name="etesync_selection_description">Ände-till-ände-krypterad synkronisering</string>
     <string name="caldav_selection_description">Synkronisering baserad på öppna internetstandarder</string>
     <string name="choose_synchronization_service">Välj synkroniseringstjänst</string>
-    <string name="collapse_subtasks">Fäll in deluppgifter</string>
-    <string name="expand_subtasks">Fäll ut deluppgifter</string>
     <string name="whats_new">Nyheter</string>
     <string name="subscription">Prenumeration</string>
     <string name="widget_due_date_below_title">Under titeln</string>
@@ -328,7 +326,6 @@
     <string name="no_app_found">Ingen app kunde hantera den här begäran</string>
     <string name="filter_criteria_unstarted">Inte påbörjad</string>
     <string name="header_spacing">Avstånd</string>
-    <string name="subtasks">Deluppgifter</string>
     <string name="copied_to_clipboard">%s kopierades till urklipp</string>
     <string name="background_location_permission_required">Tasks samlar in platsdata för att möjliggöra platsbaserade påminnelser, även när appen är stängd eller inte används.</string>
     <string name="widget_show_dividers">Visa avdelare</string>
@@ -368,8 +365,6 @@
     <string name="yesterday">Igår</string>
     <string name="cost_money">Pris: $</string>
     <string name="cost_more_money">Pris: $$$</string>
-    <string name="multiline_title">Tillåt flerradsrubriker</string>
-    <string name="multiline_title_on">Tryck på Retur för att lägga till radbrytningar</string>
     <string name="comment">Kommentar</string>
     <string name="sync_warning_google_tasks_title">Om synkronisering med Google Tasks</string>
     <string name="button_learn_more">Läs mer</string>
@@ -379,7 +374,6 @@
     <string name="app_settings">Appinställningar</string>
     <string name="banner_app_updated_title">Appen har uppdaterats</string>
     <string name="banner_app_updated_description">Tasks har uppdaterats till %s. Vill du se vad som är nytt?</string>
-    <string name="multiline_title_off">Tryck på ”Klar” för att spara uppgiften</string>
     <string name="delete_tasks_warning">%s kommer att tas bort. Det går inte att ångra!</string>
     <string name="widget_view_more_tasks">Visa fler uppgifter</string>
     <string name="import_failed">Importeringen misslyckades</string>
