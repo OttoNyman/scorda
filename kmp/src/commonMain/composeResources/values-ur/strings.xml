@@ -53,7 +53,6 @@
     <string name="SSD_sort_auto">سمارٹ ترتیب</string>
     <string name="SSD_sort_my_order">میرا آرڈر</string>
     <string name="astrid_sort_order">آسرڈ کی مینول ترتیب</string>
-    <string name="subtasks">ذیلی ٹاسکس</string>
     <string name="none">کوئی نہیں</string>
     <string name="display_name">ظاہری نام</string>
     <string name="manage_subscription">سبسکرپشن تبدیل کریں</string>
@@ -263,8 +262,6 @@
     <string name="discard_confirmation">کیا آپ واقعی اپنی تبدیلیوں کو منسوخ کرنا چاہتے ہیں؟</string>
     <string name="keep_editing">ترمیم کرتے رہیں</string>
     <string name="DLG_delete_this_task_question">اس ٹاسک کو ڈیلیٹ کریں؟</string>
-    <string name="TEA_add_subtask">ذیلی ٹاسک بنائیں</string>
-    <string name="subtasks_multilevel_google_task">کثیر الدرجی ذیلی ٹاسکس کو گوگل ٹاسکس سپورٹ نہیں کرتا</string>
     <string name="language">زبان</string>
     <string name="launcher_icon">لانچر آئیکن</string>
     <string name="settings_localization">لوکلائزیشن</string>

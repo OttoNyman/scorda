@@ -99,7 +99,6 @@
     <string name="sort_ascending">Artan</string>
     <string name="sort_descending">Azalan</string>
     <string name="completed_tasks_at_bottom">Tamamlanan görevleri alta taşı</string>
-    <string name="subtasks">Alt görevler</string>
     <string name="sort_not_available">Etiketler, süzgeçler veya yerler için kullanılamaz</string>
     <string name="none">Hiçbiri</string>
     <string name="ok">Tamam</string>
@@ -551,15 +550,9 @@
     <string name="discard_confirmation">Değişikliklerinizi gözden çıkarmak istediğinize emin misiniz?</string>
     <string name="keep_editing">Düzenlemeyi sürdür</string>
     <string name="DLG_delete_this_task_question">Bu görev silinsin mi?</string>
-    <string name="show_completed_subtasks">Tamamlanan alt görevleri göster</string>
     <string name="error_encryption_failed">Şifreleme başarısız oldu. Scorda\'un sistem anahtar zincirinize erişebildiğinden emin olun, ardından tekrar deneyin.</string>
     <string name="snoozed_reminder">Ertelenen anımsatıcı</string>
-    <string name="TEA_add_subtask">Alt görev ekle</string>
-    <string name="subtasks_multilevel_google_task">Google Görevler, çok düzeyli alt görevleri desteklemez</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do, çok düzeyli alt görevleri desteklemez</string>
     <string name="undo_delete">Silmeyi geri al</string>
-    <string name="subtasks_will_be_flattened">Bu liste iç içe geçen alt görevleri desteklemez. Kaydettiğinizde tüm görevler en üst düzeye taşınacaktır.</string>
-    <string name="subtask_list_locked">Yeni alt görevler, üst görev listesini kullanır</string>
     <string name="customize_drawer">Çekmeceyi özelleştir</string>
     <string name="customize_drawer_summary">Menü ögelerini yeniden düzenlemek için sürükleyip bırakın</string>
     <string name="hide_unused_tags">Kullanılmayan etiketleri gizle</string>

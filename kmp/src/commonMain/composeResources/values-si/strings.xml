@@ -68,7 +68,6 @@
     <string name="SSD_sort_my_order">මාගේ පිලිවෙල</string>
     <string name="astrid_sort_order">Astrid අතින් වර්ග කිරීම</string>
     <string name="completed_tasks_at_bottom">සම්පුර්ණ කරන ලද කාර්යයන් පහළට ගෙන යන්න</string>
-    <string name="subtasks">උප කාර්යයන්</string>
     <string name="none">කිසිවක් නැත</string>
     <string name="back">ආපසු</string>
     <string name="help">උදව්</string>
@@ -346,8 +345,6 @@
     <string name="discard_confirmation">ඔබගේ වෙනස්කම් ඉවත දැමීමට ඔබට අවශ්‍යද?</string>
     <string name="keep_editing">දිගටම සංස්කරණය කරන්න</string>
     <string name="DLG_delete_this_task_question">මෙම කාර්යය ඉවත්කරනවාද?</string>
-    <string name="TEA_add_subtask">උප කාර්යයක් එක් කරන්න</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks විසින් බහු මට්ටමේ උප කාර්යයන් සඳහා සහාය නොදක්වයි</string>
     <string name="hide_unused_tags">භාවිතයට නොගත් ටැග් සඟවන්න</string>
     <string name="hide_unused_places">භාවිතයට නොගත් ස්ථාන සඟවන්න</string>
     <string name="language">භාෂාව</string>

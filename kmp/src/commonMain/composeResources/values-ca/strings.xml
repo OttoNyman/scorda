@@ -81,7 +81,6 @@
     <string name="sort_ascending">Ascendent</string>
     <string name="sort_descending">Descendent</string>
     <string name="completed_tasks_at_bottom">Mou les tasques completades a la part inferior</string>
-    <string name="subtasks">Subtasques</string>
     <string name="sort_not_available">No disponible per a etiquetes, filtres o llocs</string>
     <string name="none">Cap</string>
     <string name="ok">D\'acord</string>
@@ -421,9 +420,6 @@
     <string name="discard_confirmation">Esteu segur que voleu descartar els canvis?</string>
     <string name="keep_editing">Continua l'edició</string>
     <string name="DLG_delete_this_task_question">Voleu suprimir aquesta tasca?</string>
-    <string name="TEA_add_subtask">Afegeix una subtasca</string>
-    <string name="subtasks_multilevel_google_task">Subtasques multinivell no suportades per Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Les subtasques multinivell no són compatibles amb Microsoft To Do</string>
     <string name="customize_drawer">Personalitza el calaix</string>
     <string name="customize_drawer_summary">Arrossegueu i deixeu anar per reordenar els elements del menú</string>
     <string name="hide_unused_tags">Amagueu les etiquetes no utilitzades</string>

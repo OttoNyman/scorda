@@ -81,7 +81,6 @@
     <string name="sort_ascending">오름차순</string>
     <string name="sort_descending">내림차순</string>
     <string name="completed_tasks_at_bottom">완료한 할일을 하단으로 이동</string>
-    <string name="subtasks">하위할일</string>
     <string name="sort_not_available">태그, 필터, 장소는 사용 불가</string>
     <string name="none">없음</string>
     <string name="ok">확인</string>
@@ -395,9 +394,6 @@
     <string name="discard_confirmation">변경 사항을 폐기할까요?</string>
     <string name="keep_editing">계속 편집</string>
     <string name="DLG_delete_this_task_question">이 할일을 삭제할까요?</string>
-    <string name="TEA_add_subtask">하위할일 추가</string>
-    <string name="subtasks_multilevel_google_task">구글 태스크는 다단계 하위할일을 지원하지 않습니다</string>
-    <string name="subtasks_multilevel_microsoft">마이크로소프트 To Do는 다단계 하위할일을 지원하지 않습니다</string>
     <string name="customize_drawer">서랍 정렬</string>
     <string name="customize_drawer_summary">끌어다 놓기로 메뉴 항목 재배열</string>
     <string name="hide_unused_tags">사용하지 않는 태그 숨기기</string>
@@ -461,7 +457,6 @@
     <string name="caldav_server_mailbox_org">Mailbox.org</string>
     <string name="email_to_task">이메일을 할일로</string>
     <string name="email_to_task_address">내 이메일 주소</string>
-    <string name="show_completed_subtasks">완료한 하위할일 표시</string>
     <string name="wear_phone_update_required">폰 업데이트 필요</string>
     <string name="wear_connecting_to_phone">폰에 연결하는 중…</string>
     <string name="group_mode">분류</string>
@@ -486,8 +481,6 @@
     <string name="reset_trusted_certificates">신뢰하는 인증서 초기화</string>
     <string name="reset_trusted_certificates_summary">서버용으로 승인한 인증서와 인증 기관 잊기</string>
     <string name="trusted_certificates_reset">신뢰하는 인증서 초기화 완료</string>
-    <string name="subtasks_will_be_flattened">이 목록은 하위할일 중첩을 지원하지 않습니다. 저장하면 하위할일이 모두 상위 계층으로 이동합니다.</string>
-    <string name="subtask_list_locked">새 하위할일은 상위 목록 사용</string>
     <string name="location_update_interval_title">백그라운드 위치 업데이트</string>
     <string name="snoozed_reminder">미룬 알림</string>
     <string name="mark_completed">완료 표시</string>

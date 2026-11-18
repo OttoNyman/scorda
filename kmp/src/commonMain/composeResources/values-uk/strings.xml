@@ -81,7 +81,6 @@
     <string name="sort_ascending">За зростанням</string>
     <string name="sort_descending">За спаданням</string>
     <string name="completed_tasks_at_bottom">Перемістити виконані завдання вниз</string>
-    <string name="subtasks">Підзавдання</string>
     <string name="sort_not_available">Недоступно для міток, фільтрів і місць</string>
     <string name="none">Немає</string>
     <string name="ok">OK</string>
@@ -427,9 +426,6 @@
     <string name="discard_confirmation">Дійсно хочете скасувати ваші зміни?</string>
     <string name="keep_editing">Продовжити редагування</string>
     <string name="DLG_delete_this_task_question">Видалити це завдання?</string>
-    <string name="TEA_add_subtask">Додати підзавдання</string>
-    <string name="subtasks_multilevel_google_task">Багаторівневі підзавдання не підтримуються Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Багаторівневі підзавдання, які не підтримуються Microsoft To Do</string>
     <string name="customize_drawer">Змінити панель</string>
     <string name="customize_drawer_summary">Перетягніть елементи меню, щоб перевпорядкувати їх</string>
     <string name="hide_unused_tags">Сховати не використовувані мітки</string>
@@ -456,7 +452,6 @@
     <string name="mcp_tools_group_places">Місця</string>
     <string name="mcp_tools_group_reminders">Нагадування</string>
     <string name="mcp_copy">Копіювати</string>
-    <string name="show_completed_subtasks">Показати виконані підзавдання</string>
     <string name="wear_phone_update_required">Оновлення телефона обов\'язкове</string>
     <string name="wear_connecting_to_phone">Під\'єднання до телефона…</string>
     <string name="edit_task">Змінити завдання</string>

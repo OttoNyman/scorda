@@ -81,7 +81,6 @@
     <string name="sort_ascending">تصاعدى</string>
     <string name="sort_descending">تنازلى</string>
     <string name="completed_tasks_at_bottom">انقل المهام المكتملة إلى الأسفل</string>
-    <string name="subtasks">مهام فرعيّة</string>
     <string name="sort_not_available">غير متاح للعلامات أو المرشحات أو الأماكن</string>
     <string name="none">لا شيء</string>
     <string name="ok">حسنًا</string>
@@ -481,9 +480,6 @@
     <string name="discard_confirmation">هل أنت متأكد أنك تريد تجاهل تغييراتك؟</string>
     <string name="keep_editing">استمر في التعديل</string>
     <string name="DLG_delete_this_task_question">حذف هذه المهمة؟</string>
-    <string name="TEA_add_subtask">أضف مهمّة فرعيّة</string>
-    <string name="subtasks_multilevel_google_task">مهام فرعية متعددة المراحل غير مدعومة بواسطة مهام كوكل</string>
-    <string name="subtasks_multilevel_microsoft">المهام الفرعية متعددة المستويات غير مدعومة من قبل Microsoft To Do</string>
     <string name="customize_drawer">تخصيص الدرج</string>
     <string name="customize_drawer_summary">اسحب وأفلِت لإعادة ترتيب عناصر القائمة</string>
     <string name="hide_unused_tags">أخفِ العلامات الغير مستعملة</string>

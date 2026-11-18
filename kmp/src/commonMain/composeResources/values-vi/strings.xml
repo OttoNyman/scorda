@@ -76,7 +76,6 @@
     <string name="sort_ascending">Tăng dần</string>
     <string name="sort_descending">Giảm dần</string>
     <string name="completed_tasks_at_bottom">Di chuyển công việc đã hoàn tất xuống dưới</string>
-    <string name="subtasks">Công việc con</string>
     <string name="sort_not_available">Không có sẵn cho tag, bộ lọc hay nơi chốn</string>
     <string name="none">Không có</string>
     <string name="ok">OK</string>
@@ -362,8 +361,6 @@
     <string name="discard_confirmation">Bạn có chắc bạn muốn bỏ những thay đổi của bạn không?</string>
     <string name="keep_editing">Tiếp tục chỉnh sửa</string>
     <string name="DLG_delete_this_task_question">Xoá công việc này?</string>
-    <string name="TEA_add_subtask">Thêm công việc con</string>
-    <string name="subtasks_multilevel_google_task">Các công việc con có nhiều cấp không được Google Tasks hỗ trợ</string>
     <string name="customize_drawer">Tùy chỉnh ngăn kéo</string>
     <string name="customize_drawer_summary">Kéo và thả để sắp xếp lại các mục danh sách</string>
     <string name="hide_unused_tags">Ẩn các thẻ chưa sử dụng</string>

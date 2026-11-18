@@ -99,7 +99,6 @@
     <string name="sort_ascending">Crescente</string>
     <string name="sort_descending">Decrescente</string>
     <string name="completed_tasks_at_bottom">Sposta le attività completate in basso</string>
-    <string name="subtasks">Attività secondaria</string>
     <string name="sort_not_available">Non disponibile per etichette, filtri o luoghi</string>
     <string name="none">Nessuno</string>
     <string name="ok">Ok</string>
@@ -486,9 +485,6 @@
     <string name="discard_confirmation">Vuoi davvero annullare tutte le modifiche?</string>
     <string name="keep_editing">No, continua la modifica</string>
     <string name="DLG_delete_this_task_question">Eliminare questa attività?</string>
-    <string name="TEA_add_subtask">Aggiungi attività secondaria</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks non supporta attività secondarie su più livelli</string>
-    <string name="subtasks_multilevel_microsoft">Attività secondarie multilivello non supportate da Microsoft To Do</string>
     <string name="customize_drawer">Personalizza il menù laterale</string>
     <string name="customize_drawer_summary">Trascina e rilascia le voci del menù per riorganizzarlo</string>
     <string name="hide_unused_tags">Nascondi etichette non usate</string>
@@ -517,7 +513,6 @@
     <string name="mcp_tools_group_reminders">Promemoria</string>
     <string name="mcp_copy">Copia</string>
     <string name="new_filter">Crea nuovo filtro</string>
-    <string name="show_completed_subtasks">Mostra attività secondarie completate</string>
     <string name="edit_task">Modifica attività</string>
     <string name="task_title">Titolo attività</string>
     <string name="no_list_available">Nessuna lista disponibile</string>

@@ -91,7 +91,6 @@
     <string name="sort_ascending">Növekvő</string>
     <string name="sort_descending">Csökkenő</string>
     <string name="completed_tasks_at_bottom">Az elvégzett feladatok kerüljenek alulra</string>
-    <string name="subtasks">Részfeladatok</string>
     <string name="sort_not_available">Nem elérhető címkékre, szűrőkre és helyekre</string>
     <string name="none">Nincs</string>
     <string name="ok">OK</string>
@@ -460,9 +459,6 @@
     <string name="discard_confirmation">Biztosan el akarod vetni a változtatásokat?</string>
     <string name="keep_editing">Vissza a szerkesztéshez</string>
     <string name="DLG_delete_this_task_question">Feladat törlése?</string>
-    <string name="TEA_add_subtask">Részfeladat hozzáadása</string>
-    <string name="subtasks_multilevel_google_task">A Google Tasks nem támogatja a többszintű részfeladatokat</string>
-    <string name="subtasks_multilevel_microsoft">A Microsoft To Do nem támogatja a többszintű részfeladatokat</string>
     <string name="customize_drawer">Menü testreszabása</string>
     <string name="customize_drawer_summary">A menüelemek húzással történő átrendezése</string>
     <string name="hide_unused_tags">Használaton kívüli címkék elrejtése</string>

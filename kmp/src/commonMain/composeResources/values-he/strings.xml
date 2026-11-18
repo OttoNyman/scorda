@@ -99,7 +99,6 @@
     <string name="sort_ascending">עולה</string>
     <string name="sort_descending">יורד</string>
     <string name="completed_tasks_at_bottom">העברת משימות שהושלמו לתחתית</string>
-    <string name="subtasks">תתי־משימות</string>
     <string name="sort_not_available">לא זמין עבור תגיות, מסננים, או מקומות</string>
     <string name="none">ללא</string>
     <string name="ok">אישור</string>
@@ -532,9 +531,6 @@
     <string name="pricing_cloud_monthly_note">בתשלום חודשי</string>
     <string name="rmd_NoA_done">השלמה</string>
     <string name="action_open">פתיחה</string>
-    <string name="TEA_add_subtask">הוספת תת־משימה</string>
-    <string name="subtasks_multilevel_google_task">תתי־משימות מקוננות אינן נתמכות על ידי Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">תתי־משימות מקוננות אינן נתמכות על ידי Microsoft To Do</string>
     <string name="customize_drawer">התאמה אישית של מגירה</string>
     <string name="customize_drawer_summary">יש לגרור ולשחרר כדי לסדר מחדש את פריטי התפריט</string>
     <string name="hide_unused_tags">הסתרת תגיות שאינן בשימוש</string>

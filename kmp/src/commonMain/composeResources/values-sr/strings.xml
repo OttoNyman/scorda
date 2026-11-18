@@ -90,7 +90,6 @@
     <string name="sort_ascending">Растући редослед</string>
     <string name="sort_descending">Опадајући редослед</string>
     <string name="completed_tasks_at_bottom">Премести завршене задатке на дно</string>
-    <string name="subtasks">Подзадаци</string>
     <string name="sort_not_available">Није доступно за тагове, филтере, или места</string>
     <string name="none">Празно</string>
     <string name="ok">Потврди</string>
@@ -540,11 +539,6 @@
     <string name="discard_confirmation">Да ли желиш да одбациш промене?</string>
     <string name="keep_editing">Настави уређивање</string>
     <string name="DLG_delete_this_task_question">Обрисати задатак?</string>
-    <string name="TEA_add_subtask">Додај подзадатак</string>
-    <string name="subtasks_multilevel_google_task">Подзадаци у више нивоа нису подржани од стране Гугл Задатака</string>
-    <string name="subtasks_multilevel_microsoft">Подзадаци у више нивоа нису подржани од стране ,,Microsoft To Do''</string>
-    <string name="subtasks_will_be_flattened">Ова листа не подржава угњеждене подзадатке. Снимање ће их пребацити на први ниво.</string>
-    <string name="subtask_list_locked">Нови подзадаци користе родитељске листе</string>
     <string name="customize_drawer">Прилагоди навигациони мени</string>
     <string name="customize_drawer_summary">Превуци и пусти за прерасподелу ставки менија</string>
     <string name="hide_unused_tags">Сакриј некоришћене тагове</string>

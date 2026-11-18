@@ -91,7 +91,6 @@
     <string name="sort_ascending">Kreskanta</string>
     <string name="sort_descending">Malkreskanta</string>
     <string name="completed_tasks_at_bottom">Movi finitajn taskojn al malsupro</string>
-    <string name="subtasks">Subtaskoj</string>
     <string name="sort_not_available">Ne disponeblaj por etikedoj, filtriloj, aŭ lokoj</string>
     <string name="none">Neniu</string>
     <string name="ok">Bone</string>
@@ -507,9 +506,6 @@
     <string name="discard_confirmation">Ĉu vi certas ke vi volas nuligi viajn ŝanĝojn?</string>
     <string name="keep_editing">Plu redakti</string>
     <string name="DLG_delete_this_task_question">Forigi la taskon?</string>
-    <string name="TEA_add_subtask">Aldoni subtaskon</string>
-    <string name="subtasks_multilevel_google_task">Multnivelaj subtaskoj ne estas subtenataj per Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do ne subtenas plurnivelajn subtaskojn</string>
     <string name="customize_drawer">Adapti tirkeston</string>
     <string name="customize_drawer_summary">Ŝovu kaj demetu por rearanĝi menuerojn</string>
     <string name="hide_unused_tags">Kaŝi neuzatajn etikedojn</string>
@@ -530,7 +526,6 @@
     <string name="theme_wallpaper">Ekranfono</string>
     <string name="theme_day_night">Tago/Nokto</string>
     <string name="theme_system_default">Laŭ operaciumo</string>
-    <string name="show_completed_subtasks">Montri finitajn subtaskojn</string>
     <string name="failed_to_load_task">Enlegi taskon malsukcesis</string>
     <string name="not_signed_in">Ne ensalutite</string>
     <string name="caldav_server_openxchange">Open-Xchange</string>
@@ -580,8 +575,6 @@
     <string name="repeat_type_completion_description">La tasko ripetiĝas laŭ kiam vi efektive finis ĝin</string>
     <string name="mark_completed">Marki finita</string>
     <string name="snoozed_reminder">Paŭzigis memorigilon</string>
-    <string name="subtasks_will_be_flattened">Ĉi tiu listo ne subtenas nestitajn subtaskojn. Konservi kaŭzos ke ili ĉiuj moviĝos al la supra nivelo.</string>
-    <string name="subtask_list_locked">Novaj subtaskoj uzas la patran liston</string>
     <string name="works_with_desktop">Scorda por labortablo</string>
     <string name="mcp_access_advanced">Altnivela</string>
     <string name="mcp_tools_group_lists">Listoj</string>

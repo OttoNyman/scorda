@@ -81,7 +81,6 @@
     <string name="sort_ascending">Αύξουσα</string>
     <string name="sort_descending">Φθίνουσα</string>
     <string name="completed_tasks_at_bottom">Μετακίνηση ολοκληρωμένων εργασιών στο κάτω μέρος</string>
-    <string name="subtasks">Υποεργασίες</string>
     <string name="sort_not_available">Δεν είναι διαθέσιμο για ετικέτες, φίλτρα ή μέρη</string>
     <string name="none">Κανένα</string>
     <string name="ok">OK</string>
@@ -401,9 +400,6 @@
     <string name="discard_confirmation">Θέλετε σίγουρα να απορρίψετε τις αλλαγές;</string>
     <string name="keep_editing">Συνέχεια επεξεργασίας</string>
     <string name="DLG_delete_this_task_question">Διαγραφή εργασίας;</string>
-    <string name="TEA_add_subtask">Προσθήκη υποεργασίας</string>
-    <string name="subtasks_multilevel_google_task">Οι πολυεπίπεδες υποεργασίες δεν υποστηρίζονται από το Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Οι πολυεπίπεδες υποεργασίες δεν υποστηρίζονται από το Microsoft To Do</string>
     <string name="customize_drawer">Προσαρμογή συρταριού</string>
     <string name="customize_drawer_summary">Τραβήξτε και αφήστε για ανακατάταξη των αντικειμένων του μενού</string>
     <string name="hide_unused_tags">Απόκρυψη μη χρησιμοποιημένων ετικετών</string>

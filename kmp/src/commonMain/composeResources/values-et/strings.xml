@@ -92,7 +92,6 @@
     <string name="sort_ascending">Kasvavalt</string>
     <string name="sort_descending">Kahanevalt</string>
     <string name="completed_tasks_at_bottom">Nihuta lõpetatud ülesanded alla</string>
-    <string name="subtasks">Alamülesanne</string>
     <string name="sort_not_available">Pole saadaval siltide, filtrite ja asukohtade puhul</string>
     <string name="none">Pole</string>
     <string name="ok">OK</string>
@@ -551,15 +550,9 @@
     <string name="discard_confirmation">Oled sa kindel, et soovid muudatustest loobuda?</string>
     <string name="keep_editing">Jätka muutmist</string>
     <string name="DLG_delete_this_task_question">Kustuta see ülesanne?</string>
-    <string name="show_completed_subtasks">Näita täidetud alamülesandeid</string>
-    <string name="TEA_add_subtask">Lisa alamülesanne</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks ei võimalda mitmetasemeliste alamülesannete kasutamist</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do ei võimalda mitmetasemeliste alamülesannete kasutamist</string>
     <string name="undo_delete">Võta kustutamine tagasi</string>
     <string name="error_encryption_failed">Krüptimine ei õnnestunud. Kontrolli, et rakendusel Scorda oleks ligipääs süsteemi võrmerõngale ja proovi siis uuesti.</string>
     <string name="snoozed_reminder">Edasilükatud meeldetuletus</string>
-    <string name="subtasks_will_be_flattened">See loend ei toeta hierarhilise alamülesandeid. Salvestades tõstetakse nad ülemisele tasemele.</string>
-    <string name="subtask_list_locked">Uued alamülesanded kasutavad ülemloendit</string>
     <string name="customize_drawer">Kohanda menüüriba</string>
     <string name="customize_drawer_summary">Menüükirjeid saad muuta lohistades</string>
     <string name="hide_unused_tags">Peida kasutamata sildid</string>

@@ -81,7 +81,6 @@
     <string name="sort_ascending">Ascendente</string>
     <string name="sort_descending">Descendente</string>
     <string name="completed_tasks_at_bottom">Mover tarefas concluídas para baixo</string>
-    <string name="subtasks">Sub-tarefas</string>
     <string name="sort_not_available">Não disponível por etiquetas, filtros, ou lugares</string>
     <string name="none">Nenhuma</string>
     <string name="ok">OK</string>
@@ -557,7 +556,6 @@
     <string name="discard_confirmation">Você tem certeza que deseja descartar suas mudanças?</string>
     <string name="keep_editing">Continuar editando</string>
     <string name="DLG_delete_this_task_question">Excluir esta tarefa?</string>
-    <string name="show_completed_subtasks">Mostrar subtarefas concluídas</string>
     <string name="repeat_type_completion_description">A tarefa se repete com base em quando você realmente a terminou</string>
     <string name="repeat_type_due_description">A tarefa se repete com base em quando deveria ter sido concluída</string>
     <string name="resize_panes">Redimensionar painéis</string>
@@ -571,11 +569,6 @@
     <string name="metadata_stored_on_tasks_org">Armazenado na sua conta Scorda</string>
     <string name="sync_metadata_summary">Armazene nomes de etiquetas, cores, ícones e ordem de exibição nesta conta para que eles sejam sincronizados entre seus dispositivos</string>
     <string name="sync_metadata">Armazenar metadados de etiquetas aqui</string>
-    <string name="TEA_add_subtask">Adicionar sub-tarefa</string>
-    <string name="subtasks_multilevel_google_task">Subtarefas em vários níveis não são suportadas pelo Google Tarefas</string>
-    <string name="subtasks_multilevel_microsoft">Subtarefas multinível não suportadas pelo Microsoft To Do</string>
-    <string name="subtask_list_locked">Novas subtarefas usam a lista dos pais</string>
-    <string name="subtasks_will_be_flattened">Esta lista não suporta subtarefas aninhadas. Salvar irá movê-los todos para o nível superior.</string>
     <string name="undo_delete">Desfazer exclusão</string>
     <string name="customize_drawer">Personalizar menu</string>
     <string name="customize_drawer_summary">Arraste e solte para reorganizar os itens do menu</string>

@@ -92,7 +92,6 @@
     <string name="sort_ascending">Nouseva</string>
     <string name="sort_descending">Laskeva</string>
     <string name="completed_tasks_at_bottom">Siirrä valmiit tehtävät alimmaiseksi</string>
-    <string name="subtasks">Alitehtävät</string>
     <string name="sort_not_available">Ei käytettävissä tunnisteiden, suodattimien tai paikkojen kanssa</string>
     <string name="none">Ei mitään</string>
     <string name="ok">OK</string>
@@ -419,9 +418,6 @@
     <string name="discard_confirmation">Oletko varma että haluat hylätä muutokset?</string>
     <string name="keep_editing">Jatka muokkausta</string>
     <string name="DLG_delete_this_task_question">Poista tämä tehtävä?</string>
-    <string name="TEA_add_subtask">Lisää alitehtävä</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks ei tue monitasoisia alitehtäviä</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do ei tue monitasoisia alitehtäviä</string>
     <string name="customize_drawer">Muokkaa vetolaatikkoa</string>
     <string name="customize_drawer_summary">Vedä ja pudota valikon kohteita järjestääksesi ne uudelleen</string>
     <string name="hide_unused_tags">Piilota käyttämättömät tunnistimet</string>

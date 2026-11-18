@@ -91,7 +91,6 @@
     <string name="sort_ascending">昇順</string>
     <string name="sort_descending">降順</string>
     <string name="completed_tasks_at_bottom">完了したタスクを一番下に移動</string>
-    <string name="subtasks">サブタスク</string>
     <string name="sort_not_available">タグ、フィルター、場所には使用できません</string>
     <string name="none">なし</string>
     <string name="ok">OK</string>
@@ -504,9 +503,6 @@
     <string name="discard_confirmation">本当に変更を破棄しますか？</string>
     <string name="keep_editing">編集を続ける</string>
     <string name="DLG_delete_this_task_question">このタスクを削除しますか？</string>
-    <string name="TEA_add_subtask">サブタスクを追加</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks は多層式のサブタスクに対応していません</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do は多層式のサブタスクに対応していません</string>
     <string name="customize_drawer">ドロワーのカスタマイズ</string>
     <string name="customize_drawer_summary">ドラッグ&amp;ドロップしてメニューを並び替え</string>
     <string name="hide_unused_tags">使われていないタグを隠す</string>
@@ -537,7 +533,6 @@
     <string name="undo_delete">削除を元に戻す</string>
     <string name="new_filter">新しいフィルターを作成</string>
     <string name="sign_in_with_apple">Appleでサインイン</string>
-    <string name="show_completed_subtasks">完了したサブタスクを表示</string>
     <string name="mcp_server_summary">この端末のAIアシスタントにあなたのデータを管理させる</string>
     <string name="mcp_server_enable_summary">127.0.0.1 にある、この端末でのみ実行します。 ネットワークには公開されません。</string>
     <string name="mcp_status_running">ポート %1$dで実行中</string>

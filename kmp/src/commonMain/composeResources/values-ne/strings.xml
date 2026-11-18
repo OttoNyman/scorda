@@ -13,7 +13,6 @@
     <string name="ok">ठिक छ</string>
     <string name="cancel">रद्द गर्नुहोस्</string>
     <string name="no_start_date">सुरु मिति छैन</string>
-    <string name="subtasks">उपकार्यहरू</string>
     <string name="display_name">डिस्प्ले नाम</string>
     <string name="task_defaults">कार्य पूर्वनिर्धारितहरू</string>
     <string name="task_list_options">कार्य सूचीका विकल्पहरू</string>
@@ -44,6 +43,5 @@
     <string name="default_location_reminder_on_arrival">आगमनमा</string>
     <string name="rmd_NoA_done">पूरा</string>
     <string name="action_open">खुल्ला</string>
-    <string name="TEA_add_subtask">उपकार्य थप्नुहोस्</string>
     <string name="more_options">थप विकल्पहरू</string>
 </resources>

@@ -74,7 +74,6 @@
     <string name="sort_ascending">Stigende</string>
     <string name="sort_descending">Synkende</string>
     <string name="completed_tasks_at_bottom">Flytt fullførte gjøremål til bunnen</string>
-    <string name="subtasks">Gjøremålssteg</string>
     <string name="sort_not_available">Ikke tilgjengelig for tagger, filtre eller steder</string>
     <string name="none">Ingen</string>
     <string name="ok">OK</string>
@@ -384,8 +383,6 @@
     <string name="default_location_reminder_on_arrival">Ved ankomst</string>
     <string name="default_location_reminder_on_departure">Ved avgang</string>
     <string name="default_location_reminder_on_arrival_or_departure">Ved ankomst og avgang</string>
-    <string name="TEA_add_subtask">Legg til gjøremålssteg</string>
-    <string name="subtasks_multilevel_google_task">Gjøremålssteg med flere nivåer støttes ikke av Google Tasks</string>
     <string name="customize_drawer">Tilpass meny</string>
     <string name="customize_drawer_summary">Dra og slip for å omkonfigurere menyelementer</string>
     <string name="hide_unused_tags">Skjul ubrukte etiketter</string>

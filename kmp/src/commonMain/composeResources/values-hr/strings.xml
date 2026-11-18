@@ -99,7 +99,6 @@
     <string name="sort_ascending">Uzlazno</string>
     <string name="sort_descending">Silazno</string>
     <string name="completed_tasks_at_bottom">Premjesti obavljene zadatke na kraj</string>
-    <string name="subtasks">Podzadaci</string>
     <string name="sort_not_available">Nije dostupno za oznake, filtre i mjesta</string>
     <string name="none">Ništa</string>
     <string name="ok">U redu</string>
@@ -557,9 +556,6 @@
     <string name="discard_confirmation">Stvarno želiš odbaciti promjene?</string>
     <string name="keep_editing">Nastavi uređivati</string>
     <string name="DLG_delete_this_task_question">Ovaj zadatak izbrisati?</string>
-    <string name="TEA_add_subtask">Dodaj podzadatak</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks ne podržava višerazinske podzadatke</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do ne podržava višerazinske podzadatke</string>
     <string name="customize_drawer">Prilagodi izbornik</string>
     <string name="customize_drawer_summary">Povuci i ispusti stavke za mijenjanje rasporeda u izborniku</string>
     <string name="hide_unused_tags">Sakrij nekorištene oznake</string>

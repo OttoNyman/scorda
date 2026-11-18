@@ -99,7 +99,6 @@
     <string name="sort_ascending">升序</string>
     <string name="sort_descending">遞減</string>
     <string name="completed_tasks_at_bottom">將已完成的任務移至底部</string>
-    <string name="subtasks">子任務</string>
     <string name="sort_not_available">不支援標籤、篩選或地點</string>
     <string name="none">無</string>
     <string name="ok">確定</string>
@@ -433,9 +432,6 @@
     <string name="discard_confirmation">您要放棄更改嗎？</string>
     <string name="keep_editing">繼續編輯</string>
     <string name="DLG_delete_this_task_question">刪除這項工作？</string>
-    <string name="TEA_add_subtask">加入副工作</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks 不支援多層次子任務</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do 不支援多層級子任務</string>
     <string name="customize_drawer">自訂抽屜</string>
     <string name="customize_drawer_summary">拖放以重新排列選單項目</string>
     <string name="hide_unused_tags">隱藏未使用標籤</string>

@@ -81,7 +81,6 @@
     <string name="sort_ascending">Ascendente</string>
     <string name="sort_descending">Descendente</string>
     <string name="completed_tasks_at_bottom">Mover as tarefas finalizadas ao fondo</string>
-    <string name="subtasks">Subtarefas</string>
     <string name="sort_not_available">Non dispoñible para etiquetas, filtros ou lugares</string>
     <string name="none">Ningunha</string>
     <string name="ok">Aceptar</string>
@@ -401,9 +400,6 @@
     <string name="discard_confirmation">Queres descartar os cambios?</string>
     <string name="keep_editing">Seguir editando</string>
     <string name="DLG_delete_this_task_question">Borrar esta tarefa?</string>
-    <string name="TEA_add_subtask">Engadir subtarefa</string>
-    <string name="subtasks_multilevel_google_task">Gootle Tasks non acepta as subtarefas a múltiples niveis</string>
-    <string name="subtasks_multilevel_microsoft">Subtarefas multinivel non compatibles con Microsoft To Do</string>
     <string name="customize_drawer">Personalizar caixón</string>
     <string name="customize_drawer_summary">Arrastrar e soltar para reorganizar os elementos do menú</string>
     <string name="hide_unused_tags">Agochar etiquetas sen usar</string>

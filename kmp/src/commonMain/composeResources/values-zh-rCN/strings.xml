@@ -99,7 +99,6 @@
     <string name="sort_ascending">升序</string>
     <string name="sort_descending">降序</string>
     <string name="completed_tasks_at_bottom">将已完成任务移至底部</string>
-    <string name="subtasks">子任务</string>
     <string name="sort_not_available">不适用于标签、过滤器或地点</string>
     <string name="none">无</string>
     <string name="ok">确定</string>
@@ -542,15 +541,9 @@
     <string name="discard_confirmation">确定要放弃你的修改吗？</string>
     <string name="keep_editing">继续编辑</string>
     <string name="DLG_delete_this_task_question">确认删除？</string>
-    <string name="show_completed_subtasks">显示已完成的子任务</string>
     <string name="error_encryption_failed">加密失败。检查 Scorda 是否可以访问系统 keychain，然后重试。</string>
     <string name="snoozed_reminder">延后的提醒</string>
-    <string name="TEA_add_subtask">添加子任务</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks 不支持多层级子任务</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do 不支持多层级子任务</string>
     <string name="undo_delete">撤销删除</string>
-    <string name="subtask_list_locked">新建的子任务将使用父任务的清单</string>
-    <string name="subtasks_will_be_flattened">此清单不支持嵌套子任务。保存后，所有子任务都将移至顶层。</string>
     <string name="customize_drawer">自定义抽屉</string>
     <string name="customize_drawer_summary">通过拖放重新安排菜单项</string>
     <string name="hide_unused_tags">隐藏不用的标签</string>

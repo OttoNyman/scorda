@@ -90,7 +90,6 @@
     <string name="sort_ascending">Stigende</string>
     <string name="sort_descending">Faldende</string>
     <string name="completed_tasks_at_bottom">Flyt fuldførte opgaver til bunden</string>
-    <string name="subtasks">Underopgaver</string>
     <string name="sort_not_available">Ikke tilgængelig for tags, filtre eller steder</string>
     <string name="none">Ingen</string>
     <string name="ok">OK</string>
@@ -439,9 +438,6 @@
     <string name="discard_confirmation">Er du sikker på, at du vil kassere dine ændringer?</string>
     <string name="keep_editing">Fortsæt redigering</string>
     <string name="DLG_delete_this_task_question">Slet denne opgave?</string>
-    <string name="TEA_add_subtask">Tilføj underopgave</string>
-    <string name="subtasks_multilevel_google_task">Underopgaver på flere niveauer understøttes ikke af Google Huskeliste</string>
-    <string name="subtasks_multilevel_microsoft">Underopgaver på flere niveauer understøttes ikke af Microsoft To Do</string>
     <string name="customize_drawer">Tilpas skuffe</string>
     <string name="customize_drawer_summary">Træk og slip for at omarrangere menupunkter</string>
     <string name="hide_unused_tags">Skjul ubrugte tags</string>
@@ -584,12 +580,9 @@
     <string name="repeat_type_due_description">Opgaven gentages ud fra, hvornår den skulle have været udført</string>
     <string name="repeat_type_completion_description">Opgaven gentages ud fra, hvornår du faktisk blev færdig med den</string>
     <string name="mark_completed">Markér som fuldført</string>
-    <string name="show_completed_subtasks">Vis fuldførte underopgaver</string>
     <string name="error_encryption_failed">Krypteringen mislykkedes. Tjek, at Scorda har adgang til systemets nøglering, og prøv igen.</string>
     <string name="snoozed_reminder">Udsat påmindelse</string>
     <string name="undo_delete">Fortryd sletning</string>
-    <string name="subtasks_will_be_flattened">Listen understøtter ikke underopgaver i flere niveauer. Når du gemmer, flyttes de alle til øverste niveau.</string>
-    <string name="subtask_list_locked">Nye underopgaver bruger den overordnede opgaves liste</string>
     <string name="repeat_monthly_on_last_day">Månedligt på den sidste dag</string>
     <string name="repeat_monthly_last_day">den sidste dag</string>
     <string name="works_with_tasks">Fungerer med Scorda</string>

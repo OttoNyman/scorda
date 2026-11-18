@@ -88,7 +88,6 @@
     <string name="sort_ascending">Oplopend</string>
     <string name="sort_descending">Aflopend</string>
     <string name="completed_tasks_at_bottom">Voltooide taken onderaan plaatsen</string>
-    <string name="subtasks">Subtaken</string>
     <string name="sort_not_available">Niet beschikbaar voor labels, filters, of plaatsen</string>
     <string name="none">Geen</string>
     <string name="ok">OK</string>
@@ -425,9 +424,6 @@
     <string name="discard_confirmation">Afbreken en wijzigingen negeren?</string>
     <string name="keep_editing">Blijf bewerken</string>
     <string name="DLG_delete_this_task_question">Deze taak wissen?</string>
-    <string name="TEA_add_subtask">Subtaak toevoegen</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks ondersteunt geen subtaken op meerdere niveaus</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do ondersteunt geen subtaken op meerdere niveaus</string>
     <string name="customize_drawer">Lade personaliseren</string>
     <string name="customize_drawer_summary">Versleep om menu-items opnieuw te ordenen</string>
     <string name="hide_unused_tags">Ongebruikte labels verbergen</string>
@@ -469,7 +465,6 @@
     <string name="error_contact_support">Als de problemen aanhouden, neem dan contact op met %1$s</string>
     <string name="pricing_nyp_description">Kies je eigen abonnementsprijs. Ontgrendelt alle in-app-functies.</string>
     <string name="upgrade_subscription_banner">Bedankt voor je steun! Upgrade je abonnement om Scorda Cloud Sync in te schakelen</string>
-    <string name="show_completed_subtasks">Voltooide subtaken tonen</string>
     <string name="wear_phone_update_required">Telefoonupdate vereist</string>
     <string name="wear_connecting_to_phone">Verbinding maken met telefoon…</string>
     <string name="edit_task">Taak bewerken</string>
@@ -617,8 +612,6 @@
     <string name="location_update_interval_30_minutes">Elke 30 minuten</string>
     <string name="location_update_interval_1_hour">Elk uur</string>
     <string name="location_update_interval_2_hours">Elke 2 uur</string>
-    <string name="subtasks_will_be_flattened">Deze lijst ondersteunt geen geneste subtaken. Bij het opslaan worden ze allemaal naar het hoogste niveau verplaatst.</string>
-    <string name="subtask_list_locked">Nieuwe subtaken gebruiken de bovenliggende lijst</string>
     <string name="works_with_services">Task services</string>
     <string name="works_with_launchers">Launchers</string>
     <string name="works_with_developers">Developers</string>

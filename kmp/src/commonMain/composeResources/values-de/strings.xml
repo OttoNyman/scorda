@@ -99,7 +99,6 @@
     <string name="sort_ascending">Aufsteigend</string>
     <string name="sort_descending">Absteigend</string>
     <string name="completed_tasks_at_bottom">Erledigte Aufgaben nach unten verschieben</string>
-    <string name="subtasks">Teilaufgaben</string>
     <string name="sort_not_available">Nicht auf Schlagwörter, Filter oder Orte anwendbar</string>
     <string name="none">Keine</string>
     <string name="ok">OK</string>
@@ -546,10 +545,6 @@
     <string name="discard_confirmation">Änderungen wirklich verwerfen?</string>
     <string name="keep_editing">Weiter bearbeiten</string>
     <string name="DLG_delete_this_task_question">Diese Aufgabe löschen?</string>
-    <string name="TEA_add_subtask">Teilaufgabe hinzufügen</string>
-    <string name="subtasks_multilevel_google_task">Mehrstufige Teilaufgaben werden von Google Tasks nicht unterstützt</string>
-    <string name="subtasks_multilevel_microsoft">Mehrstufige Teilaufgaben werden von Microsoft To Do nicht unterstützt</string>
-    <string name="show_completed_subtasks">Abgeschlossene Teilaufgaben anzeigen</string>
     <string name="error_encryption_failed">Verschlüsselung fehlgeschlagen. Überprüfen Sie, ob Scorda auf Ihren System-Schlüsselbund zugreifen kann, und versuchen Sie es erneut.</string>
     <string name="no_task_selected">Keine Aufgabe ausgewählt</string>
     <string name="resize_panes">Bereichsgröße ändern</string>
@@ -580,8 +575,6 @@
     <string name="undo_delete">Löschen rückgängig machen</string>
     <string name="repeat_monthly_on_last_day">Monatlich am letzten Tag</string>
     <string name="repeat_monthly_last_day">Der letzte Tag</string>
-    <string name="subtasks_will_be_flattened">Diese Liste unterstützt keine verschachtelten Teilaufgaben. Beim Speichern werden sie alle auf die höchste Stufe verschoben.</string>
-    <string name="subtask_list_locked">Neue Teilaufgaben werden in die Liste des übergeordneten Elements aufgenommen</string>
     <string name="works_with_desktop">Scorda für Desktop</string>
     <string name="mcp_access_advanced">Erweitert</string>
     <string name="mcp_tools_group_lists">Listen</string>

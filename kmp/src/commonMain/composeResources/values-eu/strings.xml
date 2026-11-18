@@ -71,7 +71,6 @@
     <string name="SSD_sort_my_order">Nire eskaria</string>
     <string name="astrid_sort_order">Eskuzko Astrid ordenatzea</string>
     <string name="completed_tasks_at_bottom">Betetako atazak behealdera mugitu</string>
-    <string name="subtasks">Azpi-zereginak</string>
     <string name="none">Bat ere ez</string>
     <string name="back">Atzera</string>
     <string name="help">Laguntza</string>
@@ -360,8 +359,6 @@
     <string name="discard_confirmation">Ziur zure aldaketak baztertu nahi dituzula?</string>
     <string name="keep_editing">Jarraitu editatzen</string>
     <string name="DLG_delete_this_task_question">Ezabatu zeregin hau?</string>
-    <string name="TEA_add_subtask">Gehitu azpi-zeregina</string>
-    <string name="subtasks_multilevel_google_task">Google Tasks-ek ez ditu hainbat mailako azpi-zereginak onartzen</string>
     <string name="hide_unused_tags">Ezkutatu erabili gabeko etiketak</string>
     <string name="hide_unused_places">Ezkutatu erabili gabeko tokiak</string>
     <string name="language">Hizkuntza</string>

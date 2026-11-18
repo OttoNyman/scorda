@@ -42,7 +42,6 @@
     <string name="tomorrow">Ertaga</string>
     <string name="yesterday">Kecha</string>
     <string name="notifications">Bildirishnoma</string>
-    <string name="subtasks">Quyi vazifalar</string>
     <string name="enabled">Yoqilgan</string>
     <string name="remove">Olib tashlash</string>
     <string name="date_shortcut_morning">Tong</string>
@@ -136,7 +135,6 @@
     <string name="add_task">Vazifa qo‘shish</string>
     <string name="show_unstarted">Boshlanmagan vazifalarni ko‘rsatish</string>
     <string name="show_completed">Bajarilgan vazifalarni ko‘rsatish</string>
-    <string name="show_completed_subtasks">Bajarilgan kichik vazifalarni ko‘rsatish</string>
     <string name="wear_install_app">Telefonga o‘rnatish</string>
     <string name="wear_phone_update_required">Telefonni yangilash talab qilinadi</string>
     <string name="wear_unknown_error">Noma’lum xatolik</string>

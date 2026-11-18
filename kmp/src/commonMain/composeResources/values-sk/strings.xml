@@ -80,7 +80,6 @@
     <string name="sort_ascending">Vzostupne</string>
     <string name="sort_descending">Zostupne</string>
     <string name="completed_tasks_at_bottom">Presunúť dokončené úlohy nadol</string>
-    <string name="subtasks">Podúlohy</string>
     <string name="sort_not_available">Nie je k dispozícií pre štítky, filtre a miesta</string>
     <string name="none">Žiadna</string>
     <string name="ok">OK</string>
@@ -419,9 +418,6 @@
     <string name="discard_confirmation">Naozaj chcete zahodiť vykonané zmeny?</string>
     <string name="keep_editing">Pokračuj v úpravách</string>
     <string name="DLG_delete_this_task_question">Odstrániť túto úlohu?</string>
-    <string name="TEA_add_subtask">Pridať podúlohu</string>
-    <string name="subtasks_multilevel_google_task">Úlohy Google nepodporujú viacúrovňové podúlohy</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do nepodporujú viacúrovňové podúlohy</string>
     <string name="customize_drawer">Upraviť zásuvku</string>
     <string name="customize_drawer_summary">Ťahaním zmeníte usporiadanie položiek v ponuke</string>
     <string name="hide_unused_tags">Skryť nevyužívané štítky</string>

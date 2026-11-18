@@ -81,7 +81,6 @@
     <string name="sort_ascending">Ascendente</string>
     <string name="sort_descending">Descendente</string>
     <string name="completed_tasks_at_bottom">Mover las tareas completadas a la parte inferior</string>
-    <string name="subtasks">Subtareas</string>
     <string name="sort_not_available">No disponible para etiquetas, filtros, o sitios</string>
     <string name="none">Ninguna</string>
     <string name="ok">Aceptar</string>
@@ -501,9 +500,6 @@
     <string name="discard_confirmation">¿Confirme que desea descartar los cambios?</string>
     <string name="keep_editing">Continuar editando</string>
     <string name="DLG_delete_this_task_question">¿Desea eliminar esta tarea?</string>
-    <string name="TEA_add_subtask">Añadir subtarea</string>
-    <string name="subtasks_multilevel_google_task">Subtareas multinivel no compatibles con Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Microsoft To Do no admite subtareas de múltiples niveles</string>
     <string name="customize_drawer">Personalizar menú</string>
     <string name="customize_drawer_summary">Arrastra y suelta para reorganizar los elementos del menú</string>
     <string name="hide_unused_tags">Ocultar etiquetas no utilizadas</string>

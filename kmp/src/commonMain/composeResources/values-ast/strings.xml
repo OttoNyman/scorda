@@ -49,7 +49,6 @@
     <string name="SSD_sort_my_order">El mio orden</string>
     <string name="astrid_sort_order">Ordenación manual d'Astrid</string>
     <string name="sort_completed">Por data de terminación</string>
-    <string name="subtasks">Subxeres</string>
     <string name="none">Denguna</string>
     <string name="display_name">Mostrar el nome</string>
     <string name="manage_subscription">Camudar soscripción</string>
@@ -303,9 +302,6 @@
     <string name="discard_confirmation">¿Quies escartar los tos cambeos?</string>
     <string name="keep_editing">Siguir editando</string>
     <string name="DLG_delete_this_task_question">¿Esborriar esta xera?</string>
-    <string name="TEA_add_subtask">Añader subxera</string>
-    <string name="subtasks_multilevel_google_task">Subxeres multi-nivel non soportaes por Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Subxeres multi-nivel non soportaes por Microsoft To Do</string>
     <string name="customize_drawer">Personalizar caxón</string>
     <string name="customize_drawer_summary">Arrastrar y soltar pa reorganizar los elementos del menú</string>
     <string name="language">Llingua</string>

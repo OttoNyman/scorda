@@ -81,7 +81,6 @@
     <string name="sort_ascending">Crescător</string>
     <string name="sort_descending">Descrescător</string>
     <string name="completed_tasks_at_bottom">Mută sarcinile finalizate în partea de jos</string>
-    <string name="subtasks">Sub-sarcini</string>
     <string name="sort_not_available">Nu este disponibil pentru etichete, filtre sau locuri</string>
     <string name="none">Niciuna</string>
     <string name="ok">OK</string>
@@ -446,9 +445,6 @@
     <string name="discard_confirmation">Ești siguri că vrei să renunți la modificările făcute?</string>
     <string name="keep_editing">Continuă editarea</string>
     <string name="DLG_delete_this_task_question">Ștergi sarcina?</string>
-    <string name="TEA_add_subtask">Adaugă o sarcină secundară</string>
-    <string name="subtasks_multilevel_google_task">Sub-sarcinile pe mai multe niveluri nu sunt acceptate de Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Subsarcini pe mai multe niveluri nu sunt acceptate de Microsoft To Do</string>
     <string name="customize_drawer">Personalizează sertarul</string>
     <string name="customize_drawer_summary">Trage și plasează pentru a rearanja elementele din meniu</string>
     <string name="hide_unused_tags">Ascunde etichetele nefolosite</string>

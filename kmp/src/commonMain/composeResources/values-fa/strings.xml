@@ -155,7 +155,6 @@
     <string name="discard_confirmation">آیا مطمئن هستید که می خواهید تغییرات خود را حذف کنید؟</string>
     <string name="keep_editing">ادامه ویرایش</string>
     <string name="DLG_delete_this_task_question">حذف این وظیفه</string>
-    <string name="TEA_add_subtask">اضافه کردن زیر وظیفه</string>
     <string name="customize_drawer">شخصی سازی منوی کشویی</string>
     <string name="customize_drawer_summary">با کشیدن و رها کردن آیتم های منو را تغییر دهید</string>
     <string name="language">زبان</string>
@@ -171,7 +170,6 @@
         <item quantity="one">زمان</item>
         <item quantity="other">زمان ها</item>
     </plurals>
-    <string name="subtasks">زیرکارها</string>
     <string name="list_settings">تنظیمات فهرست</string>
     <string name="name_cannot_be_empty">نام نمی‌تواند خالی باشد</string>
     <string name="filter">فیلتر</string>

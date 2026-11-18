@@ -71,7 +71,6 @@
     <string name="SSD_sort_my_order">Mano užsakymas</string>
     <string name="astrid_sort_order">Astrid rankinis rūšiavimas</string>
     <string name="completed_tasks_at_bottom">Perkelti užbaigtas užduotis į apačią</string>
-    <string name="subtasks">Antrinės užduotys</string>
     <string name="none">Nėra</string>
     <string name="back">Atgal</string>
     <string name="help">Pagalba</string>
@@ -379,8 +378,6 @@
     <string name="discard_confirmation">Ar tikrai norite atmesti pakeitimus?</string>
     <string name="keep_editing">Tęsti redagavimą</string>
     <string name="DLG_delete_this_task_question">Ištrinti šią užduotį?</string>
-    <string name="TEA_add_subtask">Pridėti antrinę užduotį</string>
-    <string name="subtasks_multilevel_google_task">„Google Tasks“ nepalaiko kelių lygių antrinių užduočių</string>
     <string name="hide_unused_tags">Slėpti nenaudojamas etiketes</string>
     <string name="hide_unused_places">Slėpti nenaudojamas vietas</string>
     <string name="language">Kalba</string>

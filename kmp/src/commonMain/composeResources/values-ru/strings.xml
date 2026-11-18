@@ -82,7 +82,6 @@
     <string name="sort_ascending">По возрастанию</string>
     <string name="sort_descending">По убыванию</string>
     <string name="completed_tasks_at_bottom">Переместить выполненные задачи вниз</string>
-    <string name="subtasks">Подзадачи</string>
     <string name="sort_not_available">Недоступно для тегов, фильтров или мест</string>
     <string name="none">Нет</string>
     <string name="ok">ОК</string>
@@ -505,9 +504,6 @@
     <string name="discard_confirmation">Отменить сделанные изменения?</string>
     <string name="keep_editing">Нет</string>
     <string name="DLG_delete_this_task_question">Удалить эту задачу?</string>
-    <string name="TEA_add_subtask">Добавить подзадачу</string>
-    <string name="subtasks_multilevel_google_task">Многоуровневые подзадачи не поддерживаются Google Tasks</string>
-    <string name="subtasks_multilevel_microsoft">Многоуровневые подзадачи не поддерживаются Microsoft To Do</string>
     <string name="customize_drawer">Настроить панель</string>
     <string name="customize_drawer_summary">Перетаскивайте элементы меню, чтобы изменить их порядок</string>
     <string name="hide_unused_tags">Скрыть неиспользуемые теги</string>
@@ -553,7 +549,6 @@
     <string name="accept">Принять</string>
     <string name="works_with_developers">Разработчикам</string>
     <string name="works_with_automation">Автоматизация</string>
-    <string name="show_completed_subtasks">Показать выполненные подзадачи</string>
     <string name="edit_task">Редактировать задачу</string>
     <string name="task_title">Заголовок задачи</string>
     <string name="failed_to_save_task">Политика конфиденциальности</string>
