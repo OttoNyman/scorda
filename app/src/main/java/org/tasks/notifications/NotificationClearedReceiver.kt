@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.tasks.R
 import org.tasks.analytics.Firebase
+import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
 import org.tasks.injection.ApplicationScope
 import org.tasks.preferences.Preferences
@@ -26,12 +27,20 @@ class NotificationClearedReceiver : BroadcastReceiver() {
     @Inject lateinit var alarmService: AlarmService
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var taskCompleter: TaskCompleter
+    @Inject lateinit var taskDao: TaskDao
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getLongExtra(NotificationManager.EXTRA_NOTIFICATION_ID, -1L)
         Timber.d("cleared $notificationId")
         if (notificationId == TEST_NOTIFICATION_ID.toLong()) {
-            scope.launch { notificationManager.cancel(notificationId, CancelReason.DISMISS) }
+            val pending = goAsync()
+            scope.launch {
+                try {
+                    notificationManager.cancel(notificationId, CancelReason.DISMISS)
+                } finally {
+                    pending.finish()
+                }
+            }
             return
         }
         if (notificationId <= 0L) return
@@ -40,26 +49,40 @@ class NotificationClearedReceiver : BroadcastReceiver() {
                 Alarm.TYPE_GEO_ENTER, Alarm.TYPE_GEO_EXIT -> true
                 else -> false
             }
+        val pending = goAsync()
         scope.launch {
-            val action = preferences.swipeAction()
-            if (action == SwipeAction.COMPLETE) {
-                firebase.logEvent(R.string.event_notification, R.string.param_type to "swipe_complete")
-                notificationManager.cancel(notificationId, CancelReason.COMPLETE)
-                taskCompleter.setComplete(notificationId)
-            } else if (action == SwipeAction.SNOOZE && !isLocationReminder) {
-                firebase.logEvent(R.string.event_notification, R.string.param_type to "auto_snooze")
-                var snoozeTime = preferences.swipeToSnoozeIntervalMS()
-                // snoozing for 0ms will cause the alarm service to miss this notification
-                // so sleep for 1s instead
-                if (snoozeTime == 0L) snoozeTime = 1000L
-                alarmService.snooze(
-                    time = currentTimeMillis() + snoozeTime,
-                    taskIds = listOf(notificationId)
-                )
-            } else {
-                firebase.logEvent(R.string.event_notification, R.string.param_type to "clear")
-                notificationManager.cancel(notificationId, CancelReason.DISMISS)
-                alarmService.markDismissed(listOf(notificationId))
+            try {
+                if (NotificationActions.isCompleting(notificationId) ||
+                    taskDao.fetch(notificationId)?.isCompleted == true
+                ) {
+                    notificationManager.cancel(notificationId, CancelReason.DISMISS)
+                    return@launch
+                }
+                val action = preferences.swipeAction()
+                if (action == SwipeAction.COMPLETE) {
+                    firebase.logEvent(R.string.event_notification, R.string.param_type to "swipe_complete")
+                    NotificationActions.markCompleting(notificationId)
+                    try {
+                        notificationManager.cancel(notificationId, CancelReason.COMPLETE)
+                        taskCompleter.setComplete(notificationId)
+                    } finally {
+                        NotificationActions.clearCompleting(notificationId)
+                    }
+                } else if (action == SwipeAction.SNOOZE && !isLocationReminder) {
+                    firebase.logEvent(R.string.event_notification, R.string.param_type to "auto_snooze")
+                    var snoozeTime = preferences.swipeToSnoozeIntervalMS()
+                    if (snoozeTime == 0L) snoozeTime = 1000L
+                    alarmService.snooze(
+                        time = currentTimeMillis() + snoozeTime,
+                        taskIds = listOf(notificationId)
+                    )
+                } else {
+                    firebase.logEvent(R.string.event_notification, R.string.param_type to "clear")
+                    notificationManager.cancel(notificationId, CancelReason.DISMISS)
+                    alarmService.markDismissed(listOf(notificationId))
+                }
+            } finally {
+                pending.finish()
             }
         }
     }
