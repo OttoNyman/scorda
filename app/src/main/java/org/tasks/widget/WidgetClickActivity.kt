@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.todoroo.astrid.activity.MainActivity.Companion.FINISH_AFFINITY
 import org.tasks.data.dao.TaskDao
-import org.tasks.data.TaskSaver
 import org.tasks.service.TaskCompleter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.NonCancellable
@@ -26,7 +25,6 @@ import javax.inject.Inject
 class WidgetClickActivity : AppCompatActivity(), OnDismissHandler {
     @Inject lateinit var taskCompleter: TaskCompleter
     @Inject lateinit var taskDao: TaskDao
-    @Inject lateinit var taskSaver: TaskSaver
     @Inject lateinit var refreshBroadcaster: RefreshBroadcaster
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var firebase: Firebase
@@ -92,18 +90,6 @@ class WidgetClickActivity : AppCompatActivity(), OnDismissHandler {
                     finish()
                 }
             }
-            TOGGLE_SUBTASKS -> {
-                val taskId = intent.getLongExtra(EXTRA_TASK_ID, 0L)
-                val collapsed = intent.getBooleanExtra(EXTRA_COLLAPSED, false)
-                Timber.d("$action collapsed=$collapsed taskId=$taskId")
-                logWidgetClick("toggle_subtasks")
-                if (taskId > 0) {
-                    lifecycleScope.launch(NonCancellable) {
-                        taskSaver.setCollapsed(taskId, collapsed)
-                    }
-                }
-                finish()
-            }
             RESCHEDULE_TASK -> {
                 val taskId = intent.getLongExtra(EXTRA_TASK_ID, 0L)
                 Timber.d("$action taskId=$taskId")
@@ -167,7 +153,6 @@ class WidgetClickActivity : AppCompatActivity(), OnDismissHandler {
         const val COMPLETE_TASK = "COMPLETE_TASK"
         const val EDIT_TASK = "EDIT_TASK"
         const val OPEN_TASK_LIST = "OPEN_TASK_LIST"
-        const val TOGGLE_SUBTASKS = "TOGGLE_SUBTASKS"
         const val RESCHEDULE_TASK = "RESCHEDULE_TASK"
         const val TOGGLE_GROUP = "TOGGLE_GROUP"
         const val EXTRA_TASK_ID = "extra_task_id"
