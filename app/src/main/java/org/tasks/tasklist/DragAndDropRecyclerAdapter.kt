@@ -1,10 +1,16 @@
 package org.tasks.tasklist
 
 import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
+import com.google.android.material.color.MaterialColors
+import org.tasks.R
 import androidx.recyclerview.widget.ItemTouchHelper.Callback
 import androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags
 import androidx.recyclerview.widget.ItemTouchHelper.DOWN
@@ -132,14 +138,16 @@ class DragAndDropRecyclerAdapter(
         }
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-            return when {
-                viewHolder !is TaskViewHolder -> NO_MOVEMENT
-                viewHolder.task.task.memo && !taskList.memosDragEnabled() -> NO_MOVEMENT
-                !dragAndDropEnabled() -> NO_MOVEMENT
-                adapter.numSelected > 0 -> NO_MOVEMENT
-                else -> ALLOW_DRAGGING
+            if (viewHolder !is TaskViewHolder) return NO_MOVEMENT
+            val drag = when {
+                viewHolder.task.task.memo && !taskList.memosDragEnabled() -> 0
+                !dragAndDropEnabled() -> 0
+                adapter.numSelected > 0 -> 0
+                else -> UP or DOWN or LEFT or RIGHT
             }
-        }  
+            val swipe = if (taskList.canSwipe(viewHolder.task)) LEFT or RIGHT else 0
+            return makeMovementFlags(drag, swipe)
+        }
 
         override fun onMove(
                 recyclerView: RecyclerView,
@@ -210,8 +218,43 @@ class DragAndDropRecyclerAdapter(
                     } else task.targetIndent = min(targetIndent, maxIndent)
                 }
                 dX = (task.targetIndent - task.indent) * shiftSize
+            } else if (actionState == ACTION_STATE_SWIPE && dX != 0f) {
+                drawSwipeBackground(c, vh, dX)
             }
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+
+        /** Colors the space the row leaves behind and shows what the swipe will do. */
+        private fun drawSwipeBackground(c: Canvas, vh: TaskViewHolder, dX: Float) {
+            val view = vh.itemView
+            val trash = taskList.swipeTrashes(vh.task)
+            val area = if (dX > 0) {
+                Rect(view.left, view.top, view.left + dX.toInt(), view.bottom)
+            } else {
+                Rect(view.right + dX.toInt(), view.top, view.right, view.bottom)
+            }
+            swipePaint.color = MaterialColors.getColor(
+                view,
+                if (trash) com.google.android.material.R.attr.colorError else com.google.android.material.R.attr.colorPrimary,
+            )
+            c.drawRect(area, swipePaint)
+            val icon = ContextCompat.getDrawable(
+                view.context,
+                if (trash) R.drawable.ic_outline_delete_24px else R.drawable.ic_outline_done_24px,
+            )?.mutate() ?: return
+            icon.setTint(MaterialColors.getColor(
+                view,
+                if (trash) com.google.android.material.R.attr.colorOnError else com.google.android.material.R.attr.colorOnPrimary,
+            ))
+            val size = icon.intrinsicWidth
+            val margin = (16 * view.resources.displayMetrics.density).toInt()
+            val left = if (dX > 0) view.left + margin else view.right - margin - size
+            val top = view.top + (view.height - size) / 2
+            icon.setBounds(left, top, left + size, top + size)
+            c.save()
+            c.clipRect(area)
+            icon.draw(c)
+            c.restore()
         }
 
         override fun clearView(
@@ -247,8 +290,10 @@ class DragAndDropRecyclerAdapter(
             Flags.clear(Flags.TLFP_NO_INTERCEPT_TOUCH)
         }
 
+        // The row leaves the list (done and hidden, or trashed) or rebinds as completed when the
+        // list reloads, so it isn't restored here.
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            throw UnsupportedOperationException()
+            taskList.onSwiped((viewHolder as TaskViewHolder).task)
         }
 
         private fun moved(fromOrig: Int, to: Int, indent: Int) {
@@ -272,6 +317,6 @@ class DragAndDropRecyclerAdapter(
     companion object {
         private const val LONG_LIST_SIZE = 500
         private val NO_MOVEMENT = makeMovementFlags(0, 0)
-        private val ALLOW_DRAGGING =  makeMovementFlags(UP or DOWN or LEFT or RIGHT, 0)
+        private val swipePaint = Paint()
     }
 }

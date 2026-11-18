@@ -754,9 +754,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         if (trash || memos) {
             menu.findItem(R.id.menu_search).isVisible = false
         }
-        if (trash) {
-            menu.findItem(R.id.menu_share).isVisible = false
-        }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -859,15 +856,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             }
             R.id.menu_open_map -> {
                 (filter as PlaceFilter).place.open(context)
-                true
-            }
-            R.id.menu_share -> {
-                lifecycleScope.launch {
-                    val tasks = withContext(Dispatchers.Default) {
-                        taskDao.fetchTasks(listViewModel.queryPreferences(filter), filter, featureGate.current)
-                    }
-                    send(tasks)
-                }
                 true
             }
             else -> onOptionsItemSelected(item)
@@ -1346,6 +1334,20 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         onTaskCreated(duplicates)
         setSelected(duplicates.map(Task::id))
         makeSnackbar(R.string.copy_multiple_tasks_confirmation, duplicates.size.toString())?.show()
+    }
+
+    fun canSwipe(task: TaskContainer) =
+        !isActionModeActive && filter !is TrashFilter && !task.isReadOnly
+
+    /** A swipe trashes in «Завершено» and on notes, and toggles done everywhere else. */
+    fun swipeTrashes(task: TaskContainer) = filter is CompletedFilter || task.task.memo
+
+    fun onSwiped(task: TaskContainer) {
+        if (swipeTrashes(task)) {
+            deleteSelectedItems(listOf(task.id))
+        } else {
+            onCompletedTask(task, !task.isCompleted)
+        }
     }
 
     override fun onCompletedTask(task: TaskContainer, newState: Boolean) {

@@ -196,7 +196,9 @@ fun HomeScreen(
     TouchSlopMultiplier {
         ModalNavigationDrawer(
             drawerState = drawerState,
-            gesturesEnabled = isListVisible,
+            // Opens only from the burger icon, so rows can swipe; a swipe or a tap outside
+            // still closes it.
+            gesturesEnabled = isListVisible && drawerState.isOpen,
             drawerContent = {
                 ModalDrawerSheet(
                     drawerState = drawerState,
