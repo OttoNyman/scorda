@@ -32,7 +32,6 @@ import org.tasks.filters.FilterImpl
 import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.SearchFilter
-import com.todoroo.astrid.core.SortHelper
 import org.tasks.memos.MemosPreferences
 import org.tasks.memos.MemosQueryPreferences
 import org.tasks.filters.key
@@ -218,7 +217,7 @@ open class TaskListViewModel(
             }
             .onEach { (tasks, prefs, queriedState) ->
                 val memosFlatSort = queriedState.filter is MemosFilter &&
-                        MemosPreferences.read(tasksPreferences) == SortHelper.SORT_MODIFIED
+                        !MemosPreferences.isImportanceMode(MemosPreferences.read(tasksPreferences))
                 val dataSource = SectionedDataSource(
                     tasks = tasks,
                     disableHeaders = queriedState.filter.disableHeaders()

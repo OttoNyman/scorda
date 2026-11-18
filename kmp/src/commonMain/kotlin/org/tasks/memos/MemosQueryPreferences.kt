@@ -9,22 +9,18 @@ class MemosQueryPreferences(
     private val groupByPriority: Boolean = true,
 ) : QueryPreferences by base {
 
+    private val myOrder = MemosPreferences.isImportanceMode(memosSortMode)
+
     override var sortMode: Int
-        get() = when (memosSortMode) {
-            SortHelper.SORT_MODIFIED -> SortHelper.SORT_MODIFIED
-            else -> SortHelper.SORT_CALDAV
-        }
+        get() = if (myOrder) SortHelper.SORT_CALDAV else memosSortMode
         set(_) {}
 
     override var groupMode: Int
-        get() = when {
-            memosSortMode == SortHelper.SORT_MODIFIED || !groupByPriority -> SortHelper.GROUP_NONE
-            else -> SortHelper.SORT_IMPORTANCE
-        }
+        get() = if (myOrder && groupByPriority) SortHelper.SORT_IMPORTANCE else SortHelper.GROUP_NONE
         set(_) {}
 
     override var sortAscending: Boolean
-        get() = memosSortMode != SortHelper.SORT_MODIFIED && base.sortAscending
+        get() = myOrder && base.sortAscending
         set(value) {
             base.sortAscending = value
         }

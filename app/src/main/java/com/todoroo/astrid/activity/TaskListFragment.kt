@@ -69,6 +69,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.todoroo.andlib.utility.AndroidUtilities
+import com.todoroo.astrid.adapter.MemosTaskAdapter
 import com.todoroo.astrid.adapter.TaskAdapter
 import com.todoroo.astrid.adapter.TaskAdapterProvider
 import com.todoroo.astrid.api.AstridApiConstants.EXTRAS_OLD_DUE_DATE
@@ -418,6 +419,13 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
 
         // set up list adapters
         taskAdapter = taskAdapterProvider.createTaskAdapter(filter)
+        (taskAdapter as? MemosTaskAdapter)?.confirmPriorityChange = { apply ->
+            dialogBuilder
+                .newDialog(R.string.memo_change_priority)
+                .setPositiveButton(R.string.ok) { _, _ -> lifecycleScope.launch { apply() } }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        }
         listViewModel.setFilter(filter)
         (recyclerView.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
         // ListDetailPaneScaffold in adaptive-layout 1.2 briefly measures 0x0 without AnimatedPane,
@@ -440,7 +448,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         recyclerView.updatePadding(bottom = baseFooterHeight + additionalFabSpace)
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewHolderFactory.dateFormatter = DateFormatter.create(requireContext().is24HourFormat)
                 listViewModel.updateBannerState()
                 launch {
                     listViewModel.banner.collect { banner ->
@@ -455,6 +462,13 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                         }
                     }
                 }
+            }
+        }
+        lifecycleScope.launch {
+            // STARTED, not RESUMED: the sort sheet is a translucent activity over this list,
+            // and a sort picked there should show at once
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewHolderFactory.dateFormatter = DateFormatter.create(requireContext().is24HourFormat)
                 listViewModel.state.collect {
                     val results = it.tasks
                     if (results is TasksResults.Results) {
@@ -727,10 +741,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             sortMenu.isEnabled = false
             sortMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         }
-        if (!filter.supportsSubtasks() || taskAdapter.supportsAstridSorting()) {
-            menu.findItem(R.id.menu_collapse_subtasks).isVisible = false
-            menu.findItem(R.id.menu_expand_subtasks).isVisible = false
-        }
         val memos = filter is MemosFilter
         menu.findItem(R.id.menu_voice_add).isVisible = !memos && device.voiceInputAvailable() && filter.isWritable
         menu.findItem(R.id.menu_clear_completed).apply {
@@ -845,22 +855,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     Intent(activity, TagSettingsActivity::class.java)
                             .putExtra(TagSettingsActivity.EXTRA_TAG_DATA, (filter as TagFilter).tagData)
                 )
-                true
-            }
-            R.id.menu_expand_subtasks -> {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Default) {
-                        taskSaver.setCollapsed(listViewModel.queryPreferences(filter), filter, false)
-                    }
-                }
-                true
-            }
-            R.id.menu_collapse_subtasks -> {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Default) {
-                        taskSaver.setCollapsed(listViewModel.queryPreferences(filter), filter, true)
-                    }
-                }
                 true
             }
             R.id.menu_open_map -> {
@@ -1449,7 +1443,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                 }
                 if (isRecurringCompletion) {
                     val task = tasks.first()
-                    val fullTitle = markdown.markdown(force = true).toMarkdown(task.title)?.toString() ?: ""
+                    val fullTitle = markdown.markdown().toMarkdown(task.title)?.toString() ?: ""
                     val date = DateFormatter.create(context.is24HourFormat).relativeDateTime(
                         task.dueDate,
                         DateStyle.LONG,

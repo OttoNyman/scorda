@@ -16,7 +16,7 @@ class MemosTaskAdapter(
     googleTaskDao: GoogleTaskDao,
     caldavDao: CaldavDao,
     taskDao: TaskDao,
-    taskSaver: TaskSaver,
+    private val taskSaver: TaskSaver,
     dirtyDao: DirtyDao,
     localBroadcastManager: LocalBroadcastManager,
     taskMover: TaskMover,
@@ -33,50 +33,53 @@ class MemosTaskAdapter(
     localBroadcastManager,
     taskMover,
 ) {
+    /**
+     * Asks before a drop moves a memo into another priority band. The list shows the memo back
+     * in place meanwhile; [apply] makes the change.
+     */
+    var confirmPriorityChange: (apply: suspend () -> Unit) -> Unit = {}
+
+    // memos never nest
+    override fun maxIndent(previousPosition: Int, task: TaskContainer) = 0
+
+    override fun canMove(source: TaskContainer, from: Int, target: TaskContainer, to: Int): Boolean =
+        source.task.memo || super.canMove(source, from, target, to)
+
     override suspend fun moved(from: Int, to: Int, indent: Int) {
-        if (indent != 0) return
-        val task = getTask(from)
-        if (!task.task.memo) return
+        val memo = getTask(from)
+        if (!memo.task.memo) return
         val insertIndex = if (from < to) to - 1 else to
-        val flat = ignorePriority()
-        if (!flat) {
-            val destPriority = when (adapterSortMode()) {
-                SORT_IMPORTANCE -> adapterNearestHeader(if (insertIndex <= 0) 1 else insertIndex).toInt()
-                else -> task.priority
+        val header = if (!ignorePriority() && adapterSortMode() == SORT_IMPORTANCE) {
+            adapterNearestHeader(maxOf(insertIndex, 1)).toInt()
+        } else {
+            -1
+        }
+        val priority = if (header >= 0) header else memo.priority
+        val insertAt = insertIndex - (0..insertIndex).count { adapterIsHeader(it) }
+        val ordered = memosOrderWriter.orderAfterDrop(
+            all = listed(),
+            movedId = memo.id,
+            insertAt = insertAt,
+            priority = priority.takeIf { header >= 0 },
+        )
+        if (priority == memo.priority) {
+            memosOrderWriter.persistOrder(ordered)
+            refreshBroadcaster.broadcastRefresh()
+        } else {
+            confirmPriorityChange {
+                taskSaver.save(memo.task.copy(priority = priority), memo.task)
+                memosOrderWriter.persistOrder(ordered)
+                refreshBroadcaster.broadcastRefresh()
             }
-            if (destPriority != task.priority) {
-                return
-            }
-        }
-        val band = if (flat) allMemos() else tasksInBand(task.priority)
-        val targetId = when {
-            insertIndex >= count -> band.lastOrNull()?.id ?: return
-            adapterIsHeader(insertIndex) -> return
-            else -> getTask(insertIndex).id
-        }
-        val ordered = memosOrderWriter.reorderBand(band, task.id, targetId) ?: return
-        memosOrderWriter.persistOrder(ordered)
-        refreshBroadcaster.broadcastRefresh()
-    }
-
-    override fun canMove(source: TaskContainer, from: Int, target: TaskContainer, to: Int): Boolean {
-        if (!source.task.memo) return super.canMove(source, from, target, to)
-        return ignorePriority() || source.priority == target.priority
-    }
-
-    private fun allMemos(): List<TaskContainer> = buildList {
-        for (i in 0 until count) {
-            if (adapterIsHeader(i)) continue
-            val t = getTask(i)
-            if (t.task.memo) add(t)
         }
     }
 
-    private fun tasksInBand(priority: Int): List<TaskContainer> = buildList {
-        for (i in 0 until count) {
-            if (adapterIsHeader(i)) continue
-            val t = getTask(i)
-            if (t.priority == priority) add(t)
+    /** Rows in list order. [count] holds rows only, headers come on top of it. */
+    private fun listed(): List<TaskContainer> = buildList {
+        var position = 0
+        while (size < count) {
+            if (!adapterIsHeader(position)) add(getTask(position))
+            position++
         }
     }
 }

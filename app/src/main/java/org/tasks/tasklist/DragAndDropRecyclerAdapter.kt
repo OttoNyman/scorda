@@ -146,9 +146,6 @@ class DragAndDropRecyclerAdapter(
                 src: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder): Boolean {
             if (target !is TaskViewHolder && target !is HeaderViewHolder) return false
-            if (taskList.getFilter() is MemosFilter && taskList.memosDragEnabled() && target is HeaderViewHolder) {
-                return false
-            }
             taskList.finishActionMode()
             val fromPosition = src.bindingAdapterPosition
             val toPosition = target.bindingAdapterPosition

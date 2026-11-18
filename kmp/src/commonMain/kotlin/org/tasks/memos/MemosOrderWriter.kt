@@ -1,9 +1,7 @@
 package org.tasks.memos
 
 import org.tasks.data.TaskContainer
-import org.tasks.data.dao.CaldavDao.Companion.toAppleEpoch
 import org.tasks.data.dao.TaskDao
-import org.tasks.data.entity.Task
 
 class MemosOrderWriter(private val taskDao: TaskDao) {
 
@@ -16,25 +14,22 @@ class MemosOrderWriter(private val taskDao: TaskDao) {
         }
     }
 
-    fun effectiveSortKey(task: Task): Long =
-        task.order ?: task.creationDate.toAppleEpoch()
-
-    fun reorderBand(
-        band: List<TaskContainer>,
+    /**
+     * Ids of the band the memo lands in, in their new order. [all] is the list as shown before
+     * the drop, [insertAt] is the memo's index in it once the memo is taken out. A null
+     * [priority] means the list has no priority bands, so every memo is one band.
+     */
+    fun orderAfterDrop(
+        all: List<TaskContainer>,
         movedId: Long,
-        targetId: Long,
-    ): List<Long>? {
-        if (band.none { it.id == movedId } || band.none { it.id == targetId }) {
-            return null
-        }
-        val fromIdx = band.indexOfFirst { it.id == movedId }
-        val toIdx = band.indexOfFirst { it.id == targetId }
-        if (fromIdx < 0 || toIdx < 0 || fromIdx == toIdx) {
-            return null
-        }
-        val reordered = band.map { it.id }.toMutableList()
-        val id = reordered.removeAt(fromIdx)
-        reordered.add(toIdx, id)
-        return reordered
+        insertAt: Int,
+        priority: Int?,
+    ): List<Long> {
+        val rest = all.filter { it.id != movedId }
+        val moved = all.firstOrNull { it.id == movedId } ?: return emptyList()
+        val dropped = rest.toMutableList().apply { add(insertAt.coerceIn(0, rest.size), moved) }
+        return dropped
+            .filter { priority == null || it.id == movedId || it.priority == priority }
+            .map { it.id }
     }
 }

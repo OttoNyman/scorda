@@ -17,5 +17,6 @@ object MemosPreferences {
         tasksPreferences.set(sortMode, mode)
     }
 
+    /** «Мой порядок»: the only mode that can be dragged. The others are SORT_MODIFIED and SORT_CREATED. */
     fun isImportanceMode(mode: Int): Boolean = mode == SortHelper.SORT_IMPORTANCE
 }
