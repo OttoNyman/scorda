@@ -42,6 +42,7 @@ import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.EPr_edit_screen_options
+import tasks.kmp.generated.resources.navigation_drawer
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.widget_settings
 import javax.inject.Inject
@@ -50,6 +51,7 @@ import javax.inject.Inject
 class ScreenSettings : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private val settings: MainSettingsViewModel by viewModels()
 
@@ -62,10 +64,15 @@ class ScreenSettings : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            val features = featureGate.current
+            val showNavigationDrawer =
+                features.filters || features.tags || features.geo || features.lists
             ScreenSettingsList(
                 showWidgets = settings.supportsWidgets,
+                showNavigationDrawer = showNavigationDrawer,
                 onTaskList = { open(TaskListPreferences(), Res.string.task_list_options) },
                 onTaskEdit = { open(TaskEditPreferences(), Res.string.EPr_edit_screen_options) },
+                onNavigationDrawer = { open(NavigationDrawer(), Res.string.navigation_drawer) },
                 onWidgets = { open(Widgets(), Res.string.widget_settings) },
             )
         }
@@ -100,13 +107,18 @@ class ScreenSettings : Fragment() {
 @Composable
 private fun ScreenSettingsList(
     showWidgets: Boolean,
+    showNavigationDrawer: Boolean,
     onTaskList: () -> Unit,
     onTaskEdit: () -> Unit,
+    onNavigationDrawer: () -> Unit,
     onWidgets: () -> Unit,
 ) {
     val rows = buildList {
         add(ScreenRow(stringResource(Res.string.task_list_options), TasksIcons.LIST, onTaskList))
         add(ScreenRow(stringResource(Res.string.EPr_edit_screen_options), TasksIcons.EDIT, onTaskEdit))
+        if (showNavigationDrawer) {
+            add(ScreenRow(stringResource(Res.string.navigation_drawer), TasksIcons.MENU, onNavigationDrawer))
+        }
         if (showWidgets) {
             add(ScreenRow(stringResource(Res.string.widget_settings), TasksIcons.WIDGETS, onWidgets))
         }

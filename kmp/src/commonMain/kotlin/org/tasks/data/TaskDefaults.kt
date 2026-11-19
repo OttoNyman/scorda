@@ -10,12 +10,10 @@ import org.tasks.preferences.TaskDefaultSettings
 
 suspend fun Task.setDefaultReminders(preferences: AppPreferences) {
     putTransitory(Task.TRANS_DEFAULT_ALARMS, preferences.defaultAlarms())
-    ringFlags = preferences.defaultRingMode()
 }
 
 fun Task.setDefaultReminders(defaults: TaskDefaultSettings) {
     putTransitory(Task.TRANS_DEFAULT_ALARMS, defaults.defaultAlarms)
-    ringFlags = defaults.defaultRingMode
 }
 
 fun Task.getDefaultAlarms(defaultRemindersEnabled: Boolean): List<Alarm> = buildList {

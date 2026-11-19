@@ -25,7 +25,7 @@ import org.tasks.preferences.AppPreferences
 data class SeriesTemplate(
     val title: String? = null,
     val notes: String? = null,
-    val priority: Int = Task.Priority.NONE,
+    val priority: Int = Task.Priority.LOW,
     /** `hideUntil - dueDate`, null when the task has no start date. */
     val startOffset: Long? = null,
     val alarms: List<AlarmTemplate> = emptyList(),

@@ -54,7 +54,6 @@ import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAc
 import org.tasks.preferences.fragments.TasksAccount.Companion.newTasksAccountPreference
 import com.todoroo.astrid.activity.MainActivity
 import org.tasks.PlatformConfiguration
-import org.tasks.filters.TrashFilter
 import org.tasks.analytics.Firebase
 import org.tasks.billing.Inventory
 import org.tasks.billing.LinkDesktopActivity
@@ -97,7 +96,6 @@ class MainSettingsComposeFragment : Fragment() {
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
                 onLinkDesktopClick = { linkDesktop() },
-                onTrash = { openTrash() },
                 onProCardClick = {
                     val state = proCardState ?: return@AndroidMainSettingsScreen
                     val type = when (state) {
@@ -251,18 +249,6 @@ class MainSettingsComposeFragment : Fragment() {
         }
     }
 
-    // A fresh main screen opened on the trash. OPEN_FILTER is not remembered, so back and the next
-    // launch return to the last list.
-    private fun openTrash() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            startActivity(
-                Intent(requireContext(), MainActivity::class.java)
-                    .putExtra(MainActivity.OPEN_FILTER, TrashFilter.create())
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            )
-        }
-    }
-
     private fun linkDesktop() {
         if (inventory.hasPro) {
             startActivity(Intent(requireContext(), LinkDesktopActivity::class.java))
@@ -286,7 +272,7 @@ class MainSettingsComposeFragment : Fragment() {
             SettingsDestination.Screens -> ScreenSettings()
             SettingsDestination.TaskList -> TaskListPreferences()
             SettingsDestination.TaskEdit -> TaskEditPreferences()
-            SettingsDestination.DateAndTime -> DateAndTime()
+            SettingsDestination.DateAndTime -> Advanced()
             SettingsDestination.NavigationDrawer -> NavigationDrawer()
             SettingsDestination.Backups -> Backups()
             SettingsDestination.Widgets -> Widgets()

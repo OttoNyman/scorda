@@ -19,9 +19,14 @@ import org.tasks.data.db.Database
 import org.tasks.etebase.EtebaseLocalCache
 import org.tasks.files.FileHelper
 import org.tasks.filters.Filter
+import org.tasks.kmp.org.tasks.time.DateFormats
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
 import org.tasks.receivers.ShortcutBadger
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,6 +54,22 @@ class AdvancedViewModel @Inject constructor(
         private set
     var showRestartDialog by mutableStateOf(false)
         private set
+    var dateFormat by mutableStateOf(DateFormats.AUTO)
+        private set
+
+    val dateFormatOptions: List<Pair<String, String>>
+        get() {
+            val today = LocalDate.now()
+            val locale = Locale.getDefault()
+            val system = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale).format(today)
+            return listOf(
+                DateFormats.AUTO to context.getString(R.string.date_format_auto),
+                DateFormats.SYSTEM to context.getString(R.string.date_format_system, system),
+            ) + DateFormats.patterns.map { it to DateTimeFormatter.ofPattern(it, locale).format(today) }
+        }
+
+    val dateFormatLabel: String
+        get() = dateFormatOptions.firstOrNull { it.first == dateFormat }?.second.orEmpty()
 
     init {
         refreshState()
@@ -56,11 +77,17 @@ class AdvancedViewModel @Inject constructor(
 
     fun refreshState() {
         refreshAttachmentDirectory()
+        dateFormat = preferences.dateFormat
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
         viewModelScope.launch {
             val filter = defaultFilterProvider.getBadgeFilter()
             badgeFilterName = filter.title ?: ""
         }
+    }
+
+    fun updateDateFormat(value: String) {
+        preferences.dateFormat = value
+        dateFormat = value
     }
 
     val attachmentsDirectory: Uri?

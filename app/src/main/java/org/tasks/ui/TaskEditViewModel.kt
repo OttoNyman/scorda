@@ -67,9 +67,6 @@ import org.tasks.data.entity.SYNC_LOCATION
 import org.tasks.data.entity.SYNC_TAGS
 import org.tasks.data.entity.TagData
 import org.tasks.data.entity.Task
-import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_FIVE
-import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_NONSTOP
-import org.tasks.data.entity.Task.Companion.NOTIFY_MODE_SILENT
 import org.tasks.data.entity.Task.Companion.hasDueTime
 import org.tasks.data.entity.TaskAttachment
 import org.tasks.data.entity.UserActivity
@@ -255,44 +252,6 @@ class TaskEditViewModel @Inject constructor(
         }
     }
 
-    private var ringsReady = false
-
-    var ringSilent: Boolean = false
-        set(value) {
-            field = value
-            if (ringsReady && value) {
-                ringFiveTimes = false
-                ringNonstop = false
-            }
-        }
-
-    var ringNonstop: Boolean = false
-        set(value) {
-            field = value
-            if (ringsReady && value) {
-                ringFiveTimes = false
-                ringSilent = false
-            }
-        }
-
-    var ringFiveTimes: Boolean = false
-        set(value) {
-            field = value
-            if (ringsReady && value) {
-                ringNonstop = false
-                ringSilent = false
-            }
-        }
-
-    init {
-        when {
-            task.isNotifyModeSilent -> ringSilent = true
-            task.isNotifyModeNonstop -> ringNonstop = true
-            task.isNotifyModeFive -> ringFiveTimes = true
-        }
-        ringsReady = true
-    }
-
     fun hasChanges(): Boolean = hasChanges(_viewState.value)
 
     /**
@@ -326,13 +285,7 @@ class TaskEditViewModel @Inject constructor(
         return originalState.value != viewState ||
                 (viewState.isNew && viewState.task.title?.isNotBlank() == true) || // text shared to tasks
                 task.dueDate != dueDate.value ||
-                task.hideUntil != startDate.value ||
-                getRingFlags() != when {
-            task.isNotifyModeSilent -> NOTIFY_MODE_SILENT
-            task.isNotifyModeFive -> NOTIFY_MODE_FIVE
-            task.isNotifyModeNonstop -> NOTIFY_MODE_NONSTOP
-            else -> 0
-        }
+                task.hideUntil != startDate.value
     }
 
     /**
@@ -383,11 +336,10 @@ class TaskEditViewModel @Inject constructor(
             // an occurrence never carries a rule: it lives in the series
             if (task.series == null) {
                 task.recurrence = viewState.task.recurrence
-                task.repeatFrom = viewState.task.repeatFrom
+                task.repeatFrom = Task.RepeatFrom.DUE_DATE
             } else {
                 task.recurrence = null
             }
-            task.ringFlags = getRingFlags()
         }
 
         if (isNew) {
@@ -478,7 +430,7 @@ class TaskEditViewModel @Inject constructor(
                 taskId = task.id,
                 newRecurrence = rule,
                 previousDueDate = original!!.dueDate,
-                newRepeatFrom = viewState.task.repeatFrom,
+                newRepeatFrom = Task.RepeatFrom.DUE_DATE,
             )
         }
 
@@ -493,13 +445,6 @@ class TaskEditViewModel @Inject constructor(
             taskListEvents.emit(TaskListEvent.TaskCreated(task.uuid))
         }
         true
-    }
-
-    private fun getRingFlags() = when {
-        ringSilent -> NOTIFY_MODE_SILENT
-        ringNonstop -> NOTIFY_MODE_NONSTOP
-        ringFiveTimes -> NOTIFY_MODE_FIVE
-        else -> 0
     }
 
     suspend fun delete() {
@@ -941,7 +886,6 @@ class TaskEditViewModel @Inject constructor(
             task.series = null
             task.scheduled = 0
             task.parent = 0
-            task.ringFlags = 0
             task.completionDate = 0
         }
 

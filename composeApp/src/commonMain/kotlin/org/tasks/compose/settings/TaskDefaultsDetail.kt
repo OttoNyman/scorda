@@ -95,9 +95,6 @@ fun TaskDefaultsDetail(
                 viewModel = viewModel,
                 is24HourFormat = is24HourFormat,
                 onDefaultList = { showListPicker = true },
-                onDefaultTags = { showTagPicker = true },
-                onRecurrence = { showRecurrencePicker = true },
-                onLocation = {},
             )
         }
     }

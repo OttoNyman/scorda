@@ -34,13 +34,20 @@ class NavigationDrawer : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            val features = featureGate.current
+            val canCustomize =
+                features.filters || features.tags || features.geo || features.lists
             NavigationDrawerContent(
                 viewModel = viewModel,
-                features = featureGate.current,
-                onCustomizeDrawer = {
-                    startActivity(
-                        Intent(requireContext(), NavigationDrawerCustomization::class.java)
-                    )
+                features = features,
+                onCustomizeDrawer = if (canCustomize) {
+                    {
+                        startActivity(
+                            Intent(requireContext(), NavigationDrawerCustomization::class.java)
+                        )
+                    }
+                } else {
+                    null
                 },
             )
         }

@@ -22,12 +22,16 @@ import org.tasks.themes.TasksIcons
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.reset_trusted_certificates
 import tasks.kmp.generated.resources.reset_trusted_certificates_summary
+import tasks.kmp.generated.resources.task_defaults
 
 @Composable
 fun AdvancedScreen(
     attachmentDirSummary: String,
     badgesEnabled: Boolean,
     badgeFilterName: String,
+    dateFormatLabel: String,
+    onTaskDefaults: () -> Unit,
+    onDateFormat: () -> Unit,
     onAttachmentDir: () -> Unit,
     onBadges: (Boolean) -> Unit,
     onBadgeList: () -> Unit,
@@ -41,6 +45,26 @@ fun AdvancedScreen(
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState())
     ) {
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = kmpStringResource(Res.string.task_defaults),
+                icon = TasksIcons.ADD,
+                onClick = onTaskDefaults,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            PreferenceRow(
+                title = stringResource(R.string.date_format),
+                summary = dateFormatLabel,
+                onClick = onDateFormat,
+            )
+        }
+
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {

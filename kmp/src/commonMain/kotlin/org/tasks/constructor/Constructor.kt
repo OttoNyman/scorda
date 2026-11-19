@@ -10,7 +10,7 @@ data class Constructor(
     val checklist: Boolean = false,
     val tags: Boolean = false,
     val filters: Boolean = false,
-    val priority: Boolean = false,
+    val priority: Boolean = true,
     val geo: Boolean = false,
     val startDate: Boolean = false,
     val extraReminders: Boolean = false,
@@ -84,7 +84,7 @@ val Preset.flags: Constructor
 
 fun Constructor.allowsSort(mode: Int): Boolean = when (mode) {
     com.todoroo.astrid.core.SortHelper.SORT_START -> startDate
-    com.todoroo.astrid.core.SortHelper.SORT_IMPORTANCE -> priority
+    com.todoroo.astrid.core.SortHelper.SORT_IMPORTANCE -> true
     com.todoroo.astrid.core.SortHelper.SORT_LIST -> lists
     else -> true
 }

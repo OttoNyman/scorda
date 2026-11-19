@@ -37,7 +37,6 @@ import tasks.kmp.generated.resources.preferences_look_and_feel
 import tasks.kmp.generated.resources.screen_settings
 import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.task_defaults
-import tasks.kmp.generated.resources.trash
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
 import tasks.kmp.generated.resources.link_desktop_description
@@ -148,56 +147,16 @@ fun MainSettingsScreen(
             Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            PreferenceRow(
-                title = stringResource(Res.string.account_and_backup),
-                icon = TasksIcons.CLOUD_UPLOAD,
-                showWarning = showBackupWarning,
-                showError = accountError,
-                onClick = { onSettingsClick(SettingsDestination.Backups) },
-            )
-        }
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        if (showDesktopLinking || showWorksWith) {
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                if (showDesktopLinking) {
-                    SettingsItemCard(
-                        position = if (showWorksWith) CardPosition.First else CardPosition.Only,
-                    ) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.link_desktop),
-                            summary = stringResource(Res.string.link_desktop_description),
-                            icon = TasksIcons.LAPTOP,
-                            onClick = onLinkDesktopClick,
-                        )
-                    }
-                }
-                if (showWorksWith) {
-                    SettingsItemCard(
-                        position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
-                    ) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.works_with_tasks),
-                            summary = stringResource(Res.string.works_with_tasks_description),
-                            icon = TasksIcons.EXTENSION,
-                            onClick = { onSettingsClick(SettingsDestination.WorksWith) },
-                        )
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
-
         SettingsCategories(
             showNotifications = showNotifications,
             showMcpServer = showMcpServer,
-            showNavigationDrawer = showNavigationDrawer,
+            showBackupWarning = showBackupWarning,
+            accountError = accountError,
+            showDesktopLinking = showDesktopLinking,
+            showWorksWith = showWorksWith,
             isDebug = isDebug,
             onSettingsClick = onSettingsClick,
+            onLinkDesktopClick = onLinkDesktopClick,
             onTrash = onTrash,
         )
 
@@ -209,121 +168,129 @@ fun MainSettingsScreen(
 fun SettingsCategories(
     showNotifications: Boolean,
     showMcpServer: Boolean = false,
+    showBackupWarning: Boolean = false,
+    accountError: Boolean = false,
+    showDesktopLinking: Boolean = false,
+    showWorksWith: Boolean = false,
     showNavigationDrawer: Boolean = true,
     isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
+    onLinkDesktopClick: () -> Unit = {},
     onTrash: (() -> Unit)? = null,
 ) {
-    // Appearance island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(
-            position = if (showNotifications) CardPosition.First else CardPosition.Only,
-        ) {
-            PreferenceRow(
-                title = stringResource(Res.string.preferences_look_and_feel),
-                icon = TasksIcons.PALETTE,
-                onClick = { onSettingsClick(SettingsDestination.LookAndFeel) }
-            )
-        }
-        if (showNotifications) {
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.notifications),
-                    icon = TasksIcons.NOTIFICATIONS,
-                    onClick = { onSettingsClick(SettingsDestination.Notifications) }
-                )
-            }
-        }
+    SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+        PreferenceRow(
+            title = stringResource(Res.string.constructor_title),
+            icon = TasksIcons.BUILD,
+            onClick = { onSettingsClick(SettingsDestination.Constructor) },
+        )
     }
-
     Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-    // Tasks island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(position = CardPosition.First) {
-            PreferenceRow(
-                title = stringResource(Res.string.constructor_title),
-                icon = TasksIcons.BUILD,
-                onClick = { onSettingsClick(SettingsDestination.Constructor) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.task_defaults),
-                icon = TasksIcons.ADD,
-                onClick = { onSettingsClick(SettingsDestination.TaskDefaults) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.screen_settings),
-                icon = TasksIcons.APPS,
-                onClick = { onSettingsClick(SettingsDestination.Screens) }
-            )
-        }
-    }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-    // Configuration island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(position = CardPosition.First) {
-            PreferenceRow(
-                title = stringResource(Res.string.date_and_time),
-                icon = TasksIcons.SCHEDULE,
-                onClick = { onSettingsClick(SettingsDestination.DateAndTime) }
-            )
-        }
-        if (showNavigationDrawer) {
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.navigation_drawer),
-                    icon = TasksIcons.MENU,
-                    onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) }
-                )
-            }
-        }
-        if (showMcpServer) {
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.mcp_server),
-                    icon = TasksIcons.TERMINAL,
-                    onClick = { onSettingsClick(SettingsDestination.McpServer) }
-                )
-            }
-        }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.preferences_advanced),
-                icon = TasksIcons.BUILD,
-                onClick = { onSettingsClick(SettingsDestination.Advanced) }
-            )
-        }
-    }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-    if (onTrash != null) {
+    if (showNotifications) {
         SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
             PreferenceRow(
-                title = stringResource(Res.string.trash),
-                icon = TasksIcons.DELETE,
-                onClick = onTrash,
+                title = stringResource(Res.string.notifications),
+                icon = TasksIcons.NOTIFICATIONS,
+                onClick = { onSettingsClick(SettingsDestination.Notifications) },
             )
         }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }
 
-    // About card group
+    SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+        PreferenceRow(
+            title = stringResource(Res.string.screen_settings),
+            icon = TasksIcons.APPS,
+            onClick = { onSettingsClick(SettingsDestination.Screens) },
+        )
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+    SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+        PreferenceRow(
+            title = stringResource(Res.string.account_and_backup),
+            icon = TasksIcons.CLOUD_UPLOAD,
+            showWarning = showBackupWarning,
+            showError = accountError,
+            onClick = { onSettingsClick(SettingsDestination.Backups) },
+        )
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+    if (showDesktopLinking || showWorksWith) {
+        Column(
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+        ) {
+            if (showDesktopLinking) {
+                SettingsItemCard(
+                    position = if (showWorksWith) CardPosition.First else CardPosition.Only,
+                ) {
+                    PreferenceRow(
+                        title = stringResource(Res.string.link_desktop),
+                        summary = stringResource(Res.string.link_desktop_description),
+                        icon = TasksIcons.LAPTOP,
+                        onClick = onLinkDesktopClick,
+                    )
+                }
+            }
+            if (showWorksWith) {
+                SettingsItemCard(
+                    position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
+                ) {
+                    PreferenceRow(
+                        title = stringResource(Res.string.works_with_tasks),
+                        summary = stringResource(Res.string.works_with_tasks_description),
+                        icon = TasksIcons.EXTENSION,
+                        onClick = { onSettingsClick(SettingsDestination.WorksWith) },
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+    }
+
+    SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+        PreferenceRow(
+            title = stringResource(Res.string.preferences_look_and_feel),
+            icon = TasksIcons.PALETTE,
+            onClick = { onSettingsClick(SettingsDestination.LookAndFeel) },
+        )
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+    Column(
+        modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+    ) {
+        if (showMcpServer) {
+            SettingsItemCard(position = CardPosition.First) {
+                PreferenceRow(
+                    title = stringResource(Res.string.mcp_server),
+                    icon = TasksIcons.TERMINAL,
+                    onClick = { onSettingsClick(SettingsDestination.McpServer) },
+                )
+            }
+            SettingsItemCard(position = CardPosition.Last) {
+                PreferenceRow(
+                    title = stringResource(Res.string.preferences_advanced),
+                    icon = TasksIcons.BUILD,
+                    onClick = { onSettingsClick(SettingsDestination.Advanced) },
+                )
+            }
+        } else {
+            SettingsItemCard(position = CardPosition.Only) {
+                PreferenceRow(
+                    title = stringResource(Res.string.preferences_advanced),
+                    icon = TasksIcons.BUILD,
+                    onClick = { onSettingsClick(SettingsDestination.Advanced) },
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+
     Column(
         modifier = Modifier.padding(horizontal = SettingsContentPadding),
         verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -334,7 +301,7 @@ fun SettingsCategories(
             PreferenceRow(
                 title = stringResource(Res.string.about),
                 icon = TasksIcons.INFO,
-                onClick = { onSettingsClick(SettingsDestination.HelpAndFeedback) }
+                onClick = { onSettingsClick(SettingsDestination.HelpAndFeedback) },
             )
         }
         if (isDebug) {
@@ -342,7 +309,7 @@ fun SettingsCategories(
                 PreferenceRow(
                     title = stringResource(Res.string.debug),
                     icon = TasksIcons.BUG_REPORT,
-                    onClick = { onSettingsClick(SettingsDestination.Debug) }
+                    onClick = { onSettingsClick(SettingsDestination.Debug) },
                 )
             }
         }

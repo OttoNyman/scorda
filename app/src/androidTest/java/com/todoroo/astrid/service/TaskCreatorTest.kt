@@ -124,7 +124,7 @@ class TaskCreatorTest : InjectingTestCase() {
         preferences.setString(R.string.p_default_importance_key, Task.Priority.HIGH.toString())
 
         assertEquals(
-                Task.Priority.NONE,
+                Task.Priority.LOW,
                 taskCreator.create(null, "test", applyDefaults = false).priority
         )
     }
@@ -157,7 +157,7 @@ class TaskCreatorTest : InjectingTestCase() {
             assertEquals(0L, task.dueDate)
             assertEquals(0L, task.hideUntil)
             assertTrue(task.memo)
-            assertEquals(Task.Priority.NONE, task.priority)
+            assertEquals(Task.Priority.LOW, task.priority)
             assertTrue(task.getDefaultAlarms(defaultRemindersEnabled = true).isEmpty())
         }
     }

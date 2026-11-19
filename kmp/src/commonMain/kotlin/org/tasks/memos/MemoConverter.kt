@@ -95,7 +95,6 @@ class MemoConverter(
         task.scheduled = 0
         task.parent = 0
         task.order = null
-        task.ringFlags = 0
     }
 
     private suspend fun removeListRow(taskId: Long) {

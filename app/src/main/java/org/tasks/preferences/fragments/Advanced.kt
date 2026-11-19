@@ -23,7 +23,12 @@ import org.jetbrains.compose.resources.stringResource as kmpStringResource
 import org.tasks.R
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.FilterSelectionActivity.Companion.registerForFilterPickerResult
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import org.tasks.compose.settings.AdvancedScreen
+import org.tasks.compose.settings.DateFormatDialog
 import org.tasks.extensions.Context.takePersistableUriPermission
 import org.tasks.extensions.Context.toast
 import org.tasks.files.FileHelper
@@ -34,6 +39,7 @@ import org.tasks.themes.Theme
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.reset_trusted_certificates
 import tasks.kmp.generated.resources.reset_trusted_certificates_summary
+import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.trusted_certificates_reset
 import javax.inject.Inject
 
@@ -66,10 +72,32 @@ class Advanced : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            var pickFormat by remember { mutableStateOf(false) }
+            if (pickFormat) {
+                DateFormatDialog(
+                    options = viewModel.dateFormatOptions,
+                    selected = viewModel.dateFormat,
+                    onSelect = {
+                        viewModel.updateDateFormat(it)
+                        pickFormat = false
+                    },
+                    onDismiss = { pickFormat = false },
+                )
+            }
             AdvancedScreen(
                 attachmentDirSummary = viewModel.attachmentDirSummary,
                 badgesEnabled = viewModel.badgesEnabled,
                 badgeFilterName = viewModel.badgeFilterName,
+                dateFormatLabel = viewModel.dateFormatLabel,
+                onTaskDefaults = {
+                    lifecycleScope.launch {
+                        (activity as? BasePreferences)?.startPreference(
+                            TaskDefaults(),
+                            getString(Res.string.task_defaults),
+                        )
+                    }
+                },
+                onDateFormat = { pickFormat = true },
                 onAttachmentDir = {
                     filesDirLauncher.launch(
                         FileHelper.newDirectoryPickerIntent(

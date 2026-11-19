@@ -1,12 +1,14 @@
 package org.tasks.compose.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -25,8 +27,10 @@ import org.jetbrains.compose.resources.stringResource
 import org.tasks.constructor.Constructor
 import org.tasks.constructor.ConstructorCounts
 import org.tasks.constructor.Preset
+import org.tasks.compose.components.SymbolIcon
 import org.tasks.compose.pickers.AdvancePicker
 import org.tasks.compose.pickers.advanceLabel
+import org.tasks.themes.TasksIcons
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.advance
 import tasks.kmp.generated.resources.advance_default
@@ -41,7 +45,7 @@ import tasks.kmp.generated.resources.constructor_filters
 import tasks.kmp.generated.resources.constructor_geo
 import tasks.kmp.generated.resources.constructor_geo_count
 import tasks.kmp.generated.resources.constructor_group_content
-import tasks.kmp.generated.resources.constructor_group_memos
+import tasks.kmp.generated.resources.constructor_group_modules
 import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
 import tasks.kmp.generated.resources.constructor_memos
@@ -52,11 +56,17 @@ import tasks.kmp.generated.resources.constructor_notes
 import tasks.kmp.generated.resources.constructor_overdue
 import tasks.kmp.generated.resources.constructor_overdue_count
 import tasks.kmp.generated.resources.constructor_overdue_summary
-import tasks.kmp.generated.resources.constructor_priority
 import tasks.kmp.generated.resources.constructor_repeat
 import tasks.kmp.generated.resources.constructor_repeat_count
+import tasks.kmp.generated.resources.constructor_repeat_summary
+import tasks.kmp.generated.resources.default_location
+import tasks.kmp.generated.resources.default_recurrence
+import tasks.kmp.generated.resources.EPr_default_location_reminder_title
+import tasks.kmp.generated.resources.location_update_interval_title
 import tasks.kmp.generated.resources.constructor_checklist
 import tasks.kmp.generated.resources.constructor_tags
+import tasks.kmp.generated.resources.constructor_tasks
+import tasks.kmp.generated.resources.constructor_tasks_summary
 import tasks.kmp.generated.resources.move_lists_keep
 import tasks.kmp.generated.resources.move_lists_move
 import tasks.kmp.generated.resources.move_lists_text
@@ -80,6 +90,16 @@ fun ConstructorScreen(
     /** The advance new tasks get; null for none. */
     advanceDefault: Long?,
     onAdvanceDefault: (Long?) -> Unit,
+    recurrenceSummary: String = "",
+    onRecurrence: () -> Unit = {},
+    locationName: String = "",
+    hasDefaultLocation: Boolean = false,
+    onLocation: () -> Unit = {},
+    onDeleteLocation: () -> Unit = {},
+    locationReminderSummary: String = "",
+    onLocationReminder: () -> Unit = {},
+    locationUpdateSummary: String = "",
+    onLocationUpdate: () -> Unit = {},
 ) {
     var pending by remember { mutableStateOf<Preset?>(null) }
     var pickAdvance by remember { mutableStateOf(false) }
@@ -110,18 +130,34 @@ fun ConstructorScreen(
                 )
             }
         }
-        // What a task can carry: everything below lives inside one task.
+        Group(Res.string.constructor_group_modules)
+        Toggle(
+            title = Res.string.constructor_tasks,
+            checked = true,
+            enabled = false,
+            summary = stringResource(Res.string.constructor_tasks_summary),
+            summaryWhenOff = true,
+        ) { }
+        Toggle(Res.string.constructor_memos, effective.memos) { onChange(raw.copy(memos = it)) }
         Group(Res.string.constructor_group_content)
         Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
-        Toggle(Res.string.constructor_comments, comments, onChange = onComments)
         Toggle(Res.string.constructor_checklist, effective.checklist) { onChange(raw.copy(checklist = it)) }
-        // a repeat is part of the task (its schedule), not a reminder setting
         Toggle(
             title = Res.string.constructor_repeat,
             checked = effective.repeat,
-            summary = count(counts.repeat, Res.plurals.constructor_repeat_count),
+            summary = listOfNotNull(
+                stringResource(Res.string.constructor_repeat_summary),
+                count(counts.repeat, Res.plurals.constructor_repeat_count).takeIf { effective.repeat },
+            ).joinToString("\n"),
+            summaryWhenOff = true,
         ) { onChange(raw.copy(repeat = it)) }
-        Toggle(Res.string.constructor_priority, effective.priority) { onChange(raw.copy(priority = it)) }
+        if (effective.repeat) {
+            NestedRow(
+                title = stringResource(Res.string.default_recurrence),
+                summary = recurrenceSummary,
+                onClick = onRecurrence,
+            )
+        }
         Toggle(Res.string.constructor_tags, effective.tags) { onChange(raw.copy(tags = it)) }
         Toggle(Res.string.constructor_files, effective.files) { onChange(raw.copy(files = it)) }
         if (geofences) {
@@ -130,19 +166,48 @@ fun ConstructorScreen(
                 checked = effective.geo,
                 summary = count(counts.geo, Res.plurals.constructor_geo_count),
             ) { onChange(raw.copy(geo = it)) }
+            if (effective.geo) {
+                NestedRow(
+                    title = stringResource(Res.string.default_location),
+                    summary = locationName,
+                    onClick = onLocation,
+                    trailing = if (hasDefaultLocation) {
+                        {
+                            SymbolIcon(
+                                name = TasksIcons.DELETE,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(end = SettingsContentPadding)
+                                    .size(SettingsIconSize)
+                                    .clickable(onClick = onDeleteLocation),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    } else null,
+                )
+                NestedRow(
+                    title = stringResource(Res.string.EPr_default_location_reminder_title),
+                    summary = locationReminderSummary,
+                    onClick = onLocationReminder,
+                )
+                NestedRow(
+                    title = stringResource(Res.string.location_update_interval_title),
+                    summary = locationUpdateSummary,
+                    onClick = onLocationUpdate,
+                )
+            }
         }
+        Toggle(Res.string.constructor_comments, comments, onChange = onComments)
         Group(Res.string.constructor_group_time)
         Toggle(
             title = Res.string.constructor_overdue,
             checked = effective.overdue,
-            // what it does, always; how many tasks have it, while on
             summary = listOfNotNull(
                 stringResource(Res.string.constructor_overdue_summary),
                 count(counts.overdue, Res.plurals.constructor_overdue_count).takeIf { effective.overdue },
             ).joinToString("\n"),
             summaryWhenOff = true,
         ) { onChange(raw.copy(overdue = it)) }
-        // no start date and no "more reminders": one time per task, plus "in advance"
         Toggle(Res.string.advance, effective.advance) { onChange(raw.copy(advance = it)) }
         if (effective.advance) {
             SettingsItemCard(modifier = Modifier.padding(start = SettingsContentPadding)) {
@@ -153,7 +218,6 @@ fun ConstructorScreen(
                 )
             }
         }
-        // How tasks are organised. Later: notes, Eisenhower matrix — each as its own group.
         Group(Res.string.constructor_group_order)
         Toggle(Res.string.constructor_lists, effective.lists) { onChange(raw.copy(lists = it)) }
         if (sync && raw.lists) {
@@ -166,8 +230,6 @@ fun ConstructorScreen(
             ) { onChange(raw.copy(localLists = it)) }
         }
         Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
-        Group(Res.string.constructor_group_memos)
-        Toggle(Res.string.constructor_memos, effective.memos) { onChange(raw.copy(memos = it)) }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }
     pending?.let { preset ->
@@ -203,6 +265,23 @@ private val Preset.confirm: StringResource
         Preset.Simple -> Res.string.constructor_all_off_confirm
         Preset.Full -> Res.string.constructor_all_on_confirm
     }
+
+@Composable
+private fun NestedRow(
+    title: String,
+    summary: String,
+    onClick: () -> Unit,
+    trailing: (@Composable () -> Unit)? = null,
+) {
+    SettingsItemCard(modifier = Modifier.padding(start = SettingsContentPadding)) {
+        PreferenceRow(
+            title = title,
+            summary = summary,
+            onClick = onClick,
+            trailing = trailing,
+        )
+    }
+}
 
 @Composable
 private fun Group(title: StringResource) {

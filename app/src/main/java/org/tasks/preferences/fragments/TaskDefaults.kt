@@ -1,11 +1,8 @@
 package org.tasks.preferences.fragments
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
@@ -20,25 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import org.tasks.R
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.FilterSelectionActivity.Companion.registerForListPickerResult
-import org.tasks.compose.settings.DefaultRemindersDialog
 import org.tasks.compose.settings.TaskDefaultsContent
-import org.tasks.data.entity.CaldavAccount
-import org.tasks.data.entity.Place
-import org.tasks.data.entity.TagData
 import org.tasks.extensions.Context.is24HourFormat
-import org.tasks.location.LocationPickerActivity
-import org.tasks.location.LocationPickerActivity.Companion.EXTRA_PLACE
 import org.tasks.preferences.BasePreferences
-import org.tasks.repeats.BasicRecurrenceDialog
-import org.tasks.tags.TagPickerActivity
-import org.tasks.tags.TagPickerActivity.Companion.EXTRA_SELECTED
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import javax.inject.Inject
@@ -53,30 +38,6 @@ class TaskDefaults : Fragment() {
 
     private val listPickerLauncher = registerForListPickerResult {
         viewModel.setDefaultList(it)
-    }
-
-    private val locationLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val place = result.data?.getParcelableExtra<Place>(EXTRA_PLACE)
-            viewModel.setDefaultLocation(place)
-        }
-    }
-
-    private val tagsLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val tags = result.data?.getParcelableArrayListExtra<TagData>(EXTRA_SELECTED)
-            viewModel.setDefaultTags(tags.orEmpty())
-        }
-    }
-
-    override fun onCreate(savedInstanceState: android.os.Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        parentFragmentManager.setFragmentResultListener(
-            BasicRecurrenceDialog.REQUEST_KEY, this
-        ) { _, bundle ->
-            viewModel.setRecurrence(bundle.getString(BasicRecurrenceDialog.EXTRA_RRULE))
-        }
     }
 
     override fun onCreateView(
@@ -98,30 +59,6 @@ class TaskDefaults : Fragment() {
                         context = requireContext(),
                         selectedFilter = viewModel.defaultListFilter,
                         listsOnly = true,
-                    )
-                },
-                onDefaultTags = {
-                    lifecycleScope.launch {
-                        val intent = Intent(context, TagPickerActivity::class.java)
-                            .putParcelableArrayListExtra(
-                                EXTRA_SELECTED,
-                                ArrayList(viewModel.defaultTags())
-                            )
-                        tagsLauncher.launch(intent)
-                    }
-                },
-                onRecurrence = {
-                    BasicRecurrenceDialog
-                        .newBasicRecurrenceDialog(
-                            rrule = viewModel.settings.defaultRecurrence,
-                            dueDate = 0,
-                            accountType = CaldavAccount.TYPE_LOCAL
-                        )
-                        .show(parentFragmentManager, FRAG_TAG_BASIC_RECURRENCE)
-                },
-                onLocation = {
-                    locationLauncher.launch(
-                        Intent(context, LocationPickerActivity::class.java),
                     )
                 },
                 features = featureGate.current,
@@ -151,7 +88,4 @@ class TaskDefaults : Fragment() {
         }
     }
 
-    companion object {
-        const val FRAG_TAG_BASIC_RECURRENCE = "frag_tag_basic_recurrence"
-    }
 }

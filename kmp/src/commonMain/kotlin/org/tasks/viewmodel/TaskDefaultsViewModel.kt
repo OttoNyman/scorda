@@ -47,12 +47,10 @@ open class TaskDefaultsViewModel(
         PRIORITY,
         START_DATE,
         REPEAT_FROM,
-        RING_MODE,
         LOCATION_REMINDER,
         LOCATION_UPDATE_INTERVAL,
     }
 
-    val showRingMode: Boolean = platformConfiguration.supportsRingMode
     val showLocation: Boolean = platformConfiguration.supportsGeofences
 
     var settings by mutableStateOf(TaskDefaultSettings())
@@ -82,6 +80,14 @@ open class TaskDefaultsViewModel(
     var listPickerTarget by mutableStateOf<ListPickerTarget?>(null)
         private set
 
+    var enabledPriorities by mutableStateOf(
+        setOf(
+            org.tasks.data.entity.Task.Priority.HIGH,
+            org.tasks.data.entity.Task.Priority.LOW,
+        )
+    )
+        private set
+
     private var noneLabel by mutableStateOf("")
 
     private val writes = PreferenceWriteQueue(
@@ -104,6 +110,9 @@ open class TaskDefaultsViewModel(
         val generation = mutationSequence
         val reloadGeneration = ++reloadSequence
         val loadedSettings = appPreferences.taskDefaults()
+        enabledPriorities = appPreferences.enabledLevels().map { org.tasks.notifications.priorityOf(it) }.toSet() +
+            org.tasks.data.entity.Task.Priority.LOW +
+            loadedSettings.defaultPriority
         coroutineScope {
             val list = async { resolve("default list") { listResolver(loadedSettings.defaultList) } }
             val tags = async { resolve("default tags") { describeTags(loadedSettings.defaultTags) } }
@@ -228,7 +237,6 @@ open class TaskDefaultsViewModel(
         ListPickerTarget.PRIORITY -> settings.defaultPriority
         ListPickerTarget.START_DATE -> settings.defaultHideUntil
         ListPickerTarget.REPEAT_FROM -> settings.defaultRecurrenceFrom
-        ListPickerTarget.RING_MODE -> settings.defaultRingMode
         ListPickerTarget.LOCATION_REMINDER -> settings.defaultLocationReminder
         ListPickerTarget.LOCATION_UPDATE_INTERVAL -> settings.locationUpdateIntervalMinutes
     }
@@ -246,10 +254,6 @@ open class TaskDefaultsViewModel(
             ListPickerTarget.REPEAT_FROM -> {
                 settings = settings.copy(defaultRecurrenceFrom = value)
                 persist { appPreferences.setDefaultRecurrenceFrom(value) }
-            }
-            ListPickerTarget.RING_MODE -> {
-                settings = settings.copy(defaultRingMode = value)
-                persist { appPreferences.setDefaultRingMode(value) }
             }
             ListPickerTarget.LOCATION_REMINDER -> {
                 settings = settings.copy(defaultLocationReminder = value)

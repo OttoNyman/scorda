@@ -152,18 +152,14 @@ class TaskCreator @Inject constructor(
             creationDate = currentTimeMillis(),
             modificationDate = currentTimeMillis(),
             remoteId = UUIDHelper.newUUID(),
-            priority = if (applyDefaults) preferences.defaultPriority() else Task.Priority.NONE,
+            priority = if (applyDefaults) preferences.defaultPriority() else Task.Priority.LOW,
         )
         if (applyDefaults) {
             preferences.getStringValue(R.string.p_default_recurrence)
                     ?.takeIf { it.isNotBlank() }
                     ?.let {
                         task.recurrence = it
-                        task.repeatFrom = if (preferences.getIntegerFromString(R.string.p_default_recurrence_from, 0) == 1) {
-                            Task.RepeatFrom.COMPLETION_DATE
-                        } else {
-                            Task.RepeatFrom.DUE_DATE
-                        }
+                        task.repeatFrom = Task.RepeatFrom.DUE_DATE
                     }
             preferences.getStringValue(R.string.p_default_location)
                     ?.takeIf { it.isNotBlank() }
@@ -191,13 +187,6 @@ class TaskCreator @Inject constructor(
                     preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
                     0
             )
-        }
-        if (applyDefaults && featureGate.current.tags && tags.isEmpty()) {
-            preferences.getStringValue(R.string.p_default_tags)
-                    ?.split(",")
-                    ?.map { tagDataDao.getByUuid(it) }
-                    ?.mapNotNull { it?.name }
-                    ?.let { tags.addAll(it) }
         }
         if (parseTitle) {
             try {

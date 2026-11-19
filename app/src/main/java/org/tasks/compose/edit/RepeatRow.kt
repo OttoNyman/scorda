@@ -69,39 +69,6 @@ fun Repeat(
                 maxLines = Int.MAX_VALUE,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            Row {
-                Text(
-                    text = stringResource(id = R.string.repeats_from),
-                    modifier = Modifier.align(CenterVertically),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                OutlinedButton(
-                    onClick = {
-                        onRepeatFromChanged(
-                            if (repeatFrom == Task.RepeatFrom.DUE_DATE)
-                                Task.RepeatFrom.COMPLETION_DATE
-                            else
-                                Task.RepeatFrom.DUE_DATE
-                        )
-                    },
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
-                    shape = OutlinedTextFieldDefaults.shape,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                    modifier = Modifier.align(CenterVertically),
-                ) {
-                    Text(
-                        text = org.jetbrains.compose.resources.stringResource(
-                            when (repeatFrom) {
-                                Task.RepeatFrom.COMPLETION_DATE -> Res.string.repeat_type_completion
-                                else -> Res.string.repeat_type_due
-                            }
-                        ),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
         }
         Spacer(modifier = Modifier.height(6.dp))
     }

@@ -30,11 +30,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.tasks.compose.edit.ringModeString
-import org.tasks.compose.pickers.RING_FIVE_TIMES
-import org.tasks.compose.pickers.RING_NONSTOP
-import org.tasks.compose.pickers.RING_ONCE
-import org.tasks.compose.pickers.RING_SILENT
 import org.tasks.data.entity.Task
 import org.tasks.preferences.TaskDefaultSettings
 import tasks.kmp.generated.resources.EPr_default_importance_title
@@ -56,7 +51,6 @@ import tasks.kmp.generated.resources.default_start_date
 import tasks.kmp.generated.resources.default_tags
 import tasks.kmp.generated.resources.due_date
 import tasks.kmp.generated.resources.due_time
-import tasks.kmp.generated.resources.google_tasks_add_to_top
 import tasks.kmp.generated.resources.location_update_interval_15_minutes
 import tasks.kmp.generated.resources.location_update_interval_1_hour
 import tasks.kmp.generated.resources.location_update_interval_2_hours
@@ -93,13 +87,6 @@ val RepeatFromOptions: List<Pair<Int, StringResource>> = listOf(
     Task.RepeatFrom.COMPLETION_DATE to Res.string.repeat_type_completion_capitalized,
 )
 
-val RingModeOptions: List<Pair<Int, StringResource>> = listOf(
-    Task.NOTIFY_MODE_SILENT to ringModeString(RING_SILENT),
-    0 to ringModeString(RING_ONCE),
-    Task.NOTIFY_MODE_FIVE to ringModeString(RING_FIVE_TIMES),
-    Task.NOTIFY_MODE_NONSTOP to ringModeString(RING_NONSTOP),
-)
-
 val LocationReminderOptions: List<Pair<Int, StringResource>> = listOf(
     0 to Res.string.no_reminders,
     1 to Res.string.default_location_reminder_on_arrival,
@@ -123,23 +110,9 @@ private fun List<Pair<Int, StringResource>>.label(value: Int): String =
 fun TaskDefaultsScreen(
     settings: TaskDefaultSettings,
     defaultListName: String,
-    defaultTagsSummary: String,
-    recurrenceSummary: String,
-    locationName: String,
-    hasDefaultLocation: Boolean,
-    showLocation: Boolean,
     features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
-    onAddToTop: (Boolean) -> Unit,
     onDefaultList: () -> Unit,
-    onDefaultTags: () -> Unit,
-    onImportance: () -> Unit,
     onStartDate: () -> Unit,
-    onRecurrence: () -> Unit,
-    onRecurrenceFrom: () -> Unit,
-    onLocation: () -> Unit,
-    onDeleteLocation: () -> Unit,
-    onLocationReminder: () -> Unit,
-    onLocationUpdateInterval: () -> Unit,
     bottomInsets: @Composable () -> Unit = {},
 ) {
     Column(
@@ -150,23 +123,9 @@ fun TaskDefaultsScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        if (features.lists) {
-            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.google_tasks_add_to_top),
-                    icon = TasksIcons.VERTICAL_ALIGN_TOP,
-                    checked = settings.addTasksToTop,
-                    onCheckedChange = onAddToTop,
-                )
-            }
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
-
         CardGroup(
             listOfNotNull(
                 DefaultRow.LIST.takeIf { features.lists },
-                DefaultRow.TAGS.takeIf { features.tags },
-                DefaultRow.IMPORTANCE.takeIf { features.priority },
                 DefaultRow.START_DATE.takeIf { features.startDate },
             )
         ) { row ->
@@ -178,20 +137,6 @@ fun TaskDefaultsScreen(
                         summary = defaultListName,
                         onClick = onDefaultList,
                     )
-                DefaultRow.TAGS ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.default_tags),
-                        icon = TasksIcons.LABEL,
-                        summary = defaultTagsSummary,
-                        onClick = onDefaultTags,
-                    )
-                DefaultRow.IMPORTANCE ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.EPr_default_importance_title),
-                        icon = TasksIcons.FLAG,
-                        summary = PriorityOptions.label(settings.defaultPriority),
-                        onClick = onImportance,
-                    )
                 DefaultRow.START_DATE ->
                     PreferenceRow(
                         title = stringResource(Res.string.default_start_date),
@@ -199,81 +144,7 @@ fun TaskDefaultsScreen(
                         summary = StartDateOptions.label(settings.defaultHideUntil),
                         onClick = onStartDate,
                     )
-            }
-        }
-
-        if (features.repeat) {
-            SectionHeader(
-                stringResource(Res.string.TEA_control_repeat),
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            CardGroup(listOf(RecurrenceRow.RECURRENCE, RecurrenceRow.REPEAT_FROM)) { row ->
-                when (row) {
-                    RecurrenceRow.RECURRENCE ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.default_recurrence),
-                            icon = TasksIcons.REPEAT,
-                            summary = recurrenceSummary,
-                            onClick = onRecurrence,
-                        )
-                    RecurrenceRow.REPEAT_FROM ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.repeats_from),
-                            summary = RepeatFromOptions.label(settings.defaultRecurrenceFrom),
-                            onClick = onRecurrenceFrom,
-                        )
-                }
-            }
-        }
-
-        if (showLocation && features.geo) {
-            SectionHeader(
-                stringResource(Res.string.TEA_control_location),
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            CardGroup(
-                listOf(
-                    LocationRow.LOCATION,
-                    LocationRow.LOCATION_REMINDER,
-                    LocationRow.UPDATE_INTERVAL,
-                )
-            ) { row ->
-                when (row) {
-                    LocationRow.LOCATION ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.default_location),
-                            icon = TasksIcons.PLACE,
-                            summary = locationName,
-                            onClick = onLocation,
-                            trailing = if (hasDefaultLocation) {
-                                {
-                                    SymbolIcon(
-                                        name = TasksIcons.DELETE,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .padding(end = SettingsContentPadding)
-                                            .size(SettingsIconSize)
-                                            .clickable(onClick = onDeleteLocation),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    )
-                                }
-                            } else null,
-                        )
-                    LocationRow.LOCATION_REMINDER ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.EPr_default_location_reminder_title),
-                            summary = LocationReminderOptions
-                                .label(settings.defaultLocationReminder),
-                            onClick = onLocationReminder,
-                        )
-                    LocationRow.UPDATE_INTERVAL ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.location_update_interval_title),
-                            summary = LocationUpdateIntervalOptions
-                                .label(settings.locationUpdateIntervalMinutes),
-                            onClick = onLocationUpdateInterval,
-                        )
-                }
+                else -> Unit
             }
         }
 
@@ -284,20 +155,7 @@ fun TaskDefaultsScreen(
 
 private enum class DefaultRow {
     LIST,
-    TAGS,
-    IMPORTANCE,
     START_DATE,
-}
-
-private enum class RecurrenceRow {
-    RECURRENCE,
-    REPEAT_FROM,
-}
-
-private enum class LocationRow {
-    LOCATION,
-    LOCATION_REMINDER,
-    UPDATE_INTERVAL,
 }
 
 @Composable

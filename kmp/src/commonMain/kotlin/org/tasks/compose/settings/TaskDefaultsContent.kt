@@ -18,7 +18,6 @@ import org.tasks.viewmodel.TaskDefaultsViewModel
 import org.tasks.viewmodel.TaskDefaultsViewModel.ListPickerTarget
 import tasks.kmp.generated.resources.EPr_default_importance_title
 import tasks.kmp.generated.resources.EPr_default_location_reminder_title
-import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.default_start_date
 import tasks.kmp.generated.resources.location_update_interval_title
@@ -30,9 +29,6 @@ fun TaskDefaultsContent(
     viewModel: TaskDefaultsViewModel,
     is24HourFormat: Boolean,
     onDefaultList: () -> Unit,
-    onDefaultTags: () -> Unit,
-    onRecurrence: () -> Unit,
-    onLocation: () -> Unit,
     features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
     bottomInsets: @Composable () -> Unit = {},
 ) {
@@ -51,33 +47,22 @@ fun TaskDefaultsContent(
     TaskDefaultsScreen(
         settings = settings,
         defaultListName = viewModel.defaultListName,
-        defaultTagsSummary = viewModel.defaultTagsSummary,
-        recurrenceSummary = viewModel.recurrenceSummary,
-        locationName = viewModel.locationName,
-        hasDefaultLocation = viewModel.hasDefaultLocation,
-        showLocation = viewModel.showLocation,
         features = features,
-        onAddToTop = { viewModel.updateAddToTop(it) },
         onDefaultList = onDefaultList,
-        onDefaultTags = onDefaultTags,
-        onImportance = { viewModel.openListPicker(ListPickerTarget.PRIORITY) },
         onStartDate = { viewModel.openListPicker(ListPickerTarget.START_DATE) },
-        onRecurrence = onRecurrence,
-        onRecurrenceFrom = { viewModel.openListPicker(ListPickerTarget.REPEAT_FROM) },
-        onLocation = onLocation,
-        onDeleteLocation = { viewModel.setDefaultLocation(null) },
-        onLocationReminder = { viewModel.openListPicker(ListPickerTarget.LOCATION_REMINDER) },
-        onLocationUpdateInterval = {
-            viewModel.openListPicker(ListPickerTarget.LOCATION_UPDATE_INTERVAL)
-        },
         bottomInsets = bottomInsets,
     )
 
     viewModel.listPickerTarget?.let { target ->
         key(target) {
+            val options = when (target) {
+                ListPickerTarget.PRIORITY ->
+                    PriorityOptions.filter { it.first in viewModel.enabledPriorities }
+                else -> target.options
+            }
             ListPreferenceDialog(
                 title = stringResource(target.title),
-                options = target.options,
+                options = options,
                 selected = viewModel.listPickerValue(target),
                 onSelect = { viewModel.setListPickerValue(target, it) },
                 onDismiss = { viewModel.dismissListPicker() },
@@ -101,7 +86,6 @@ private val ListPickerTarget.title: StringResource
         ListPickerTarget.PRIORITY -> Res.string.EPr_default_importance_title
         ListPickerTarget.START_DATE -> Res.string.default_start_date
         ListPickerTarget.REPEAT_FROM -> Res.string.repeats_from
-        ListPickerTarget.RING_MODE -> Res.string.EPr_default_reminders_mode_title
         ListPickerTarget.LOCATION_REMINDER -> Res.string.EPr_default_location_reminder_title
         ListPickerTarget.LOCATION_UPDATE_INTERVAL -> Res.string.location_update_interval_title
     }
@@ -111,7 +95,6 @@ private val ListPickerTarget.options: List<Pair<Int, StringResource>>
         ListPickerTarget.PRIORITY -> PriorityOptions
         ListPickerTarget.START_DATE -> StartDateOptions
         ListPickerTarget.REPEAT_FROM -> RepeatFromOptions
-        ListPickerTarget.RING_MODE -> RingModeOptions
         ListPickerTarget.LOCATION_REMINDER -> LocationReminderOptions
         ListPickerTarget.LOCATION_UPDATE_INTERVAL -> LocationUpdateIntervalOptions
     }

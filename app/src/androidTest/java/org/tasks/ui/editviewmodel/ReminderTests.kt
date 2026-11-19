@@ -67,58 +67,6 @@ class ReminderTests : BaseTaskEditViewModelTest() {
     }
 
     @Test
-    fun ringFiveTimes() = runBlocking {
-        val task = newTask()
-        setup(task)
-
-        viewModel.ringFiveTimes = true
-
-        save()
-
-        assertTrue(taskDao.fetch(task.id)!!.isNotifyModeFive)
-    }
-
-    @Test
-    fun ringNonstop() = runBlocking {
-        val task = newTask()
-        setup(task)
-
-        viewModel.ringNonstop = true
-
-        save()
-
-        assertTrue(taskDao.fetch(task.id)!!.isNotifyModeNonstop)
-    }
-
-    @Test
-    fun ringFiveTimesCantRingNonstop() = runBlocking {
-        val task = newTask()
-        setup(task)
-
-        viewModel.ringNonstop = true
-        viewModel.ringFiveTimes = true
-
-        save()
-
-        assertFalse(taskDao.fetch(task.id)!!.isNotifyModeNonstop)
-        assertTrue(taskDao.fetch(task.id)!!.isNotifyModeFive)
-    }
-
-    @Test
-    fun ringNonStopCantRingFiveTimes() = runBlocking {
-        val task = newTask()
-        setup(task)
-
-        viewModel.ringFiveTimes = true
-        viewModel.ringNonstop = true
-
-        save()
-
-        assertFalse(taskDao.fetch(task.id)!!.isNotifyModeFive)
-        assertTrue(taskDao.fetch(task.id)!!.isNotifyModeNonstop)
-    }
-
-    @Test
     fun noDefaultRemindersWithNoDates() = runBlocking {
         val task = newTask()
         task.setDefaultReminders(preferences)

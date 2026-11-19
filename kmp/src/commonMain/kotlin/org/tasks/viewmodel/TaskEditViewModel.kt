@@ -531,19 +531,10 @@ class TaskEditViewModel(
                 .toPersistentSet()
             subtaskTrees.update(node.key) { current ->
                 val pending = current.pending ?: return@update current
-                val ringFlags = defaults.ringFlags.takeIf { it != current.task.ringFlags }
-                val takesAlarms = alarms.isNotEmpty() && pending.alarms.isEmpty()
-                if (ringFlags == null && !takesAlarms) {
+                if (alarms.isEmpty() || pending.alarms.isNotEmpty()) {
                     return@update current
                 }
-                current.copy(
-                    task = if (ringFlags == null) {
-                        current.task
-                    } else {
-                        current.task.copy(ringFlags = ringFlags)
-                    },
-                    pending = if (takesAlarms) pending.copy(alarms = alarms) else pending,
-                )
+                current.copy(pending = pending.copy(alarms = alarms))
             }
         }
     }
