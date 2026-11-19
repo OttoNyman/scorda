@@ -21,15 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.stringResource as kmpStringResource
 import org.tasks.R
-import org.tasks.themes.TasksIcons
-import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.add_shortcut_to_home_screen
-import tasks.kmp.generated.resources.add_widget_to_home_screen
 
 data class WidgetItem(
     val widgetId: Int,
@@ -40,11 +34,7 @@ data class WidgetItem(
 @Composable
 fun WidgetsScreen(
     widgets: List<WidgetItem>,
-    showAddShortcut: Boolean,
-    showAddWidget: Boolean,
     onWidgetClick: (Int) -> Unit,
-    onAddShortcut: () -> Unit,
-    onAddWidget: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -77,36 +67,6 @@ fun WidgetsScreen(
                                 )
                             },
                             onClick = { onWidgetClick(widget.widgetId) },
-                        )
-                    }
-                }
-            }
-        }
-
-        if (showAddShortcut || showAddWidget) {
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-            val total = (if (showAddShortcut) 1 else 0) + (if (showAddWidget) 1 else 0)
-            var i = 0
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                if (showAddShortcut) {
-                    SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
-                        PreferenceRow(
-                            title = kmpStringResource(Res.string.add_shortcut_to_home_screen),
-                            icon = TasksIcons.HOME,
-                            onClick = onAddShortcut,
-                        )
-                    }
-                }
-                if (showAddWidget) {
-                    SettingsItemCard(position = CardPosition.forIndex(i, total)) {
-                        PreferenceRow(
-                            title = kmpStringResource(Res.string.add_widget_to_home_screen),
-                            icon = TasksIcons.WIDGETS,
-                            onClick = onAddWidget,
                         )
                     }
                 }

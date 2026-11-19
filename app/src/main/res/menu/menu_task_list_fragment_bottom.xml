@@ -17,11 +17,6 @@
         android:title="@string/TLA_menu_search"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/menu_sort"
-        android:icon="@drawable/outline_swap_vert_24"
-        android:title="@string/TLA_menu_sort"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/menu_voice_add"
         android:icon="@drawable/ic_outline_mic_none_24px"
         android:title="@string/EPr_voiceInputEnabled_title"

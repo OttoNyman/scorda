@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import org.tasks.R
 import org.tasks.compose.settings.WidgetItem
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
@@ -47,4 +48,5 @@ class WidgetsViewModel @Inject constructor(
                 }
         }
     }
+
 }

@@ -51,14 +51,6 @@ class DateAndTimeViewModel @Inject constructor(
         private set
     var nightSummary by mutableStateOf("")
         private set
-    var autoDismissListEnabled by mutableStateOf(false)
-        private set
-    var autoDismissEditEnabled by mutableStateOf(false)
-        private set
-    var autoDismissWidgetEnabled by mutableStateOf(false)
-        private set
-    var showAutoDismissInfo by mutableStateOf(false)
-        private set
 
     init {
         refreshState()
@@ -70,43 +62,11 @@ class DateAndTimeViewModel @Inject constructor(
         refreshAfternoon()
         refreshEvening()
         refreshNight()
-        autoDismissListEnabled = preferences.getBoolean(
-            R.string.p_auto_dismiss_datetime_list_screen, false,
-        )
-        autoDismissEditEnabled = preferences.getBoolean(
-            R.string.p_auto_dismiss_datetime_edit_screen, false,
-        )
-        autoDismissWidgetEnabled = preferences.getBoolean(
-            R.string.p_auto_dismiss_datetime_widget, false,
-        )
     }
 
     fun updateDateFormat(value: String) {
         preferences.dateFormat = value
         dateFormat = value
-    }
-
-    fun updateAutoDismissList(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_auto_dismiss_datetime_list_screen, enabled)
-        autoDismissListEnabled = enabled
-    }
-
-    fun updateAutoDismissEdit(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_auto_dismiss_datetime_edit_screen, enabled)
-        autoDismissEditEnabled = enabled
-    }
-
-    fun updateAutoDismissWidget(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_auto_dismiss_datetime_widget, enabled)
-        autoDismissWidgetEnabled = enabled
-    }
-
-    fun openAutoDismissInfo() {
-        showAutoDismissInfo = true
-    }
-
-    fun dismissAutoDismissInfo() {
-        showAutoDismissInfo = false
     }
 
     fun getMillisOfDay(prefKey: Int, defaultRes: Int): Int =

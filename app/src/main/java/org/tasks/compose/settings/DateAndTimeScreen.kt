@@ -36,18 +36,11 @@ fun DateAndTimeScreen(
     afternoonSummary: String,
     eveningSummary: String,
     nightSummary: String,
-    autoDismissListEnabled: Boolean,
-    autoDismissEditEnabled: Boolean,
-    autoDismissWidgetEnabled: Boolean,
     onDateFormat: () -> Unit,
     onMorning: () -> Unit,
     onAfternoon: () -> Unit,
     onEvening: () -> Unit,
     onNight: () -> Unit,
-    onAutoDismissInfo: () -> Unit,
-    onAutoDismissList: (Boolean) -> Unit,
-    onAutoDismissEdit: (Boolean) -> Unit,
-    onAutoDismissWidget: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -98,42 +91,6 @@ fun DateAndTimeScreen(
                     title = stringResource(R.string.date_shortcut_night),
                     summary = nightSummary,
                     onClick = onNight,
-                )
-            }
-        }
-
-        // Autoclose date time picker section
-        SectionHeader(
-            R.string.auto_dismiss_datetime,
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            onClick = onAutoDismissInfo,
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_list),
-                    summary = stringResource(R.string.auto_dismiss_datetime_list_summary),
-                    checked = autoDismissListEnabled,
-                    onCheckedChange = onAutoDismissList,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_edit),
-                    summary = stringResource(R.string.auto_dismiss_datetime_edit_summary),
-                    checked = autoDismissEditEnabled,
-                    onCheckedChange = onAutoDismissEdit,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_widget),
-                    summary = stringResource(R.string.auto_dismiss_datetime_widget_summary),
-                    checked = autoDismissWidgetEnabled,
-                    onCheckedChange = onAutoDismissWidget,
                 )
             }
         }

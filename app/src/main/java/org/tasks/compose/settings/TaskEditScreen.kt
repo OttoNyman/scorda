@@ -26,10 +26,18 @@ fun TaskEditScreen(
     showComments: Boolean,
     showCommentsRow: Boolean,
     showWithoutUnlock: Boolean,
+    morningSummary: String,
+    afternoonSummary: String,
+    eveningSummary: String,
+    nightSummary: String,
     onShowLinks: (Boolean) -> Unit,
     onBackButtonSaves: (Boolean) -> Unit,
     onShowComments: (Boolean) -> Unit,
     onShowWithoutUnlock: (Boolean) -> Unit,
+    onMorning: () -> Unit,
+    onAfternoon: () -> Unit,
+    onEvening: () -> Unit,
+    onNight: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -39,7 +47,6 @@ fun TaskEditScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Options island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -80,6 +87,42 @@ fun TaskEditScreen(
                         onCheckedChange = onShowWithoutUnlock,
                     )
                 }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        Column(
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+        ) {
+            SettingsItemCard(position = CardPosition.First) {
+                PreferenceRow(
+                    title = stringResource(R.string.date_shortcut_morning),
+                    summary = morningSummary,
+                    onClick = onMorning,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(R.string.date_shortcut_afternoon),
+                    summary = afternoonSummary,
+                    onClick = onAfternoon,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(R.string.date_shortcut_evening),
+                    summary = eveningSummary,
+                    onClick = onEvening,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Last) {
+                PreferenceRow(
+                    title = stringResource(R.string.date_shortcut_night),
+                    summary = nightSummary,
+                    onClick = onNight,
+                )
             }
         }
 

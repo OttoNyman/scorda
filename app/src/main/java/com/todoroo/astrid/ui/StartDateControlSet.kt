@@ -86,10 +86,6 @@ class StartDateControlSet : TaskEditControlFragment() {
                 initialDay = selectedDay,
                 initialTime = selectedTime,
                 is24Hour = is24Hour,
-                autoClose = preferences.getBoolean(
-                    R.string.p_auto_dismiss_datetime_edit_screen,
-                    false
-                ),
                 showDueDate = !viewState.list.account.isOpenTasks,
                 times = remember { preferences.quickPickTimes },
                 onSelected = { day, time ->

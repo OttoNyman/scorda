@@ -411,11 +411,18 @@ fun TaskEditScreen(
                             )
                         }
                     }
-                    TAG_PRIORITY ->
+                    TAG_PRIORITY -> {
+                        var enabledPriorities by remember { mutableStateOf(allPriorities) }
+                        LaunchedEffect(Unit) {
+                            enabledPriorities = org.tasks.notifications.prioritiesOf(preferences.enabledLevels())
+                        }
                         PriorityRow(
                             priority = viewState.task.priority,
                             onChangePriority = { editViewModel.setPriority(it) },
+                            enabledPriorities = enabledPriorities,
+                            showAlertCaption = !viewState.task.memo,
                         )
+                    }
 
                     TAG_DESCRIPTION -> {
                         // with the checklist on, its lines live in their own block below
@@ -516,7 +523,6 @@ fun TaskEditScreen(
                 initialDay = initialDay,
                 initialTime = initialTime,
                 is24Hour = is24Hour,
-                autoClose = preferences.getBoolean(R.string.p_auto_dismiss_datetime_edit_screen, false),
                 showNoDate = !viewState.task.isRecurring,
                 times = remember { preferences.quickPickTimes },
                 onSelected = { day, time ->

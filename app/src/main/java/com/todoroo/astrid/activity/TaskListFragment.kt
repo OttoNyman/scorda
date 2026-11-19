@@ -93,8 +93,6 @@ import org.tasks.ShortcutManager
 import org.tasks.TasksApplication
 import org.tasks.TasksUrls
 import org.tasks.activities.FilterSettingsActivity
-import org.tasks.activities.PlaceSettingsActivity
-import org.tasks.activities.TagSettingsActivity
 import org.tasks.analytics.Firebase
 import org.tasks.billing.PurchaseActivity
 import org.tasks.billing.PurchaseActivityViewModel
@@ -128,7 +126,6 @@ import org.tasks.databinding.FragmentTaskListBinding
 import org.tasks.dialogs.DateTimePicker.Companion.newDateTimePicker
 import org.tasks.dialogs.DialogBuilder
 import org.tasks.dialogs.PriorityPicker.Companion.newPriorityPicker
-import org.tasks.dialogs.SortSettingsActivity
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.extensions.Context.openAppNotificationSettings
 import org.tasks.extensions.Context.openReminderSettings
@@ -147,7 +144,6 @@ import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.SearchFilter
-import org.tasks.filters.TagFilter
 import org.tasks.filters.TrashFilter
 import org.tasks.filters.key
 import org.tasks.kmp.org.tasks.time.DateStyle
@@ -251,21 +247,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private val settingsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         (activity as? MainActivity)?.restartActivity()
     }
-
-    private val sortRequest =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                result.data?.let { data ->
-                    if (data.getBooleanExtra(SortSettingsActivity.EXTRA_FORCE_RELOAD, false)) {
-                        (activity as? MainActivity)?.restartActivity()
-                    }
-                    if (data.getBooleanExtra(SortSettingsActivity.EXTRA_CHANGED_GROUP, false)) {
-                        listViewModel.clearCollapsed()
-                    }
-                    listViewModel.invalidate()
-                }
-            }
-        }
 
     private val listSettingsRequest =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -716,8 +697,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         when (filter) {
             is CaldavFilter -> R.menu.menu_caldav_list_fragment
             is CustomFilter -> R.menu.menu_custom_filter
-            is TagFilter -> R.menu.menu_tag_view_fragment
-            is PlaceFilter -> R.menu.menu_location_list_fragment
             else -> null
         }?.let {
             toolbar.inflateMenu(it)
@@ -736,11 +715,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             appBar.inflateMenu(R.menu.menu_location_actions)
         }
         appBar.inflateMenu(R.menu.menu_task_list_fragment_bottom)
-        val sortMenu = menu.findItem(R.id.menu_sort)
-        if (!filter.supportsSorting()) {
-            sortMenu.isEnabled = false
-            sortMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        }
         val memos = filter is MemosFilter
         menu.findItem(R.id.menu_voice_add).isVisible = !memos && device.voiceInputAvailable() && filter.isWritable
         menu.findItem(R.id.menu_clear_completed).apply {
@@ -787,30 +761,20 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                 )
                 true
             }
-            R.id.menu_sort -> {
-                sortRequest.launch(
-                    SortSettingsActivity.getIntent(
-                        requireActivity(),
-                        filter.supportsManualSort(),
-                        filter is AstridOrderingFilter && preferences.isAstridSortEnabled,
-                        filterKey = filter.key(),
-                        showCompletedAndHiddenOptions = filter !is MemosFilter,
-                        completedAndHiddenEnabled =
-                            taskAdapter.supportsHiddenTasks() && filter.supportsHiddenTasks(),
-                    )
-                )
-                true
-            }
             R.id.menu_clear_completed -> {
                 lifecycleScope.launch {
                     val tasks = withContext(Dispatchers.Default) {
                         listViewModel.getTasksToClear()
                     }
-                    // no confirmation: the trash is the undo
-                    if (tasks.isNotEmpty()) {
-                        withContext(NonCancellable) { listViewModel.markDeleted(tasks) }
+                    // no confirmation: the snackbar offers undo, the trash keeps them after that
+                    val deleted = if (tasks.isEmpty()) {
+                        emptyList()
+                    } else {
+                        withContext(NonCancellable) { listViewModel.markDeleted(tasks) }.map { it.id }
                     }
-                    makeSnackbar(R.string.trash_moved, tasks.size.toString())?.show()
+                    makeSnackbar(R.string.trash_moved, deleted.size.toString())
+                        ?.withUndoTrash(deleted)
+                        ?.show()
                 }
                 true
             }
@@ -836,21 +800,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     Intent(activity, filter.account.listSettingsClass())
                         .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_ACCOUNT, filter.account)
                         .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_CALENDAR, filter.calendar)
-                )
-                true
-            }
-            R.id.menu_location_settings -> {
-                val place = (filter as PlaceFilter).place
-                listSettingsRequest.launch(
-                    Intent(activity, PlaceSettingsActivity::class.java)
-                            .putExtra(PlaceSettingsActivity.EXTRA_PLACE, place as Parcelable)
-                )
-                true
-            }
-            R.id.menu_tag_settings -> {
-                listSettingsRequest.launch(
-                    Intent(activity, TagSettingsActivity::class.java)
-                            .putExtra(TagSettingsActivity.EXTRA_TAG_DATA, (filter as TagFilter).tagData)
                 )
                 true
             }
@@ -1102,7 +1051,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                             .takeIf { it.isNotEmpty() }
                             ?.let {
                                 newDateTimePicker(
-                                        preferences.getBoolean(R.string.p_auto_dismiss_datetime_list_screen, false),
+                                        false,
                                         *it.toTypedArray())
                                         .show(parentFragmentManager, FRAG_TAG_DATE_TIME_PICKER)
                             }
@@ -1245,9 +1194,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private fun showDateTimePicker(task: TaskContainer) {
         val fragmentManager = parentFragmentManager
         if (fragmentManager.findFragmentByTag(FRAG_TAG_DATE_TIME_PICKER) == null) {
-            newDateTimePicker(
-                preferences.getBoolean(R.string.p_auto_dismiss_datetime_list_screen, false),
-                task.task)
+            newDateTimePicker(false, task.task)
                 .show(fragmentManager, FRAG_TAG_DATE_TIME_PICKER)
         }
     }
@@ -1291,7 +1238,15 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         if (skippedOccurrences) {
             makeSnackbar(R.string.series_cannot_delete)?.show()
         } else {
-            makeSnackbar(R.string.trash_moved, result.size.toString())?.show()
+            makeSnackbar(R.string.trash_moved, result.size.toString())
+                ?.withUndoTrash(result.map { it.id })
+                ?.show()
+        }
+    }
+
+    private fun Snackbar.withUndoTrash(ids: List<Long>) = apply {
+        if (ids.isNotEmpty()) {
+            setAction(R.string.DLG_undo) { restoreSelectedItems(ids) }
         }
     }
 

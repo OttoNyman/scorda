@@ -99,13 +99,7 @@ class WidgetClickActivity : AppCompatActivity(), OnDismissHandler {
                     lifecycleScope.launch {
                         val task = taskDao.fetch(taskId)
                         if (task != null) {
-                            newDateTimePicker(
-                                preferences.getBoolean(
-                                    R.string.p_auto_dismiss_datetime_widget,
-                                    false
-                                ),
-                                task
-                            )
+                            newDateTimePicker(false, task)
                                 .show(fragmentManager, FRAG_TAG_DATE_TIME_PICKER)
                         } else {
                             finish()

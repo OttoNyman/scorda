@@ -3,10 +3,6 @@ package org.tasks.preferences.fragments
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -104,9 +100,6 @@ class DateAndTime : Fragment() {
                 afternoonSummary = viewModel.afternoonSummary,
                 eveningSummary = viewModel.eveningSummary,
                 nightSummary = viewModel.nightSummary,
-                autoDismissListEnabled = viewModel.autoDismissListEnabled,
-                autoDismissEditEnabled = viewModel.autoDismissEditEnabled,
-                autoDismissWidgetEnabled = viewModel.autoDismissWidgetEnabled,
                 onDateFormat = { pickFormat = true },
                 onMorning = {
                     showTimePicker(
@@ -136,24 +129,7 @@ class DateAndTime : Fragment() {
                         REQUEST_KEY_NIGHT,
                     )
                 },
-                onAutoDismissInfo = { viewModel.openAutoDismissInfo() },
-                onAutoDismissList = { viewModel.updateAutoDismissList(it) },
-                onAutoDismissEdit = { viewModel.updateAutoDismissEdit(it) },
-                onAutoDismissWidget = { viewModel.updateAutoDismissWidget(it) },
             )
-
-            if (viewModel.showAutoDismissInfo) {
-                AlertDialog(
-                    onDismissRequest = { viewModel.dismissAutoDismissInfo() },
-                    title = { Text(stringResource(R.string.auto_dismiss_datetime)) },
-                    text = { Text(stringResource(R.string.auto_dismiss_datetime_summary)) },
-                    confirmButton = {
-                        TextButton(onClick = { viewModel.dismissAutoDismissInfo() }) {
-                            Text(stringResource(android.R.string.ok))
-                        }
-                    },
-                )
-            }
         }
     }
 
