@@ -23,31 +23,16 @@ internal object TaskListQueryRecursive {
             is CaldavFilter -> newCaldavQuery(filter.uuid)
             else -> PermaSql.replacePlaceholdersForQuery(filter.sql!!)
         }
-        val manualSort = preferences.isManualSort
-        val groupPreference = preferences.groupMode
-        val groupMode = when {
-            filter is CaldavFilter && (manualSort || groupPreference == SortHelper.SORT_LIST) ->
-                SortHelper.GROUP_NONE
-            else -> groupPreference
-        }
-        val sortMode = when {
-            !manualSort || filter !is CaldavFilter -> preferences.sortMode
-            filter.isGoogleTasks -> SortHelper.SORT_GTASKS
-            else -> SortHelper.SORT_CALDAV
-        }
-        val subtaskPreference = preferences.subtaskMode
-        val subtaskMode = when {
-            sortMode == SortHelper.SORT_GTASKS || sortMode == SortHelper.SORT_CALDAV -> sortMode
-            subtaskPreference == SortHelper.SORT_MANUAL -> SortHelper.SORT_CALDAV
-            else -> subtaskPreference
-        }
-        val completedMode = preferences.completedMode
+        val groupMode =
+            if (preferences.groupMode == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE
+            else SortHelper.SORT_DUE
+        val sortMode = SortHelper.SORT_DUE
+        val subtaskMode = SortHelper.SORT_DUE
+        val completedMode = SortHelper.SORT_COMPLETED
         val groupAscending =
             preferences.groupAscending && groupMode != SortHelper.GROUP_NONE
-        val sortAscending =
-            preferences.sortAscending && sortMode != SortHelper.SORT_GTASKS && sortMode != SortHelper.SORT_CALDAV
-        val subtaskAscending =
-            preferences.subtaskAscending && subtaskMode != SortHelper.SORT_GTASKS && subtaskMode != SortHelper.SORT_CALDAV
+        val sortAscending = true
+        val subtaskAscending = true
         val completedAtBottom = preferences.completedTasksAtBottom
         val parentCompleted = if (completedAtBottom) "tasks.completed > 0" else "0"
         val hideCompletedSubtasks = if (preferences.showCompletedSubtasks) {
@@ -62,7 +47,7 @@ internal object TaskListQueryRecursive {
         }
         val folded = if (showCollapsed) "0" else "recursive_tasks.collapsed > 0"
         val completionSort = if (completedAtBottom) {
-            "(CASE WHEN tasks.completed > 0 THEN ${SortHelper.orderSelectForSortTypeRecursive(completedMode, false)} ELSE 0 END)"
+            "(CASE WHEN tasks.completed > 0 THEN ${SortHelper.orderSelectForSortTypeRecursive(completedMode, false, preferences)} ELSE 0 END)"
         } else {
             "0"
         }
@@ -78,22 +63,12 @@ internal object TaskListQueryRecursive {
                     0 AS hidden,
                     0 AS indent,
                     UPPER(tasks.title) AS sort_title,
-                    ${SortHelper.orderSelectForSortTypeRecursive(groupMode, true)} AS primary_group,
-                    ${SortHelper.orderSelectForSortTypeRecursive(sortMode, false)} AS primary_sort,
+                    ${SortHelper.orderSelectForSortTypeRecursive(groupMode, true, preferences)} AS primary_group,
+                    ${SortHelper.orderSelectForSortTypeRecursive(sortMode, false, preferences)} AS primary_sort,
                     NULL as secondary_sort,
                     ${SortHelper.getSortGroup(groupMode)} AS sort_group,
                     '/' || tasks._id || '/' as recursive_path
                 FROM tasks
-                ${
-                    if (groupMode == SortHelper.SORT_LIST) {
-                        """
-                            INNER JOIN caldav_tasks ct_group ON ct_group.cd_task = tasks._id AND ct_group.cd_deleted = 0
-                            INNER JOIN caldav_lists ON ct_group.cd_calendar = cdl_uuid
-                        """.trimIndent()
-                    } else {
-                        ""
-                    }
-                }
                 $parentQuery
                 UNION ALL SELECT
                     tasks._id AS task,
@@ -107,7 +82,7 @@ internal object TaskListQueryRecursive {
                     UPPER(tasks.title) AS sort_title,
                     recursive_tasks.primary_group AS primary_group,
                     recursive_tasks.primary_sort AS primary_sort,
-                    ${SortHelper.orderSelectForSortTypeRecursive(subtaskMode, false)} AS secondary_sort,
+                    ${SortHelper.orderSelectForSortTypeRecursive(subtaskMode, false, preferences)} AS secondary_sort,
                     recursive_tasks.sort_group AS sort_group,
                     recursive_tasks.recursive_path || tasks._id || '/' AS recursive_path
                 FROM tasks

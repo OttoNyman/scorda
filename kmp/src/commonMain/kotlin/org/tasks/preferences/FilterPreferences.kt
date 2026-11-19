@@ -2,6 +2,7 @@ package org.tasks.preferences
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import com.todoroo.astrid.core.SortHelper
 import kotlinx.coroutines.runBlocking
 
 class FilterPreferences(
@@ -29,32 +30,38 @@ class FilterPreferences(
     private fun getKey(suffix: String) = "${KEY_PREFIX}_${filterKey}_$suffix"
 
     override var sortMode: Int
-        get() = getInt(KEY_SORT_MODE, globalPreferences.sortMode)
-        set(value) = setInt(KEY_SORT_MODE, value)
+        get() = SortHelper.SORT_DUE
+        set(_) {}
 
     override var groupMode: Int
-        get() = getInt(KEY_GROUP_MODE, globalPreferences.groupMode)
-        set(value) = setInt(KEY_GROUP_MODE, value)
+        get() {
+            val stored = getInt(KEY_GROUP_MODE, globalPreferences.groupMode)
+            return if (stored == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE
+        }
+        set(value) = setInt(
+            KEY_GROUP_MODE,
+            if (value == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE,
+        )
 
     override var completedMode: Int
-        get() = getInt(KEY_COMPLETED_MODE, globalPreferences.completedMode)
-        set(value) = setInt(KEY_COMPLETED_MODE, value)
+        get() = SortHelper.SORT_COMPLETED
+        set(_) {}
 
     override var subtaskMode: Int
         get() = getInt(KEY_SUBTASK_MODE, globalPreferences.subtaskMode)
         set(value) = setInt(KEY_SUBTASK_MODE, value)
 
     override var isManualSort: Boolean
-        get() = getBoolean(KEY_MANUAL_SORT, globalPreferences.isManualSort)
-        set(value) = setBoolean(KEY_MANUAL_SORT, value)
+        get() = false
+        set(_) {}
 
     override var isAstridSort: Boolean
-        get() = getBoolean(KEY_ASTRID_SORT, globalPreferences.isAstridSort)
-        set(value) = setBoolean(KEY_ASTRID_SORT, value)
+        get() = false
+        set(_) {}
 
     override var sortAscending: Boolean
-        get() = getBoolean(KEY_SORT_ASCENDING, globalPreferences.sortAscending)
-        set(value) = setBoolean(KEY_SORT_ASCENDING, value)
+        get() = true
+        set(_) {}
 
     override var groupAscending: Boolean
         get() = getBoolean(KEY_GROUP_ASCENDING, globalPreferences.groupAscending)

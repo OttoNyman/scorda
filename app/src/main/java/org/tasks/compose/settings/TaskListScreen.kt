@@ -34,9 +34,12 @@ fun TaskListScreen(
     showDescription: Boolean,
     showFullDescription: Boolean,
     showLinks: Boolean,
-    perListSort: Boolean,
+    groupByDay: Boolean,
+    showCompleted: Boolean,
+    completedAtBottom: Boolean,
+    noTimeAtEndOfDay: Boolean,
+    undatedAtBottom: Boolean,
     chipAppearanceSummary: String,
-    startDateChips: Boolean,
     placeChips: Boolean,
     listChips: Boolean,
     tagChips: Boolean,
@@ -46,9 +49,12 @@ fun TaskListScreen(
     onShowDescription: (Boolean) -> Unit,
     onShowFullDescription: (Boolean) -> Unit,
     onShowLinks: (Boolean) -> Unit,
-    onPerListSort: (Boolean) -> Unit,
+    onGroupByDay: (Boolean) -> Unit,
+    onShowCompleted: (Boolean) -> Unit,
+    onCompletedAtBottom: (Boolean) -> Unit,
+    onNoTimePlacement: () -> Unit,
+    onUndatedPlacement: () -> Unit,
     onChipAppearance: () -> Unit,
-    onStartDateChips: (Boolean) -> Unit,
     onPlaceChips: (Boolean) -> Unit,
     onListChips: (Boolean) -> Unit,
     onTagChips: (Boolean) -> Unit,
@@ -61,7 +67,6 @@ fun TaskListScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Font size & row spacing island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -88,7 +93,6 @@ fun TaskListScreen(
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Display options island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -127,22 +131,55 @@ fun TaskListScreen(
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Sorting options island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.Only) {
+            SettingsItemCard(position = CardPosition.First) {
                 SwitchPreferenceRow(
-                    title = stringResource(R.string.per_list_sort_title),
-                    summary = stringResource(R.string.per_list_sort_summary),
-                    checked = perListSort,
-                    onCheckedChange = onPerListSort,
+                    title = stringResource(R.string.group_by_day),
+                    summary = stringResource(R.string.group_by_day_summary),
+                    checked = groupByDay,
+                    onCheckedChange = onGroupByDay,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                SwitchPreferenceRow(
+                    title = stringResource(R.string.show_completed_tasks),
+                    checked = showCompleted,
+                    onCheckedChange = onShowCompleted,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                SwitchPreferenceRow(
+                    title = stringResource(R.string.completed_tasks_at_bottom),
+                    checked = completedAtBottom,
+                    enabled = showCompleted,
+                    onCheckedChange = onCompletedAtBottom,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                PreferenceRow(
+                    title = stringResource(R.string.no_time_placement),
+                    summary = stringResource(
+                        if (noTimeAtEndOfDay) R.string.no_time_at_end_of_day
+                        else R.string.no_time_at_top_of_day
+                    ),
+                    onClick = onNoTimePlacement,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Last) {
+                PreferenceRow(
+                    title = stringResource(R.string.undated_placement),
+                    summary = stringResource(
+                        if (undatedAtBottom) R.string.undated_at_bottom
+                        else R.string.undated_at_top
+                    ),
+                    onClick = onUndatedPlacement,
                 )
             }
         }
 
-        // Chips section
         SectionHeader(
             R.string.chips,
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
@@ -156,13 +193,6 @@ fun TaskListScreen(
                     title = stringResource(R.string.chip_appearance),
                     summary = chipAppearanceSummary,
                     onClick = onChipAppearance,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.start_date),
-                    checked = startDateChips,
-                    onCheckedChange = onStartDateChips,
                 )
             }
             SettingsItemCard(position = CardPosition.Middle) {

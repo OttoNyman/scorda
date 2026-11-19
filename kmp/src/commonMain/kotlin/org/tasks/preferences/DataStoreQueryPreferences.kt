@@ -9,13 +9,23 @@ class DataStoreQueryPreferences(
     private val tasksPreferences: TasksPreferences,
 ) : QueryPreferences {
 
-    override var sortMode: Int by pref(Keys.sortMode, SortHelper.SORT_DUE)
+    override var sortMode: Int
+        get() = SortHelper.SORT_DUE
+        set(_) {}
     override var groupMode: Int by pref(Keys.groupMode, SortHelper.SORT_DUE)
-    override var completedMode: Int by pref(Keys.completedMode, SortHelper.SORT_AUTO)
+    override var completedMode: Int
+        get() = SortHelper.SORT_COMPLETED
+        set(_) {}
     override var subtaskMode: Int by pref(Keys.subtaskMode, SortHelper.SORT_MANUAL)
-    override var isManualSort: Boolean by pref(Keys.manualSort, false)
-    override var isAstridSort: Boolean by pref(Keys.astridSort, false)
-    override var sortAscending: Boolean by pref(Keys.sortAscending, true)
+    override var isManualSort: Boolean
+        get() = false
+        set(_) {}
+    override var isAstridSort: Boolean
+        get() = false
+        set(_) {}
+    override var sortAscending: Boolean
+        get() = true
+        set(_) {}
     override var groupAscending: Boolean by pref(Keys.groupAscending, true)
     override var completedAscending: Boolean by pref(Keys.completedAscending, false)
     override var subtaskAscending: Boolean by pref(Keys.subtaskAscending, false)
@@ -24,6 +34,8 @@ class DataStoreQueryPreferences(
     override var showCompletedSubtasks: Boolean by pref(Keys.showCompletedSubtasks, true)
     override val alwaysDisplayFullDate: Boolean = false
     override var completedTasksAtBottom: Boolean by pref(Keys.completedTasksAtBottom, true)
+    override var undatedAtBottom: Boolean by pref(Keys.undatedAtBottom, true)
+    override var noTimeAtEndOfDay: Boolean by pref(Keys.noTimeAtEndOfDay, true)
 
     private inline fun <reified T> pref(
         key: androidx.datastore.preferences.core.Preferences.Key<T>,
@@ -59,5 +71,7 @@ class DataStoreQueryPreferences(
         val showHidden = booleanPreferencesKey("show_hidden")
         val showCompleted = booleanPreferencesKey("show_completed")
         val showCompletedSubtasks = booleanPreferencesKey("show_completed_subtasks")
+        val undatedAtBottom = booleanPreferencesKey("undated_at_bottom")
+        val noTimeAtEndOfDay = booleanPreferencesKey("no_time_at_end_of_day")
     }
 }

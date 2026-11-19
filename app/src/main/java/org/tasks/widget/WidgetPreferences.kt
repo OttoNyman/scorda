@@ -228,29 +228,45 @@ class WidgetPreferences(
     }
 
     override var sortMode: Int
-        get() = getInt(R.string.p_widget_sort, SortHelper.SORT_DUE)
-        set(sortMode) {
-            setInt(R.string.p_widget_sort, sortMode)
+        get() = SortHelper.SORT_DUE
+        set(_) {
+            setInt(R.string.p_widget_sort, SortHelper.SORT_DUE)
         }
     override var groupMode: Int
-        get() = getInt(R.string.p_widget_group, SortHelper.SORT_DUE)
+        get() {
+            val stored = getInt(R.string.p_widget_group, SortHelper.SORT_DUE)
+            return if (stored == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE
+        }
         set(groupMode) {
-            setInt(R.string.p_widget_group, groupMode)
+            setInt(
+                R.string.p_widget_group,
+                if (groupMode == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE,
+            )
         }
     override var isManualSort: Boolean
-        get() = getBoolean(R.string.p_widget_sort_manual, false)
-        set(isManualSort) {
-            setBoolean(R.string.p_widget_sort_manual, isManualSort)
+        get() = false
+        set(_) {
+            setBoolean(R.string.p_widget_sort_manual, false)
         }
     override var isAstridSort: Boolean
-        get() = getBoolean(R.string.p_widget_sort_astrid, false)
-        set(isAstridSort) {
-            setBoolean(R.string.p_widget_sort_astrid, isAstridSort)
+        get() = false
+        set(_) {
+            setBoolean(R.string.p_widget_sort_astrid, false)
         }
     override var sortAscending: Boolean
-        get() = getBoolean(R.string.p_widget_sort_ascending, true)
-        set(ascending) {
-            setBoolean(R.string.p_widget_sort_ascending, ascending)
+        get() = true
+        set(_) {
+            setBoolean(R.string.p_widget_sort_ascending, true)
+        }
+    override var undatedAtBottom: Boolean
+        get() = preferences.undatedAtBottom
+        set(value) {
+            preferences.undatedAtBottom = value
+        }
+    override var noTimeAtEndOfDay: Boolean
+        get() = preferences.noTimeAtEndOfDay
+        set(value) {
+            preferences.noTimeAtEndOfDay = value
         }
     override var groupAscending: Boolean
         get() = getBoolean(R.string.p_widget_group_ascending, true)

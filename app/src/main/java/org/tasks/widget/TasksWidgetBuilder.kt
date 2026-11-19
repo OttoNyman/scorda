@@ -197,12 +197,6 @@ internal class TasksWidgetBuilder(
                 if (checklist != null && checklist.items.isNotEmpty()) {
                     addView(R.id.chips, chipProvider.getChecklistChip(checklist.done, checklist.items.size))
                 }
-                if (taskContainer.task.isHidden && settings.showStartChips) {
-                    val sortByDate = settings.groupMode == SortHelper.SORT_START && !disableGroups
-                    chipProvider
-                        .getStartDateChip(taskContainer, settings.showFullDate, sortByDate, dateFormatter)
-                        ?.let { addView(R.id.chips, it) }
-                }
                 if (taskContainer.hasLocation() && settings.showPlaceChips) {
                     chipProvider
                         .getPlaceChip(filter, taskContainer)

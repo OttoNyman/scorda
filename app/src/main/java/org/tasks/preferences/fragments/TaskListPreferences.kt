@@ -51,9 +51,12 @@ class TaskListPreferences : Fragment() {
                 showDescription = viewModel.showDescription,
                 showFullDescription = viewModel.showFullDescription,
                 showLinks = viewModel.showLinks,
-                perListSort = viewModel.perListSort,
+                groupByDay = viewModel.groupByDay,
+                showCompleted = viewModel.showCompleted,
+                completedAtBottom = viewModel.completedAtBottom,
+                noTimeAtEndOfDay = viewModel.noTimeAtEndOfDay,
+                undatedAtBottom = viewModel.undatedAtBottom,
                 chipAppearanceSummary = viewModel.chipAppearanceSummary,
-                startDateChips = viewModel.startDateChips,
                 placeChips = viewModel.placeChips,
                 listChips = viewModel.listChips,
                 tagChips = viewModel.tagChips,
@@ -63,48 +66,52 @@ class TaskListPreferences : Fragment() {
                 onShowDescription = { viewModel.updateShowDescription(it) },
                 onShowFullDescription = { viewModel.updateShowFullDescription(it) },
                 onShowLinks = { viewModel.updateShowLinks(it) },
-                onPerListSort = { viewModel.updatePerListSort(it) },
+                onGroupByDay = { viewModel.updateGroupByDay(it) },
+                onShowCompleted = { viewModel.updateShowCompleted(it) },
+                onCompletedAtBottom = { viewModel.updateCompletedAtBottom(it) },
+                onNoTimePlacement = { viewModel.openNoTimeDialog() },
+                onUndatedPlacement = { viewModel.openUndatedDialog() },
                 onChipAppearance = { viewModel.openChipAppearanceDialog() },
-                onStartDateChips = { viewModel.updateStartDateChips(it) },
                 onPlaceChips = { viewModel.updatePlaceChips(it) },
                 onListChips = { viewModel.updateListChips(it) },
                 onTagChips = { viewModel.updateTagChips(it) },
             )
 
             if (viewModel.showChipAppearanceDialog) {
-                val currentValue = viewModel.getChipAppearanceCurrentValue()
-                AlertDialog(
-                    onDismissRequest = { viewModel.dismissChipAppearanceDialog() },
-                    title = { Text(stringResource(R.string.chip_appearance)) },
-                    text = {
-                        Column {
-                            viewModel.chipEntries.forEachIndexed { index, entry ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            viewModel.setChipAppearance(
-                                                viewModel.chipValues[index]
-                                            )
-                                            viewModel.dismissChipAppearanceDialog()
-                                        }
-                                        .padding(vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    RadioButton(
-                                        selected = viewModel.chipValues[index] == currentValue,
-                                        onClick = null,
-                                    )
-                                    Text(
-                                        text = entry,
-                                        modifier = Modifier.padding(start = 8.dp),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                }
-                            }
-                        }
+                PlacementDialog(
+                    title = stringResource(R.string.chip_appearance),
+                    options = viewModel.chipEntries.mapIndexed { index, entry ->
+                        entry to (viewModel.chipValues[index] == viewModel.getChipAppearanceCurrentValue())
                     },
-                    confirmButton = {},
+                    onSelect = { index ->
+                        viewModel.setChipAppearance(viewModel.chipValues[index])
+                        viewModel.dismissChipAppearanceDialog()
+                    },
+                    onDismiss = { viewModel.dismissChipAppearanceDialog() },
+                )
+            }
+
+            if (viewModel.showNoTimeDialog) {
+                PlacementDialog(
+                    title = stringResource(R.string.no_time_placement),
+                    options = listOf(
+                        stringResource(R.string.no_time_at_top_of_day) to !viewModel.noTimeAtEndOfDay,
+                        stringResource(R.string.no_time_at_end_of_day) to viewModel.noTimeAtEndOfDay,
+                    ),
+                    onSelect = { index -> viewModel.updateNoTimeAtEndOfDay(index == 1) },
+                    onDismiss = { viewModel.dismissNoTimeDialog() },
+                )
+            }
+
+            if (viewModel.showUndatedDialog) {
+                PlacementDialog(
+                    title = stringResource(R.string.undated_placement),
+                    options = listOf(
+                        stringResource(R.string.undated_at_top) to !viewModel.undatedAtBottom,
+                        stringResource(R.string.undated_at_bottom) to viewModel.undatedAtBottom,
+                    ),
+                    onSelect = { index -> viewModel.updateUndatedAtBottom(index == 1) },
+                    onDismiss = { viewModel.dismissUndatedDialog() },
                 )
             }
         }
@@ -128,4 +135,38 @@ class TaskListPreferences : Fragment() {
             (toolbar.parent as? View)?.setBackgroundColor(defaultColor)
         }
     }
+}
+
+@androidx.compose.runtime.Composable
+private fun PlacementDialog(
+    title: String,
+    options: List<Pair<String, Boolean>>,
+    onSelect: (Int) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            Column {
+                options.forEachIndexed { index, (label, selected) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onSelect(index) }
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = selected, onClick = null)
+                        Text(
+                            text = label,
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+    )
 }

@@ -30,4 +30,10 @@ interface QueryPreferences {
     val alwaysDisplayFullDate: Boolean
 
     var completedTasksAtBottom: Boolean
+
+    /** Undated tasks at the end of the list (true) or the start (false). */
+    var undatedAtBottom: Boolean
+
+    /** Dateless-time tasks after timed ones that day (true) or before them (false). */
+    var noTimeAtEndOfDay: Boolean
 }

@@ -29,6 +29,7 @@ import org.tasks.filters.Filter
 import org.tasks.filters.FilterProvider
 import org.tasks.filters.NavigationDrawerSubheader
 import org.tasks.filters.SignInPrompt
+import org.tasks.filters.TrashFilter
 import org.tasks.preferences.TasksPreferences
 import org.tasks.kmp.org.tasks.themes.ColorProvider
 
@@ -48,6 +49,7 @@ open class DrawerViewModel(
         val searchItems: ImmutableList<DrawerItem> = persistentListOf(),
         val menuQuery: String = "",
         val selectedFilter: Filter? = null,
+        val trashItem: DrawerItem.Filter? = null,
     )
 
     private val _state = MutableStateFlow(State())
@@ -74,11 +76,17 @@ open class DrawerViewModel(
             // could not be listed.
             try {
                 val selectedFilter = _state.value.selectedFilter
+                val trash = TrashFilter.create().toDrawerItem(selectedFilter) as DrawerItem.Filter
                 filterProvider
                     .drawerItems()
                     .map { item -> item.toDrawerItem(selectedFilter) }
                     .let { filters ->
-                        _state.update { it.copy(drawerItems = filters.toPersistentList()) }
+                        _state.update {
+                            it.copy(
+                                drawerItems = filters.toPersistentList(),
+                                trashItem = trash,
+                            )
+                        }
                     }
                 val query = _state.value.menuQuery
                 if (query.isNotBlank()) {

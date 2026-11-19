@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.todoroo.astrid.core.SortHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
@@ -30,11 +31,17 @@ class TaskListPreferencesViewModel @Inject constructor(
         private set
     var showLinks by mutableStateOf(false)
         private set
-    var perListSort by mutableStateOf(false)
+    var groupByDay by mutableStateOf(true)
+        private set
+    var showCompleted by mutableStateOf(true)
+        private set
+    var completedAtBottom by mutableStateOf(true)
+        private set
+    var noTimeAtEndOfDay by mutableStateOf(true)
+        private set
+    var undatedAtBottom by mutableStateOf(true)
         private set
     var chipAppearanceSummary by mutableStateOf("")
-        private set
-    var startDateChips by mutableStateOf(true)
         private set
     var placeChips by mutableStateOf(true)
         private set
@@ -43,6 +50,10 @@ class TaskListPreferencesViewModel @Inject constructor(
     var tagChips by mutableStateOf(true)
         private set
     var showChipAppearanceDialog by mutableStateOf(false)
+        private set
+    var showNoTimeDialog by mutableStateOf(false)
+        private set
+    var showUndatedDialog by mutableStateOf(false)
         private set
 
     val chipEntries: Array<String> = context.resources.getStringArray(R.array.chip_appearance)
@@ -59,9 +70,12 @@ class TaskListPreferencesViewModel @Inject constructor(
         showDescription = preferences.getBoolean(R.string.p_show_description, true)
         showFullDescription = preferences.getBoolean(R.string.p_show_full_description, false)
         showLinks = preferences.getBoolean(R.string.p_linkify_task_list, false)
-        perListSort = preferences.getBoolean(R.string.p_per_list_sort, false)
+        groupByDay = preferences.groupMode != SortHelper.GROUP_NONE
+        showCompleted = preferences.showCompleted
+        completedAtBottom = preferences.completedTasksAtBottom
+        noTimeAtEndOfDay = preferences.noTimeAtEndOfDay
+        undatedAtBottom = preferences.undatedAtBottom
         refreshChipAppearance()
-        startDateChips = preferences.getBoolean(R.string.p_start_date_chip, true)
         placeChips = preferences.getBoolean(R.string.p_place_chips, true)
         listChips = preferences.getBoolean(R.string.p_list_chips, true)
         tagChips = preferences.getBoolean(R.string.p_tag_chips, true)
@@ -101,9 +115,47 @@ class TaskListPreferencesViewModel @Inject constructor(
         showLinks = enabled
     }
 
-    fun updatePerListSort(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_per_list_sort, enabled)
-        perListSort = enabled
+    fun updateGroupByDay(enabled: Boolean) {
+        preferences.groupMode = if (enabled) SortHelper.SORT_DUE else SortHelper.GROUP_NONE
+        groupByDay = enabled
+    }
+
+    fun updateShowCompleted(enabled: Boolean) {
+        preferences.showCompleted = enabled
+        showCompleted = enabled
+    }
+
+    fun updateCompletedAtBottom(enabled: Boolean) {
+        preferences.completedTasksAtBottom = enabled
+        completedAtBottom = enabled
+    }
+
+    fun openNoTimeDialog() {
+        showNoTimeDialog = true
+    }
+
+    fun dismissNoTimeDialog() {
+        showNoTimeDialog = false
+    }
+
+    fun updateNoTimeAtEndOfDay(value: Boolean) {
+        preferences.noTimeAtEndOfDay = value
+        noTimeAtEndOfDay = value
+        showNoTimeDialog = false
+    }
+
+    fun openUndatedDialog() {
+        showUndatedDialog = true
+    }
+
+    fun dismissUndatedDialog() {
+        showUndatedDialog = false
+    }
+
+    fun updateUndatedAtBottom(value: Boolean) {
+        preferences.undatedAtBottom = value
+        undatedAtBottom = value
+        showUndatedDialog = false
     }
 
     fun openChipAppearanceDialog() {
@@ -121,12 +173,6 @@ class TaskListPreferencesViewModel @Inject constructor(
 
     fun getChipAppearanceCurrentValue(): String =
         preferences.getIntegerFromString(R.string.p_chip_appearance, 0).toString()
-
-
-    fun updateStartDateChips(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_start_date_chip, enabled)
-        startDateChips = enabled
-    }
 
     fun updatePlaceChips(enabled: Boolean) {
         preferences.setBoolean(R.string.p_place_chips, enabled)

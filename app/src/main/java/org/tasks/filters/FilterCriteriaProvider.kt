@@ -117,14 +117,12 @@ class FilterCriteriaProvider @Inject constructor(
         with(result) {
             add(tagFilter())
             add(tagNameContainsFilter)
-            add(startDateFilter)
             add(dueDateFilter)
             add(priorityFilter)
             add(taskTitleContainsFilter)
             add(caldavFilterCriteria())
             add(recurringFilter())
             add(completedFilter())
-            add(hiddenFilter)
             add(reminderFilter)
         }
         return result

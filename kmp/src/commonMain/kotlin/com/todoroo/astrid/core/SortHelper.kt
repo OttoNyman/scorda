@@ -27,19 +27,13 @@ object SortHelper {
     const val SORT_COMPLETED: Int = 10
     const val SORT_MANUAL: Int = 11
 
-    private const val ADJUSTED_DUE_DATE =
-        "(CASE WHEN (dueDate / 1000) % 60 > 0 THEN dueDate ELSE (dueDate + 43140000) END)"
+    private const val NO_TIME_TO_END_OF_DAY = 43_140_000L
+    private const val NO_TIME_TO_START_OF_DAY = 43_200_000L
+
     private const val ADJUSTED_START_DATE =
-        "(CASE WHEN (hideUntil / 1000) % 60 > 0 THEN hideUntil ELSE (hideUntil + 86399000) END)"
+        "(CASE WHEN (hideUntil / 1000) % 60 > 0 THEN hideUntil ELSE (hideUntil + $NO_TIME_TO_END_OF_DAY) END)"
 
     private const val NO_DATE = 3538339200000L
-
-    private const val GROUP_DUE_DATE = ("((CASE WHEN (tasks.dueDate=0) THEN " + NO_DATE + " ELSE "
-            + "tasks.dueDate END)+tasks.importance * 1000)")
-
-    private val SORT_DUE_DATE = ("((CASE WHEN (tasks.dueDate=0) THEN " + NO_DATE + " ELSE "
-            + ADJUSTED_DUE_DATE.replace("dueDate", "tasks.dueDate")
-            + " END)+tasks.importance * 1000)")
 
     private const val GROUP_START_DATE =
         ("((CASE WHEN (tasks.hideUntil=0) THEN " + NO_DATE + " ELSE "
@@ -53,17 +47,34 @@ object SortHelper {
     private val ORDER_LIST = asc(upper(CaldavCalendar.ORDER))
         .addSecondaryExpression(asc(CaldavCalendar.NAME))
 
+    private fun undatedValue(atBottom: Boolean): Long = if (atBottom) NO_DATE else 0L
+
+    private fun adjustedDueDate(column: String, noTimeAtEndOfDay: Boolean): String {
+        val shift = if (noTimeAtEndOfDay) "+ $NO_TIME_TO_END_OF_DAY" else "- $NO_TIME_TO_START_OF_DAY"
+        return "(CASE WHEN ($column / 1000) % 60 > 0 THEN $column ELSE ($column $shift) END)"
+    }
+
+    private fun groupDueDate(undatedAtBottom: Boolean): String {
+        val undated = undatedValue(undatedAtBottom)
+        return "((CASE WHEN (tasks.dueDate=0) THEN $undated ELSE tasks.dueDate END)+tasks.importance * 1000)"
+    }
+
+    private fun sortDueDate(undatedAtBottom: Boolean, noTimeAtEndOfDay: Boolean): String {
+        val undated = undatedValue(undatedAtBottom)
+        val adjusted = adjustedDueDate("tasks.dueDate", noTimeAtEndOfDay)
+        return "((CASE WHEN (tasks.dueDate=0) THEN $undated ELSE $adjusted END)+tasks.importance * 1000)"
+    }
+
     /** Takes a SQL query, and if there isn't already an order, creates an order.  */
     fun adjustQueryForFlagsAndSort(
         preferences: QueryPreferences, originalSql: String?, sort: Int
     ): String {
-        // sort
         var originalSql = originalSql
         if (originalSql == null) {
             originalSql = ""
         }
         if (!originalSql.contains("ORDER BY", ignoreCase = true)) {
-            var order = orderForSortType(sort)
+            var order = orderForSortType(sort, preferences)
 
             if (order.orderType == OrderType.ASC != preferences.sortAscending) {
                 order = order.reverse()
@@ -77,7 +88,6 @@ object SortHelper {
     fun adjustQueryForFlags(preferences: QueryPreferences, originalSql: String): String {
         var adjustedSql = originalSql
 
-        // flags
         if (preferences.showCompleted) {
             adjustedSql = showCompleted(adjustedSql)
         }
@@ -88,36 +98,25 @@ object SortHelper {
         return adjustedSql
     }
 
-    private fun orderForSortType(sortType: Int): Order {
+    private fun orderForSortType(sortType: Int, preferences: QueryPreferences): Order {
+        val undated = undatedValue(preferences.undatedAtBottom)
+        val adjusted = adjustedDueDate("dueDate", preferences.noTimeAtEndOfDay)
         val order = when (sortType) {
             SORT_ALPHA -> ORDER_TITLE
             SORT_DUE -> asc(
-                "(CASE WHEN (dueDate=0) THEN (strftime('%s','now')*1000)*2 ELSE "
-                        + ADJUSTED_DUE_DATE
-                        + " END)+importance"
+                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)+importance"
             )
-
             SORT_START -> asc(
                 "(CASE WHEN (hideUntil=0) THEN (strftime('%s','now')*1000)*2 ELSE "
                         + ADJUSTED_START_DATE
                         + " END)+importance"
             )
-
             SORT_IMPORTANCE -> asc("importance")
             SORT_MODIFIED -> desc(Task.MODIFICATION_DATE)
             SORT_CREATED -> desc(Task.CREATION_DATE)
             SORT_LIST -> ORDER_LIST
             else -> asc(
-                "(CASE WHEN (dueDate=0) "
-                        +  // if no due date
-                        "THEN (strftime('%s','now')*1000)*2 "
-                        +  // then now * 2
-                        "ELSE ("
-                        + ADJUSTED_DUE_DATE
-                        + ") END) "
-                        +  // else due time
-                        // add slightly less than 2 days * importance to give due date priority over importance in case of tie
-                        "+ 172799999 * importance"
+                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)+172799999 * importance"
             )
         }
         if (sortType != SORT_ALPHA) {
@@ -143,11 +142,21 @@ object SortHelper {
         return "datetime($column / 1000, 'unixepoch', 'localtime', 'start of day')"
     }
 
-    fun orderSelectForSortTypeRecursive(sortType: Int, grouping: Boolean): String {
+    fun orderSelectForSortTypeRecursive(
+        sortType: Int,
+        grouping: Boolean,
+        preferences: QueryPreferences? = null,
+    ): String {
+        val undatedAtBottom = preferences?.undatedAtBottom ?: true
+        val noTimeAtEndOfDay = preferences?.noTimeAtEndOfDay ?: true
         return when (sortType) {
             GROUP_NONE -> "1"
             SORT_ALPHA -> "UPPER(tasks.title)"
-            SORT_DUE -> if (grouping) sortGroup(GROUP_DUE_DATE) else SORT_DUE_DATE
+            SORT_DUE -> if (grouping) {
+                sortGroup(groupDueDate(undatedAtBottom))
+            } else {
+                sortDueDate(undatedAtBottom, noTimeAtEndOfDay)
+            }
             SORT_START -> if (grouping) sortGroup(GROUP_START_DATE) else SORT_START_DATE
             SORT_IMPORTANCE -> "tasks.importance"
             SORT_MODIFIED -> if (grouping) sortGroup("tasks.modified") else "tasks.modified"
@@ -156,16 +165,7 @@ object SortHelper {
             SORT_CALDAV -> ORDER_BY_MANUAL
             SORT_LIST -> "CASE WHEN cdl_order = -1 THEN cdl_name ELSE cdl_order END"
             SORT_COMPLETED -> "tasks.completed"
-            else -> ("(CASE WHEN (tasks.dueDate=0) "
-                    +  // if no due date
-                    "THEN (strftime('%s','now')*1000)*2 "
-                    +  // then now * 2
-                    "ELSE ("
-                    + ADJUSTED_DUE_DATE.replace("dueDate", "tasks.dueDate")
-                    + ") END) "
-                    +  // else due time
-                    // add slightly less than 2 days * importance to give due date priority over importance in case of tie
-                    "+ 172799999 * tasks.importance")
+            else -> sortDueDate(undatedAtBottom, noTimeAtEndOfDay)
         }
     }
 

@@ -34,8 +34,6 @@ class NewFilterDialog : DialogFragment() {
                 R.string.filter_today_only,
                 R.string.tomorrow,
                 R.string.filter_after_today,
-                R.string.filter_any_start_date,
-                R.string.no_start_date,
                 R.string.filter_any_due_date,
                 R.string.no_due_date,
                 R.string.filter_no_tags,
@@ -80,12 +78,6 @@ class NewFilterDialog : DialogFragment() {
             R.string.filter_after_today -> {
                 list.add(newMultiSelect(provider.dueDateFilter, 0, TYPE_SUBTRACT))
                 list.add(newMultiSelect(provider.dueDateFilter, 2, TYPE_SUBTRACT))
-            }
-            R.string.no_start_date -> {
-                list.add(newMultiSelect(provider.startDateFilter, 0, TYPE_INTERSECT))
-            }
-            R.string.filter_any_start_date -> {
-                list.add(newMultiSelect(provider.startDateFilter, 0, TYPE_SUBTRACT))
             }
             R.string.no_due_date ->
                 list.add(newMultiSelect(provider.dueDateFilter, 0, TYPE_INTERSECT))

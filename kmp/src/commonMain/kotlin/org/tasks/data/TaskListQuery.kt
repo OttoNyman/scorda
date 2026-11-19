@@ -39,7 +39,11 @@ object TaskListQuery {
             field("$CALDAV_METADATA_JOIN.*"),
             field("${CaldavAccount.ACCOUNT_TYPE}").`as`("accountType"),
             field("geofences.*"),
-            field("places.*"))
+            field("places.*"),
+            field(
+                "(SELECT time FROM alarms WHERE alarms.task = tasks._id AND type = ${org.tasks.data.entity.Alarm.TYPE_SNOOZE} LIMIT 1)"
+            ).`as`("snooze_time"),
+        )
 
     @JvmStatic
     fun getQuery(
