@@ -39,6 +39,7 @@ import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Filter
 import org.tasks.data.entity.Tag
 import org.tasks.data.entity.TagData
+import org.tasks.data.entity.Task
 import org.tasks.filters.CaldavFilter
 import org.tasks.jobs.UpgradeIconSyncWork
 import org.tasks.jobs.networkConstraints
@@ -177,6 +178,27 @@ class Upgrader @Inject constructor(
             }
             CommonUpgrades.all(database).forEach { step ->
                 run(from, step.version) { step.upgrade().run() }
+            }
+            run(from, PRIORITY_ALERT_VERSION) {
+                if (preferences.getIntegerFromString(
+                        R.string.p_default_importance_key,
+                        Task.Priority.LOW,
+                    ) == Task.Priority.NONE
+                ) {
+                    preferences.setStringFromInteger(
+                        R.string.p_default_importance_key,
+                        Task.Priority.LOW,
+                    )
+                }
+                val oldTone = preferences.getStringValue(R.string.p_reminder_ringtone)
+                if (!oldTone.isNullOrEmpty()) {
+                    if (preferences.getStringValue(R.string.p_ringtone_once).isNullOrEmpty()) {
+                        preferences.setString(R.string.p_ringtone_once, oldTone)
+                    }
+                    if (preferences.getStringValue(R.string.p_ringtone_persistent).isNullOrEmpty()) {
+                        preferences.setString(R.string.p_ringtone_persistent, oldTone)
+                    }
+                }
             }
             preferences.setBoolean(R.string.p_just_updated, true)
         } else {

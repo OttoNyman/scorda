@@ -34,13 +34,11 @@ fun AlarmRow(
     hasNotificationPermissions: Boolean,
     fixNotificationPermissions: () -> Unit,
     alarms: ImmutableSet<Alarm>,
-    ringMode: Int,
     isNew: Boolean,
     hasStartDate: Boolean,
     hasDueDate: Boolean,
     addAlarm: (Alarm) -> Unit,
     deleteAlarm: (Alarm) -> Unit,
-    openRingType: () -> Unit,
     pickDateAndTime: (replace: Alarm?) -> Unit,
 ) {
     TaskEditRow(
@@ -50,7 +48,6 @@ fun AlarmRow(
             if (hasNotificationPermissions) {
                 AlarmList(
                     alarms = alarms,
-                    ringMode = ringMode,
                     isNew = isNew,
                     hasStartDate = hasStartDate,
                     hasDueDate = hasDueDate,
@@ -63,7 +60,6 @@ fun AlarmRow(
                         vm.showAddAlarm(visible = true)
                     },
                     deleteAlarm = deleteAlarm,
-                    openRingType = openRingType,
                 )
             } else {
                 Column(
@@ -104,13 +100,11 @@ fun NoAlarms() {
     TasksTheme {
         AlarmRow(
             alarms = persistentSetOf(),
-            ringMode = 0,
             isNew = false,
             hasStartDate = true,
             hasDueDate = true,
             addAlarm = {},
             deleteAlarm = {},
-            openRingType = {},
             hasNotificationPermissions = true,
             fixNotificationPermissions = {},
             pickDateAndTime = {},
@@ -125,13 +119,11 @@ fun PermissionDenied() {
     TasksTheme {
         AlarmRow(
             alarms = persistentSetOf(),
-            ringMode = 0,
             isNew = false,
             hasStartDate = true,
             hasDueDate = true,
             addAlarm = {},
             deleteAlarm = {},
-            openRingType = {},
             hasNotificationPermissions = false,
             fixNotificationPermissions = {},
             pickDateAndTime = {},

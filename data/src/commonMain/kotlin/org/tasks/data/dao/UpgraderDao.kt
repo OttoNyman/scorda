@@ -69,4 +69,7 @@ WHERE deleted = 0
 
     @Query("UPDATE tasks SET recurrence = :recurrence, modified = :now WHERE _id = :id")
     suspend fun setRecurrence(id: Long, recurrence: String, now: Long)
+
+    @Query("UPDATE tasks SET importance = ${Task.Priority.LOW} WHERE importance = ${Task.Priority.NONE}")
+    suspend fun unsetPriorityToOrdinary()
 }

@@ -38,10 +38,27 @@ class GoogleTaskNotesTest {
 
     @Test
     fun aPlainNoteStaysAPlainNote() {
-        val task = Task(notes = "только текст", priority = Priority.NONE)
+        val task = Task(notes = "только текст", priority = Priority.LOW)
 
         assertEquals("только текст", GoogleTaskNotes.pack(task.notes, task, null, 8192))
         assertNull(GoogleTaskNotes.unpack("только текст").second)
+    }
+
+    @Test
+    fun quietPriorityIsWrittenAndOrdinaryIsOmitted() {
+        val quiet = Task(notes = "текст", priority = Priority.NONE)
+        val (_, quietExtra) = GoogleTaskNotes.unpack(GoogleTaskNotes.pack(quiet.notes, quiet, null, 8192)!!)
+        assertEquals(Priority.NONE, quietExtra!!.priority)
+
+        val ordinary = Task(notes = "текст", priority = Priority.LOW)
+        assertEquals("текст", GoogleTaskNotes.pack(ordinary.notes, ordinary, null, 8192))
+    }
+
+    @Test
+    fun missingPriorityBecomesOrdinary() {
+        val task = Task(priority = Priority.HIGH)
+        GoogleTaskNotes.apply(task, GoogleTaskNotes.Extra(dueMin = null))
+        assertEquals(Priority.LOW, task.priority)
     }
 
     @Test

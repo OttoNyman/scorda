@@ -110,12 +110,13 @@ class Notifier @Inject constructor(
         val posted = notificationManager.notifyTasks(notifications, true).toSet()
         val audible = notifications.filter { it.taskId in posted }
         if (audible.isNotEmpty()) {
+            val enabled = preferences.enabledLevels()
             val owned = audible.mapNotNull { notification ->
                 val task = taskDao.fetch(notification.taskId) ?: return@mapNotNull null
                 val own = if (notification.type == Alarm.TYPE_RANDOM) {
                     AlertLevel.ONCE
                 } else {
-                    alertLevel(task.ringFlags)
+                    alertLevel(task, enabled) ?: return@mapNotNull null
                 }
                 notification to own
             }

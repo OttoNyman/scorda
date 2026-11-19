@@ -3,6 +3,7 @@ package org.tasks.compose.edit
 import android.content.res.Configuration
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -29,12 +30,25 @@ import org.tasks.R
 import org.tasks.compose.TaskEditRow
 import org.tasks.data.entity.Task
 import org.tasks.kmp.org.tasks.themes.ColorProvider.priorityColor
+import org.tasks.notifications.AlertLevel
+import org.tasks.notifications.alertLevelOf
+import org.tasks.notifications.effectiveAlertLevel
+import org.tasks.notifications.enabledLevels
+import org.tasks.notifications.prioritiesOf
+import org.jetbrains.compose.resources.stringResource
 import org.tasks.themes.TasksTheme
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.alert_caption_alarm
+import tasks.kmp.generated.resources.alert_caption_once
+import tasks.kmp.generated.resources.alert_caption_persistent
+import tasks.kmp.generated.resources.alert_caption_silent
 
 @Composable
 fun PriorityRow(
     priority: Int,
     onChangePriority: (Int) -> Unit,
+    enabledPriorities: Set<Int> = allPriorities,
+    showAlertCaption: Boolean = true,
 ) {
     TaskEditRow(
         iconRes = R.drawable.ic_outline_flag_24px,
@@ -42,6 +56,8 @@ fun PriorityRow(
             PriorityLabeled(
                 selected = priority,
                 onClick = { onChangePriority(it) },
+                enabledPriorities = enabledPriorities,
+                showAlertCaption = showAlertCaption,
             )
         },
     )
@@ -51,9 +67,12 @@ fun PriorityRow(
 fun Priority(
     selected: Int,
     onClick: (Int) -> Unit = {},
+    enabledPriorities: Set<Int> = allPriorities,
 ) {
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         for (i in Task.Priority.NONE downTo Task.Priority.HIGH) {
+            // Keep the current value visible even when its level is hidden.
+            if (i !in enabledPriorities && i != selected) continue
             PriorityButton(
                 priority = i,
                 selected = selected,
@@ -67,24 +86,46 @@ fun Priority(
 fun PriorityLabeled(
     selected: Int,
     onClick: (Int) -> Unit = {},
+    enabledPriorities: Set<Int> = allPriorities,
+    showAlertCaption: Boolean = false,
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                end = dimensionResource(id = R.dimen.keyline_first)
-            ),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(end = dimensionResource(id = R.dimen.keyline_first)),
     ) {
-        Text(
-            text = stringResource(id = R.string.TEA_importance_label),
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(end = 16.dp),
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Priority(selected = selected, onClick = onClick)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(id = R.string.TEA_importance_label),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(end = 16.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Priority(selected = selected, onClick = onClick, enabledPriorities = enabledPriorities)
+        }
+        if (showAlertCaption) {
+            Text(
+                text = alertCaption(selected, enabledPriorities),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun alertCaption(priority: Int, enabledPriorities: Set<Int>): String {
+    val enabledLevels = enabledPriorities.map { alertLevelOf(it) }.toSet()
+    return when (effectiveAlertLevel(priority, enabledLevels)) {
+        AlertLevel.SILENT -> stringResource(Res.string.alert_caption_silent)
+        AlertLevel.ONCE -> stringResource(Res.string.alert_caption_once)
+        AlertLevel.PERSISTENT -> stringResource(Res.string.alert_caption_persistent)
+        AlertLevel.SUPER -> stringResource(Res.string.alert_caption_alarm)
     }
 }
 
@@ -117,6 +158,9 @@ fun RowScope.PriorityButton(
     }
 }
 
+val allPriorities: Set<Int> =
+    setOf(Task.Priority.HIGH, Task.Priority.MEDIUM, Task.Priority.LOW, Task.Priority.NONE)
+
 @ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -126,30 +170,7 @@ fun PriorityPreview() {
         PriorityRow(
             priority = Task.Priority.MEDIUM,
             onChangePriority = {},
-        )
-    }
-}
-
-@ExperimentalComposeUiApi
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PriorityPreviewNoDesaturate() {
-    TasksTheme {
-        PriorityRow(
-            priority = Task.Priority.MEDIUM,
-            onChangePriority = {},
-        )
-    }
-}
-
-@ExperimentalComposeUiApi
-@Preview(locale = "de", widthDp = 320, showBackground = true)
-@Composable
-fun PriorityNarrowWidth() {
-    TasksTheme {
-        PriorityRow(
-            priority = Task.Priority.MEDIUM,
-            onChangePriority = {},
+            enabledPriorities = prioritiesOf(enabledLevels(alarm = true)),
         )
     }
 }

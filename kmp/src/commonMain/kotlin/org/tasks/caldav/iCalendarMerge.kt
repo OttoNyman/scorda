@@ -11,7 +11,6 @@ import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Task.Priority.Companion.HIGH
 import org.tasks.data.entity.Task.Priority.Companion.LOW
 import org.tasks.data.entity.Task.Priority.Companion.MEDIUM
-import org.tasks.data.entity.Task.Priority.Companion.NONE
 import org.tasks.data.setRecurrence
 import org.tasks.date.DateTimeUtils.newDateTime
 import org.tasks.icalendar.TodoStatus
@@ -156,5 +155,5 @@ private val VTodo.tasksPriority: Int
         in 1..4 -> HIGH
         5 -> MEDIUM
         in 6..9 -> LOW
-        else -> NONE
+        else -> LOW
     }

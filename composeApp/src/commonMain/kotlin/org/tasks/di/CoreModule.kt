@@ -185,16 +185,37 @@ val coreModule: Module = module {
                     .toAlarms()
             override suspend fun defaultRingMode() =
                 tasksPreferences.get(TasksPreferences.defaultRingMode, taskSettingDefaults.defaultRingMode)
+            override suspend fun levelSilentEnabled() =
+                tasksPreferences.get(TasksPreferences.levelSilentEnabled, false)
+            override suspend fun levelPersistentEnabled() =
+                tasksPreferences.get(TasksPreferences.levelPersistentEnabled, false)
+            override suspend fun levelAlarmEnabled() =
+                tasksPreferences.get(TasksPreferences.levelAlarmEnabled, true)
+            override suspend fun alarmRingSeconds() =
+                tasksPreferences.get(TasksPreferences.alarmRingSeconds, 60)
+                    .coerceIn(20, 60)
+                    .let { it - (it - 20) % 5 }
+            override suspend fun setLevelSilentEnabled(value: Boolean) {
+                tasksPreferences.set(TasksPreferences.levelSilentEnabled, value)
+            }
+            override suspend fun setLevelPersistentEnabled(value: Boolean) {
+                tasksPreferences.set(TasksPreferences.levelPersistentEnabled, value)
+            }
+            override suspend fun setLevelAlarmEnabled(value: Boolean) {
+                tasksPreferences.set(TasksPreferences.levelAlarmEnabled, value)
+            }
+            override suspend fun setAlarmRingSeconds(value: Int) {
+                tasksPreferences.set(
+                    TasksPreferences.alarmRingSeconds,
+                    org.tasks.notifications.clampAlarmRingMs(value * 1000L).toInt() / 1000,
+                )
+            }
             override suspend fun defaultDueTime() =
                 tasksPreferences.get(
                     TasksPreferences.defaultReminderTime,
                     notificationDefaults.defaultReminderTime
                 )
-            override suspend fun defaultPriority() =
-                tasksPreferences.get(
-                    TasksPreferences.defaultPriority,
-                    taskSettingDefaults.defaultPriority
-                )
+            override suspend fun defaultPriority() = org.tasks.data.entity.Task.Priority.LOW
             override suspend fun locationUpdateIntervalMinutes() =
                 tasksPreferences.get(
                     TasksPreferences.locationUpdateInterval,

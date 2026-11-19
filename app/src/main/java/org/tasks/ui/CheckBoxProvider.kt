@@ -18,7 +18,7 @@ class CheckBoxProvider @Inject constructor(
 ) {
     fun getCheckBox(task: Task, features: org.tasks.constructor.Constructor) = getDrawable(
         task.getCheckboxRes(),
-        if (features.priority) task.priority else Task.Priority.NONE,
+        if (features.priority) task.priority else Task.Priority.LOW,
     )
 
     /** A memo shows a note icon where a task has its checkbox, in the same priority color. */
@@ -27,7 +27,7 @@ class CheckBoxProvider @Inject constructor(
             context,
             TasksIcons.NOTE,
             24,
-            colorProvider.getPriorityColor(if (features.priority) task.priority else Task.Priority.NONE),
+            colorProvider.getPriorityColor(if (features.priority) task.priority else Task.Priority.LOW),
         )
 
     private fun getDrawable(@DrawableRes resId: Int, priority: Int): Drawable {

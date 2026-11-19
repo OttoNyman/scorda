@@ -30,6 +30,8 @@ import org.tasks.markdown.MarkdownProvider
 import org.tasks.preferences.PermissionChecker
 import org.tasks.preferences.Preferences
 import org.tasks.receivers.CompleteTaskReceiver
+import android.os.Build
+import org.tasks.reminders.AlarmActivity
 import org.tasks.reminders.NotificationActivity
 import org.tasks.reminders.SnoozeActivity
 import org.jetbrains.compose.resources.StringResource
@@ -131,6 +133,20 @@ class NotificationManager @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
+    suspend fun restoreMissing(taskIds: List<Long>) {
+        if (taskIds.isEmpty() || !permissionChecker.canNotify()) return
+        val active = context.getSystemService(android.app.NotificationManager::class.java)
+            .activeNotifications
+            .map { it.id.toLong() }
+            .toSet()
+        val missing = taskIds.filter { it !in active && it != TEST_NOTIFICATION_ID.toLong() }
+        if (missing.isEmpty()) return
+        val rows = notificationDao.getAllOrdered().filter { it.taskId in missing }
+        if (rows.isEmpty()) return
+        createNotifications(notifications = rows, alert = true, useGroupKey = false)
+    }
+
+    @SuppressLint("MissingPermission")
     suspend fun restoreNotifications(cancelExisting: Boolean) {
         if (!permissionChecker.canNotify()) {
             Timber.w("Notifications disabled")
@@ -204,6 +220,7 @@ class NotificationManager @Inject constructor(
                     newNotifications.size > 1 -> createNotifications(
                             notifications = newNotifications,
                             alert = false,
+                            superMayAlert = alert,
                         ).also { summariseAfterCleanup = true }
                     else -> emptyList()
                 }
@@ -240,6 +257,7 @@ class NotificationManager @Inject constructor(
         notifications: List<Notification>,
         alert: Boolean,
         useGroupKey: Boolean = true,
+        superMayAlert: Boolean = false,
     ): List<Long> {
         if (permissionChecker.canNotify()) {
             preferences.warnNotificationsDisabled = true
@@ -252,25 +270,39 @@ class NotificationManager @Inject constructor(
             return emptyList()
         }
         Timber.d("Posting notifications alert=$alert useGroupKey=$useGroupKey\n${notifications.joinToString("\n")}")
-        var alert = alert
+        val built = notifications.map { it to buildTaskNotification(it) }
+        val alertIndex = when {
+            alert -> built.indexOfFirst { (_, result) ->
+                result is TaskNotification.Ready && result.level == AlertLevel.SUPER
+            }.takeIf { it >= 0 }
+                ?: built.indexOfFirst { it.second is TaskNotification.Ready }
+            superMayAlert -> built.indexOfFirst { (_, result) ->
+                result is TaskNotification.Ready && result.level == AlertLevel.SUPER
+            }
+            else -> -1
+        }
         val posted = mutableListOf<Long>()
-        for (notification in notifications) {
-            when (val result = buildTaskNotification(notification)) {
+        built.forEachIndexed { index, (notification, result) ->
+            when (result) {
                 TaskNotification.Stale -> {
                     Timber.d("Cancelling notification for ${notification.taskId} reason=${CancelReason.STALE}")
                     notificationManager.cancel(notification.taskId.toInt())
                     notificationDao.delete(notification.taskId)
                 }
                 is TaskNotification.Ready -> {
+                    val thisAlert = index == alertIndex
                     val builder = result.builder
+                    if (!thisAlert) {
+                        builder.setFullScreenIntent(null, false)
+                    }
                     builder
                             .setGroup(if (useGroupKey) GROUP_KEY else notification.taskId.toString())
                             .setGroupAlertBehavior(
-                                    if (alert) NotificationCompat.GROUP_ALERT_CHILDREN else NotificationCompat.GROUP_ALERT_SUMMARY)
+                                    if (thisAlert) NotificationCompat.GROUP_ALERT_CHILDREN else NotificationCompat.GROUP_ALERT_SUMMARY)
                     val notifyResult = notify(
                         notification.taskId,
                         builder,
-                        alert,
+                        thisAlert,
                         notification.type,
                     )
                     if (notifyResult.posted) {
@@ -281,7 +313,6 @@ class NotificationManager @Inject constructor(
                     if (notifyResult.evicted.isNotEmpty()) {
                         posted.removeAll(notifyResult.evicted.toSet())
                     }
-                    alert = false
                 }
             }
         }
@@ -423,7 +454,10 @@ class NotificationManager @Inject constructor(
             Pair<Pair<Locale, List<StringResource>>, ActionLabels>? = null
 
     sealed interface TaskNotification {
-        data class Ready(val builder: NotificationCompat.Builder) : TaskNotification
+        data class Ready(
+            val builder: NotificationCompat.Builder,
+            val level: AlertLevel? = null,
+        ) : TaskNotification
 
         data object Stale : TaskNotification
     }
@@ -455,15 +489,23 @@ class NotificationManager @Inject constructor(
         val taskTitle = markdown.toMarkdown(task.title)?.toString()
         val features = featureGate.current
         val taskDescription = if (features.notes) markdown.toMarkdown(task.notes)?.toString() else null
-        val channel = if (alertLevel(task.ringFlags) == AlertLevel.SILENT) {
+        val level = if (type == Alarm.TYPE_RANDOM) {
+            AlertLevel.ONCE
+        } else {
+            alertLevel(task, preferences.enabledLevels())
+        }
+        val channel = if (level == AlertLevel.SILENT) {
             NOTIFICATION_CHANNEL_SILENT
         } else {
             NOTIFICATION_CHANNEL_DEFAULT
         }
         val builder = NotificationCompat.Builder(context, channel)
-                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setCategory(
+                    if (level == AlertLevel.SUPER) NotificationCompat.CATEGORY_ALARM
+                    else NotificationCompat.CATEGORY_REMINDER
+                )
                 .setContentTitle(taskTitle)
-                .setColor(colorProvider.getPriorityColor(if (features.priority) task.priority else org.tasks.data.entity.Task.Priority.NONE))
+                .setColor(colorProvider.getPriorityColor(if (features.priority) task.priority else org.tasks.data.entity.Task.Priority.LOW))
                 .setSmallIcon(R.drawable.ic_check_white_24dp)
                 .setWhen(`when`)
                 .setOnlyAlertOnce(false)
@@ -478,6 +520,20 @@ class NotificationManager @Inject constructor(
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
         )
+        if (level == AlertLevel.SUPER && canUseFullScreenIntent()) {
+            val fullScreen = PendingIntent.getActivity(
+                context,
+                id.toInt(),
+                AlarmActivity.newIntent(
+                    context,
+                    title = taskTitle?.takeIf { it.isNotBlank() } ?: task.title.orEmpty(),
+                    id = id,
+                    readOnly = task.readOnly,
+                ),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+            builder.setFullScreenIntent(fullScreen, true)
+        }
         when {
             type == Alarm.TYPE_GEO_ENTER || type == Alarm.TYPE_GEO_EXIT -> {
                 val place = locationDao.getPlace(notification.location!!)
@@ -542,13 +598,22 @@ class NotificationManager @Inject constructor(
             builder.addAction(completeAction)
         }
         return TaskNotification.Ready(
-                builder
+                builder = builder
                         .addAction(
                                 R.drawable.ic_snooze_white_24dp,
                                 snoozeActionLabel,
                                 snoozePendingIntent)
-                        .extend(wearableExtender)
+                        .extend(wearableExtender),
+                level = level,
         )
+    }
+
+    private fun canUseFullScreenIntent(): Boolean {
+        if (Build.VERSION.SDK_INT < 34) return true
+        return runCatching {
+            context.getSystemService(android.app.NotificationManager::class.java)
+                .canUseFullScreenIntent()
+        }.getOrDefault(false)
     }
 
     private fun cancelSummaryNotification() {

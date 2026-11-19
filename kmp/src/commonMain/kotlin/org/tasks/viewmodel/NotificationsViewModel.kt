@@ -88,19 +88,40 @@ open class NotificationsViewModel(
     var testPending by mutableStateOf(false)
         private set
 
+    var testSecondsLeft by mutableStateOf(0)
+        private set
+
     var defaultAlarms by mutableStateOf<List<Alarm>>(emptyList())
         private set
 
-    var defaultRingMode by mutableStateOf(0)
+    var levelSilentEnabled by mutableStateOf(false)
+        protected set
+
+    var levelPersistentEnabled by mutableStateOf(false)
+        protected set
+
+    var levelAlarmEnabled by mutableStateOf(true)
+        protected set
+
+    var pendingLevelDisable by mutableStateOf<org.tasks.compose.settings.PendingLevelDisable?>(null)
+        protected set
+
+    var alarmRingSeconds by mutableStateOf(60)
         private set
 
-    var showRingDialog by mutableStateOf(false)
+    var showAlarmDurationDialog by mutableStateOf(false)
         private set
 
     var superBypassSilent by mutableStateOf(false)
         protected set
 
-    var reminderSoundName by mutableStateOf("")
+    var onceSoundName by mutableStateOf("")
+        protected set
+
+    var persistentSoundName by mutableStateOf("")
+        protected set
+
+    var alarmSoundName by mutableStateOf("")
         protected set
 
     private var healthTouched = false
@@ -121,7 +142,10 @@ open class NotificationsViewModel(
     protected suspend fun reload() {
         settings = appPreferences.notificationSettings()
         defaultAlarms = appPreferences.defaultAlarms()
-        defaultRingMode = appPreferences.defaultRingMode()
+        levelSilentEnabled = appPreferences.levelSilentEnabled()
+        levelPersistentEnabled = appPreferences.levelPersistentEnabled()
+        levelAlarmEnabled = appPreferences.levelAlarmEnabled()
+        alarmRingSeconds = appPreferences.alarmRingSeconds()
         timePickerInputMode = appPreferences.datePickerPreferences().timePickerInputMode
         loaded = true
     }
@@ -263,8 +287,12 @@ open class NotificationsViewModel(
 
     fun markTestPending() {
         testPending = true
+        testSecondsLeft = 10
         viewModelScope.launch {
-            delay(10_000)
+            while (testSecondsLeft > 0) {
+                delay(1_000)
+                testSecondsLeft--
+            }
             testPending = false
         }
     }
@@ -278,18 +306,18 @@ open class NotificationsViewModel(
         persist { appPreferences.setDefaultAlarms(alarms) }
     }
 
-    fun openRingDialog() {
-        showRingDialog = true
+    fun openAlarmDuration() {
+        showAlarmDurationDialog = true
     }
 
-    fun dismissRingDialog() {
-        showRingDialog = false
+    fun dismissAlarmDuration() {
+        showAlarmDurationDialog = false
     }
 
-    fun updateDefaultRingMode(mode: Int) {
-        defaultRingMode = mode
-        showRingDialog = false
-        persist { appPreferences.setDefaultRingMode(mode) }
+    fun updateAlarmRingSeconds(seconds: Int) {
+        alarmRingSeconds = seconds
+        showAlarmDurationDialog = false
+        persist { appPreferences.setAlarmRingSeconds(seconds) }
     }
 
     open fun updateSuperBypass(enabled: Boolean) {

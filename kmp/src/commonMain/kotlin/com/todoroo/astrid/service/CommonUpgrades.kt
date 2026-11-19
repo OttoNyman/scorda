@@ -4,11 +4,16 @@ import org.tasks.data.db.Database
 import org.tasks.service.UpgradeStep
 
 object CommonUpgrades {
-    fun all(database: Database): List<UpgradeStep> = listOf(
-        UpgradeStep(Upgrade_15_11.VERSION) {
-            Upgrade_15_11(database.upgraderDao(), database.dirtyDao())
-        },
-    ) + platformUpgrades(database)
+    fun all(database: Database): List<UpgradeStep> = (
+        listOf(
+            UpgradeStep(Upgrade_15_11.VERSION) {
+                Upgrade_15_11(database.upgraderDao(), database.dirtyDao())
+            },
+            UpgradeStep(Upgrade_15_14.VERSION) {
+                Upgrade_15_14(database.upgraderDao())
+            },
+        ) + platformUpgrades(database)
+    ).sortedBy { it.version }
 }
 
 internal expect fun platformUpgrades(database: Database): List<UpgradeStep>

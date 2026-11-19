@@ -4,8 +4,10 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import org.tasks.reminders.AlarmActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,6 +21,9 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.reminder_test_passed
 import javax.inject.Inject
 
+private suspend fun testLevel(preferences: Preferences): AlertLevel =
+    maxAlertLevel(preferences.enabledLevels().toList())
+
 @AndroidEntryPoint
 class ReminderTestReceiver : BroadcastReceiver() {
     @Inject lateinit var preferences: Preferences
@@ -29,17 +34,34 @@ class ReminderTestReceiver : BroadcastReceiver() {
         val pending = goAsync()
         scope.launch {
             try {
-                val level = alertLevel(preferences.defaultRingMode())
+                val level = testLevel(preferences)
                 val channel = if (level == AlertLevel.SILENT) {
                     NotificationManager.NOTIFICATION_CHANNEL_SILENT
                 } else {
                     NotificationManager.NOTIFICATION_CHANNEL_DEFAULT
                 }
-                val notification = NotificationCompat.Builder(context, channel)
+                val title = getString(Res.string.reminder_test_passed)
+                val id = TEST_NOTIFICATION_ID.toLong()
+                val builder = NotificationCompat.Builder(context, channel)
                     .setSmallIcon(R.drawable.ic_check_white_24dp)
-                    .setContentTitle(getString(Res.string.reminder_test_passed))
+                    .setContentTitle(title)
+                    .setCategory(
+                        if (level == AlertLevel.SUPER) NotificationCompat.CATEGORY_ALARM
+                        else NotificationCompat.CATEGORY_REMINDER
+                    )
                     .setAutoCancel(true)
-                    .build()
+                if (level == AlertLevel.SUPER && canUseFullScreenIntent(context)) {
+                    builder.setFullScreenIntent(
+                        PendingIntent.getActivity(
+                            context,
+                            TEST_NOTIFICATION_ID,
+                            AlarmActivity.newIntent(context, title, id),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        ),
+                        true,
+                    )
+                }
+                val notification = builder.build()
                 notification.deleteIntent = PendingIntent.getBroadcast(
                     context,
                     TEST_NOTIFICATION_ID,
@@ -48,7 +70,6 @@ class ReminderTestReceiver : BroadcastReceiver() {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                 )
                 NotificationManagerCompat.from(context).notify(TEST_NOTIFICATION_ID, notification)
-                val id = TEST_NOTIFICATION_ID.toLong()
                 ringer.playEpisode(level, listOf(id))
                 ringer.scheduleRepeats(listOf(id to level), 0)
             } finally {
@@ -64,6 +85,7 @@ class RingReceiver : BroadcastReceiver() {
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var ringer: Ringer
     @Inject lateinit var preferences: Preferences
+    @Inject lateinit var notificationManager: NotificationManager
     @Inject @ApplicationScope lateinit var scope: CoroutineScope
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -75,6 +97,8 @@ class RingReceiver : BroadcastReceiver() {
             try {
                 val live = ids.filter { stillDue(context, it) }
                 if (live.isEmpty()) return@launch
+                // Swipe may have cleared the shade card; bring it back for Done/Snooze.
+                notificationManager.restoreMissing(live)
                 val sounding = live
                     .map { it to levelOf(it) }
                     .filter { it.second != AlertLevel.SILENT }
@@ -95,10 +119,10 @@ class RingReceiver : BroadcastReceiver() {
 
     private suspend fun levelOf(taskId: Long): AlertLevel {
         if (taskId == TEST_NOTIFICATION_ID.toLong()) {
-            return alertLevel(preferences.defaultRingMode())
+            return testLevel(preferences)
         }
         val task = taskDao.fetch(taskId) ?: return AlertLevel.ONCE
-        return alertLevel(task.ringFlags)
+        return alertLevel(task, preferences.enabledLevels()) ?: AlertLevel.ONCE
     }
 
     private suspend fun stillDue(context: Context, taskId: Long): Boolean {
@@ -112,6 +136,14 @@ class RingReceiver : BroadcastReceiver() {
         context.getSystemService(android.app.NotificationManager::class.java)
             .activeNotifications
             .any { it.id == TEST_NOTIFICATION_ID }
+}
+
+private fun canUseFullScreenIntent(context: Context): Boolean {
+    if (Build.VERSION.SDK_INT < 34) return true
+    return runCatching {
+        context.getSystemService(android.app.NotificationManager::class.java)
+            .canUseFullScreenIntent()
+    }.getOrDefault(false)
 }
 
 class InsistentSilenceReceiver : BroadcastReceiver() {

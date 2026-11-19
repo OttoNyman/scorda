@@ -80,6 +80,7 @@ class NotificationManagerCharacterizationTest {
             on { usePersistentReminders() } doReturn false
             on { quickPickTimes } doReturn QuickPickTimes()
             on { getBoolean(any<Int>(), any()) } doReturn false
+            onBlocking { enabledLevels() } doReturn enabledLevels(alarm = true)
         }
         markdownProvider.stub {
             on { markdown(anyBoolean()) } doReturn PassThroughMarkdown
@@ -154,6 +155,31 @@ class NotificationManagerCharacterizationTest {
 
         assertEquals(listOf("cancel:1"), shade)
         verifyBlocking(notificationDao) { delete(1L) }
+    }
+
+    @Test
+    fun restoringASuperNotificationStaysSilent() = runTest {
+        givenTask(1L, "alarm", priority = Task.Priority.HIGH)
+        whenever(notificationDao.getAllOrdered()) doReturn listOf(notification(1L))
+
+        notificationManager.restoreNotifications(cancelExisting = false)
+
+        assertEquals(NotificationCompat.GROUP_ALERT_SUMMARY, alertBehaviour(1))
+        assertEquals(null, built.getValue(1).fullScreenIntent)
+    }
+
+    @Test
+    fun aSuperInABatchIsTheOnlyOneThatAlerts() = runTest {
+        givenTask(1L, "normal")
+        givenTask(2L, "alarm", priority = Task.Priority.HIGH)
+
+        notificationManager.notifyTasks(
+            listOf(notification(1L), notification(2L)),
+            alert = true,
+        )
+
+        assertEquals(NotificationCompat.GROUP_ALERT_SUMMARY, alertBehaviour(1))
+        assertEquals(NotificationCompat.GROUP_ALERT_CHILDREN, alertBehaviour(2))
     }
 
     @Test
@@ -302,12 +328,14 @@ class NotificationManagerCharacterizationTest {
         title: String,
         completionDate: Long = 0L,
         readOnly: Boolean = false,
+        priority: Int = Task.Priority.LOW,
     ) {
         tasks[id] = Task(
             id = id,
             title = title,
             completionDate = completionDate,
             readOnly = readOnly,
+            priority = priority,
         )
     }
 

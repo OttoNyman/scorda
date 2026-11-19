@@ -7,7 +7,7 @@ fun oemCandidates(id: ReminderCheckId, packageName: String, appLabel: String): L
     when (id) {
         ReminderCheckId.AUTOSTART -> autostart()
         ReminderCheckId.BACKGROUND -> background(packageName, appLabel)
-        ReminderCheckId.POPUPS -> popups(packageName)
+        ReminderCheckId.POPUPS, ReminderCheckId.LOCK_SCREEN -> popups(packageName)
         else -> emptyList()
     }
 

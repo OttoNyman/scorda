@@ -16,6 +16,7 @@ import com.todoroo.astrid.service.Upgrade_13_2
 import com.todoroo.astrid.service.Upgrade_14_11
 import com.todoroo.astrid.service.Upgrade_14_13
 import com.todoroo.astrid.service.Upgrade_15_10
+import com.todoroo.astrid.service.PRIORITY_ALERT_VERSION
 import com.todoroo.astrid.service.Upgrade_15_13
 import com.todoroo.astrid.service.Upgrade_15_13.Companion.canonicalized
 import com.todoroo.astrid.service.Upgrader
@@ -135,6 +136,27 @@ class TasksJsonImporter @Inject constructor(
             }
             if (version < Upgrade_15_10.VERSION) {
                 upgrade_15_10.migrateRandomReminder()
+            }
+            if (version < PRIORITY_ALERT_VERSION) {
+                if (preferences.getIntegerFromString(
+                        R.string.p_default_importance_key,
+                        Task.Priority.LOW,
+                    ) == Task.Priority.NONE
+                ) {
+                    preferences.setStringFromInteger(
+                        R.string.p_default_importance_key,
+                        Task.Priority.LOW,
+                    )
+                }
+                val oldTone = preferences.getStringValue(R.string.p_reminder_ringtone)
+                if (!oldTone.isNullOrEmpty()) {
+                    if (preferences.getStringValue(R.string.p_ringtone_once).isNullOrEmpty()) {
+                        preferences.setString(R.string.p_ringtone_once, oldTone)
+                    }
+                    if (preferences.getStringValue(R.string.p_ringtone_persistent).isNullOrEmpty()) {
+                        preferences.setString(R.string.p_ringtone_persistent, oldTone)
+                    }
+                }
             }
             Timber.d("Updating parents")
             caldavDao.updateParents(force = true)
@@ -447,6 +469,9 @@ class TasksJsonImporter @Inject constructor(
         ) {
             result.skipCount++
             return
+        }
+        if (version < PRIORITY_ALERT_VERSION && task.priority == Task.Priority.NONE) {
+            task.priority = Task.Priority.LOW
         }
         task.suppressRefresh()
         task.suppressSync()

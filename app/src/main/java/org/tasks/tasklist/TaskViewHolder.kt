@@ -340,6 +340,20 @@ class TaskViewHolder internal constructor(
                             colorProvider = { chipProvider.getColor(it) },
                         )
                     }
+                    task.snoozeTime?.takeIf { it > 0 }?.let { until ->
+                        Chip(
+                            icon = TasksIcons.SNOOZE,
+                            name = context.getString(
+                                R.string.snoozed_until,
+                                dateFormatter.time(until),
+                            ),
+                            theme = 0,
+                            showText = true,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
+                        )
+                    }
                     if (checklist != null) {
                         Chip(
                             icon = TasksIcons.CHECKLIST,

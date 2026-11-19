@@ -505,7 +505,7 @@ private val SubtaskNode.holdsContent: Boolean
                 !task.notes.isNullOrBlank() ||
                 task.dueDate > 0 ||
                 task.hideUntil > 0 ||
-                task.priority != Task.Priority.NONE ||
+                task.priority != Task.Priority.LOW ||
                 task.isRecurring ||
                 task.estimatedSeconds > 0 ||
                 task.elapsedSeconds > 0

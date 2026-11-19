@@ -1668,17 +1668,6 @@ class TaskEditSubtaskTest : TaskEditViewModelFixture() {
     }
 
     @Test
-    fun anAddedSubtaskIsCreatedWithTheDefaultRingMode() = runTest(testDispatcher) {
-        whenever(appPreferences.defaultRingMode()).thenReturn(2)
-        initializeNew()
-        viewModel.setTitle("Parent")
-
-        val subtask = addSubtask("Subtask")
-
-        assertEquals(2, subtaskTrees.get(subtask.key)!!.task.ringFlags)
-    }
-
-    @Test
     fun tickingASubtaskCascadesThroughTheNestingOnEveryList() = runTest(testDispatcher) {
         initializeWithSubtasks(
             saved(1, "a"),

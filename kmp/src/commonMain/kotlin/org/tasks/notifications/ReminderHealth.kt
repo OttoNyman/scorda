@@ -7,6 +7,7 @@ enum class OemFamily { STOCK, XIAOMI, HUAWEI, OPPO, VIVO }
 enum class ReminderCheckId {
     NOTIFICATIONS, EXACT_ALARMS, BATTERY, POWER_SAVE,
     AUTOSTART, BACKGROUND, POPUPS, RECENTS_LOCK,
+    FULL_SCREEN, LOCK_SCREEN,
 }
 
 enum class CheckState { OK, PROBLEM, UNKNOWN, MANUAL }
@@ -21,6 +22,8 @@ data class ReminderFacts(
     val canExact: Boolean,
     val batteryUnrestricted: Boolean,
     val powerSaveOn: Boolean,
+    val alarmEnabled: Boolean = true,
+    val canFullScreen: Boolean = true,
 )
 
 enum class ScheduleMode { EXACT, INEXACT }
@@ -69,6 +72,17 @@ fun visibleChecks(facts: ReminderFacts): List<ReminderCheck> = buildList {
     }
     if (facts.oem == OemFamily.XIAOMI) {
         add(ReminderCheck(ReminderCheckId.POPUPS, CheckState.UNKNOWN))
+    }
+    if (facts.sdk >= 34 && facts.alarmEnabled) {
+        add(
+            ReminderCheck(
+                ReminderCheckId.FULL_SCREEN,
+                if (facts.canFullScreen) CheckState.OK else CheckState.PROBLEM,
+            )
+        )
+    }
+    if (facts.oem == OemFamily.XIAOMI && facts.alarmEnabled) {
+        add(ReminderCheck(ReminderCheckId.LOCK_SCREEN, CheckState.UNKNOWN))
     }
     if (facts.oem in aggressive) {
         add(ReminderCheck(ReminderCheckId.RECENTS_LOCK, CheckState.MANUAL))

@@ -14,9 +14,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import org.tasks.R
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import org.tasks.compose.edit.Priority
+import org.tasks.notifications.prioritiesOf
 import org.tasks.data.entity.Task
 import org.tasks.databinding.DialogPriorityPickerBinding
+import org.tasks.preferences.Preferences
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,6 +31,7 @@ class PriorityPicker : DialogFragment() {
 
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var taskSaver: TaskSaver
+    @Inject lateinit var preferences: Preferences
 
     private val taskIds: LongArray
         get() = arguments?.getLongArray(EXTRA_TASKS) ?: longArrayOf()
@@ -47,8 +55,17 @@ class PriorityPicker : DialogFragment() {
             val inflater = fragmentActivity.layoutInflater
             val binding = DialogPriorityPickerBinding.inflate(inflater, null, false)
             binding.priorityRow.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            binding.priorityRow.setContent { Priority(selected = priorityPickerViewModel.priority.collectAsStateWithLifecycle().value,
-                onClick = { priorityPickerViewModel.setPriority( it ) }) }
+            binding.priorityRow.setContent {
+                var enabled by remember { mutableStateOf(setOf(Task.Priority.LOW)) }
+                LaunchedEffect(Unit) {
+                    enabled = prioritiesOf(preferences.enabledLevels())
+                }
+                Priority(
+                    selected = priorityPickerViewModel.priority.collectAsStateWithLifecycle().value,
+                    onClick = { priorityPickerViewModel.setPriority(it) },
+                    enabledPriorities = enabled,
+                )
+            }
             val builder = AlertDialog.Builder(fragmentActivity)
                 .setTitle(R.string.change_priority)
                 .setView(binding.root)

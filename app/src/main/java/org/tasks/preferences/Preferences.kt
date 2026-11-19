@@ -253,10 +253,7 @@ class Preferences @JvmOverloads constructor(
     }
 
     val completionSound: Uri?
-        get() = getRingtone(
-            R.string.p_completion_ringtone,
-            context.getResourceUri(R.raw.long_rising_tone)
-        )
+        get() = null
 
     private fun getRingtone(pref: Int, default: Uri): Uri? {
         val ringtone = getStringValue(pref)
@@ -310,6 +307,35 @@ class Preferences @JvmOverloads constructor(
 
     override suspend fun defaultRingMode(): Int =
         getIntegerFromString(R.string.p_default_reminders_mode_key, 0)
+
+    override suspend fun levelSilentEnabled(): Boolean =
+        getBoolean(R.string.p_level_silent_enabled, false)
+
+    override suspend fun levelPersistentEnabled(): Boolean =
+        getBoolean(R.string.p_level_persistent_enabled, false)
+
+    override suspend fun levelAlarmEnabled(): Boolean =
+        getBoolean(R.string.p_level_alarm_enabled, true)
+
+    override suspend fun alarmRingSeconds(): Int =
+        getInt(R.string.p_alarm_ring_seconds, 60)
+            .coerceIn(20, 60)
+            .let { it - (it - 20) % 5 }
+
+    override suspend fun setLevelSilentEnabled(value: Boolean) =
+        setBoolean(R.string.p_level_silent_enabled, value)
+
+    override suspend fun setLevelPersistentEnabled(value: Boolean) =
+        setBoolean(R.string.p_level_persistent_enabled, value)
+
+    override suspend fun setLevelAlarmEnabled(value: Boolean) =
+        setBoolean(R.string.p_level_alarm_enabled, value)
+
+    override suspend fun setAlarmRingSeconds(value: Int) =
+        setInt(
+            R.string.p_alarm_ring_seconds,
+            org.tasks.notifications.clampAlarmRingMs(value * 1000L).toInt() / 1000,
+        )
 
     override suspend fun defaultLocationReminder(): Int =
         getIntegerFromString(
@@ -376,6 +402,16 @@ class Preferences @JvmOverloads constructor(
 
     override suspend fun setDefaultRingMode(value: Int) =
         setStringFromInteger(R.string.p_default_reminders_mode_key, value)
+
+    fun ringtoneForLevel(level: org.tasks.notifications.AlertLevel): String? {
+        val key = when (level) {
+            org.tasks.notifications.AlertLevel.ONCE -> R.string.p_ringtone_once
+            org.tasks.notifications.AlertLevel.PERSISTENT -> R.string.p_ringtone_persistent
+            org.tasks.notifications.AlertLevel.SUPER -> R.string.p_ringtone_alarm
+            org.tasks.notifications.AlertLevel.SILENT -> return null
+        }
+        return getStringValue(key)
+    }
 
     override suspend fun setDefaultLocation(value: String?) =
         setString(R.string.p_default_location, value)
@@ -472,7 +508,7 @@ class Preferences @JvmOverloads constructor(
         checklist = getBoolean("constructor_checklist", false),
         tags = getBoolean("constructor_tags", false),
         filters = getBoolean("constructor_filters", false),
-        priority = getBoolean("constructor_priority", false),
+        priority = true,
         geo = getBoolean("constructor_geo", false),
         // retired: a task has one time; the saved flag and the tasks' start dates stay untouched
         startDate = false,
@@ -576,16 +612,24 @@ class Preferences @JvmOverloads constructor(
     override suspend fun setDeviceInstallVersion(value: Int) { deviceInstallVersion = value }
 
     override var sortMode: Int
-        get() = getInt(R.string.p_sort_mode, SortHelper.SORT_DUE)
-        set(value) { setInt(R.string.p_sort_mode, value) }
+        get() = SortHelper.SORT_DUE
+        set(_) { setInt(R.string.p_sort_mode, SortHelper.SORT_DUE) }
 
     override var groupMode: Int
-        get() = getInt(R.string.p_group_mode, SortHelper.SORT_DUE)
-        set(value) { setInt(R.string.p_group_mode, value) }
+        get() {
+            val stored = getInt(R.string.p_group_mode, SortHelper.SORT_DUE)
+            return if (stored == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE
+        }
+        set(value) {
+            setInt(
+                R.string.p_group_mode,
+                if (value == SortHelper.GROUP_NONE) SortHelper.GROUP_NONE else SortHelper.SORT_DUE,
+            )
+        }
 
     override var completedMode: Int
-        get() = getInt(R.string.p_completed_mode, SortHelper.SORT_COMPLETED)
-        set(value) { setInt(R.string.p_completed_mode, value) }
+        get() = SortHelper.SORT_COMPLETED
+        set(_) { setInt(R.string.p_completed_mode, SortHelper.SORT_COMPLETED) }
 
     override var subtaskMode: Int
         get() = getInt(R.string.p_subtask_mode, SortHelper.SORT_MANUAL)
@@ -692,10 +736,7 @@ class Preferences @JvmOverloads constructor(
     fun usePersistentReminders(): Boolean =
             AndroidUtilities.preUpsideDownCake() && getBoolean(R.string.p_rmd_persistent, true)
 
-    fun swipeAction(): SwipeAction =
-        SwipeAction.entries.getOrNull(
-            getIntegerFromString(R.string.p_rmd_swipe_action, SwipeAction.SNOOZE.ordinal)
-        ) ?: SwipeAction.SNOOZE
+    fun swipeAction(): SwipeAction = SwipeAction.DISMISS
 
     fun swipeToSnoozeIntervalMS(): Long =
         TimeUnit.MINUTES.toMillis(
@@ -715,11 +756,11 @@ class Preferences @JvmOverloads constructor(
         prefs.all.filter { (_, value) -> c.isInstance(value) } as Map<String, T>
 
     val isPerListSortEnabled: Boolean
-        get() = getBoolean(R.string.p_per_list_sort, false)
+        get() = false
 
     override var isManualSort: Boolean
-        get() = getBoolean(R.string.p_manual_sort, false)
-        set(value) { setBoolean(R.string.p_manual_sort, value) }
+        get() = false
+        set(_) { setBoolean(R.string.p_manual_sort, false) }
 
     // Legacy Astrid manual order is retired in Scorda: "My order" covers manual sorting.
     val isAstridSortEnabled: Boolean
@@ -732,8 +773,16 @@ class Preferences @JvmOverloads constructor(
         }
 
     override var sortAscending: Boolean
-        get() = getBoolean(R.string.p_sort_ascending, true)
-        set(value) { setBoolean(R.string.p_sort_ascending, value) }
+        get() = true
+        set(_) { setBoolean(R.string.p_sort_ascending, true) }
+
+    override var undatedAtBottom: Boolean
+        get() = getBoolean(R.string.p_undated_at_bottom, true)
+        set(value) { setBoolean(R.string.p_undated_at_bottom, value) }
+
+    override var noTimeAtEndOfDay: Boolean
+        get() = getBoolean(R.string.p_no_time_at_end_of_day, true)
+        set(value) { setBoolean(R.string.p_no_time_at_end_of_day, value) }
 
     override var groupAscending: Boolean
         get() = getBoolean(R.string.p_group_ascending, true)
@@ -747,8 +796,7 @@ class Preferences @JvmOverloads constructor(
         get() = getBoolean(R.string.p_subtask_ascending, false)
         set(value) { setBoolean(R.string.p_subtask_ascending, value) }
 
-    override suspend fun defaultPriority(): Int =
-        getIntegerFromString(R.string.p_default_importance_key, Task.Priority.LOW)
+    override suspend fun defaultPriority(): Int = Task.Priority.LOW
 
     val themeBase: Int
         get() = getInt(R.string.p_theme, ThemeBase.DEFAULT_BASE_THEME)

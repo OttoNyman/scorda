@@ -28,6 +28,7 @@ class NotificationClearedReceiver : BroadcastReceiver() {
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var taskCompleter: TaskCompleter
     @Inject lateinit var taskDao: TaskDao
+    @Inject lateinit var ringer: Ringer
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getLongExtra(NotificationManager.EXTRA_NOTIFICATION_ID, -1L)
@@ -78,8 +79,18 @@ class NotificationClearedReceiver : BroadcastReceiver() {
                     )
                 } else {
                     firebase.logEvent(R.string.event_notification, R.string.param_type to "clear")
-                    notificationManager.cancel(notificationId, CancelReason.DISMISS)
-                    alarmService.markDismissed(listOf(notificationId))
+                    val task = taskDao.fetch(notificationId)
+                    val level = task?.let { alertLevel(it, preferences.enabledLevels()) }
+                    // Persistent/super: silence this episode. A later episode brings the card back.
+                    // After the last episode, drop the row so a shade restore cannot.
+                    if ((level == AlertLevel.PERSISTENT || level == AlertLevel.SUPER) &&
+                        RingAlarm.hasPending(context, notificationId)
+                    ) {
+                        ringer.stop(listOf(notificationId))
+                    } else {
+                        notificationManager.cancel(notificationId, CancelReason.DISMISS)
+                        alarmService.markDismissed(listOf(notificationId))
+                    }
                 }
             } finally {
                 pending.finish()

@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PriorityPickerViewModel @Inject constructor(): ViewModel() {
 
-    private val _priority = MutableStateFlow(Task.Priority.NONE)
+    private val _priority = MutableStateFlow(Task.Priority.LOW)
     val priority = _priority.asStateFlow()
 
     fun setPriority(priority: Int) {

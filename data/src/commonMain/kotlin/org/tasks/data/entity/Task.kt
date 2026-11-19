@@ -43,7 +43,7 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     @ColumnInfo(name = "title")
     var title: String? = null,
     @ColumnInfo(name = "importance")
-    var priority: Int = Priority.NONE,
+    var priority: Int = Priority.LOW,
     @ColumnInfo(name = "dueDate")
     var dueDate: Long = 0L,
     @ColumnInfo(name = "hideUntil")

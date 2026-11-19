@@ -13,31 +13,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.ClearButton
-import org.tasks.compose.pickers.RING_FIVE_TIMES
-import org.tasks.compose.pickers.RING_NONSTOP
-import org.tasks.compose.pickers.RING_ONCE
-import org.tasks.compose.pickers.RING_SILENT
 import org.tasks.data.entity.Alarm
 import org.tasks.reminders.alarmText
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.add_reminder
-import tasks.kmp.generated.resources.alert_once
-import tasks.kmp.generated.resources.alert_persistent
-import tasks.kmp.generated.resources.alert_silent
-import tasks.kmp.generated.resources.alert_super
 
 private const val DisabledAlpha = 0.38f
 
 @Composable
 fun AlarmList(
     alarms: ImmutableSet<Alarm>,
-    ringMode: Int,
     isNew: Boolean,
     hasStartDate: Boolean,
     hasDueDate: Boolean,
@@ -45,7 +35,6 @@ fun AlarmList(
     replaceAlarm: (Alarm) -> Unit,
     addAlarm: () -> Unit,
     deleteAlarm: (Alarm) -> Unit,
-    openRingType: () -> Unit,
 ) {
     Column {
         Spacer(modifier = Modifier.height(8.dp))
@@ -73,29 +62,9 @@ fun AlarmList(
                     .defaultMinSize(24.dp)
                     .clickable(onClick = addAlarm)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            if (alarms.isNotEmpty()) {
-                Text(
-                    text = stringResource(ringModeString(ringMode)),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        textDecoration = TextDecoration.Underline
-                    ),
-                    modifier = Modifier
-                        .padding(vertical = 12.dp, horizontal = 16.dp)
-                        .clickable(onClick = openRingType),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
         }
         Spacer(modifier = Modifier.height(8.dp))
     }
-}
-
-fun ringModeString(ringMode: Int) = when (ringMode) {
-    RING_SILENT -> Res.string.alert_silent
-    RING_NONSTOP -> Res.string.alert_super
-    RING_FIVE_TIMES -> Res.string.alert_persistent
-    else -> Res.string.alert_once
 }
 
 fun ImmutableSet<Alarm>.missingReminder(

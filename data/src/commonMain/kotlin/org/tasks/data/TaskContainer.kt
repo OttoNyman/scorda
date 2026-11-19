@@ -20,6 +20,7 @@ data class TaskContainer(
     @ColumnInfo(name = "sort_group") val sortGroup: Long? = null,
     @ColumnInfo(name = "primary_sort") val primarySort: Long = 0,
     @ColumnInfo(name = "secondary_sort") val secondarySort: Long = 0,
+    @ColumnInfo(name = "snooze_time") val snoozeTime: Long? = null,
     var indent: Int = 0,
     /** Only the flat (non-recursive) list query selects it; a nested row shows its parent anyway. */
     @ColumnInfo(name = "parent_title") val parentTitle: String? = null,

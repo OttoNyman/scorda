@@ -18,6 +18,7 @@ object ColorProvider {
     private const val RED_500 = -769226
     private const val AMBER_500 = -16121
     private const val GREY_500 = -6381922
+    private const val GREY_300 = -2039584
     const val WHITE = -1
     const val BLACK = -16777216
 
@@ -102,15 +103,13 @@ object ColorProvider {
     }
 
     fun priorityColor(priority: Int, isDarkMode: Boolean = false): Int {
-        val color = when (priority) {
-            in Int.MIN_VALUE..Task.Priority.HIGH -> RED_500
-            Task.Priority.MEDIUM -> AMBER_500
-            Task.Priority.LOW -> BLUE_500
-            else -> GREY_500
+        val tone = if (isDarkMode) ColorTone.DARK_CHECKBOX else ColorTone.LIGHT_CHECKBOX
+        return when (priority) {
+            in Int.MIN_VALUE..Task.Priority.HIGH -> tonalColor(RED_500, tone)
+            Task.Priority.MEDIUM -> tonalColor(AMBER_500, tone)
+            // Quiet stays raw GREY_300 so it reads lighter than ordinary in dark too.
+            Task.Priority.LOW -> tonalColor(GREY_500, tone)
+            else -> GREY_300
         }
-        return tonalColor(
-            seedColor = color,
-            tone = if (isDarkMode) ColorTone.DARK_CHECKBOX else ColorTone.LIGHT_CHECKBOX
-        )
     }
 }

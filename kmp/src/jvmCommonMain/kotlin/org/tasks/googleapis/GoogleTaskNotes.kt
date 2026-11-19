@@ -41,7 +41,11 @@ internal object GoogleTaskNotes {
         }
         val extra = Extra(
             dueMin = dueMin,
-            priority = task.priority.takeUnless { it == Priority.NONE },
+            priority = when (task.priority) {
+                Priority.LOW -> null
+                Priority.NONE -> Priority.NONE
+                else -> task.priority
+            },
             start = task.hideUntil.takeIf { it > 0 },
             recur = task.recurrence?.takeIf { it.isNotBlank() },
             ser = task.series,
@@ -98,7 +102,7 @@ internal object GoogleTaskNotes {
             }
             task.setDueDateAdjustingHideUntil(createDueDate(urgency, withClock))
         }
-        task.priority = extra.priority ?: Priority.NONE
+        task.priority = extra.priority ?: Priority.LOW
         // a legacy trailer (old build, or not yet re-pushed) is older than a local schedule
         if (extra.ser != null || extra.recur == null || task.series == null) {
             task.recurrence = extra.recur

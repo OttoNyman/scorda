@@ -12,6 +12,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.tasks.TasksUrls
+import org.tasks.notifications.AlertLevel
 import org.tasks.compose.pickers.TimePickerDialog
 import org.tasks.viewmodel.NotificationsViewModel
 import org.tasks.viewmodel.NotificationsViewModel.TimePickerTarget
@@ -24,8 +25,10 @@ fun NotificationsContent(
     openUri: (String) -> Unit,
     onBatteryOptimization: (() -> Unit)? = null,
     onCompletionSound: (() -> Unit)? = null,
-    onReminderSound: (() -> Unit)? = null,
-    onDefaultAlarms: () -> Unit = {},
+    onLevelSound: ((AlertLevel) -> Unit)? = null,
+    onLevelToggle: ((AlertLevel, Boolean) -> Unit)? = null,
+    onConfirmLevelDisable: (() -> Unit)? = null,
+    onDismissLevelDisable: (() -> Unit)? = null,
     onMoreSettings: (() -> Unit)? = null,
     moreSettingsSummary: String? = null,
     bottomInsets: @Composable () -> Unit = {},
@@ -83,19 +86,27 @@ fun NotificationsContent(
         modeLine = viewModel.modeLine,
         healthExpanded = viewModel.healthExpanded,
         testPending = viewModel.testPending,
+        testSecondsLeft = viewModel.testSecondsLeft,
         onToggleHealth = { viewModel.toggleHealth() },
         onHealthCheck = { viewModel.openHealthCheck(it) },
         onReminderTest = { viewModel.scheduleReminderTest() },
-        moreExpanded = viewModel.moreExpanded,
-        onToggleMore = { viewModel.toggleMore() },
-        defaultAlarmsSummary = remindersSummary(viewModel.defaultAlarms, is24HourFormat),
-        onDefaultAlarms = onDefaultAlarms,
-        defaultRingMode = viewModel.defaultRingMode,
-        onRingMode = { viewModel.openRingDialog() },
+        showPersistentSound = viewModel.levelPersistentEnabled,
+        showAlarmSound = viewModel.levelAlarmEnabled,
+        onceSoundName = viewModel.onceSoundName,
+        persistentSoundName = viewModel.persistentSoundName,
+        alarmSoundName = viewModel.alarmSoundName,
+        onLevelSound = { onLevelSound?.invoke(it) },
+        alarmRingSeconds = viewModel.alarmRingSeconds,
+        onAlarmDuration = { viewModel.openAlarmDuration() },
         superBypassSilent = viewModel.superBypassSilent,
         onSuperBypass = { viewModel.updateSuperBypass(it) },
-        reminderSoundName = viewModel.reminderSoundName,
-        onReminderSound = { onReminderSound?.invoke() },
+        levelSilent = viewModel.levelSilentEnabled,
+        levelPersistent = viewModel.levelPersistentEnabled,
+        levelAlarm = viewModel.levelAlarmEnabled,
+        onLevelChange = { level, enabled -> onLevelToggle?.invoke(level, enabled) },
+        pendingLevelDisable = viewModel.pendingLevelDisable,
+        onConfirmLevelDisable = { onConfirmLevelDisable?.invoke() },
+        onDismissLevelDisable = { onDismissLevelDisable?.invoke() },
         bottomInsets = bottomInsets,
     )
 
@@ -119,11 +130,11 @@ fun NotificationsContent(
         SwipeHelpDialog(onDismiss = { viewModel.showSwipeHelp = false })
     }
 
-    if (viewModel.showRingDialog) {
-        RingLevelDialog(
-            selected = viewModel.defaultRingMode,
-            onSelect = { viewModel.updateDefaultRingMode(it) },
-            onDismiss = { viewModel.dismissRingDialog() },
+    if (viewModel.showAlarmDurationDialog) {
+        AlarmDurationDialog(
+            selected = viewModel.alarmRingSeconds,
+            onSelect = { viewModel.updateAlarmRingSeconds(it) },
+            onDismiss = { viewModel.dismissAlarmDuration() },
         )
     }
 

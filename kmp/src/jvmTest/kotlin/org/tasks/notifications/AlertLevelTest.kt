@@ -9,15 +9,47 @@ import org.tasks.data.entity.Task
 
 class AlertLevelTest {
     @Test
-    fun flagsMapToLevelsAndBack() {
-        assertEquals(AlertLevel.SILENT, alertLevel(Task.NOTIFY_MODE_SILENT))
-        assertEquals(AlertLevel.PERSISTENT, alertLevel(Task.NOTIFY_MODE_FIVE))
-        assertEquals(AlertLevel.SUPER, alertLevel(Task.NOTIFY_MODE_NONSTOP))
-        assertEquals(AlertLevel.ONCE, alertLevel(0))
-        assertEquals(Task.NOTIFY_MODE_SILENT, ringFlags(AlertLevel.SILENT))
-        assertEquals(0, ringFlags(AlertLevel.ONCE))
-        assertEquals(Task.NOTIFY_MODE_FIVE, ringFlags(AlertLevel.PERSISTENT))
-        assertEquals(Task.NOTIFY_MODE_NONSTOP, ringFlags(AlertLevel.SUPER))
+    fun priorityMapsToLevelsAndBack() {
+        assertEquals(AlertLevel.SUPER, alertLevelOf(Task.Priority.HIGH))
+        assertEquals(AlertLevel.PERSISTENT, alertLevelOf(Task.Priority.MEDIUM))
+        assertEquals(AlertLevel.ONCE, alertLevelOf(Task.Priority.LOW))
+        assertEquals(AlertLevel.SILENT, alertLevelOf(Task.Priority.NONE))
+        assertEquals(Task.Priority.HIGH, priorityOf(AlertLevel.SUPER))
+        assertEquals(Task.Priority.MEDIUM, priorityOf(AlertLevel.PERSISTENT))
+        assertEquals(Task.Priority.LOW, priorityOf(AlertLevel.ONCE))
+        assertEquals(Task.Priority.NONE, priorityOf(AlertLevel.SILENT))
+    }
+
+    @Test
+    fun aMemoNeverRings() {
+        assertNull(alertLevel(Task(memo = true, priority = Task.Priority.HIGH), enabledLevels()))
+    }
+
+    @Test
+    fun aHiddenLevelRingsAsOnce() {
+        val enabled = enabledLevels(silent = false, persistent = false, alarm = true)
+        assertEquals(
+            AlertLevel.ONCE,
+            alertLevel(Task(priority = Task.Priority.MEDIUM), enabled),
+        )
+        assertEquals(
+            AlertLevel.ONCE,
+            alertLevel(Task(priority = Task.Priority.NONE), enabled),
+        )
+        assertEquals(
+            AlertLevel.SUPER,
+            alertLevel(Task(priority = Task.Priority.HIGH), enabled),
+        )
+    }
+
+    @Test
+    fun enabledLevelsAlwaysIncludeOnce() {
+        assertEquals(setOf(AlertLevel.ONCE), enabledLevels(false, false, false))
+        assertEquals(
+            setOf(AlertLevel.ONCE, AlertLevel.SILENT, AlertLevel.PERSISTENT, AlertLevel.SUPER),
+            enabledLevels(true, true, true),
+        )
+        assertTrue(AlertLevel.ONCE in enabledLevels(alarm = true))
     }
 
     @Test
@@ -60,10 +92,18 @@ class AlertLevelTest {
     }
 
     @Test
-    fun superWaitsOutTheRingAndThePause() {
-        assertEquals(SUPER_RING_MS + SUPER_PAUSE_MS, nextEpisodeDelay(AlertLevel.SUPER, 0))
-        assertEquals(SUPER_RING_MS + SUPER_PAUSE_MS, nextEpisodeDelay(AlertLevel.SUPER, 1))
-        assertNull(nextEpisodeDelay(AlertLevel.SUPER, 2))
+    fun alarmStartsEveryFiveMinutesForHalfAnHour() {
+        repeat(6) { index ->
+            assertEquals(SUPER_INTERVAL_MS, nextEpisodeDelay(AlertLevel.SUPER, index))
+        }
+        assertNull(nextEpisodeDelay(AlertLevel.SUPER, 6))
+    }
+
+    @Test
+    fun alarmRingDurationSnapsToFiveSeconds() {
+        assertEquals(20_000L, clampAlarmRingMs(19_000L))
+        assertEquals(60_000L, clampAlarmRingMs(61_000L))
+        assertEquals(45_000L, clampAlarmRingMs(47_000L))
     }
 
     private fun state(

@@ -62,6 +62,24 @@ FROM (
     @Query("SELECT COUNT(1) FROM tasks INNER JOIN notification ON tasks._id = notification.task")
     abstract suspend fun hasNotifications(): Int
 
+    @Query("""
+SELECT COUNT(1) FROM tasks
+WHERE deleted = 0 AND completed = 0 AND importance = :priority AND memo = 0
+    """)
+    abstract suspend fun countTasksWithPriority(priority: Int): Int
+
+    @Query("""
+SELECT COUNT(1) FROM tasks
+WHERE deleted = 0 AND completed = 0 AND importance = :priority AND memo = 1
+    """)
+    abstract suspend fun countMemosWithPriority(priority: Int): Int
+
+    @Query("""
+SELECT _id FROM tasks
+WHERE deleted = 0 AND importance = :priority
+    """)
+    abstract suspend fun idsWithPriority(priority: Int): List<Long>
+
     @Query("SELECT tasks.* FROM tasks INNER JOIN notification ON tasks._id = notification.task")
     abstract suspend fun activeNotifications(): List<Task>
 

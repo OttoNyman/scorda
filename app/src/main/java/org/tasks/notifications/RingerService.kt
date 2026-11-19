@@ -20,13 +20,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import org.tasks.R
 
-/**
- * Rings a very persistent reminder for [SUPER_RING_MS].
- *
- * The service wears the task's own notification (same id, same Done and Snooze buttons), so the
- * user sees one card. When the ring times out the card is detached and stays; when the reminder is
- * handled the card is removed together with the service.
- */
 class RingerService : Service() {
     private val handler = Handler(Looper.getMainLooper())
     private var player: MediaPlayer? = null
@@ -34,6 +27,18 @@ class RingerService : Service() {
     private var foregroundId = 0
     private var wearsTaskCard = false
     private val timeout = Runnable { shutdown(removeCard = false) }
+    private val fadeStep = object : Runnable {
+        var step = 0
+        override fun run() {
+            val total = (ALARM_FADE_MS / FADE_TICK_MS).toInt().coerceAtLeast(1)
+            val volume = ((step + 1).toFloat() / total).coerceIn(0f, 1f)
+            player?.setVolume(volume, volume)
+            step++
+            if (step < total) {
+                handler.postDelayed(this, FADE_TICK_MS)
+            }
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -51,8 +56,9 @@ class RingerService : Service() {
         }
         val uri = intent?.getStringExtra(EXTRA_URI)?.toUri()
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val ringMs = intent?.getLongExtra(EXTRA_RING_MS, DEFAULT_ALARM_RING_MS) ?: DEFAULT_ALARM_RING_MS
         enterForeground(intent?.getIntExtra(EXTRA_CARD_ID, 0) ?: 0)
-        play(uri)
+        play(uri, clampAlarmRingMs(ringMs))
         return START_NOT_STICKY
     }
 
@@ -75,7 +81,6 @@ class RingerService : Service() {
         }
         val id = if (card != null) cardId else FALLBACK_ID
         if (foregroundId != 0 && foregroundId != id) {
-            // A new id would make the system cancel the previous task's card.
             leaveForeground(remove = !wearsTaskCard)
         }
         wearsTaskCard = card != null
@@ -95,8 +100,9 @@ class RingerService : Service() {
             .setSilent(true)
             .build()
 
-    private fun play(uri: Uri) {
+    private fun play(uri: Uri, ringMs: Long) {
         handler.removeCallbacks(timeout)
+        handler.removeCallbacks(fadeStep)
         releasePlayer()
         val attributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_ALARM)
@@ -114,8 +120,11 @@ class RingerService : Service() {
             created.setAudioAttributes(attributes)
             created.setDataSource(this, uri)
             created.isLooping = true
+            created.setVolume(0f, 0f)
             created.prepare()
             created.start()
+            fadeStep.step = 0
+            handler.post(fadeStep)
         } catch (_: Exception) {
             created.release()
             player = null
@@ -123,11 +132,12 @@ class RingerService : Service() {
         getSystemService(Vibrator::class.java)?.vibrate(
             VibrationEffect.createWaveform(longArrayOf(0, 400, 200, 400), 0),
         )
-        handler.postDelayed(timeout, SUPER_RING_MS)
+        handler.postDelayed(timeout, ringMs)
     }
 
     private fun shutdown(removeCard: Boolean) {
         handler.removeCallbacks(timeout)
+        handler.removeCallbacks(fadeStep)
         releasePlayer()
         runCatching { leaveForeground(remove = removeCard || !wearsTaskCard) }
         foregroundId = 0
@@ -157,7 +167,9 @@ class RingerService : Service() {
     companion object {
         const val EXTRA_URI = "ringer_uri"
         const val EXTRA_CARD_ID = "ringer_card"
+        const val EXTRA_RING_MS = "ringer_ms"
         private const val FALLBACK_ID = 0x5C0DB
+        private const val FADE_TICK_MS = 250L
 
         @Volatile
         private var running: RingerService? = null
@@ -171,7 +183,6 @@ class RingerService : Service() {
 
         fun isRinging(): Boolean = running != null && !suppressStart
 
-        /** [removeCard]: the task's card goes too, because its reminder was handled. */
         fun stopIfRunning(removeCard: Boolean) {
             suppressStart = true
             running?.requestStop(removeCard)

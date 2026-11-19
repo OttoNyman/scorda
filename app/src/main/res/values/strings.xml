@@ -275,6 +275,7 @@ File %1$s contained %2$s.\n\n
   <string name="series_finish">Finish series</string>
   <string name="series_finish_confirmation">The schedule stops, all its occurrences disappear, and the series shows up in Completed. Uncheck it there to bring it back.</string>
   <string name="series_postponed_from">Postponed from %s</string>
+  <string name="snoozed_until">Snoozed until %s</string>
   <string name="series_cannot_delete">Repeating occurrences can\'t be deleted — complete or postpone them</string>
   <string name="series_none">No repeating tasks selected</string>
   <string name="series_edit_scope_title">Change</string>
@@ -349,8 +350,8 @@ File %1$s contained %2$s.\n\n
   <string name="auto_dismiss_datetime_list_summary">Autoclose when picking from task list</string>
   <string name="auto_dismiss_datetime_edit">Task edit</string>
   <string name="auto_dismiss_datetime_edit_summary">Autoclose when picking from task edit</string>
-  <string name="auto_dismiss_datetime_widget">Widget</string>
-  <string name="auto_dismiss_datetime_widget_summary">Autoclose when picking from widget</string>
+  <string name="auto_dismiss_datetime_widget">Close the date picker</string>
+  <string name="auto_dismiss_datetime_widget_summary">After a date or time is picked on the widget, the picker closes</string>
   <string name="auto_dismiss_datetime_summary">Close date time picker after selecting a date or time</string>
   <string name="calendar_event_created">Calendar event created for %s</string>
   <string name="select_all">Select all</string>
@@ -381,6 +382,16 @@ File %1$s contained %2$s.\n\n
   <string name="p_memos_sort_mode">p_memos_sort_mode</string>
   <string name="per_list_sort_title">Per-list sorting</string>
   <string name="per_list_sort_summary">Remember sort and group settings for each list independently</string>
+  <string name="group_by_day">Group by day</string>
+  <string name="group_by_day_summary">Day headers, or one continuous list</string>
+  <string name="show_completed_tasks">Show completed</string>
+  <string name="completed_tasks_at_bottom">Move completed tasks to bottom</string>
+  <string name="no_time_placement">Tasks without time</string>
+  <string name="no_time_at_top_of_day">At the top of the day</string>
+  <string name="no_time_at_end_of_day">Below tasks with a time</string>
+  <string name="undated_placement">Tasks without a date</string>
+  <string name="undated_at_top">At the top of the list</string>
+  <string name="undated_at_bottom">At the bottom of the list</string>
   <string name="sort_created_group">Created %s</string>
   <string name="sort_modified_group">Modified %s</string>
   <string name="sort_completion_group">Completion %s</string>

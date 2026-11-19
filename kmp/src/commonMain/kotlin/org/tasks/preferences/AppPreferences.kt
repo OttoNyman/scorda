@@ -117,6 +117,18 @@ interface AppPreferences {
     suspend fun defaultRingMode(): Int
     suspend fun defaultDueTime(): Int
     suspend fun defaultPriority(): Int
+    suspend fun levelSilentEnabled(): Boolean = false
+    suspend fun levelPersistentEnabled(): Boolean = false
+    suspend fun levelAlarmEnabled(): Boolean = true
+    suspend fun enabledLevels(): Set<org.tasks.notifications.AlertLevel> =
+        org.tasks.notifications.enabledLevels(
+            silent = levelSilentEnabled(),
+            persistent = levelPersistentEnabled(),
+            alarm = levelAlarmEnabled(),
+        )
+    suspend fun alarmRingSeconds(): Int = 60
+    suspend fun alarmRingMs(): Long =
+        org.tasks.notifications.clampAlarmRingMs(alarmRingSeconds() * 1000L)
     suspend fun locationUpdateIntervalMinutes(): Int = DEFAULT_LOCATION_UPDATE_INTERVAL
     suspend fun addTasksToTop(): Boolean = true
     suspend fun taskDefaults(): TaskDefaultSettings
@@ -130,6 +142,10 @@ interface AppPreferences {
 
     suspend fun setDefaultAlarms(value: List<Alarm>)
     suspend fun setDefaultRingMode(value: Int)
+    suspend fun setLevelSilentEnabled(value: Boolean) {}
+    suspend fun setLevelPersistentEnabled(value: Boolean) {}
+    suspend fun setLevelAlarmEnabled(value: Boolean) {}
+    suspend fun setAlarmRingSeconds(value: Int) {}
     suspend fun setDefaultLocation(value: String?)
     suspend fun setDefaultLocationReminder(value: Int)
     suspend fun setLocationUpdateIntervalMinutes(value: Int)

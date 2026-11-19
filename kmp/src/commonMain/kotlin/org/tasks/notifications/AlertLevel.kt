@@ -14,22 +14,52 @@ data class SoundState(
 )
 
 val PERSISTENT_PAUSES_MS: List<Long> = listOf(1L, 2, 4, 8, 15, 30).map { it * 60_000L }
-const val SUPER_EPISODES = 3
-const val SUPER_RING_MS = 60_000L
-const val SUPER_PAUSE_MS = 5 * 60_000L
+const val SUPER_INTERVAL_MS = 5 * 60_000L
+const val SUPER_EPISODE_COUNT = 7
+const val DEFAULT_ALARM_RING_MS = 60_000L
+const val ALARM_RING_MIN_MS = 20_000L
+const val ALARM_RING_MAX_MS = 60_000L
+const val ALARM_RING_STEP_MS = 5_000L
+const val ALARM_FADE_MS = 5_000L
+const val TONE_CAP_MS = 5_000L
+const val PERSISTENT_GAP_MS = 500L
 
-fun alertLevel(ringFlags: Int): AlertLevel = when (ringFlags) {
-    Task.NOTIFY_MODE_SILENT -> AlertLevel.SILENT
-    Task.NOTIFY_MODE_FIVE -> AlertLevel.PERSISTENT
-    Task.NOTIFY_MODE_NONSTOP -> AlertLevel.SUPER
+fun alertLevelOf(priority: Int): AlertLevel = when (priority) {
+    Task.Priority.HIGH -> AlertLevel.SUPER
+    Task.Priority.MEDIUM -> AlertLevel.PERSISTENT
+    Task.Priority.NONE -> AlertLevel.SILENT
     else -> AlertLevel.ONCE
 }
 
-fun ringFlags(level: AlertLevel): Int = when (level) {
-    AlertLevel.SILENT -> Task.NOTIFY_MODE_SILENT
-    AlertLevel.ONCE -> 0
-    AlertLevel.PERSISTENT -> Task.NOTIFY_MODE_FIVE
-    AlertLevel.SUPER -> Task.NOTIFY_MODE_NONSTOP
+fun priorityOf(level: AlertLevel): Int = when (level) {
+    AlertLevel.SUPER -> Task.Priority.HIGH
+    AlertLevel.PERSISTENT -> Task.Priority.MEDIUM
+    AlertLevel.SILENT -> Task.Priority.NONE
+    AlertLevel.ONCE -> Task.Priority.LOW
+}
+
+fun prioritiesOf(levels: Set<AlertLevel>): Set<Int> =
+    (levels + AlertLevel.ONCE).map(::priorityOf).toSet()
+
+fun effectiveAlertLevel(priority: Int, enabled: Set<AlertLevel>): AlertLevel {
+    val level = alertLevelOf(priority)
+    return if (level == AlertLevel.ONCE || level in enabled) level else AlertLevel.ONCE
+}
+
+fun alertLevel(task: Task, enabled: Set<AlertLevel>): AlertLevel? {
+    if (task.memo) return null
+    return effectiveAlertLevel(task.priority, enabled)
+}
+
+fun enabledLevels(
+    silent: Boolean = false,
+    persistent: Boolean = false,
+    alarm: Boolean = true,
+): Set<AlertLevel> = buildSet {
+    add(AlertLevel.ONCE)
+    if (silent) add(AlertLevel.SILENT)
+    if (persistent) add(AlertLevel.PERSISTENT)
+    if (alarm) add(AlertLevel.SUPER)
 }
 
 fun route(level: AlertLevel, state: SoundState): Route = when {
@@ -45,10 +75,14 @@ fun vibrate(level: AlertLevel, state: SoundState): Boolean =
 
 fun nextEpisodeDelay(level: AlertLevel, index: Int): Long? = when (level) {
     AlertLevel.PERSISTENT -> PERSISTENT_PAUSES_MS.getOrNull(index)
-    AlertLevel.SUPER ->
-        if (index < SUPER_EPISODES - 1) SUPER_RING_MS + SUPER_PAUSE_MS else null
+    AlertLevel.SUPER -> if (index < SUPER_EPISODE_COUNT - 1) SUPER_INTERVAL_MS else null
     else -> null
 }
 
 fun maxAlertLevel(levels: List<AlertLevel>): AlertLevel =
     levels.maxByOrNull { it.ordinal } ?: AlertLevel.ONCE
+
+fun clampAlarmRingMs(ms: Long): Long {
+    val stepped = ((ms - ALARM_RING_MIN_MS) / ALARM_RING_STEP_MS) * ALARM_RING_STEP_MS + ALARM_RING_MIN_MS
+    return stepped.coerceIn(ALARM_RING_MIN_MS, ALARM_RING_MAX_MS)
+}

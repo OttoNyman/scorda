@@ -230,6 +230,7 @@
     <string name="series_finish">Завершить серию</string>
     <string name="series_finish_confirmation">Расписание остановится, все его выполнения исчезнут, а серия появится в «Завершено». Снимите там галочку, чтобы вернуть.</string>
     <string name="series_postponed_from">Перенесено с %s</string>
+    <string name="snoozed_until">Отложено до %s</string>
     <string name="series_cannot_delete">Повторяющиеся выполнения нельзя удалить — отметьте или перенесите</string>
     <string name="series_none">Среди выбранных нет повторяющихся задач</string>
     <string name="series_edit_scope_title">Изменить</string>
@@ -302,8 +303,8 @@
     <string name="compact">Компактный</string>
     <string name="settings_default">По умолчанию</string>
     <string name="widget_id">Идентификатор виджета: %d</string>
-    <string name="auto_dismiss_datetime_widget_summary">Автоматически закрывать при выборе из виджета</string>
-    <string name="auto_dismiss_datetime_widget">Виджет</string>
+    <string name="auto_dismiss_datetime_widget_summary">После выбора даты или времени в виджете окно закрывается само</string>
+    <string name="auto_dismiss_datetime_widget">Закрывать выбор даты</string>
     <string name="auto_dismiss_datetime_edit_summary">Автоматически закрывать при выборе из экрана редактирования задачи</string>
     <string name="auto_dismiss_datetime_edit">Редактирование задачи</string>
     <string name="auto_dismiss_datetime_list_summary">Автоматически закрывать при выборе из списка задач</string>
@@ -454,6 +455,16 @@
     <string name="p_per_list_sort">индивидуальная_сортировка_списков</string>
     <string name="per_list_sort_title">Индивидуальная сортировка списков</string>
     <string name="per_list_sort_summary">Сохранять параметры сортировки и группировки независимо для каждого списка</string>
+    <string name="group_by_day">Группировать по дням</string>
+    <string name="group_by_day_summary">Заголовки дней или один сплошной список</string>
+    <string name="show_completed_tasks">Показать завершённые</string>
+    <string name="completed_tasks_at_bottom">Переместить выполненные вниз</string>
+    <string name="no_time_placement">Без времени</string>
+    <string name="no_time_at_top_of_day">В начале дня</string>
+    <string name="no_time_at_end_of_day">После задач со временем</string>
+    <string name="undated_placement">Без даты</string>
+    <string name="undated_at_top">В начале списка</string>
+    <string name="undated_at_bottom">В конце списка</string>
     <string name="permission_write_tasks">Добавление, изменение и удаление ваших задач, списков, тегов и мест</string>
     <string name="email_to_task">Создать задачу через Email</string>
     <string name="upgrade_friends_and_family_description">До 5 бесплатных участников в общих списках. Интеграция с Напоминаниями Apple</string>

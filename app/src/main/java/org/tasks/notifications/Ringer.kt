@@ -21,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -30,6 +31,7 @@ import org.tasks.preferences.Preferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -43,6 +45,7 @@ class Ringer @Inject constructor(
     private var ringingIds: Set<Long> = emptySet()
     private val playGate = Mutex()
     private val toneHandler = Handler(Looper.getMainLooper())
+    private val episodeGeneration = AtomicInteger(0)
     @Volatile
     private var episodeFinish: (() -> Unit)? = null
     @Volatile
@@ -61,6 +64,7 @@ class Ringer @Inject constructor(
 
     suspend fun playEpisode(level: AlertLevel, taskIds: List<Long>) {
         playGate.withLock { runCatching {
+            val generation = episodeGeneration.incrementAndGet()
             val state = soundState()
             val next = route(level, state)
             if (next == Route.NONE) {
@@ -78,16 +82,17 @@ class Ringer @Inject constructor(
             when (next) {
                 Route.NONE -> Unit
                 Route.NOTIFICATION -> if (level == AlertLevel.PERSISTENT) {
-                    pips(AudioManager.STREAM_NOTIFICATION, 1)
+                    playCapped(melody(level), AudioAttributes.USAGE_NOTIFICATION)
+                    if (generation != episodeGeneration.get()) return@runCatching
+                    delay(PERSISTENT_GAP_MS)
+                    if (generation != episodeGeneration.get()) return@runCatching
+                    playCapped(melody(level), AudioAttributes.USAGE_NOTIFICATION)
                 } else {
-                    play(
-                        melody(RingtoneManager.TYPE_NOTIFICATION),
-                        AudioAttributes.USAGE_NOTIFICATION,
-                    )
+                    playCapped(melody(level), AudioAttributes.USAGE_NOTIFICATION)
                 }
                 Route.CALL_TONE ->
                     pips(AudioManager.STREAM_VOICE_CALL, if (level == AlertLevel.SUPER) SUPER_PIPS else 1)
-                Route.ALARM -> startAlarm(taskIds.first())
+                Route.ALARM -> startAlarm(taskIds.first(), melody(level))
             }
         }.onFailure { Timber.w(it, "Reminder sound failed") } }
     }
@@ -102,6 +107,7 @@ class Ringer @Inject constructor(
             }
         }
         if (!hit) return
+        episodeGeneration.incrementAndGet()
         RingerService.stopIfRunning(removeCard = alarmCard in ids)
         NotificationManagerCompat.from(context).cancel(RingAlarm.INSISTENT_NOTIFICATION_ID)
         episodeFinish?.invoke()
@@ -115,36 +121,47 @@ class Ringer @Inject constructor(
         synchronized(idsLock) { ringingIds = ringingIds + ids }
     }
 
-    /** One repeat chain per level, so each level keeps its own rhythm. */
     fun scheduleRepeats(tasks: List<Pair<Long, AlertLevel>>, index: Int) {
         tasks.groupBy({ it.second }, { it.first }).forEach { (level, ids) ->
-            nextEpisodeDelay(level, index)?.let { RingAlarm.schedule(context, ids, index + 1, it) }
+            val delay = nextEpisodeDelay(level, index)
+            if (delay != null) {
+                RingAlarm.schedule(context, ids, index + 1, delay)
+            } else {
+                RingAlarm.forget(context, ids)
+            }
         }
     }
 
-    fun melody(kind: Int): Uri {
-        val custom = preferences.getStringValue(R.string.p_reminder_ringtone)
+    fun melody(level: AlertLevel): Uri {
+        val custom = preferences.ringtoneForLevel(level)
         if (!custom.isNullOrEmpty()) {
             return custom.toUri()
+        }
+        val kind = if (level == AlertLevel.SUPER) {
+            RingtoneManager.TYPE_ALARM
+        } else {
+            RingtoneManager.TYPE_NOTIFICATION
         }
         return RingtoneManager.getDefaultUri(kind)
     }
 
-    private fun startAlarm(cardId: Long) {
+    private suspend fun startAlarm(cardId: Long, uri: Uri) {
+        val ringMs = preferences.alarmRingMs()
         RingerService.prepareToStart()
         alarmCard = cardId
         val intent = Intent(context, RingerService::class.java)
-            .putExtra(RingerService.EXTRA_URI, melody(RingtoneManager.TYPE_ALARM).toString())
+            .putExtra(RingerService.EXTRA_URI, uri.toString())
             .putExtra(RingerService.EXTRA_CARD_ID, cardId.toInt())
+            .putExtra(RingerService.EXTRA_RING_MS, ringMs)
         try {
             ContextCompat.startForegroundService(context, intent)
         } catch (e: Exception) {
             Timber.w(e, "Foreground ringer blocked, using an insistent notification")
-            postInsistent()
+            postInsistent(ringMs)
         }
     }
 
-    private fun postInsistent() {
+    private fun postInsistent(ringMs: Long) {
         val notification = NotificationCompat.Builder(
             context,
             NotificationManager.NOTIFICATION_CHANNEL_INSISTENT,
@@ -162,7 +179,7 @@ class Ringer @Inject constructor(
             Intent(context, InsistentSilenceReceiver::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
-        val triggerAt = currentTimeMillis() + SUPER_RING_MS
+        val triggerAt = currentTimeMillis() + ringMs
         if (context.canScheduleExactAlarms()) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAt, pending)
         } else {
@@ -170,7 +187,7 @@ class Ringer @Inject constructor(
         }
     }
 
-    private suspend fun play(uri: Uri, usage: Int) {
+    private suspend fun playCapped(uri: Uri, usage: Int) {
         suspendCancellableCoroutine { continuation ->
             val player = MediaPlayer()
             val finished = AtomicBoolean(false)
@@ -190,7 +207,7 @@ class Ringer @Inject constructor(
                 true
             }
             continuation.invokeOnCancellation { finish() }
-            toneHandler.postAtTime({ finish() }, player, SystemClock.uptimeMillis() + MAX_TONE_MS)
+            toneHandler.postAtTime({ finish() }, player, SystemClock.uptimeMillis() + TONE_CAP_MS)
             try {
                 player.setAudioAttributes(
                     AudioAttributes.Builder().setUsage(usage).build()
@@ -205,13 +222,12 @@ class Ringer @Inject constructor(
         }
     }
 
-    /** Each pair is two short 1200 Hz pips. */
     private suspend fun pips(stream: Int, pairs: Int) {
         val tone = ToneGenerator(stream, TONE_VOLUME)
         try {
             repeat(pairs) {
                 tone.startTone(ToneGenerator.TONE_PROP_ACK)
-                kotlinx.coroutines.delay(PIP_PAIR_MS)
+                delay(PIP_PAIR_MS)
             }
         } finally {
             tone.release()
@@ -232,6 +248,5 @@ class Ringer @Inject constructor(
         const val TONE_VOLUME = 80
         const val PIP_PAIR_MS = 700L
         const val BUZZ_MS = 200L
-        const val MAX_TONE_MS = 5_000L
     }
 }

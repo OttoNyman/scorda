@@ -11,20 +11,33 @@ import androidx.core.net.toUri
 import com.todoroo.astrid.voice.VoiceOutputAssistant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.tasks.PlatformConfiguration
 import org.tasks.R
+import org.tasks.compose.settings.PendingLevelDisable
+import org.tasks.data.TaskSaver
+import org.tasks.data.dao.SeriesDao
+import org.tasks.data.dao.TaskDao
+import org.tasks.data.entity.Task
 import org.tasks.injection.ApplicationScope
 import org.tasks.extensions.Context.getResourceUri
+import org.tasks.notifications.AlertLevel
 import org.tasks.notifications.AndroidReminderHealth
 import org.tasks.notifications.ReminderCheckId
 import org.tasks.notifications.modeLine
+import org.tasks.notifications.priorityOf
 import org.tasks.notifications.visibleChecks
 import org.tasks.preferences.Preferences
+import org.tasks.repeats.SeriesTemplates
 import org.tasks.resources.getString
 import org.tasks.scheduling.NotificationSchedulerWork
 import org.tasks.viewmodel.NotificationsViewModel
@@ -39,6 +52,10 @@ class NotificationsHiltViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferences: Preferences,
     private val voiceOutputAssistant: VoiceOutputAssistant,
+    private val taskDao: TaskDao,
+    private val seriesDao: SeriesDao,
+    private val seriesTemplates: SeriesTemplates,
+    private val taskSaver: TaskSaver,
     platformConfiguration: PlatformConfiguration,
     @ApplicationScope persistenceScope: CoroutineScope,
 ) : NotificationsViewModel(
@@ -71,9 +88,9 @@ class NotificationsHiltViewModel @Inject constructor(
         showBatteryOptimization =
             !powerManager.isIgnoringBatteryOptimizations(context.packageName)
         refreshCompletionSoundName()
-        refreshReminderSoundName()
+        refreshLevelSoundNames()
         superBypassSilent = preferences.getBoolean(R.string.p_super_bypass_silent, false)
-        val facts = health.facts()
+        val facts = health.facts(alarmEnabled = runBlocking { preferences.levelAlarmEnabled() })
         setHealth(health.openable(visibleChecks(facts)), modeLine(facts))
     }
 
@@ -89,20 +106,124 @@ class NotificationsHiltViewModel @Inject constructor(
         preferences.setBoolean(R.string.p_super_bypass_silent, enabled)
     }
 
-    fun reminderRingtoneValue(): String? =
-        preferences.getStringValue(R.string.p_reminder_ringtone)
-
-    fun handleReminderSoundResult(resultCode: Int, data: Intent?) {
-        if (resultCode == RESULT_OK && data != null) {
-            val ringtone: Uri? = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-            preferences.setString(R.string.p_reminder_ringtone, ringtone?.toString() ?: "")
-            refreshReminderSoundName()
+    fun onLevelChange(level: AlertLevel, enabled: Boolean) {
+        viewModelScope.launch {
+            if (enabled) {
+                applyLevelEnabled(level, true)
+            } else {
+                val priority = priorityOf(level)
+                val tasks = taskDao.countTasksWithPriority(priority)
+                val memos = taskDao.countMemosWithPriority(priority)
+                if (tasks == 0 && memos == 0) {
+                    applyLevelEnabled(level, false)
+                    if (preferences.defaultPriority() == priority) {
+                        preferences.setDefaultPriority(Task.Priority.LOW)
+                    }
+                } else {
+                    pendingLevelDisable = PendingLevelDisable(level, tasks, memos)
+                }
+            }
         }
     }
 
-    private fun refreshReminderSoundName() {
-        val value = preferences.getStringValue(R.string.p_reminder_ringtone)
-        reminderSoundName = if (value.isNullOrEmpty()) {
+    fun confirmLevelDisable() {
+        val pending = pendingLevelDisable ?: return
+        pendingLevelDisable = null
+        disableLevelAndReset(pending.level)
+    }
+
+    fun dismissLevelDisable() {
+        pendingLevelDisable = null
+    }
+
+    private suspend fun applyLevelEnabled(level: AlertLevel, enabled: Boolean) {
+        when (level) {
+            AlertLevel.SILENT -> {
+                preferences.setLevelSilentEnabled(enabled)
+                levelSilentEnabled = enabled
+            }
+            AlertLevel.PERSISTENT -> {
+                preferences.setLevelPersistentEnabled(enabled)
+                levelPersistentEnabled = enabled
+            }
+            AlertLevel.SUPER -> {
+                preferences.setLevelAlarmEnabled(enabled)
+                levelAlarmEnabled = enabled
+                refreshAndroidState()
+            }
+            AlertLevel.ONCE -> Unit
+        }
+    }
+
+    private fun disableLevelAndReset(level: AlertLevel) {
+        val priority = priorityOf(level)
+        viewModelScope.launch {
+            withContext(NonCancellable) {
+                taskDao.fetch(taskDao.idsWithPriority(priority)).forEach { task ->
+                    taskSaver.save(task.copy(priority = Task.Priority.LOW), task)
+                }
+                seriesDao.getAll().forEach { series ->
+                    val template = runCatching { seriesTemplates.decode(series.template) }.getOrNull()
+                        ?: return@forEach
+                    if (template.priority != priority) return@forEach
+                    seriesDao.update(
+                        series.copy(
+                            template = seriesTemplates.encode(
+                                template.copy(priority = Task.Priority.LOW),
+                            ),
+                        ),
+                    )
+                }
+                if (preferences.defaultPriority() == priority) {
+                    preferences.setDefaultPriority(Task.Priority.LOW)
+                }
+                when (level) {
+                    AlertLevel.SILENT -> preferences.setLevelSilentEnabled(false)
+                    AlertLevel.PERSISTENT -> preferences.setLevelPersistentEnabled(false)
+                    AlertLevel.SUPER -> preferences.setLevelAlarmEnabled(false)
+                    AlertLevel.ONCE -> Unit
+                }
+            }
+            withContext(Dispatchers.Main) {
+                when (level) {
+                    AlertLevel.SILENT -> levelSilentEnabled = false
+                    AlertLevel.PERSISTENT -> levelPersistentEnabled = false
+                    AlertLevel.SUPER -> {
+                        levelAlarmEnabled = false
+                        refreshAndroidState()
+                    }
+                    AlertLevel.ONCE -> Unit
+                }
+            }
+        }
+    }
+
+    fun levelRingtoneValue(level: AlertLevel): String? = preferences.ringtoneForLevel(level)
+
+    fun handleLevelSoundResult(level: AlertLevel, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK && data != null) {
+            val ringtone: Uri? = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+            levelRingtoneKey(level)?.let { preferences.setString(it, ringtone?.toString() ?: "") }
+            refreshLevelSoundNames()
+        }
+    }
+
+    private fun levelRingtoneKey(level: AlertLevel): Int? = when (level) {
+        AlertLevel.ONCE -> R.string.p_ringtone_once
+        AlertLevel.PERSISTENT -> R.string.p_ringtone_persistent
+        AlertLevel.SUPER -> R.string.p_ringtone_alarm
+        AlertLevel.SILENT -> null
+    }
+
+    private fun refreshLevelSoundNames() {
+        onceSoundName = levelSoundName(AlertLevel.ONCE)
+        persistentSoundName = levelSoundName(AlertLevel.PERSISTENT)
+        alarmSoundName = levelSoundName(AlertLevel.SUPER)
+    }
+
+    private fun levelSoundName(level: AlertLevel): String {
+        val value = preferences.ringtoneForLevel(level)
+        return if (value.isNullOrEmpty()) {
             runBlocking { getString(Res.string.reminder_sound_system) }
         } else {
             try {

@@ -7,12 +7,7 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -23,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
 import org.tasks.activities.DateAndTimePickerActivity
 import org.tasks.compose.edit.AlarmRow
-import org.tasks.compose.pickers.RingModeDialog
 import org.tasks.compose.rememberReminderPermissionState
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Alarm.Companion.TYPE_DATE_TIME
@@ -40,27 +34,9 @@ class ReminderControlSet : TaskEditControlFragment() {
     @Inject lateinit var activity: Activity
     @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
-    private val ringMode = mutableIntStateOf(0)
-
-    private fun setRingMode(ringMode: Int) {
-        viewModel.ringSilent = ringMode == 3
-        viewModel.ringNonstop = ringMode == 2
-        viewModel.ringFiveTimes = ringMode == 1
-        this.ringMode.intValue = ringMode
-    }
-
     @OptIn(ExperimentalPermissionsApi::class)
     @Composable
     override fun Content() {
-        LaunchedEffect(Unit) {
-            when {
-                viewModel.ringSilent -> setRingMode(3)
-                viewModel.ringNonstop -> setRingMode(2)
-                viewModel.ringFiveTimes -> setRingMode(1)
-                else -> setRingMode(0)
-            }
-        }
-        val ringMode by remember { this@ReminderControlSet.ringMode }
         val hasReminderPermissions by rememberReminderPermissionState()
         val notificationPermissions = if (AndroidUtilities.atLeastTiramisu()) {
             rememberPermissionState(
@@ -88,16 +64,6 @@ class ReminderControlSet : TaskEditControlFragment() {
         val startDate = viewModel.startDate.collectAsStateWithLifecycle().value
         val dueDate = viewModel.dueDate.collectAsStateWithLifecycle().value
         val context = LocalContext.current
-        var showRingModeDialog by remember { mutableStateOf(false) }
-        RingModeDialog(
-            visible = showRingModeDialog,
-            selected = ringMode,
-            onSelected = {
-                setRingMode(it)
-                showRingModeDialog = false
-            },
-            onDismiss = { showRingModeDialog = false },
-        )
         AlarmRow(
             // with "In advance" on, its early ring lives in that row, not in this list
             alarms = if (featureGate.current.advance) {
@@ -115,12 +81,10 @@ class ReminderControlSet : TaskEditControlFragment() {
                     context.openReminderSettings()
                 }
             },
-            ringMode = ringMode,
             addAlarm = viewModel::addAlarm,
             isNew = viewState.isNew,
             hasStartDate = startDate > 0,
             hasDueDate = dueDate > 0,
-            openRingType = { showRingModeDialog = true },
             deleteAlarm = viewModel::removeAlarm,
             pickDateAndTime = { replace ->
                 val timestamp = replace?.takeIf { it.type == TYPE_DATE_TIME }?.time

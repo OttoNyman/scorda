@@ -64,7 +64,14 @@
   <!-- ringtone to use for notifications -->
   <string name="p_completion_ringtone">completion_ringtone</string>
   <string name="p_reminder_ringtone">reminder_ringtone</string>
+  <string name="p_ringtone_once">ringtone_once</string>
+  <string name="p_ringtone_persistent">ringtone_persistent</string>
+  <string name="p_ringtone_alarm">ringtone_alarm</string>
   <string name="p_super_bypass_silent">super_bypass_silent</string>
+  <string name="p_level_silent_enabled">level_silent_enabled</string>
+  <string name="p_level_persistent_enabled">level_persistent_enabled</string>
+  <string name="p_level_alarm_enabled">level_alarm_enabled</string>
+  <string name="p_alarm_ring_seconds">alarm_ring_seconds</string>
 
   <!-- filters to show -->
   <string name="p_filters_enabled">drawer_filters_enabled</string>
@@ -368,6 +375,8 @@
   <string name="p_picker_mode_time">picker_mode_time</string>
   <string name="p_markdown">markdown</string>
   <string name="p_completed_tasks_at_bottom">completed_tasks_at_bottom</string>
+  <string name="p_undated_at_bottom">undated_at_bottom</string>
+  <string name="p_no_time_at_end_of_day">no_time_at_end_of_day</string>
   <string name="p_shown_beast_mode_hint">shown_beast_mode_hint</string>
   <string name="p_beast_mode_order">beast_mode_order_v6</string>
   <string name="p_last_sync">last_sync_time</string>

@@ -24,16 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.R
 import org.tasks.compose.settings.NotificationsContent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.tasks.compose.settings.DefaultRemindersDialog
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.extensions.Context.openChannelNotificationSettings
 import org.tasks.extensions.Context.openUri
+import org.tasks.notifications.AlertLevel
 import org.tasks.preferences.BasePreferences
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
@@ -49,12 +44,23 @@ class Notifications : Fragment() {
 
     private val viewModel: NotificationsHiltViewModel by viewModels()
 
-    private val completionSoundLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        viewModel.handleCompletionSoundResult(result.resultCode, result.data)
+    private var pickingLevel: AlertLevel = AlertLevel.ONCE
+
+    private val levelSoundLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        viewModel.handleLevelSoundResult(pickingLevel, result.resultCode, result.data)
     }
 
-    private val reminderSoundLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        viewModel.handleReminderSoundResult(result.resultCode, result.data)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        pickingLevel = savedInstanceState
+            ?.getString(STATE_PICKING_LEVEL)
+            ?.let { runCatching { AlertLevel.valueOf(it) }.getOrNull() }
+            ?: AlertLevel.ONCE
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_PICKING_LEVEL, pickingLevel.name)
     }
 
     private val ttsCheckLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -87,7 +93,6 @@ class Notifications : Fragment() {
                 }
             }
 
-            var showDefaultReminders by rememberSaveable { mutableStateOf(false) }
             val is24HourFormat = LocalContext.current.is24HourFormat
 
             NotificationsContent(
@@ -97,47 +102,40 @@ class Notifications : Fragment() {
                 onBatteryOptimization = {
                     startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
                 },
-                onCompletionSound = { launchRingtonePicker(completion = true) },
-                onReminderSound = { launchRingtonePicker(completion = false) },
-                onDefaultAlarms = { showDefaultReminders = true },
+                onLevelSound = {
+                    pickingLevel = it
+                    launchRingtonePicker(level = it)
+                },
+                onLevelToggle = { level, enabled -> viewModel.onLevelChange(level, enabled) },
+                onConfirmLevelDisable = { viewModel.confirmLevelDisable() },
+                onDismissLevelDisable = { viewModel.dismissLevelDisable() },
                 onMoreSettings = { requireContext().openChannelNotificationSettings() },
                 moreSettingsSummary = stringResource(Res.string.more_notification_settings_summary),
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },
             )
-
-            if (showDefaultReminders && viewModel.loaded) {
-                DefaultRemindersDialog(
-                    vm = viewModel(),
-                    initialAlarms = viewModel.defaultAlarms,
-                    is24HourFormat = is24HourFormat,
-                    onAlarmsChanged = { viewModel.updateDefaultAlarms(it) },
-                    onDismiss = { showDefaultReminders = false },
-                )
-            }
         }
     }
 
-    private fun launchRingtonePicker(completion: Boolean) {
-        val existingValue = if (completion) {
-            viewModel.getCompletionRingtoneValue()
+    private fun launchRingtonePicker(level: AlertLevel = AlertLevel.ONCE) {
+        val alarm = level == AlertLevel.SUPER
+        val defaultUri = if (alarm) {
+            Settings.System.DEFAULT_ALARM_ALERT_URI
         } else {
-            viewModel.reminderRingtoneValue()
+            Settings.System.DEFAULT_NOTIFICATION_URI
         }
+        val existingValue = viewModel.levelRingtoneValue(level)
         val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
-            putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+            putExtra(
+                RingtoneManager.EXTRA_RINGTONE_TYPE,
+                if (alarm) RingtoneManager.TYPE_ALARM else RingtoneManager.TYPE_NOTIFICATION,
+            )
             putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
             putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
-            putExtra(
-                RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
-                Settings.System.DEFAULT_NOTIFICATION_URI
-            )
+            putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, defaultUri)
             when (existingValue) {
-                null -> putExtra(
-                    RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
-                    Settings.System.DEFAULT_NOTIFICATION_URI
-                )
+                null -> putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultUri)
                 "" -> putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, null as Uri?)
                 else -> putExtra(
                     RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
@@ -145,11 +143,7 @@ class Notifications : Fragment() {
                 )
             }
         }
-        if (completion) {
-            completionSoundLauncher.launch(intent)
-        } else {
-            reminderSoundLauncher.launch(intent)
-        }
+        levelSoundLauncher.launch(intent)
     }
 
     override fun onResume() {
@@ -169,5 +163,9 @@ class Notifications : Fragment() {
             toolbar.setBackgroundColor(defaultColor)
             (toolbar.parent as? View)?.setBackgroundColor(defaultColor)
         }
+    }
+
+    companion object {
+        private const val STATE_PICKING_LEVEL = "picking_level"
     }
 }

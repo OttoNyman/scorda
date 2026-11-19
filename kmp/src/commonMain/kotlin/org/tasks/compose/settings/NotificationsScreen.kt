@@ -23,10 +23,27 @@ import org.tasks.notifications.CheckState
 import org.tasks.notifications.ModeLine
 import org.tasks.notifications.ReminderCheck
 import org.tasks.notifications.ReminderCheckId
-import tasks.kmp.generated.resources.EPr_default_reminders_title
-import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
+import org.tasks.notifications.AlertLevel
+import tasks.kmp.generated.resources.alarm_ring_duration
+import tasks.kmp.generated.resources.alarm_ring_duration_value
+import tasks.kmp.generated.resources.alert_caption_alarm
+import tasks.kmp.generated.resources.alert_caption_once
+import tasks.kmp.generated.resources.alert_caption_persistent
+import tasks.kmp.generated.resources.alert_once
+import tasks.kmp.generated.resources.alert_persistent
+import tasks.kmp.generated.resources.alert_silent
+import tasks.kmp.generated.resources.alert_super
 import tasks.kmp.generated.resources.alert_super_bypass
 import tasks.kmp.generated.resources.alert_super_bypass_summary
+import tasks.kmp.generated.resources.cancel
+import tasks.kmp.generated.resources.ok
+import tasks.kmp.generated.resources.priority_level_alarm_summary
+import tasks.kmp.generated.resources.priority_level_disable_message
+import tasks.kmp.generated.resources.priority_level_ordinary_summary
+import tasks.kmp.generated.resources.priority_level_persistent_summary
+import tasks.kmp.generated.resources.priority_level_silent_summary
+import tasks.kmp.generated.resources.priority_levels_title
+import tasks.kmp.generated.resources.sound_by_priority
 import tasks.kmp.generated.resources.alarms_can_be_late
 import tasks.kmp.generated.resources.more_reminder_settings
 import tasks.kmp.generated.resources.reminder_check_autostart
@@ -34,12 +51,19 @@ import tasks.kmp.generated.resources.reminder_check_background
 import tasks.kmp.generated.resources.reminder_check_battery
 import tasks.kmp.generated.resources.reminder_check_exact
 import tasks.kmp.generated.resources.reminder_check_notifications
+import tasks.kmp.generated.resources.reminder_check_full_screen
+import tasks.kmp.generated.resources.reminder_check_lock_screen
 import tasks.kmp.generated.resources.reminder_check_popups
 import tasks.kmp.generated.resources.reminder_check_power_save
+import tasks.kmp.generated.resources.reminder_check_full_screen_summary
+import tasks.kmp.generated.resources.reminder_check_lock_screen_summary
+import tasks.kmp.generated.resources.reminder_check_ok
+import tasks.kmp.generated.resources.reminder_check_problem
 import tasks.kmp.generated.resources.reminder_check_recents
 import tasks.kmp.generated.resources.reminder_check_recents_hint
-import tasks.kmp.generated.resources.reminder_sound
+import tasks.kmp.generated.resources.reminder_check_unknown
 import tasks.kmp.generated.resources.reminder_test_button
+import tasks.kmp.generated.resources.reminder_test_countdown
 import tasks.kmp.generated.resources.reminder_test_pending
 import tasks.kmp.generated.resources.reminders_are_on
 import tasks.kmp.generated.resources.reminders_delay_subtitle
@@ -115,6 +139,12 @@ private fun snoozeLabel(minutes: Int): StringResource =
 private fun timeSummary(millisOfDay: Int, is24HourFormat: Boolean): String =
     formatTime(currentTimeMillis().withMillisOfDay(millisOfDay), is24HourFormat)
 
+data class PendingLevelDisable(
+    val level: AlertLevel,
+    val tasks: Int,
+    val memos: Int,
+)
+
 @Composable
 fun NotificationsScreen(
     is24HourFormat: Boolean,
@@ -157,19 +187,29 @@ fun NotificationsScreen(
     modeLine: ModeLine = ModeLine.ON_TIME,
     healthExpanded: Boolean = false,
     testPending: Boolean = false,
+    testSecondsLeft: Int = 0,
     onToggleHealth: () -> Unit = {},
     onHealthCheck: (ReminderCheckId) -> Unit = {},
     onReminderTest: () -> Unit = {},
     moreExpanded: Boolean = false,
     onToggleMore: () -> Unit = {},
-    defaultAlarmsSummary: String = "",
-    onDefaultAlarms: () -> Unit = {},
-    defaultRingMode: Int = 0,
-    onRingMode: () -> Unit = {},
+    showPersistentSound: Boolean = false,
+    showAlarmSound: Boolean = true,
+    onceSoundName: String = "",
+    persistentSoundName: String = "",
+    alarmSoundName: String = "",
+    onLevelSound: (AlertLevel) -> Unit = {},
+    alarmRingSeconds: Int = 60,
+    onAlarmDuration: () -> Unit = {},
     superBypassSilent: Boolean = false,
     onSuperBypass: (Boolean) -> Unit = {},
-    reminderSoundName: String = "",
-    onReminderSound: () -> Unit = {},
+    levelSilent: Boolean = false,
+    levelPersistent: Boolean = false,
+    levelAlarm: Boolean = true,
+    onLevelChange: (AlertLevel, Boolean) -> Unit = { _, _ -> },
+    pendingLevelDisable: PendingLevelDisable? = null,
+    onConfirmLevelDisable: () -> Unit = {},
+    onDismissLevelDisable: () -> Unit = {},
     bottomInsets: @Composable () -> Unit = {},
 ) {
     Column(
@@ -186,10 +226,22 @@ fun NotificationsScreen(
                 modeLine = modeLine,
                 expanded = healthExpanded,
                 testPending = testPending,
+                testSecondsLeft = testSecondsLeft,
                 onToggle = onToggleHealth,
                 onCheck = onHealthCheck,
                 onTest = onReminderTest,
             )
+        }
+        if (showSystemNotificationSettings) {
+            SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+                PreferenceRow(
+                    title = stringResource(Res.string.more_settings),
+                    summary = moreSettingsSummary,
+                    icon = TasksIcons.OPEN_IN_NEW,
+                    onClick = onMoreSettings,
+                )
+            }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
         SectionHeader(
@@ -222,67 +274,118 @@ fun NotificationsScreen(
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SectionHeader(
+            stringResource(Res.string.priority_levels_title),
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             SettingsItemCard(position = CardPosition.First) {
-                PreferenceRow(
-                    title = stringResource(Res.string.EPr_default_reminders_title),
-                    summary = defaultAlarmsSummary,
-                    onClick = onDefaultAlarms,
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.alert_silent),
+                    summary = stringResource(Res.string.priority_level_silent_summary),
+                    checked = levelSilent,
+                    onCheckedChange = { onLevelChange(AlertLevel.SILENT, it) },
                 )
             }
             SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.EPr_default_reminders_mode_title),
-                    summary = ringSummary(defaultRingMode),
-                    onClick = onRingMode,
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.alert_once),
+                    summary = stringResource(Res.string.priority_level_ordinary_summary),
+                    checked = true,
+                    enabled = false,
+                    onCheckedChange = {},
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.alert_persistent),
+                    summary = stringResource(Res.string.priority_level_persistent_summary),
+                    checked = levelPersistent,
+                    onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
                 )
             }
             SettingsItemCard(position = CardPosition.Last) {
                 SwitchPreferenceRow(
-                    title = stringResource(Res.string.alert_super_bypass),
-                    summary = stringResource(Res.string.alert_super_bypass_summary),
-                    checked = superBypassSilent,
-                    onCheckedChange = onSuperBypass,
+                    title = stringResource(Res.string.alert_super),
+                    summary = stringResource(Res.string.priority_level_alarm_summary),
+                    checked = levelAlarm,
+                    onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            PreferenceRow(
-                title = stringResource(Res.string.more_reminder_settings),
-                onClick = onToggleMore,
+        SectionHeader(
+            stringResource(Res.string.sound_by_priority),
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
+        CardGroup(
+            listOfNotNull(
+                SoundRow.ONCE,
+                SoundRow.PERSISTENT.takeIf { showPersistentSound },
+                SoundRow.ALARM.takeIf { showAlarmSound },
+                SoundRow.DURATION.takeIf { showAlarmSound },
+                SoundRow.BYPASS.takeIf { showAlarmSound },
             )
+        ) { row ->
+            when (row) {
+                SoundRow.ONCE ->
+                    PreferenceRow(
+                        title = stringResource(Res.string.alert_caption_once),
+                        summary = onceSoundName,
+                        onClick = { onLevelSound(AlertLevel.ONCE) },
+                    )
+                SoundRow.PERSISTENT ->
+                    PreferenceRow(
+                        title = stringResource(Res.string.alert_caption_persistent),
+                        summary = persistentSoundName,
+                        onClick = { onLevelSound(AlertLevel.PERSISTENT) },
+                    )
+                SoundRow.ALARM ->
+                    PreferenceRow(
+                        title = stringResource(Res.string.alert_caption_alarm),
+                        summary = buildString {
+                            append(alarmSoundName)
+                            if (alarmSoundName.isNotBlank()) append(" · ")
+                            append(stringResource(Res.string.alarm_ring_duration_value, alarmRingSeconds))
+                        },
+                        onClick = { onLevelSound(AlertLevel.SUPER) },
+                    )
+                SoundRow.DURATION ->
+                    PreferenceRow(
+                        title = stringResource(Res.string.alarm_ring_duration),
+                        summary = stringResource(Res.string.alarm_ring_duration_value, alarmRingSeconds),
+                        onClick = onAlarmDuration,
+                    )
+                SoundRow.BYPASS ->
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.alert_super_bypass),
+                        summary = stringResource(Res.string.alert_super_bypass_summary),
+                        checked = superBypassSilent,
+                        onCheckedChange = onSuperBypass,
+                    )
+            }
         }
-        if (moreExpanded) {
+
+        val moreRows = listOfNotNull(
+            NotificationRow.ENABLED.takeIf { showNotificationsEnabled },
+            NotificationRow.PERSISTENT.takeIf { showOngoingNotifications },
+            NotificationRow.WEARABLE.takeIf { showOngoingNotifications },
+            NotificationRow.BUNDLE.takeIf { showBundleNotifications },
+            NotificationRow.VOICE.takeIf { showVoiceReminders },
+        )
+        if (moreRows.isNotEmpty()) {
             Spacer(modifier = Modifier.height(SettingsContentPadding))
-            CardGroup(
-                listOfNotNull(
-                    NotificationRow.ENABLED.takeIf { showNotificationsEnabled },
-                    NotificationRow.COMPLETION_SOUND.takeIf { showCompletionSound },
-                    NotificationRow.PERSISTENT.takeIf { showOngoingNotifications },
-                    NotificationRow.WEARABLE.takeIf { showOngoingNotifications },
-                    NotificationRow.BUNDLE.takeIf { showBundleNotifications },
-                    NotificationRow.VOICE.takeIf { showVoiceReminders },
-                    NotificationRow.REMINDER_SOUND,
-                    NotificationRow.SYSTEM.takeIf { showSystemNotificationSettings },
-                )
-            ) { row ->
+            CardGroup(moreRows) { row ->
                 when (row) {
                     NotificationRow.ENABLED ->
                         SwitchPreferenceRow(
                             title = stringResource(Res.string.notifications),
                             checked = notificationsEnabled,
                             onCheckedChange = onNotificationsEnabled,
-                        )
-                    NotificationRow.COMPLETION_SOUND ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.completion_sound),
-                            summary = completionSoundName,
-                            onClick = onCompletionSound,
                         )
                     NotificationRow.PERSISTENT ->
                         SwitchPreferenceRow(
@@ -312,57 +415,38 @@ fun NotificationsScreen(
                             checked = voiceEnabled,
                             onCheckedChange = onVoice,
                         )
-                    NotificationRow.REMINDER_SOUND ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.reminder_sound),
-                            summary = reminderSoundName,
-                            onClick = onReminderSound,
-                        )
-                    NotificationRow.SYSTEM ->
-                        PreferenceRow(
-                            title = stringResource(Res.string.more_settings),
-                            summary = moreSettingsSummary,
-                            icon = TasksIcons.OPEN_IN_NEW,
-                            onClick = onMoreSettings,
-                        )
-                }
-            }
-            if (showSwipeToSnooze) {
-                SectionHeader(
-                    stringResource(Res.string.swipe_title),
-                    modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                    onClick = onSwipeHelp,
-                )
-                Column(
-                    modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                    verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-                ) {
-                    val snoozing = swipeAction == SwipeAction.SNOOZE
-                    SettingsItemCard(position = if (snoozing) CardPosition.First else CardPosition.Only) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.swipe_action),
-                            summary = stringResource(swipeLabel(swipeAction)),
-                            onClick = onSwipeAction,
-                        )
-                    }
-                    if (snoozing) {
-                        SettingsItemCard(position = CardPosition.Last) {
-                            PreferenceRow(
-                                title = stringResource(Res.string.swipe_to_snooze_description),
-                                summary = stringResource(
-                                    Res.string.swipe_to_snooze_time_description,
-                                    stringResource(snoozeLabel(swipeToSnoozeMinutes)),
-                                ),
-                                onClick = onSnoozeTime,
-                            )
-                        }
-                    }
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
         bottomInsets()
+    }
+
+    pendingLevelDisable?.let { pendingDisable ->
+        AlertDialog(
+            onDismissRequest = onDismissLevelDisable,
+            title = { Text(stringResource(Res.string.priority_levels_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        Res.string.priority_level_disable_message,
+                        pendingDisable.tasks,
+                        pendingDisable.memos,
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = onConfirmLevelDisable) {
+                    Text(stringResource(Res.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismissLevelDisable) {
+                    Text(stringResource(Res.string.cancel))
+                }
+            },
+        )
     }
 }
 
@@ -373,13 +457,18 @@ private enum class TroubleshootingRow {
 
 private enum class NotificationRow {
     ENABLED,
-    COMPLETION_SOUND,
     PERSISTENT,
     WEARABLE,
     BUNDLE,
     VOICE,
-    REMINDER_SOUND,
-    SYSTEM,
+}
+
+private enum class SoundRow {
+    ONCE,
+    PERSISTENT,
+    ALARM,
+    DURATION,
+    BYPASS,
 }
 
 @Composable
@@ -441,32 +530,37 @@ fun SnoozeTimeDialog(
 }
 
 @Composable
-fun RingLevelDialog(
+fun AlarmDurationDialog(
     selected: Int,
     onSelect: (Int) -> Unit,
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(Res.string.EPr_default_reminders_mode_title)) },
+        modifier = Modifier.fillMaxWidth(0.92f),
+        title = { Text(stringResource(Res.string.alarm_ring_duration)) },
         text = {
-            Column {
-                RingModeOptions.forEach { (mode, label) ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                (20..60 step 5).forEach { seconds ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .selectable(
-                                selected = mode == selected,
+                                selected = seconds == selected,
                                 role = Role.RadioButton,
-                                onClick = { onSelect(mode) },
+                                onClick = { onSelect(seconds) },
                             )
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RadioButton(selected = mode == selected, onClick = null)
-                        Spacer(modifier = Modifier.width(8.dp))
+                        RadioButton(selected = seconds == selected, onClick = null)
+                        Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = stringResource(label),
+                            text = stringResource(Res.string.alarm_ring_duration_value, seconds),
                             style = MaterialTheme.typography.bodyLarge,
                         )
                     }
@@ -555,18 +649,12 @@ fun SwipeHelpDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun ringSummary(mode: Int): String {
-    val label = RingModeOptions.firstOrNull { it.first == mode }?.second
-        ?: RingModeOptions.first { it.first == 0 }.second
-    return stringResource(label)
-}
-
-@Composable
 private fun ReminderHealthCard(
     checks: List<ReminderCheck>,
     modeLine: ModeLine,
     expanded: Boolean,
     testPending: Boolean,
+    testSecondsLeft: Int,
     onToggle: () -> Unit,
     onCheck: (ReminderCheckId) -> Unit,
     onTest: () -> Unit,
@@ -593,9 +681,11 @@ private fun ReminderHealthCard(
                 )
                 TextButton(onClick = onTest, enabled = !testPending, modifier = Modifier.padding(start = 8.dp)) {
                     Text(
-                        stringResource(
-                            if (testPending) Res.string.reminder_test_pending else Res.string.reminder_test_button
-                        )
+                        if (testPending) {
+                            stringResource(Res.string.reminder_test_countdown, testSecondsLeft)
+                        } else {
+                            stringResource(Res.string.reminder_test_button)
+                        }
                     )
                 }
             }
@@ -605,11 +695,7 @@ private fun ReminderHealthCard(
                 SettingsItemCard {
                     PreferenceRow(
                         title = stringResource(checkTitle(check.id)),
-                        summary = if (check.id == ReminderCheckId.RECENTS_LOCK) {
-                            stringResource(Res.string.reminder_check_recents_hint)
-                        } else {
-                            null
-                        },
+                        summary = checkSummary(check),
                         onClick = if (check.state == CheckState.MANUAL) null else ({ onCheck(check.id) }),
                     )
                 }
@@ -617,6 +703,22 @@ private fun ReminderHealthCard(
         }
     }
     Spacer(modifier = Modifier.height(SettingsContentPadding))
+}
+
+@Composable
+private fun checkSummary(check: ReminderCheck): String = when (check.id) {
+    ReminderCheckId.RECENTS_LOCK -> stringResource(Res.string.reminder_check_recents_hint)
+    ReminderCheckId.FULL_SCREEN -> when (check.state) {
+        CheckState.OK -> stringResource(Res.string.reminder_check_ok)
+        else -> stringResource(Res.string.reminder_check_full_screen_summary)
+    }
+    ReminderCheckId.LOCK_SCREEN -> stringResource(Res.string.reminder_check_lock_screen_summary)
+    else -> when (check.state) {
+        CheckState.OK -> stringResource(Res.string.reminder_check_ok)
+        CheckState.PROBLEM -> stringResource(Res.string.reminder_check_problem)
+        CheckState.UNKNOWN -> stringResource(Res.string.reminder_check_unknown)
+        CheckState.MANUAL -> stringResource(Res.string.reminder_check_unknown)
+    }
 }
 
 private fun modeText(modeLine: ModeLine) = when (modeLine) {
@@ -635,4 +737,6 @@ private fun checkTitle(id: ReminderCheckId) = when (id) {
     ReminderCheckId.BACKGROUND -> Res.string.reminder_check_background
     ReminderCheckId.POPUPS -> Res.string.reminder_check_popups
     ReminderCheckId.RECENTS_LOCK -> Res.string.reminder_check_recents
+    ReminderCheckId.FULL_SCREEN -> Res.string.reminder_check_full_screen
+    ReminderCheckId.LOCK_SCREEN -> Res.string.reminder_check_lock_screen
 }

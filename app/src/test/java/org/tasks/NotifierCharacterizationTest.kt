@@ -22,7 +22,9 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.Notification
 import org.tasks.data.entity.Task
+import org.tasks.notifications.AlertLevel
 import org.tasks.notifications.AudioManager
+import org.tasks.notifications.enabledLevels
 import org.tasks.notifications.NotificationManager
 import org.tasks.notifications.Ringer
 import org.tasks.notifications.TelephonyManager
@@ -50,6 +52,7 @@ class NotifierCharacterizationTest {
         }
         preferences.stub {
             on { getBoolean(any<Int>(), any()) } doReturn false
+            onBlocking { enabledLevels() } doReturn enabledLevels(persistent = true)
         }
         notifier = Notifier(
             context = context,
@@ -108,8 +111,61 @@ class NotifierCharacterizationTest {
         verifyBlocking(ringer) { playEpisode(any(), eq(listOf(1L))) }
     }
 
-    private fun givenTask(id: Long) {
-        tasks[id] = Task(id = id, title = "task $id")
+    @Test
+    fun priorityPicksTheAlertLevel() = runTest {
+        givenTask(1L, priority = Task.Priority.HIGH)
+        givenPosted(1L)
+
+        notifier.triggerNotifications(listOf(notification(1L)))
+
+        verifyBlocking(ringer) { playEpisode(eq(AlertLevel.SUPER), eq(listOf(1L))) }
+    }
+
+    @Test
+    fun aHiddenLevelRingsOnce() = runTest {
+        preferences.stub {
+            onBlocking { enabledLevels() } doReturn enabledLevels(persistent = false, alarm = false)
+        }
+        givenTask(1L, priority = Task.Priority.MEDIUM)
+        givenPosted(1L)
+
+        notifier.triggerNotifications(listOf(notification(1L)))
+
+        verifyBlocking(ringer) { playEpisode(eq(AlertLevel.ONCE), eq(listOf(1L))) }
+    }
+
+    @Test
+    fun silentTasksDoNotSound() = runTest {
+        preferences.stub {
+            onBlocking { enabledLevels() } doReturn enabledLevels(silent = true)
+        }
+        givenTask(1L, priority = Task.Priority.NONE)
+        givenPosted(1L)
+
+        notifier.triggerNotifications(listOf(notification(1L)))
+
+        verifyBlocking(ringer, never()) { playEpisode(any(), any()) }
+    }
+
+    @Test
+    fun memosNeverSound() = runTest {
+        givenTask(1L, priority = Task.Priority.HIGH, memo = true)
+        givenPosted(1L)
+
+        notifier.triggerNotifications(listOf(notification(1L)))
+
+        verifyBlocking(ringer, never()) { playEpisode(any(), any()) }
+    }
+
+    private fun givenPosted(vararg ids: Long) {
+        notificationManager.stub {
+            onBlocking { getTaskNotification(any()) } doReturn NotificationCompat.Builder(context, "channel")
+            onBlocking { notifyTasks(any(), any()) } doReturn ids.toList()
+        }
+    }
+
+    private fun givenTask(id: Long, priority: Int = Task.Priority.LOW, memo: Boolean = false) {
+        tasks[id] = Task(id = id, title = "task $id", priority = priority, memo = memo)
     }
 
     private fun notification(taskId: Long) = Notification(

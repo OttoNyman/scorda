@@ -20,12 +20,19 @@ import org.tasks.time.DateTimeUtils2.currentTimeMillis
 class AndroidReminderHealth(
     private val context: Context,
 ) {
-    fun facts(): ReminderFacts {
+    fun facts(
+        alarmEnabled: Boolean = true,
+    ): ReminderFacts {
         val systemNotifications = context.getSystemService(NotificationManager::class.java)
         val channel = systemNotifications.getNotificationChannel(
             org.tasks.notifications.NotificationManager.NOTIFICATION_CHANNEL_DEFAULT,
         )
         val power = context.getSystemService(PowerManager::class.java)
+        val canFullScreen = if (Build.VERSION.SDK_INT < 34) {
+            true
+        } else {
+            runCatching { systemNotifications.canUseFullScreenIntent() }.getOrDefault(false)
+        }
         return ReminderFacts(
             sdk = Build.VERSION.SDK_INT,
             oem = oemFamily(Build.MANUFACTURER),
@@ -34,6 +41,8 @@ class AndroidReminderHealth(
             canExact = context.canScheduleExactAlarms(),
             batteryUnrestricted = power.isIgnoringBatteryOptimizations(context.packageName),
             powerSaveOn = power.isPowerSaveMode,
+            alarmEnabled = alarmEnabled,
+            canFullScreen = canFullScreen,
         )
     }
 
@@ -61,6 +70,12 @@ class AndroidReminderHealth(
             }
             ReminderCheckId.BATTERY -> Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
             ReminderCheckId.POWER_SAVE -> Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)
+            ReminderCheckId.FULL_SCREEN -> if (Build.VERSION.SDK_INT >= 34) {
+                Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
+                    .setData(android.net.Uri.parse("package:${context.packageName}"))
+            } else {
+                return
+            }
             ReminderCheckId.RECENTS_LOCK -> return
             else -> oemCandidates(id, context.packageName, appLabel()).firstOrNull { it.resolves() }
         } ?: return
