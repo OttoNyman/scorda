@@ -97,6 +97,8 @@ import org.tasks.themes.ColorTone
 import org.tasks.themes.tonalColor
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.create_a_list
+import tasks.kmp.generated.resources.drawer_places
+import tasks.kmp.generated.resources.tag_settings
 import tasks.kmp.generated.resources.new_filter
 import tasks.kmp.generated.resources.new_list
 import tasks.kmp.generated.resources.new_place
@@ -153,10 +155,13 @@ fun TaskListDrawer(
 
     val arrangement = if (query.isNotBlank()) Arrangement.Bottom else Arrangement.Top
     val displayedFilters = if (query.isNotBlank()) drawerState.searchItems else drawerState.drawerItems
+    val trashItem = drawerState.trashItem
     val systemBarPadding = WindowInsets.systemBars.asPaddingValues()
     val bottomNavPadding = systemBarPadding.calculateBottomPadding()
     val topGutter = systemBarPadding.calculateTopPadding() + searchButtonInset
-    val bottomGutter = searchButtonInset + SearchButtonSize + SearchButtonGap + bottomNavPadding
+    val trashRowHeight = if (trashItem != null && !searchExpanded) 56.dp else 0.dp
+    val bottomGutter =
+        searchButtonInset + SearchButtonSize + SearchButtonGap + trashRowHeight + bottomNavPadding
     Box(
         modifier = Modifier
             .testTag(TestTags.NAVIGATION_DRAWER)
@@ -201,7 +206,7 @@ fun TaskListDrawer(
                         is DrawerItem.Filter -> FilterItem(
                             item = item,
                             expanded = expanded,
-                            onClick = { onClick(item) }
+                            onClick = { onClick(item) },
                         )
                         is DrawerItem.Header -> HeaderItem(
                             item = item,
@@ -218,6 +223,26 @@ fun TaskListDrawer(
                         )
                     }
                 }
+            }
+        }
+        if (trashItem != null && !searchExpanded) {
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .padding(
+                        start = DrawerItemInset,
+                        end = DrawerItemInset,
+                        bottom = searchButtonInset + SearchButtonSize + SearchButtonGap + bottomNavPadding,
+                    ),
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            ) {
+                FilterItem(
+                    item = trashItem,
+                    expanded = expanded,
+                    onClick = { onClick(trashItem) },
+                )
             }
         }
         AnimatedVisibility(
@@ -468,14 +493,16 @@ fun HeaderItem(
                     )
                 }
             } else {
+                val manage = item.header.addIntentRc == FilterProvider.REQUEST_NEW_TAGS ||
+                    item.header.addIntentRc == FilterProvider.REQUEST_NEW_PLACE
                 IconButton(onClick = onAddClick) {
                     SymbolIcon(
-                        name = TasksIcons.ADD,
+                        name = if (manage) TasksIcons.EDIT else TasksIcons.ADD,
                         contentDescription = stringResource(
                             when (item.header.addIntentRc) {
-                                FilterProvider.REQUEST_NEW_TAGS -> Res.string.new_tag
+                                FilterProvider.REQUEST_NEW_TAGS -> Res.string.tag_settings
                                 FilterProvider.REQUEST_NEW_FILTER -> Res.string.new_filter
-                                FilterProvider.REQUEST_NEW_PLACE -> Res.string.new_place
+                                FilterProvider.REQUEST_NEW_PLACE -> Res.string.drawer_places
                                 else -> Res.string.new_list
                             }
                         ),

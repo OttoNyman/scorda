@@ -12,16 +12,11 @@ fun ColumnScope.ListSettingsContent(
     hasPro: Boolean,
     color: Int,
     colors: List<ThemeColor>,
-    icon: String,
     text: String,
     error: String,
     requestKeyboard: Boolean,
-    isNew: Boolean,
     setText: (String) -> Unit,
     setColor: (Int) -> Unit,
-    pickIcon: () -> Unit,
-    addShortcutToHome: () -> Unit,
-    addWidgetToHome: () -> Unit,
     headerContent: @Composable ColumnScope.() -> Unit = {},
     extensionContent: @Composable ColumnScope.() -> Unit,
     purchase: () -> Unit,
@@ -41,18 +36,5 @@ fun ColumnScope.ListSettingsContent(
         selectColor = { setColor(it) },
         purchase = { purchase() },
     )
-    SelectIconRow(
-        icon = icon,
-        selectIcon = { pickIcon() },
-    )
-    if (!isNew) {
-        // TODO: support this for new filters too
-        AddShortcutToHomeRow(
-            onClick = { addShortcutToHome() },
-        )
-        AddWidgetToHomeRow(
-            onClick = { addWidgetToHome() }
-        )
-    }
     extensionContent()
 }

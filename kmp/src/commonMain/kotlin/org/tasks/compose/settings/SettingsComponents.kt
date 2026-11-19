@@ -129,12 +129,13 @@ fun ColorIconCards(
     onColorClick: () -> Unit,
     onClearColor: () -> Unit,
     onIconClick: () -> Unit,
+    showIcon: Boolean = true,
 ) {
     Column(
         modifier = Modifier.padding(horizontal = SettingsContentPadding),
         verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
     ) {
-        SettingsItemCard(position = CardPosition.First) {
+        SettingsItemCard(position = if (showIcon) CardPosition.First else CardPosition.Only) {
             PreferenceRow(
                 title = stringResource(Res.string.color),
                 showChevron = color == 0,
@@ -180,20 +181,22 @@ fun ColorIconCards(
                 } else null,
             )
         }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.icon),
-                showChevron = true,
-                onClick = onIconClick,
-                leading = {
-                    TasksIcon(
-                        label = icon,
-                        modifier = Modifier
-                            .padding(start = SettingsContentPadding)
-                            .size(SettingsIconSize),
-                    )
-                },
-            )
+        if (showIcon) {
+            SettingsItemCard(position = CardPosition.Last) {
+                PreferenceRow(
+                    title = stringResource(Res.string.icon),
+                    showChevron = true,
+                    onClick = onIconClick,
+                    leading = {
+                        TasksIcon(
+                            label = icon,
+                            modifier = Modifier
+                                .padding(start = SettingsContentPadding)
+                                .size(SettingsIconSize),
+                        )
+                    },
+                )
+            }
         }
     }
 }

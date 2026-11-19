@@ -130,11 +130,9 @@ abstract class BaseListSettingsActivity : AppCompatActivity() {
                 hasPro = remember { inventory.purchasedThemes() },
                 color = viewState.color,
                 colors = remember { colorProvider.getThemeColors() },
-                icon = viewState.icon ?: defaultIcon,
                 text = viewState.title,
                 error = viewState.error,
                 requestKeyboard = requestKeyboard,
-                isNew = isNew,
                 setText = {
                     baseViewModel.setTitle(it)
                     baseViewModel.setError("")
@@ -147,9 +145,6 @@ abstract class BaseListSettingsActivity : AppCompatActivity() {
                         R.string.param_source to settingsSource,
                     )
                 },
-                pickIcon = { showIconPicker() },
-                addShortcutToHome = { createShortcut(color) },
-                addWidgetToHome = { createWidget() },
                 headerContent = headerContent,
                 extensionContent = extensionContent,
                 purchase = {

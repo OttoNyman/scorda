@@ -30,6 +30,7 @@
   <!-- ************* -->
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
   <uses-permission
       android:name="android.permission.SCHEDULE_EXACT_ALARM"
       tools:ignore="ProtectedPermissions" />
@@ -446,9 +447,21 @@
       android:taskAffinity=":notification"
       android:theme="@style/TranslucentDialog"/>
 
+    <activity
+      android:excludeFromRecents="true"
+      android:name=".reminders.AlarmActivity"
+      android:showWhenLocked="true"
+      android:turnScreenOn="true"
+      android:taskAffinity=":alarm"
+      android:theme="@style/Tasks"/>
+
     <activity android:name=".activities.NavigationDrawerCustomization" />
 
     <activity android:name=".activities.TagSettingsActivity"/>
+
+    <activity android:name=".activities.TagListActivity"/>
+
+    <activity android:name=".activities.PlaceListActivity"/>
 
     <activity android:name=".activities.FilterSettingsActivity"/>
 

@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -31,27 +28,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.PlatformBackHandler
-import org.tasks.compose.pickers.IconPicker
-import org.tasks.compose.pickers.IconPickerViewModel
 import org.tasks.viewmodel.TagSettingsViewModel
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.back
 import tasks.kmp.generated.resources.cancel
-import tasks.kmp.generated.resources.color
 import tasks.kmp.generated.resources.delete
 import tasks.kmp.generated.resources.delete_tag_confirmation
 import tasks.kmp.generated.resources.delete_tag_warning
 import tasks.kmp.generated.resources.discard
 import tasks.kmp.generated.resources.discard_changes
 import tasks.kmp.generated.resources.display_name
-import tasks.kmp.generated.resources.icon
 import tasks.kmp.generated.resources.new_tag
 import tasks.kmp.generated.resources.save
 
@@ -64,8 +56,6 @@ fun TagSettingsScreen(
     onNavigateBack: () -> Unit,
     onSubscribe: (String) -> Unit,
     onColorWheelSelected: () -> Unit = {},
-    onAddShortcut: (() -> Unit)? = null,
-    onAddWidget: (() -> Unit)? = null,
 ) {
     val state by viewModel.viewState.collectAsState()
     val isNew = state.isNew
@@ -126,13 +116,8 @@ fun TagSettingsScreen(
                 pickerColors = state.pickerColors,
                 onColorClick = viewModel::openColorPicker,
                 onClearColor = { viewModel.selectColor(0) },
-                onIconClick = viewModel::openIconPicker,
-            )
-
-            ShortcutWidgetCards(
-                onAddShortcut = onAddShortcut,
-                onAddWidget = onAddWidget,
-                enabled = state.name.isNotBlank() && !state.isLoading,
+                onIconClick = {},
+                showIcon = false,
             )
 
             Spacer(modifier = Modifier.height(SettingsContentPadding))
@@ -175,28 +160,6 @@ fun TagSettingsScreen(
             onColorWheelSelected = onColorWheelSelected,
             showColorWheel = state.hasColorWheel,
         )
-    }
-
-    if (state.showIconPicker) {
-        val iconPickerViewModel = remember { IconPickerViewModel() }
-        val iconState = iconPickerViewModel.viewState.collectAsState().value
-        val searchResults = iconPickerViewModel.searchResults.collectAsState().value
-        BasicAlertDialog(
-            onDismissRequest = viewModel::closeIconPicker,
-            modifier = Modifier.padding(vertical = 32.dp),
-        ) {
-            IconPicker(
-                icons = iconState.icons,
-                query = iconState.query,
-                searchResults = searchResults,
-                collapsed = iconState.collapsed,
-                onQueryChange = iconPickerViewModel::onQueryChange,
-                onSelected = { viewModel.selectIcon(it.name) },
-                toggleCollapsed = iconPickerViewModel::setCollapsed,
-                hasPro = state.hasPro,
-                subscribe = { onSubscribe("icons") },
-            )
-        }
     }
 
     if (showDeleteDialog) {

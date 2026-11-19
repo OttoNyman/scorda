@@ -1,9 +1,9 @@
 package org.tasks.compose.home
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -63,7 +63,8 @@ import com.todoroo.astrid.activity.TaskListFragment.Companion.EXTRA_FILTER
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource as composeStringResource
 import org.tasks.R
-import org.tasks.activities.TagSettingsActivity
+import org.tasks.activities.PlaceListActivity
+import org.tasks.activities.TagListActivity
 import org.tasks.auth.SignInActivity
 import org.tasks.billing.PurchaseActivity
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_NAME_YOUR_PRICE
@@ -77,13 +78,15 @@ import org.tasks.compose.drawer.TaskListDrawer
 import org.tasks.data.listSettingsClass
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterProvider
+import org.tasks.filters.MyTasksFilter
+import org.tasks.filters.PlaceFilter
+import org.tasks.filters.TagFilter
 import org.tasks.filters.FilterProvider.Companion.REQUEST_NEW_LIST
 import org.tasks.filters.FilterProvider.Companion.REQUEST_NEW_PLACE
 import org.tasks.filters.FilterProvider.Companion.REQUEST_NEW_TAGS
 import org.tasks.filters.NavigationDrawerSubheader
 import org.tasks.kmp.org.tasks.compose.TouchSlopMultiplier
 import org.tasks.kmp.org.tasks.compose.rememberImeState
-import org.tasks.location.LocationPickerActivity
 import org.tasks.preferences.MainPreferences
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.upgrade
@@ -105,11 +108,16 @@ fun HomeScreen(
     val currentWindowInsets = WindowInsets.systemBars.asPaddingValues()
     val windowInsets = remember { mutableStateOf(currentWindowInsets) }
     val keyboard = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
     val newList =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                result.data
-                    ?.let { getParcelableExtra(it, OPEN_FILTER, Filter::class.java) }
+            if (result.resultCode != RESULT_OK) return@rememberLauncherForActivityResult
+            val data = result.data ?: return@rememberLauncherForActivityResult
+            when (data.action) {
+                TaskListFragment.ACTION_DELETED -> scope.launch {
+                    viewModel.setFilter(MyTasksFilter.create())
+                }
+                else -> getParcelableExtra(data, OPEN_FILTER, Filter::class.java)
                     ?.let { viewModel.setFilter(it) }
             }
         }
@@ -161,7 +169,6 @@ fun HomeScreen(
         )
     }
 
-    val scope = rememberCoroutineScope()
     if (guestDialog.value) {
         AlertDialog(
             onDismissRequest = { guestDialog.value = false },
@@ -240,10 +247,22 @@ fun HomeScreen(
                                                 showNewFilterDialog()
 
                                             REQUEST_NEW_PLACE ->
-                                                newList.launch(Intent(context, LocationPickerActivity::class.java))
+                                                newList.launch(
+                                                    Intent(context, PlaceListActivity::class.java).apply {
+                                                        (state.filter as? PlaceFilter)?.place?.uid?.let {
+                                                            putExtra(PlaceListActivity.EXTRA_OPEN_FILTER_ID, it)
+                                                        }
+                                                    }
+                                                )
 
                                             REQUEST_NEW_TAGS ->
-                                                newList.launch(Intent(context, TagSettingsActivity::class.java))
+                                                newList.launch(
+                                                    Intent(context, TagListActivity::class.java).apply {
+                                                        (state.filter as? TagFilter)?.tagData?.remoteId?.let {
+                                                            putExtra(TagListActivity.EXTRA_OPEN_FILTER_ID, it)
+                                                        }
+                                                    }
+                                                )
 
                                             REQUEST_NEW_LIST ->
                                                 when (it.header.subheaderType) {

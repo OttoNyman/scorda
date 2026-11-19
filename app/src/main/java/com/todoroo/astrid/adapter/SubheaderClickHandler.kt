@@ -7,7 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.tasks.broadcast.RefreshBroadcaster
-import org.tasks.activities.TagSettingsActivity
+import org.tasks.activities.PlaceListActivity
+import org.tasks.activities.TagListActivity
 import org.tasks.caldav.BaseCaldavCalendarSettingsActivity.Companion.EXTRA_CALDAV_ACCOUNT
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.listSettingsClass
@@ -20,7 +21,6 @@ import org.tasks.filters.NavigationDrawerSubheader
 import org.tasks.filters.NavigationDrawerSubheader.SubheaderType.CALDAV
 import org.tasks.filters.NavigationDrawerSubheader.SubheaderType.PREFERENCE
 import org.tasks.filters.NavigationDrawerSubheader.SubheaderType.TASKS
-import org.tasks.location.LocationPickerActivity
 import org.tasks.preferences.MainPreferences
 import org.tasks.preferences.TasksPreferences
 import timber.log.Timber
@@ -52,15 +52,9 @@ class SubheaderClickHandler @Inject constructor(
                     FRAG_TAG_NEW_FILTER
                 )
             REQUEST_NEW_PLACE ->
-                activity.startActivityForResult(
-                    Intent(activity, LocationPickerActivity::class.java),
-                    REQUEST_NEW_PLACE
-                )
+                activity.startActivity(Intent(activity, PlaceListActivity::class.java))
             REQUEST_NEW_TAGS ->
-                activity.startActivityForResult(
-                    Intent(activity, TagSettingsActivity::class.java),
-                    REQUEST_NEW_LIST
-                )
+                activity.startActivity(Intent(activity, TagListActivity::class.java))
             REQUEST_NEW_LIST -> {
                 (activity as AppCompatActivity).lifecycleScope.launch {
                     val account = caldavDao.getAccount(subheader.id.toLong()) ?: return@launch
