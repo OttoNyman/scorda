@@ -41,7 +41,6 @@ fun TaskListScreen(
     undatedAtBottom: Boolean,
     chipAppearanceSummary: String,
     placeChips: Boolean,
-    listChips: Boolean,
     tagChips: Boolean,
     onFontSize: (Int) -> Unit,
     onRowSpacing: (Int) -> Unit,
@@ -56,7 +55,6 @@ fun TaskListScreen(
     onUndatedPlacement: () -> Unit,
     onChipAppearance: () -> Unit,
     onPlaceChips: (Boolean) -> Unit,
-    onListChips: (Boolean) -> Unit,
     onTagChips: (Boolean) -> Unit,
 ) {
     Column(
@@ -200,13 +198,6 @@ fun TaskListScreen(
                     title = stringResource(R.string.places),
                     checked = placeChips,
                     onCheckedChange = onPlaceChips,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.lists),
-                    checked = listChips,
-                    onCheckedChange = onListChips,
                 )
             }
             SettingsItemCard(position = CardPosition.Last) {

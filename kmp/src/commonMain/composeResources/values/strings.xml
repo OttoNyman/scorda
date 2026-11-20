@@ -151,6 +151,7 @@
     <string name="logout">Log out</string>
     <string name="logout_confirmation">Log out of %1$s?</string>
     <string name="logout_warning">All data for this account will be removed from your device</string>
+    <string name="drive_logout_warning">Signs out of Google Drive. Tasks on this phone stay.</string>
     <string name="remove">Remove</string>
     <string name="delete_tag_confirmation">Delete %1$s?</string>
     <string name="delete_tag_warning">Tasks with this tag will not be deleted</string>

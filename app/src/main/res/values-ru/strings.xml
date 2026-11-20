@@ -158,7 +158,7 @@
     <string name="sync_help_file">Файл вручную. Тот же JSON, без аккаунта Google. Файл переносите сами. Импорт работает так же.</string>
     <string name="sync_help_tasks">Вход в Google Tasks. Список виден на tasks.google.com и обновляется по ходу дня. Не переносятся теги, напоминания, места, вложения и подзадачи глубже одного уровня. Время, приоритет, начало и повтор едут в строке заметки.</string>
     <string name="sync_help_title">Как перенести задачи</string>
-    <string name="sync_and_backup">Синхронизация и бэкап</string>
+    <string name="sync_and_backup">Google Drive</string>
     <string name="google_account">Аккаунт Google</string>
     <string name="backup_section">Резервная копия</string>
     <string name="save_to_file">Сохранить в файл</string>

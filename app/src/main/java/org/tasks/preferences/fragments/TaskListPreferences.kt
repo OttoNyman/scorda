@@ -58,7 +58,6 @@ class TaskListPreferences : Fragment() {
                 undatedAtBottom = viewModel.undatedAtBottom,
                 chipAppearanceSummary = viewModel.chipAppearanceSummary,
                 placeChips = viewModel.placeChips,
-                listChips = viewModel.listChips,
                 tagChips = viewModel.tagChips,
                 onFontSize = { viewModel.updateFontSize(it) },
                 onRowSpacing = { viewModel.updateRowSpacing(it) },
@@ -73,7 +72,6 @@ class TaskListPreferences : Fragment() {
                 onUndatedPlacement = { viewModel.openUndatedDialog() },
                 onChipAppearance = { viewModel.openChipAppearanceDialog() },
                 onPlaceChips = { viewModel.updatePlaceChips(it) },
-                onListChips = { viewModel.updateListChips(it) },
                 onTagChips = { viewModel.updateTagChips(it) },
             )
 

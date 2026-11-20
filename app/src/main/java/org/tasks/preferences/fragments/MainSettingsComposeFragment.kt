@@ -92,7 +92,7 @@ class MainSettingsComposeFragment : Fragment() {
                 environmentLabel = environmentLabel,
                 // Backups run on their own and have no folder to pick: nothing to warn about.
                 showBackupWarning = false,
-                accountError = filteredAccounts.any { it.hasError },
+                accountError = filteredAccounts.any { it.hasError && !it.isGoogleTasks },
                 onSettingsClick = { destination -> navigateToSettings(destination) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
                 onLinkDesktopClick = { linkDesktop() },

@@ -25,9 +25,7 @@ import org.tasks.caldav.CaldavSynchronizer
 import org.tasks.data.OpenTaskDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.extensions.Context.hasNetworkConnectivity
-import org.tasks.gtasks.AndroidGoogleTaskSynchronizer
 import org.tasks.injection.BaseWorker
 import org.tasks.opentasks.OpenTasksSynchronizer
 import org.tasks.R
@@ -46,7 +44,6 @@ class SyncWork @AssistedInject constructor(
     private val preferences: Preferences,
     private val caldavDao: CaldavDao,
     private val caldavSynchronizer: Lazy<CaldavSynchronizer>,
-    private val googleTaskSynchronizer: Lazy<AndroidGoogleTaskSynchronizer>,
     private val openTasksSynchronizer: Lazy<OpenTasksSynchronizer>,
     private val openTaskDao: OpenTaskDao,
     private val inventory: Inventory,
@@ -135,15 +132,7 @@ class SyncWork @AssistedInject constructor(
         }
     }
 
-    private suspend fun googleTaskJobs(): List<Deferred<Unit>> = coroutineScope {
-        caldavDao.getAccounts(TYPE_GOOGLE_TASKS)
-            .filter { !preferences.getBoolean(R.string.p_google_tasks_paused, false) }
-            .map { account ->
-                async(Dispatchers.IO) {
-                    googleTaskSynchronizer.get().sync(account)
-                }
-            }
-    }
+    private fun googleTaskJobs(): List<Deferred<Unit>> = emptyList()
 
     private suspend fun caldavJobs(): List<Deferred<Unit>> = coroutineScope {
         caldavDao.getAccounts(TYPE_CALDAV)

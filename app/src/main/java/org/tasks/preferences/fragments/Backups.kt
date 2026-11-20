@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.tasks.jobs.WorkManager
-import org.tasks.sync.SyncSource
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ModalBottomSheet
@@ -38,15 +36,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import com.google.api.services.drive.DriveScopes
-import com.google.api.services.tasks.TasksScopes
 import com.todoroo.astrid.gtasks.auth.GtasksLoginActivity
 import kotlinx.coroutines.launch
 import org.tasks.compose.settings.BackupsScreen
-import org.tasks.compose.settings.MoveListsDialog
-import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.jetbrains.compose.resources.stringResource as composeStringResource
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.logout_warning
+import tasks.kmp.generated.resources.drive_logout_warning
 import org.tasks.dialogs.ExportTasksDialog
 import org.tasks.dialogs.ImportTasksDialog
 import org.tasks.extensions.Context.toast
@@ -64,7 +59,6 @@ private const val FRAG_TAG_IMPORT_TASKS = "frag_tag_import_tasks"
 class Backups : Fragment() {
 
     @Inject lateinit var theme: Theme
-    @Inject lateinit var workManager: WorkManager
     @Inject lateinit var constructorRepository: org.tasks.constructor.ConstructorRepository
 
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
@@ -130,7 +124,6 @@ class Backups : Fragment() {
     ) = content {
         var showHelp by remember { mutableStateOf(false) }
         var driveFiles by remember { mutableStateOf<List<Pair<String, String>>?>(null) }
-        var moveLists by remember { mutableStateOf(0) }
         var confirmLogout by remember { mutableStateOf(false) }
         var showBackupHelp by remember { mutableStateOf(false) }
         TasksSettingsTheme(
@@ -153,31 +146,9 @@ class Backups : Fragment() {
                     )
                 },
                 onBackupHelp = { showBackupHelp = true },
-                accountEmail = viewModel.googleAccount?.name ?: preferencesViewModel.driveAccount?.takeIf { it.isNotBlank() },
-                accountError = viewModel.googleAccount?.error?.takeIf { it.isNotBlank() },
+                accountEmail = preferencesViewModel.driveAccount?.takeIf { it.isNotBlank() },
                 onLogout = { confirmLogout = true },
-                tasksEnabled = viewModel.tasksSyncEnabled,
                 driveDailyEnabled = viewModel.driveBackupEnabled,
-                onTasksEnabled = { enabled ->
-                    if (enabled) {
-                        lifecycleScope.launch {
-                            val lists = constructorRepository.counts(currentTimeMillis()).localLists
-                            val raw = constructorRepository.raw.value
-                            when {
-                                raw.lists && raw.localLists ->
-                                    signIn(arrayListOf(TasksScopes.TASKS), daily = false)
-                                raw.lists && lists > 0 -> moveLists = lists
-                                // Nothing to choose: whatever lands locally before the first sync moves too.
-                                else -> signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
-                                    constructorRepository.moveLocalListsToGoogle()
-                                }
-                            }
-                        }
-                    } else {
-                        viewModel.pauseTasks()
-                        constructorRepository.refreshSync()
-                    }
-                },
                 onDriveDaily = { enabled ->
                     if (enabled) {
                         signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = true)
@@ -214,16 +185,6 @@ class Backups : Fragment() {
                     }
                 },
                 onHelp = { showHelp = true },
-                listProblem = viewModel.listProblem,
-                ambiguousLists = viewModel.ambiguousLists,
-                onRecreateList = {
-                    viewModel.recreateScordaList()
-                    lifecycleScope.launch { workManager.sync(SyncSource.USER_INITIATED) }
-                },
-                onPickList = { id ->
-                    viewModel.pickScordaList(id)
-                    lifecycleScope.launch { workManager.sync(SyncSource.USER_INITIATED) }
-                },
             )
             if (showHelp) {
                 ModalBottomSheet(onDismissRequest = { showHelp = false }) {
@@ -231,28 +192,8 @@ class Backups : Fragment() {
                         Text(text = stringResource(R.string.sync_help_title))
                         Text(text = stringResource(R.string.sync_help_drive), modifier = Modifier.padding(top = 12.dp))
                         Text(text = stringResource(R.string.sync_help_file), modifier = Modifier.padding(top = 12.dp))
-                        Text(text = stringResource(R.string.sync_help_tasks), modifier = Modifier.padding(top = 12.dp))
                     }
                 }
-            }
-            if (moveLists > 0) {
-                MoveListsDialog(
-                    lists = moveLists,
-                    onMove = {
-                        moveLists = 0
-                        signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
-                            constructorRepository.moveLocalListsToGoogle()
-                        }
-                    },
-                    onKeep = {
-                        moveLists = 0
-                        signIn(arrayListOf(TasksScopes.TASKS), daily = false) {
-                            constructorRepository.write(constructorRepository.raw.value.copy(localLists = true))
-                        }
-                    },
-                    onDismiss = { moveLists = 0 },
-                    dismissText = stringResource(android.R.string.cancel),
-                )
             }
             if (showBackupHelp) {
                 AlertDialog(
@@ -302,7 +243,7 @@ class Backups : Fragment() {
                 AlertDialog(
                     onDismissRequest = { confirmLogout = false },
                     title = { Text(stringResource(R.string.logout)) },
-                    text = { Text(composeStringResource(Res.string.logout_warning)) },
+                    text = { Text(composeStringResource(Res.string.drive_logout_warning)) },
                     confirmButton = {
                         TextButton(onClick = {
                             confirmLogout = false
@@ -371,7 +312,7 @@ class Backups : Fragment() {
                 .putExtra(GtasksLoginActivity.EXTRA_DAILY_DRIVE, daily)
                 .putExtra(
                     GtasksLoginActivity.EXTRA_ACCOUNT,
-                    viewModel.googleAccount?.name ?: preferencesViewModel.driveAccount,
+                    preferencesViewModel.driveAccount,
                 )
         )
     }

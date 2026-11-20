@@ -13,7 +13,6 @@ import org.tasks.data.isHidden
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.extensions.setColorFilter
 import org.tasks.themes.chipColors
-import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.TagFilter
@@ -64,20 +63,7 @@ class WidgetChipProvider @Inject constructor(
         }
     }
 
-    fun getListChip(filter: Filter, task: TaskContainer): RemoteViews? {
-        return if (filter is CaldavFilter) {
-            null
-        } else {
-            task.caldav
-                ?.let { chipListCache.getCaldavList(it) }
-                ?.let {
-                    newChip(
-                        filter = it,
-                        defaultIcon = R.drawable.ic_list_24px
-                    )
-                }
-        }
-    }
+    fun getListChip(filter: Filter, task: TaskContainer): RemoteViews? = null
 
     fun getPlaceChip(filter: Filter, task: TaskContainer): RemoteViews? {
         task.location

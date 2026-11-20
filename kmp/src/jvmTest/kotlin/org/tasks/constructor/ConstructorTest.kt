@@ -19,7 +19,7 @@ class ConstructorTest {
     fun allOnSetsCapabilityFlagsAndKeepsTheLocalListsToggle() {
         val next = Constructor(localLists = true).withPreset(Preset.Full)
         assertTrue(next.repeat)
-        assertTrue(next.lists)
+        assertFalse(next.lists)
         assertTrue(next.geo)
         assertTrue(next.localLists)
     }

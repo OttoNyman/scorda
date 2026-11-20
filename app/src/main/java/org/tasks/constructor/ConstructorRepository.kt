@@ -42,21 +42,15 @@ class ConstructorRepository @Inject constructor(
     val raw: StateFlow<Constructor> = rawFlow.asStateFlow()
     val effective: StateFlow<Constructor> = effectiveFlow.asStateFlow()
 
-    @Volatile
-    private var hasGoogleAccount: Boolean = false
-
-    /** Google Tasks account present and not paused. */
+    /** Google Tasks sync is retired. The account and its tasks stay on the phone. */
     val sync: Boolean
-        get() = hasGoogleAccount && !preferences.getBoolean(R.string.p_google_tasks_paused, false)
+        get() = false
 
     init {
         // Before the first account read: anything scheduled at startup already sees the saved flags.
         gate.current = effectiveFlow.value
         caldavDao.watchAccounts()
-            .onEach { accounts ->
-                hasGoogleAccount = accounts.any { it.accountType == CaldavAccount.TYPE_GOOGLE_TASKS }
-                publish(rawFlow.value)
-            }
+            .onEach { publish(rawFlow.value) }
             .launchIn(scope)
     }
 

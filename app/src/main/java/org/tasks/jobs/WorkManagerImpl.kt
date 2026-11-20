@@ -28,7 +28,6 @@ import org.tasks.data.OpenTaskDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.data.entity.Task
 import org.tasks.date.DateTimeUtils.midnight
 import org.tasks.date.DateTimeUtils.newDateTime
@@ -111,12 +110,7 @@ class WorkManagerImpl(
 
     override fun updateBackgroundSync() {
         throttle.run {
-            val google = if (preferences.getBoolean(R.string.p_google_tasks_paused, false)) {
-                emptyList()
-            } else {
-                caldavDao.getAccounts(TYPE_GOOGLE_TASKS)
-            }
-            val enabled = (google + caldavDao.getAccounts(TYPE_CALDAV)).any { !it.isTasksOrg }
+            val enabled = caldavDao.getAccounts(TYPE_CALDAV).any { !it.isTasksOrg }
             if (enabled) {
                 Timber.d("Enabling background sync")
                 val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, 1, TimeUnit.HOURS)

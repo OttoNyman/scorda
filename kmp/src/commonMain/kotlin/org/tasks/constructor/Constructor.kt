@@ -69,13 +69,12 @@ val Preset.flags: Constructor
             repeat = true,
             overdue = true,
             notes = true,
-            lists = true,
             checklist = true,
             tags = true,
             filters = true,
             priority = true,
             geo = true,
-            // start date, extra reminders and the device calendar are retired
+            // start date, extra reminders, the device calendar and lists are retired
             advance = true,
             files = true,
             memos = true,

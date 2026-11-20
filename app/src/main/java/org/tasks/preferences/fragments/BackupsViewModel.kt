@@ -15,7 +15,6 @@ import org.tasks.analytics.Firebase
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
-import org.tasks.service.TaskDeleter
 import org.tasks.extensions.Context.is24HourFormat
 import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.preferences.Preferences
@@ -28,7 +27,6 @@ class BackupsViewModel @Inject constructor(
     private val preferences: Preferences,
     private val firebase: Firebase,
     private val caldavDao: CaldavDao,
-    private val taskDeleter: TaskDeleter,
 ) : ViewModel() {
 
     var googleAccount by mutableStateOf<CaldavAccount?>(null)
@@ -125,10 +123,9 @@ class BackupsViewModel @Inject constructor(
         }
     }
 
-    /** Removes the Google account with its tasks on this phone and stops Drive backups. */
+    /** Signs out of Drive. Tasks and the Google Tasks account stay on this phone. */
     fun logout(preferencesViewModel: PreferencesViewModel, onDone: () -> Unit) {
         viewModelScope.launch {
-            caldavDao.getAccounts(TYPE_GOOGLE_TASKS).forEach { taskDeleter.delete(it) }
             listOf(
                 R.string.p_google_tasks_list_id,
                 R.string.p_google_tasks_previous_list_id,

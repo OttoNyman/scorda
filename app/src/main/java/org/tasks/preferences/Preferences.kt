@@ -504,7 +504,8 @@ class Preferences @JvmOverloads constructor(
         repeat = getBoolean("constructor_repeat", false),
         overdue = getBoolean("constructor_overdue", false),
         notes = getBoolean("constructor_notes", false),
-        lists = getBoolean("constructor_lists", false),
+        // retired: lists repeat tags without sync; the saved flag and the tasks' lists stay untouched
+        lists = false,
         checklist = getBoolean("constructor_checklist", false),
         tags = getBoolean("constructor_tags", false),
         filters = getBoolean("constructor_filters", false),
@@ -524,7 +525,6 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_repeat", value.repeat)
         setBoolean("constructor_overdue", value.overdue)
         setBoolean("constructor_notes", value.notes)
-        setBoolean("constructor_lists", value.lists)
         setBoolean("constructor_checklist", value.checklist)
         setBoolean("constructor_tags", value.tags)
         setBoolean("constructor_filters", value.filters)

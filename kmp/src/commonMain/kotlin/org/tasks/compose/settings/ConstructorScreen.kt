@@ -49,9 +49,6 @@ import tasks.kmp.generated.resources.constructor_group_modules
 import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
 import tasks.kmp.generated.resources.constructor_memos
-import tasks.kmp.generated.resources.constructor_lists
-import tasks.kmp.generated.resources.constructor_local_lists
-import tasks.kmp.generated.resources.constructor_local_lists_summary
 import tasks.kmp.generated.resources.constructor_notes
 import tasks.kmp.generated.resources.constructor_overdue
 import tasks.kmp.generated.resources.constructor_overdue_count
@@ -80,7 +77,6 @@ import tasks.kmp.generated.resources.ok
 fun ConstructorScreen(
     raw: Constructor,
     effective: Constructor,
-    sync: Boolean,
     geofences: Boolean,
     counts: ConstructorCounts,
     comments: Boolean,
@@ -219,16 +215,6 @@ fun ConstructorScreen(
             }
         }
         Group(Res.string.constructor_group_order)
-        Toggle(Res.string.constructor_lists, effective.lists) { onChange(raw.copy(lists = it)) }
-        if (sync && raw.lists) {
-            Toggle(
-                title = Res.string.constructor_local_lists,
-                checked = raw.localLists,
-                summary = stringResource(Res.string.constructor_local_lists_summary),
-                summaryWhenOff = true,
-                nested = true,
-            ) { onChange(raw.copy(localLists = it)) }
-        }
         Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }

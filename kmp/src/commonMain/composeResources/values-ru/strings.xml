@@ -106,6 +106,7 @@
     <string name="generate_new_password">Создать новый пароль</string>
     <string name="logout">Отключиться</string>
     <string name="logout_warning">Все данные учётной записи на этом устройстве будут удалены</string>
+    <string name="drive_logout_warning">Выход из Google Drive. Задачи на телефоне остаются.</string>
     <string name="remove">Удалить</string>
     <string name="delete_tag_confirmation">Удалить %1$s?</string>
     <string name="app_password_delete_confirmation">Любое приложение, использующее этот пароль, выйдет из системы</string>

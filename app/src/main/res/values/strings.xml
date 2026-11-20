@@ -187,7 +187,7 @@ File %1$s contained %2$s.\n\n
   <string name="sync_help_file">Manual file. Same JSON, no Google account. You move the file yourself. Import works the same way.</string>
   <string name="sync_help_tasks">Google Tasks sign-in. The list stays up to date on tasks.google.com. Tags, reminders, places, attachments, and subtasks deeper than one level are not copied. Time, priority, start, and repeat ride in a note line.</string>
   <string name="sync_help_title">How to move your tasks</string>
-  <string name="sync_and_backup">Sync and backup</string>
+  <string name="sync_and_backup">Google Drive</string>
   <string name="google_account">Google account</string>
   <string name="backup_section">Backup</string>
   <string name="save_to_file">Save to a file</string>

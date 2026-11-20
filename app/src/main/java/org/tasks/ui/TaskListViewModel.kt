@@ -121,8 +121,6 @@ class TaskListViewModel @Inject constructor(
                     Banner.AlarmsDisabled
                 accounts.any { it.isMicrosoft } && preferences.warnMicrosoft ->
                     Banner.WarnMicrosoft
-                accounts.any { it.isGoogleTasks } && preferences.warnGoogleTasks ->
-                    Banner.WarnGoogleTasks
                 else -> null
             }
             if (banner != null && banner != _banner.value) {

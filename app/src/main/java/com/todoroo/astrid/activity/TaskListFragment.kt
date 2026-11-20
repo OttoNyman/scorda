@@ -991,6 +991,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         if (trash) {
             listOf(R.id.edit_priority, R.id.menu_share).forEach { menu.findItem(it).isVisible = false }
         }
+        if (!featureGate.current.lists) menu.findItem(R.id.move_tasks).isVisible = false
         return true
     }
 

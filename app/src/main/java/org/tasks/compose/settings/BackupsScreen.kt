@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import org.tasks.R
 import org.tasks.themes.TasksIcons
 
-/** Account, Google sync and every kind of backup on one screen. */
+/** Account, Drive backup and every kind of local backup on one screen. */
 @Composable
 fun BackupsScreen(
     lastBackupSummary: String,
@@ -29,20 +29,13 @@ fun BackupsScreen(
     onImportBackup: () -> Unit,
     onBackupHelp: () -> Unit,
     accountEmail: String? = null,
-    accountError: String? = null,
     onLogout: () -> Unit = {},
-    tasksEnabled: Boolean = false,
     driveDailyEnabled: Boolean = false,
     expiredMessage: String? = null,
-    onTasksEnabled: (Boolean) -> Unit = {},
     onDriveDaily: (Boolean) -> Unit = {},
     onSaveDriveNow: () -> Unit = {},
     onRestoreDrive: () -> Unit = {},
     onHelp: () -> Unit = {},
-    listProblem: String = "",
-    ambiguousLists: List<Pair<String, String>> = emptyList(),
-    onRecreateList: () -> Unit = {},
-    onPickList: (String) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -59,8 +52,7 @@ fun BackupsScreen(
                 SettingsItemCard(position = CardPosition.First) {
                     PreferenceRow(
                         title = accountEmail,
-                        summary = accountError ?: stringResource(R.string.google_account),
-                        showError = accountError != null,
+                        summary = stringResource(R.string.google_account),
                     )
                 }
                 SettingsItemCard(position = CardPosition.Last) {
@@ -84,14 +76,6 @@ fun BackupsScreen(
         ) {
             SettingsItemCard(position = CardPosition.First) {
                 SwitchPreferenceRow(
-                    title = stringResource(R.string.google_tasks_sync),
-                    summary = stringResource(R.string.google_tasks_sync_summary),
-                    checked = tasksEnabled,
-                    onCheckedChange = onTasksEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
                     title = stringResource(R.string.google_drive_backup),
                     summary = expiredMessage ?: stringResource(R.string.google_drive_backup_summary),
                     checked = driveDailyEnabled,
@@ -110,31 +94,6 @@ fun BackupsScreen(
                     summary = lastDriveBackupSummary,
                     onClick = onRestoreDrive,
                 )
-            }
-        }
-        if (listProblem == "missing" || ambiguousLists.isNotEmpty()) {
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                if (listProblem == "missing") {
-                    SettingsItemCard {
-                        PreferenceRow(
-                            title = stringResource(R.string.google_list_recreate),
-                            summary = stringResource(R.string.google_list_missing),
-                            onClick = onRecreateList,
-                        )
-                    }
-                }
-                ambiguousLists.forEach { (id, title) ->
-                    SettingsItemCard {
-                        PreferenceRow(
-                            title = title.ifBlank { id },
-                            summary = stringResource(R.string.google_list_pick),
-                            onClick = { onPickList(id) },
-                        )
-                    }
-                }
             }
         }
 

@@ -45,8 +45,6 @@ class TaskListPreferencesViewModel @Inject constructor(
         private set
     var placeChips by mutableStateOf(true)
         private set
-    var listChips by mutableStateOf(true)
-        private set
     var tagChips by mutableStateOf(true)
         private set
     var showChipAppearanceDialog by mutableStateOf(false)
@@ -77,7 +75,6 @@ class TaskListPreferencesViewModel @Inject constructor(
         undatedAtBottom = preferences.undatedAtBottom
         refreshChipAppearance()
         placeChips = preferences.getBoolean(R.string.p_place_chips, true)
-        listChips = preferences.getBoolean(R.string.p_list_chips, true)
         tagChips = preferences.getBoolean(R.string.p_tag_chips, true)
     }
 
@@ -177,11 +174,6 @@ class TaskListPreferencesViewModel @Inject constructor(
     fun updatePlaceChips(enabled: Boolean) {
         preferences.setBoolean(R.string.p_place_chips, enabled)
         placeChips = enabled
-    }
-
-    fun updateListChips(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_list_chips, enabled)
-        listChips = enabled
     }
 
     fun updateTagChips(enabled: Boolean) {

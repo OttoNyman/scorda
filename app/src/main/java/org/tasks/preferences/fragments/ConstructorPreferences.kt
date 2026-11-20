@@ -136,7 +136,6 @@ class ConstructorPreferences : Fragment() {
             ConstructorScreen(
                 raw = raw,
                 effective = effective,
-                sync = repository.sync,
                 geofences = configuration.supportsGeofences,
                 counts = counts,
                 comments = comments,
