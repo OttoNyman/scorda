@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +23,7 @@ import javax.inject.Inject
 class NavigationDrawer : Fragment() {
 
     @Inject lateinit var theme: Theme
-    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
+    @Inject lateinit var constructorRepository: org.tasks.constructor.ConstructorRepository
 
     private val viewModel: NavigationDrawerHiltViewModel by viewModels()
 
@@ -34,7 +36,8 @@ class NavigationDrawer : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            val features = featureGate.current
+            // live: the «Фильтры» switch here changes the constructor too
+            val features by constructorRepository.effective.collectAsState()
             val canCustomize =
                 features.filters || features.tags || features.geo || features.lists
             NavigationDrawerContent(

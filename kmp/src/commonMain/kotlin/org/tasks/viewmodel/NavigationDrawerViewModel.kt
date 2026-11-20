@@ -60,7 +60,7 @@ open class NavigationDrawerViewModel(
         refreshBroadcaster.broadcastRefresh()
     }
 
-    fun updateFiltersEnabled(enabled: Boolean) {
+    open fun updateFiltersEnabled(enabled: Boolean) {
         settings = settings.copy(filtersEnabled = enabled)
         persist { appPreferences.setFiltersEnabled(enabled) }
     }

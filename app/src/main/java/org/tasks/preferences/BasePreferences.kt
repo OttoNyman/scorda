@@ -69,8 +69,12 @@ abstract class BasePreferences : ThemedInjectingAppCompatActivity(),
             toolbar.title = savedInstanceState.getCharSequence(EXTRA_TITLE)
         }
         supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                toolbar.title = getString(getRootTitle())
+            // back to a nested screen shows its own title, not the one of the screen just left
+            val count = supportFragmentManager.backStackEntryCount
+            toolbar.title = if (count == 0) {
+                getString(getRootTitle())
+            } else {
+                supportFragmentManager.getBackStackEntryAt(count - 1).name ?: toolbar.title
             }
         }
         toolbar.navigationIcon =
@@ -121,7 +125,7 @@ abstract class BasePreferences : ThemedInjectingAppCompatActivity(),
         fragment.setTargetFragment(caller, 0)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.settings, fragment)
-                .addToBackStack(null)
+                .addToBackStack(title.toString())
                 .commit()
         toolbar.title = title
         return true
@@ -137,7 +141,7 @@ abstract class BasePreferences : ThemedInjectingAppCompatActivity(),
         )
         supportFragmentManager.beginTransaction()
                 .replace(R.id.settings, fragment)
-                .addToBackStack(null)
+                .addToBackStack(title.toString())
                 .commit()
         toolbar.title = title
         return true

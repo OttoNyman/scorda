@@ -30,7 +30,8 @@ fun NavigationDrawerContent(
     }
     val settings = viewModel.settings
     NavigationDrawerScreen(
-        filtersEnabled = settings.filtersEnabled,
+        // the one «Фильтры» switch: the constructor flag and the drawer flag together
+        filtersEnabled = features.filters && settings.filtersEnabled,
         showToday = settings.todayFilter,
         showRecentlyModified = settings.recentlyModifiedFilter,
         tagsEnabled = settings.tagsEnabled,
@@ -45,7 +46,7 @@ fun NavigationDrawerContent(
         onHideUnusedTags = { viewModel.updateHideUnusedTags(it) },
         onPlacesEnabled = { viewModel.updatePlacesEnabled(it) },
         onHideUnusedPlaces = { viewModel.updateHideUnusedPlaces(it) },
-        showFilters = features.filters,
+        showFilters = true,
         showTags = features.tags,
         showPlaces = features.geo,
     )

@@ -41,12 +41,10 @@ import tasks.kmp.generated.resources.constructor_all_on
 import tasks.kmp.generated.resources.constructor_all_on_confirm
 import tasks.kmp.generated.resources.constructor_comments
 import tasks.kmp.generated.resources.constructor_files
-import tasks.kmp.generated.resources.constructor_filters
 import tasks.kmp.generated.resources.constructor_geo
 import tasks.kmp.generated.resources.constructor_geo_count
 import tasks.kmp.generated.resources.constructor_group_content
 import tasks.kmp.generated.resources.constructor_group_modules
-import tasks.kmp.generated.resources.constructor_group_order
 import tasks.kmp.generated.resources.constructor_group_time
 import tasks.kmp.generated.resources.constructor_memos
 import tasks.kmp.generated.resources.constructor_notes
@@ -233,8 +231,7 @@ fun ConstructorScreen(
                 )
             }
         }
-        Group(Res.string.constructor_group_order)
-        Toggle(Res.string.constructor_filters, effective.filters) { onChange(raw.copy(filters = it)) }
+        // «Фильтры» moved to Screens → Navigation drawer: one switch sets this flag and the drawer's
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }
     pending?.let { preset ->
