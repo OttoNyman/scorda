@@ -24,6 +24,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -97,6 +98,11 @@ import org.tasks.ui.TaskEditViewModel.Companion.TAG_TITLE
 import org.tasks.utility.copyToClipboard
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.delete_task
+import tasks.kmp.generated.resources.pin
+import tasks.kmp.generated.resources.pin_series_pinned
+import tasks.kmp.generated.resources.pin_this_only
+import tasks.kmp.generated.resources.pin_whole_series
+import tasks.kmp.generated.resources.unpin
 import org.tasks.compose.edit.ConvertToMemoDialog
 import org.tasks.compose.edit.ConvertToTaskDialog
 import tasks.kmp.generated.resources.convert_to_memo
@@ -135,6 +141,7 @@ fun TaskEditScreen(
     var showDiscardConfirmation by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmation by rememberSaveable { mutableStateOf(false) }
     var showSeriesScope by rememberSaveable { mutableStateOf(false) }
+    var showPinScope by rememberSaveable { mutableStateOf(false) }
     var showConvertToMemo by rememberSaveable { mutableStateOf(false) }
     var showConvertToTask by rememberSaveable { mutableStateOf(false) }
     var convertMenuExpanded by remember { mutableStateOf(false) }
@@ -226,10 +233,38 @@ fun TaskEditScreen(
                         }
                     }
                 },
-                title = {},
+                title = {
+                    if (viewState.pinSeries && editViewModel.pinningEnabled) {
+                        Text(
+                            text = org.jetbrains.compose.resources.stringResource(Res.string.pin_series_pinned),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                },
                 actions = {
                     if (viewState.isReadOnly) {
                         return@TopAppBar
+                    }
+                    if (editViewModel.pinningEnabled) {
+                        val pinned = viewState.task.pinned > 0
+                        IconButton(
+                            onClick = {
+                                when {
+                                    pinned -> editViewModel.setPinned(false)
+                                    !viewState.isNew && editViewModel.pinAsksSeries -> showPinScope = true
+                                    else -> editViewModel.setPinned(true)
+                                }
+                            },
+                        ) {
+                            SymbolIcon(
+                                name = TasksIcons.PUSH_PIN,
+                                contentDescription = org.jetbrains.compose.resources.stringResource(
+                                    if (pinned) Res.string.unpin else Res.string.pin
+                                ),
+                                tint = if (pinned) MaterialTheme.colorScheme.primary else LocalContentColor.current,
+                                filled = pinned,
+                            )
+                        }
                     }
                     // an uncompleted occurrence can't be deleted: complete, postpone or finish the series
                     if (!viewState.isNew && !(editViewModel.isLiveOccurrence && !viewState.isCompleted)) {
@@ -548,6 +583,28 @@ fun TaskEditScreen(
                     save(it)
                 },
                 onDismiss = { showSeriesScope = false },
+            )
+        }
+        if (showPinScope) {
+            AlertDialog(
+                onDismissRequest = { showPinScope = false },
+                title = { Text(org.jetbrains.compose.resources.stringResource(Res.string.pin)) },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showPinScope = false
+                        editViewModel.setPinned(true, wholeSeries = true)
+                    }) {
+                        Text(org.jetbrains.compose.resources.stringResource(Res.string.pin_whole_series))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showPinScope = false
+                        editViewModel.setPinned(true)
+                    }) {
+                        Text(org.jetbrains.compose.resources.stringResource(Res.string.pin_this_only))
+                    }
+                },
             )
         }
         if (showDeleteConfirmation) {

@@ -64,7 +64,7 @@ class TaskEditViewModelTest : TaskEditViewModelFixture() {
         "title", "priority", "dueDate", "hideUntil", "completionDate", "deletionDate", "notes",
         "estimatedSeconds", "elapsedSeconds", "timerStart", "ringFlags", "recurrence", "repeatFrom",
         "calendarURI", "isCollapsed", "parent", "order", "readOnly", "modificationDate", "reminderLast",
-        "reminderDismissed", "series", "scheduled",
+        "reminderDismissed", "series", "scheduled", "pinned",
     )
     private val notMergedFields = setOf(
         "id", "creationDate", "remoteId", "transitoryData",
@@ -1194,6 +1194,7 @@ class TaskEditViewModelTest : TaskEditViewModelFixture() {
             readOnly = true,
             series = "db-series",
             scheduled = 1200L,
+            pinned = 1300L,
         )
 
         val unexercised = (mergedFields - "deletionDate").filter {

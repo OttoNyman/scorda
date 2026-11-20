@@ -787,6 +787,16 @@ class ApplicationModule {
     )
 
     @Provides
+    @Singleton
+    fun providesTaskPinner(
+        taskDao: TaskDao,
+        seriesDao: SeriesDao,
+        templates: org.tasks.repeats.SeriesTemplates,
+        refreshBroadcaster: RefreshBroadcaster,
+        notifier: Notifier,
+    ) = org.tasks.pins.TaskPinner(taskDao, seriesDao, templates, refreshBroadcaster, notifier)
+
+    @Provides
     fun providesTaskMigrator(
         clientProvider: org.tasks.caldav.CaldavClientProvider,
         caldavDao: CaldavDao,

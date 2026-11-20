@@ -532,6 +532,9 @@
     </receiver>
 
     <receiver android:name=".receivers.CompleteTaskReceiver"/>
+    <receiver
+        android:name=".notifications.PinReceiver"
+        android:exported="false" />
 
     <receiver
         android:name=".receivers.MyPackageReplacedReceiver"

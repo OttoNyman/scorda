@@ -96,6 +96,9 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     var scheduled: Long = 0L,
     @ColumnInfo(name = "memo", defaultValue = "0")
     var memo: Boolean = false,
+    /** When it was pinned; 0 = not pinned. Kept through completion and trash, so undo brings the pin back. */
+    @ColumnInfo(name = "pinned", defaultValue = "0")
+    var pinned: Long = 0L,
     @Ignore
     @Transient
     private var transitoryData: @CommonRawValue HashMap<String, Any>? = null,
@@ -113,6 +116,10 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     /** Checks whether task is deleted. Will return false if DELETION_DATE not read  */
     val isDeleted
         get() = deletionDate > 0
+
+    /** The pin counts only while the task is neither done nor in the trash. */
+    val isPinned
+        get() = pinned > 0 && !isCompleted && !isDeleted
 
     fun hasStartTime() = hasDueTime(hideUntil)
 

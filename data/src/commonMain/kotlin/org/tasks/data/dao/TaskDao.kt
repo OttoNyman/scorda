@@ -218,6 +218,13 @@ FROM recursive_tasks
     @Query("UPDATE tasks SET collapsed = :collapsed WHERE _id IN (:ids)")
     internal abstract suspend fun updateCollapsed(ids: List<Long>, collapsed: Boolean)
 
+    /** Local only: no `modified` bump, nothing to sync. */
+    @Query("UPDATE tasks SET pinned = :value WHERE _id IN (:ids)")
+    abstract suspend fun setPinned(ids: List<Long>, value: Long)
+
+    @Query("SELECT * FROM tasks WHERE pinned > 0 AND completed = 0 AND deleted = 0 ORDER BY pinned DESC")
+    abstract suspend fun getPinned(): List<Task>
+
     @Transaction
     open suspend fun <T> inTransaction(block: suspend () -> T): T = block()
 

@@ -72,6 +72,8 @@ class RepeatTaskHelper(
         task.reminderLast = 0L
         task.reminderDismissed = 0L
         task.completionDate = 0L
+        // the same row comes back as the next time: the pin was for the one just done
+        task.pinned = 0L
         val oldDueDate = task.dueDate
         task.setDueDateAdjustingHideUntil(newDueDate)
         calendarHelper.rescheduleRepeatingTask(task)

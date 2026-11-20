@@ -53,6 +53,8 @@ data class TaskContainer(
         get() = task.title
     val isCompleted: Boolean
         get() = task.isCompleted
+    val isPinned: Boolean
+        get() = task.isPinned
 
     fun hasDueDate(): Boolean {
         return task.hasDueDate()

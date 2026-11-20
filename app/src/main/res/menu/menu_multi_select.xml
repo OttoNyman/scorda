@@ -27,6 +27,12 @@
     app:showAsAction="always" />
 
   <item
+    android:id="@+id/pin_tasks"
+    android:icon="@drawable/ic_push_pin_24px"
+    android:title="@string/multi_select_pin"
+    app:showAsAction="never" />
+
+  <item
     android:id="@+id/menu_select_all"
     android:icon="@drawable/ic_select_all_24px"
     android:title="@string/select_all"

@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var inventory: Inventory
     @Inject lateinit var colorProvider: ColorProvider
     @Inject lateinit var locationDao: LocationDao
+    @Inject lateinit var taskDao: org.tasks.data.dao.TaskDao
     @Inject lateinit var tagDataDao: TagDataDao
     @Inject lateinit var alarmDao: AlarmDao
     @Inject lateinit var firebase: Firebase
@@ -433,7 +434,8 @@ class MainActivity : AppCompatActivity() {
         intent.hasExtra(OPEN_TASK) -> {
             val task = getParcelableExtra(intent, OPEN_TASK, Task::class.java)
             intent.removeExtra(OPEN_TASK)
-            task
+            // the intent's copy can be old (a pinned card is posted long before its tap): edit the saved row
+            task?.takeUnless { it.isNew }?.let { taskDao.fetch(it.id) } ?: task
         }
 
         else -> null

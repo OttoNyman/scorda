@@ -45,6 +45,52 @@ class TaskCompleterTest : DatabaseTest() {
 
     private suspend fun completionOf(task: Task): Long = taskDao.fetch(task.id)!!.completionDate
 
+    /** What the shade would see when asked to refresh the pins: the task's completion at that moment. */
+    private fun pinWatcher(task: () -> Task, seen: MutableList<Long>) = object : org.tasks.notifications.Notifier {
+        override suspend fun cancel(id: Long, reason: org.tasks.notifications.CancelReason) = Unit
+        override suspend fun cancel(ids: List<Long>, reason: org.tasks.notifications.CancelReason) = Unit
+        override suspend fun cancelAll(reason: org.tasks.notifications.CancelReason) = Unit
+        override fun triggerNotifications() = Unit
+        override suspend fun refreshPins() {
+            seen.add(taskDao.fetch(task().id)!!.completionDate)
+        }
+    }
+
+    private fun completerWith(notifier: org.tasks.notifications.Notifier) = TaskCompleter(
+        taskDao = taskDao,
+        taskSaver = TaskSaver(
+            taskDao = taskDao,
+            refreshBroadcaster = mock(),
+            notifier = notifier,
+            locationService = mock(),
+            backgroundWork = mock(),
+            caldavDao = db.caldavDao(),
+        ),
+        notifier = notifier,
+        refreshBroadcaster = mock(),
+        repeatTaskHelper = mock(),
+        caldavDao = db.caldavDao(),
+        calendarHelper = mock(),
+        completionDao = db.completionDao(),
+        soundPlayer = mock(),
+    )
+
+    @Test
+    fun pinsAreRefreshedAfterTheCompletionIsSaved() = runBlocking<Unit> {
+        lateinit var task: Task
+        val seen = mutableListOf<Long>()
+        val completer = completerWith(pinWatcher({ task }, seen))
+        task = newTask("pinned")
+        taskDao.setPinned(listOf(task.id), 1_000L)
+        task = taskDao.fetch(task.id)!!
+
+        completer.setComplete(task, true)
+        assertTrue(seen.last() > 0)
+
+        completer.setComplete(taskDao.fetch(task.id)!!, false)
+        assertEquals(0L, seen.last())
+    }
+
     @Test
     fun completingAnOccurrenceBringsTheNextOneAtOnce() = runBlocking<Unit> {
         val scheduler = mock<SeriesScheduler>()

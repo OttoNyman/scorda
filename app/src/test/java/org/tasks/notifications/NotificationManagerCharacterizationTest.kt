@@ -52,6 +52,7 @@ class NotificationManagerCharacterizationTest {
     private val permissionChecker: PermissionChecker = mock()
     private val workManager: WorkManager = mock()
     private val throttled: ThrottledNotificationManager = mock()
+    private val pinNotifier: PinNotifier = mock()
 
     private val shade = mutableListOf<String>()
 
@@ -107,7 +108,57 @@ class NotificationManagerCharacterizationTest {
             permissionChecker = permissionChecker,
             workManager = workManager,
             ringer = mock(),
+            pinNotifier = pinNotifier,
         )
+    }
+
+    @Test
+    fun cancellingAReminderLetsThePinnedCardComeBack() = runTest {
+        notificationManager.cancel(listOf(1L), CancelReason.SNOOZE)
+
+        verifyBlocking(pinNotifier) { reconcile() }
+    }
+
+    @Test
+    fun aPinnedCardDoesNotHideAMissingReminder() = runTest {
+        givenTask(1L, "pill")
+        whenever(notificationDao.getAllOrdered()) doReturn listOf(notification(1L))
+        val system = context.getSystemService(android.app.NotificationManager::class.java)
+        system.createNotificationChannel(
+            android.app.NotificationChannel(
+                NotificationManager.NOTIFICATION_CHANNEL_PINNED,
+                "pinned",
+                android.app.NotificationManager.IMPORTANCE_LOW,
+            )
+        )
+        system.notify(
+            1,
+            NotificationCompat.Builder(context, NotificationManager.NOTIFICATION_CHANNEL_PINNED)
+                .setSmallIcon(org.tasks.R.drawable.ic_push_pin_24px)
+                .build(),
+        )
+
+        notificationManager.restoreMissing(listOf(1L))
+
+        assertTrue("notify:1" in shade)
+    }
+
+    @Test
+    fun completingDoesNotBringThePinnedCardBack() = runTest {
+        notificationManager.cancel(listOf(1L), CancelReason.COMPLETE)
+        notificationManager.cancel(listOf(2L), CancelReason.REMOTE_COMPLETION)
+        notificationManager.cancel(listOf(3L), CancelReason.REMOTE_DELETION)
+
+        verifyBlocking(pinNotifier, never()) { reconcile() }
+    }
+
+    @Test
+    fun aFailingPinRefreshDoesNotBreakTheCancel() = runTest {
+        pinNotifier.stub { onBlocking { reconcile() } doAnswer { throw IllegalStateException("boom") } }
+
+        notificationManager.cancel(listOf(1L), CancelReason.SNOOZE)
+
+        assertTrue("cancel:1" in shade)
     }
 
     @Test

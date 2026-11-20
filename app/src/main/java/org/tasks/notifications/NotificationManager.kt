@@ -64,6 +64,7 @@ class NotificationManager @Inject constructor(
     private val ringer: Ringer,
     private val featureGate: org.tasks.constructor.FeatureGate =
         org.tasks.constructor.FeatureGate(org.tasks.constructor.Preset.Full.flags),
+    private val pinNotifier: PinNotifier? = null,
 ) : Notifier {
     @InterruptionFilter
     val currentInterruptionFilter: Int
@@ -122,11 +123,28 @@ class NotificationManager @Inject constructor(
                 notifyTasks(emptyList(), alert = false)
             }
         }
+        // after the cancels above ran: a pinned task whose reminder just went gets its quiet card back.
+        // Not on completion or deletion: the row is not saved yet, the card would come back for a done
+        // task. TaskCompleter refreshes the pins once the completion is in.
+        if (reason !in PIN_ENDING) {
+            refreshPins()
+        }
     }
 
     @SuppressLint("CheckResult")
     override suspend fun cancelAll(reason: CancelReason) =
         cancel(SUMMARY_NOTIFICATION_ID.toLong(), reason)
+
+    /** Never fails the caller: a cancel or a completion must not stop on the shade's pinned cards. */
+    override suspend fun refreshPins() {
+        try {
+            pinNotifier?.reconcile()
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.e(e, "Pinned cards")
+        }
+    }
 
     override fun triggerNotifications() {
         workManager.triggerNotifications()
@@ -137,6 +155,8 @@ class NotificationManager @Inject constructor(
         if (taskIds.isEmpty() || !permissionChecker.canNotify()) return
         val active = context.getSystemService(android.app.NotificationManager::class.java)
             .activeNotifications
+            // a pinned card shares the task's id but is not its reminder: the reminder is still missing
+            .filter { it.notification.channelId != NOTIFICATION_CHANNEL_PINNED }
             .map { it.id.toLong() }
             .toSet()
         val missing = taskIds.filter { it !in active && it != TEST_NOTIFICATION_ID.toLong() }
@@ -627,6 +647,12 @@ class NotificationManager @Inject constructor(
         const val NOTIFICATION_CHANNEL_INSISTENT = "reminders_insistent"
         const val NOTIFICATION_CHANNEL_TASKER = "notifications_tasker"
         const val NOTIFICATION_CHANNEL_MISCELLANEOUS = "notifications_miscellaneous"
+        const val NOTIFICATION_CHANNEL_PINNED = "pinned"
+        private val PIN_ENDING = setOf(
+            CancelReason.COMPLETE,
+            CancelReason.REMOTE_COMPLETION,
+            CancelReason.REMOTE_DELETION,
+        )
         const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
         const val EXTRA_NOTIFICATION_TYPE = "extra_notification_type"
         const val SUMMARY_NOTIFICATION_ID = 0

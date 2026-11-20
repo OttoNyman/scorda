@@ -23,6 +23,10 @@ import org.tasks.preferences.QueryPreferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 
 object TaskListQuery {
+    /** Pinned first, latest pin on top; a done or trashed task keeps its pin but does not lead. */
+    const val PINNED_ORDER =
+        "(CASE WHEN tasks.completed = 0 AND tasks.deleted = 0 THEN tasks.pinned ELSE 0 END)"
+
     private const val CALDAV_METADATA_JOIN = "for_caldav"
     private val JOIN_CALDAV = Criterion.and(
             Task.ID.eq(field("$CALDAV_METADATA_JOIN.cd_task")),
@@ -56,18 +60,19 @@ object TaskListQuery {
         val start = currentTimeMillis()
         // Memos never nest, and only the recursive query orders by `order` inside priority bands.
         val flat = features != null && filter !is MemosFilter
+        val pinning = features?.pinning == true
         val sql = when {
-            flat -> getNonRecursiveQuery(filter, preferences, limit)
+            flat -> getNonRecursiveQuery(filter, preferences, limit, pinning)
             filter.supportsManualSort() && preferences.isManualSort ->
-                getRecursiveQuery(filter, preferences, limit, showCollapsed)
+                getRecursiveQuery(filter, preferences, limit, showCollapsed, pinning)
 
             filter is AstridOrderingFilter && preferences.isAstridSort ->
-                getNonRecursiveQuery(filter, preferences, limit)
+                getNonRecursiveQuery(filter, preferences, limit, pinning)
 
             filter.supportsSorting() ->
-                getRecursiveQuery(filter, preferences, limit, showCollapsed)
+                getRecursiveQuery(filter, preferences, limit, showCollapsed, pinning)
 
-            else -> getNonRecursiveQuery(filter, preferences, limit)
+            else -> getNonRecursiveQuery(filter, preferences, limit, pinning)
         }
         return sql
             .let { if (flat) it.replace("(tasks.parent=0)", "(1)") else it }

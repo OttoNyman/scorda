@@ -211,6 +211,7 @@ File %1$s contained %2$s.\n\n
   <string name="location_radius_meters">%s m</string>
   <string name="tags">Tags</string>
   <string name="change_priority">Change priority</string>
+  <string name="multi_select_pin">Pin / unpin</string>
   <string name="date_shortcut_morning">Morning</string>
   <string name="date_shortcut_afternoon">Afternoon</string>
   <string name="date_shortcut_evening">Evening</string>

@@ -163,16 +163,19 @@ open class TaskAdapter(
         findParentIndex(indent, to) { getTask(it).indent }?.let { getTask(it) }
 
     private suspend fun changeSortGroup(task: TaskContainer, pos: Int) {
+        val header = dataSource.nearestHeader(if (pos == 0) 1 else pos)
+        // negative headers (pinned, overdue, completed) are sections, not a date, priority or list
+        if (header < 0) return
         when(dataSource.sortMode) {
             SORT_IMPORTANCE -> {
-                val newPriority = dataSource.nearestHeader(if (pos == 0) 1 else pos).toInt()
+                val newPriority = header.toInt()
                 if (newPriority != task.priority) {
                     taskSaver.save(task.task.copy(priority = newPriority), task.task)
                 }
             }
-            SORT_LIST -> taskMover.move(task.id, dataSource.nearestHeader(if (pos == 0) 1 else pos))
-            SORT_DUE -> applyDueDate(task.task, dataSource.nearestHeader(if (pos == 0) 1 else pos))
-            SORT_START -> applyStartDate(task.task, dataSource.nearestHeader(if (pos == 0) 1 else pos))
+            SORT_LIST -> taskMover.move(task.id, header)
+            SORT_DUE -> applyDueDate(task.task, header)
+            SORT_START -> applyStartDate(task.task, header)
         }
     }
 

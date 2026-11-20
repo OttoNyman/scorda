@@ -37,6 +37,19 @@ class RepeatTaskHelperTests : RepeatTests() {
     }
 
     @Test
+    fun legacyRepeatDropsThePin() {
+        val task = newFromDue(
+                "FREQ=DAILY;INTERVAL=1",
+                newDayTime(2017, 10, 4, 13, 30),
+                with(COMPLETION_TIME, DateTime())
+        ).apply { pinned = 1_000L }
+
+        calculateNextDueDate(task)
+
+        assertEquals(0L, task.pinned)
+    }
+
+    @Test
     fun dontAdjustOnLastInstance() {
         val task = newFromDue(
                 "FREQ=MINUTELY;COUNT=1;INTERVAL=30",

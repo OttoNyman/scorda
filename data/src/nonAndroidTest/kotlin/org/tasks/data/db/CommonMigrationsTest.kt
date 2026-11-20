@@ -208,6 +208,18 @@ class CommonMigrationsTest {
         }
     }
 
+    @Test
+    fun addsPinnedColumnDefaultingToZero() {
+        migrate(100, 101, CommonMigrations.MIGRATION_100_101) {
+            insertTask(100)
+        }.use { db ->
+            db.prepare("SELECT `pinned` FROM `tasks` WHERE `_id` = 100").use {
+                assertTrue(it.step())
+                assertEquals(0L, it.getLong(0))
+            }
+        }
+    }
+
     private fun SQLiteConnection.insertTask(id: Long, modified: Long = 0) {
         execSQL(
             "INSERT INTO `tasks` (`_id`, `importance`, `dueDate`, `hideUntil`, `created`, `modified`, `completed`, `deleted`, `estimatedSeconds`, `elapsedSeconds`, `timerStart`, `notificationFlags`, `lastNotified`, `collapsed`, `parent`) " +

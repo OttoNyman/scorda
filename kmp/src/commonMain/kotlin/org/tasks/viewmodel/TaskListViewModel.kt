@@ -228,6 +228,7 @@ open class TaskListViewModel(
                     subtaskMode = prefs.subtaskMode,
                     collapsed = queriedState.collapsed,
                     completedAtBottom = prefs.completedTasksAtBottom,
+                    pinning = features()?.pinning == true,
                 )
                 if (queriedState.filter.supportsSorting()) {
                     val dateFormatter = DateFormatter.create(is24HourFormat = false)

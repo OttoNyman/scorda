@@ -95,6 +95,13 @@ class TaskSaver(
         if (!task.isSuppressRefresh()) {
             refreshBroadcaster.broadcastRefresh()
         }
+        // the row is saved: a pin made, ended, done, undone, trashed or restored shows in the shade now
+        val wasPinned = (original?.pinned ?: 0L) > 0
+        if ((task.pinned > 0 || wasPinned) &&
+            (original == null || task.pinned != original.pinned || completionDateModified || deletionDateModified)
+        ) {
+            notifier.refreshPins()
+        }
         notifier.triggerNotifications()
         backgroundWork.scheduleRefresh()
     }

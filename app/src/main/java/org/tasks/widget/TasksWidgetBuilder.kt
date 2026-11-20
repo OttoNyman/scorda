@@ -286,6 +286,7 @@ internal class TasksWidgetBuilder(
             widgetPreferences.subtaskMode,
             collapsed,
             widgetPreferences.completedTasksAtBottom,
+            features.pinning,
         )
         if (filter.supportsSorting()) {
             tasks.formatHeaders {

@@ -29,6 +29,7 @@ class NotificationClearedReceiver : BroadcastReceiver() {
     @Inject lateinit var taskCompleter: TaskCompleter
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var ringer: Ringer
+    @Inject lateinit var pinNotifier: PinNotifier
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getLongExtra(NotificationManager.EXTRA_NOTIFICATION_ID, -1L)
@@ -87,6 +88,8 @@ class NotificationClearedReceiver : BroadcastReceiver() {
                         RingAlarm.hasPending(context, notificationId)
                     ) {
                         ringer.stop(listOf(notificationId))
+                        // a swiped reminder of a pinned task leaves its quiet pinned card behind
+                        pinNotifier.show(notificationId)
                     } else {
                         notificationManager.cancel(notificationId, CancelReason.DISMISS)
                         alarmService.markDismissed(listOf(notificationId))

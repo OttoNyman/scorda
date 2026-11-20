@@ -54,6 +54,7 @@ class TaskDuplicator @Inject constructor(
             reminderLast = 0,
             reminderDismissed = 0,
             completionDate = 0L,
+            pinned = 0L,
             calendarURI = "",
             parent = parentId,
             remoteId = Task.NO_UUID,

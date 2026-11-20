@@ -52,6 +52,7 @@ import org.tasks.ui.CheckBoxProvider
 import org.tasks.ui.ChipProvider
 import kotlin.math.max
 import kotlin.math.roundToInt
+import tasks.kmp.generated.resources.pinned_header
 
 class TaskViewHolder internal constructor(
     private val context: Activity,
@@ -315,6 +316,19 @@ class TaskViewHolder internal constructor(
                     )
                 ) {
                     val features = featureGate.current
+                    if (features.pinning && task.isPinned) {
+                        Chip(
+                            icon = TasksIcons.PUSH_PIN,
+                            name = org.jetbrains.compose.resources.stringResource(
+                                tasks.kmp.generated.resources.Res.string.pinned_header
+                            ),
+                            theme = 0,
+                            showText = false,
+                            showIcon = true,
+                            onClick = {},
+                            colorProvider = { chipProvider.getColor(it) },
+                        )
+                    }
                     if (filter is TrashFilter && task.task.isDeleted) {
                         Chip(
                             icon = TasksIcons.DELETE,

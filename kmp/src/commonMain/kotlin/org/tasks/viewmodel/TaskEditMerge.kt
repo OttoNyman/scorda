@@ -44,6 +44,8 @@ internal fun TaskEditViewModel.State.mergedWith(dbTask: Task): TaskEditViewModel
         // the scheduler owns these; the editor never sets them
         series = dbTask.series,
         scheduled = dbTask.scheduled,
+        // pinned from the shade or the list while the editor is open
+        pinned = merge(current.pinned, original.pinned, dbTask.pinned),
     )
     val start = reconcileStartDate(dbTask, merged.dueDate)
     return copy(

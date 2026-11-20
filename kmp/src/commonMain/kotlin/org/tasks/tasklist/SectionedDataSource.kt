@@ -12,6 +12,8 @@ class SectionedDataSource(
     val subtaskMode: Int = SortHelper.SORT_MANUAL,
     private val collapsed: Set<Long> = emptySet(),
     private val completedAtBottom: Boolean = true,
+    /** Constructor «Закрепление»: off, a pinned row is an ordinary row. */
+    val pinning: Boolean = false,
 ): List<UiItem> {
     private val tasks = tasks.toMutableList()
 
@@ -101,7 +103,9 @@ class SectionedDataSource(
         for (i in tasks.indices) {
             val task = tasks[i]
             val sortGroup = task.sortGroup
-            val header = if (completedAtBottom && task.parentComplete) {
+            val header = if (pinning && task.isPinned) {
+                HEADER_PINNED
+            } else if (completedAtBottom && task.parentComplete) {
                 HEADER_COMPLETED
             } else if (sortGroup == null) {
                 continue
@@ -127,6 +131,11 @@ class SectionedDataSource(
                 val previousTask = tasks[i - 1]
                 val previous = previousTask.sortGroup ?: 0L
                 when {
+                    pinning && task.isPinned -> if (!previousTask.isPinned) {
+                        sections.add(AdapterSection(i, header, 0, isCollapsed))
+                    }
+                    // the first row after the pins opens its own group
+                    pinning && previousTask.isPinned -> sections.add(AdapterSection(i, header, 0, isCollapsed))
                     completedAtBottom && task.parentComplete -> {
                         if (!previousTask.parentComplete) {
                             sections.add(AdapterSection(i, header, 0, isCollapsed))
@@ -212,5 +221,6 @@ class SectionedDataSource(
     companion object {
         const val HEADER_OVERDUE = -1L
         const val HEADER_COMPLETED = -2L
+        const val HEADER_PINNED = -3L
     }
 }

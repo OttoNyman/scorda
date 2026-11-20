@@ -147,7 +147,10 @@ class SeriesScheduler(
             recurrence = slot.recurrence
         }
         taskSaver.save(row, original)
-        val template = templates.encode(templates.capture(taskId))
+        // a schedule edit never pins or unpins the series: that is TaskPinner's call
+        val template = templates.encode(
+            templates.capture(taskId).copy(pinned = templates.decode(series.template).pinned)
+        )
         if (timed) {
             val updated = series.copy(template = template)
             val visible = seriesDao.getOccurrences(series.uuid)

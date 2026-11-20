@@ -33,7 +33,12 @@ internal object TaskListQueryNonRecursive {
                 .`as`("parent_title"),
         )).toTypedArray()
 
-    fun getNonRecursiveQuery(filter: Filter, preferences: QueryPreferences, limit: Int? = null): String {
+    fun getNonRecursiveQuery(
+        filter: Filter,
+        preferences: QueryPreferences,
+        limit: Int? = null,
+        pinning: Boolean = false,
+    ): String {
         val joinedQuery = JOINS + if (filter is AstridOrderingFilter) filter.getSqlQuery() else filter.sql!!
         val sortMode = preferences.sortMode
         val groupMode = preferences.groupMode
@@ -45,15 +50,16 @@ internal object TaskListQueryNonRecursive {
             } else {
                 ""
             }
-        val orderBy = "$completeAtBottom $completionSort"
+        val pinOrder = if (pinning) "${TaskListQuery.PINNED_ORDER} DESC," else ""
+        val orderBy = "$pinOrder $completeAtBottom $completionSort"
         val groupedQuery = when {
             // these filters carry their own order; the completed-at-bottom prefix must not lead it
             filter is RecentlyModifiedFilter || filter is CompletedFilter || filter is TrashFilter ->
                 query.replace("ORDER BY", "GROUP BY ${Task.ID} ORDER BY")
             query.contains("ORDER BY") ->
                 query.replace("ORDER BY", "GROUP BY ${Task.ID} ORDER BY $orderBy")
-            preferences.completedTasksAtBottom ->
-                "$query GROUP BY ${Task.ID} ORDER BY $orderBy"
+            preferences.completedTasksAtBottom || pinning ->
+                "$query GROUP BY ${Task.ID} ORDER BY ${orderBy.trim().removeSuffix(",")}"
             else ->
                 "$query GROUP BY ${Task.ID}"
         }

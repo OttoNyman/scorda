@@ -28,6 +28,7 @@ class NotificationWork @AssistedInject constructor(
     private val alarmService: AlarmService,
     private val notifier: Notifier,
     private val seriesScheduler: SeriesScheduler,
+    private val pinNotifier: org.tasks.notifications.PinNotifier,
 ) : RepeatingWorker(context, workerParams, firebase) {
     private var nextAlarm: Long = 0
 
@@ -47,6 +48,8 @@ class NotificationWork @AssistedInject constructor(
                 notifier.triggerNotifications(it)
             }
             nextAlarm = listOf(alarm, wake).filter { it > 0 }.minOrNull() ?: 0
+            // last: new occurrences of a pinned series and boot or update restores get their cards here
+            pinNotifier.reconcile()
         }
         return Result.success()
     }

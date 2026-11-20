@@ -149,6 +149,12 @@ object CommonMigrations {
         }
     }
 
+    val MIGRATION_100_101 = object : Migration(100, 101) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("ALTER TABLE tasks ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0")
+        }
+    }
+
     val all: Array<Migration> = arrayOf(
         MIGRATION_92_93,
         MIGRATION_94_95,
@@ -157,5 +163,6 @@ object CommonMigrations {
         MIGRATION_97_98,
         MIGRATION_98_99,
         MIGRATION_99_100,
+        MIGRATION_100_101,
     )
 }

@@ -8,7 +8,10 @@ import androidx.core.app.NotificationManagerCompat.InterruptionFilter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.Executors.newSingleThreadExecutor
 import javax.inject.Inject
+import javax.inject.Singleton
 
+/** One queue and one rate limit for every poster: a cancel and a later notify of the same id never swap. */
+@Singleton
 class ThrottledNotificationManager @Inject constructor(
         @ApplicationContext val context: Context
 ) {

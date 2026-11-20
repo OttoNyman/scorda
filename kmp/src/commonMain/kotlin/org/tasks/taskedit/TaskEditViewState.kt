@@ -27,6 +27,8 @@ data class TaskEditViewState(
     val calendar: String?,
     val attachments: ImmutableSet<TaskAttachment> = persistentSetOf(),
     val alarms: ImmutableSet<Alarm>,
+    /** The whole series of this occurrence is pinned. */
+    val pinSeries: Boolean = false,
 ) {
     val isNew: Boolean
         get() = task.isNew

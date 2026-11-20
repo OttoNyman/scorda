@@ -18,7 +18,9 @@ internal object TaskListQueryRecursive {
         preferences: QueryPreferences,
         limit: Int? = null,
         showCollapsed: Boolean = false,
+        pinning: Boolean = false,
     ): String {
+        val pinSort = if (pinning) TaskListQuery.PINNED_ORDER else "0"
         val parentQuery = when (filter) {
             is CaldavFilter -> newCaldavQuery(filter.uuid)
             else -> PermaSql.replacePlaceholdersForQuery(filter.sql!!)
@@ -63,6 +65,7 @@ internal object TaskListQueryRecursive {
                     0 AS hidden,
                     0 AS indent,
                     UPPER(tasks.title) AS sort_title,
+                    $pinSort AS pin_sort,
                     ${SortHelper.orderSelectForSortTypeRecursive(groupMode, true, preferences)} AS primary_group,
                     ${SortHelper.orderSelectForSortTypeRecursive(sortMode, false, preferences)} AS primary_sort,
                     NULL as secondary_sort,
@@ -80,6 +83,7 @@ internal object TaskListQueryRecursive {
                     CASE WHEN $folded OR recursive_tasks.hidden > 0 THEN 1 ELSE 0 END AS hidden,
                     recursive_tasks.indent + 1 AS indent,
                     UPPER(tasks.title) AS sort_title,
+                    recursive_tasks.pin_sort AS pin_sort,
                     recursive_tasks.primary_group AS primary_group,
                     recursive_tasks.primary_sort AS primary_sort,
                     ${SortHelper.orderSelectForSortTypeRecursive(subtaskMode, false, preferences)} AS secondary_sort,
@@ -93,6 +97,7 @@ internal object TaskListQueryRecursive {
                 ORDER BY
                     parent_complete,
                     indent DESC,
+                    pin_sort DESC,
                     ${if (completedAtBottom) "subtask_complete," else ""}
                     completion_sort ${if (preferences.completedAscending) "" else "DESC"},
                     ${SortHelper.orderForGroupTypeRecursive(groupMode, groupAscending)},

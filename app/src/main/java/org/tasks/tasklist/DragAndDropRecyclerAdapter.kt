@@ -140,6 +140,8 @@ class DragAndDropRecyclerAdapter(
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
             if (viewHolder !is TaskViewHolder) return NO_MOVEMENT
             val drag = when {
+                // pinned rows keep their pin order, latest pin on top
+                items.pinning && viewHolder.task.isPinned -> 0
                 viewHolder.task.task.memo && !taskList.memosDragEnabled() -> 0
                 !dragAndDropEnabled() -> 0
                 adapter.numSelected > 0 -> 0
@@ -159,6 +161,13 @@ class DragAndDropRecyclerAdapter(
             val toPosition = target.bindingAdapterPosition
             val source = src as TaskViewHolder
             val isHeader = isHeader(toPosition)
+            // a loose row never lands among the pinned ones, nor on the pinned header
+            if (isHeader && items.getHeaderValue(toPosition) == SectionedDataSource.HEADER_PINNED) {
+                return false
+            }
+            if (!isHeader && items.pinning && (target as TaskViewHolder).task.isPinned) {
+                return false
+            }
             if (!isHeader && !adapter.canMove(source.task, fromPosition, (target as TaskViewHolder).task, toPosition)) {
                 return false
             }

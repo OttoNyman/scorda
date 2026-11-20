@@ -34,6 +34,7 @@ class ConstructorRepository @Inject constructor(
     private val workManager: Lazy<WorkManager>,
     private val locationService: Lazy<LocationService>,
     private val localBroadcastManager: Lazy<LocalBroadcastManager>,
+    private val pinNotifier: Lazy<org.tasks.notifications.PinNotifier>,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val rawFlow = MutableStateFlow(preferences.readConstructor())
@@ -155,6 +156,8 @@ class ConstructorRepository @Inject constructor(
                 locationService.get().registerAllGeofences()
             }
             workManager.get().triggerNotifications()
+            // «Закрепление» or «Заметки» toggled: the pinned cards go or come back with it, not 5 s later
+            pinNotifier.get().reconcile()
             localBroadcastManager.get().broadcastRefresh()
         } catch (e: Exception) {
             Timber.e(e)

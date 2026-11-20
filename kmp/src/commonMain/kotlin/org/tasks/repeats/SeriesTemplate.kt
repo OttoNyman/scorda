@@ -18,6 +18,7 @@ import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Geofence
 import org.tasks.data.entity.Series
 import org.tasks.data.entity.Task
+import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.preferences.AppPreferences
 
 /** What an occurrence looks like; stored as JSON in [Series.template]. */
@@ -41,6 +42,8 @@ data class SeriesTemplate(
     val subtasks: List<SeriesTemplate> = emptyList(),
     /** Subtasks only: `subtask.dueDate - parent.dueDate`, null means no due date. */
     val dueOffset: Long? = null,
+    /** The whole series is pinned: every emitted occurrence comes pinned. Never captured from a row. */
+    val pinned: Boolean = false,
 )
 
 @Serializable
@@ -137,6 +140,7 @@ class SeriesTemplates(
             series = series,
             scheduled = scheduled,
             parent = parent?.id ?: 0,
+            pinned = if (t.pinned) currentTimeMillis() else 0L,
         )
         if (parent != null) {
             task.suppressRefresh()

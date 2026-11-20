@@ -57,6 +57,13 @@
     <string name="completed">Завершено</string>
     <string name="trash">Корзина</string>
     <string name="filter_overdue">Просроченное</string>
+    <string name="pinned_header">Закреплено</string>
+    <string name="pin">Закрепить</string>
+    <string name="unpin">Открепить</string>
+    <string name="pin_this_only">Только эту</string>
+    <string name="pin_whole_series">Всю серию</string>
+    <string name="pin_series_pinned">Закреплена вся серия</string>
+    <string name="pin_channel">Закреплённые</string>
     <string name="no_due_date">Без напоминания</string>
     <string name="no_start_date">Нет даты начала</string>
     <string name="no_date">Без даты</string>
@@ -681,6 +688,10 @@
     <string name="inbox_list">Входящие</string>
     <string name="lists_on_message">Все задачи — в списке «%1$s»</string>
     <string name="constructor_checklist">Чек-лист</string>
+    <string name="constructor_pinning">Закрепление</string>
+    <string name="constructor_pinning_summary">Закреплённое стоит первым в списках и в виджете</string>
+    <string name="constructor_pin_shade">В шторке</string>
+    <string name="constructor_pin_shade_summary">Каждое закреплённое висит тихой карточкой в шторке, пока не выполнишь или не открепишь; смахнутая возвращается</string>
     <string name="constructor_tags">Теги</string>
     <string name="constructor_filters">Фильтры</string>
     <string name="constructor_priority">Приоритет</string>

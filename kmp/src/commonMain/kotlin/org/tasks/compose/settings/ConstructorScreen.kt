@@ -61,6 +61,10 @@ import tasks.kmp.generated.resources.default_recurrence
 import tasks.kmp.generated.resources.EPr_default_location_reminder_title
 import tasks.kmp.generated.resources.location_update_interval_title
 import tasks.kmp.generated.resources.constructor_checklist
+import tasks.kmp.generated.resources.constructor_pin_shade
+import tasks.kmp.generated.resources.constructor_pin_shade_summary
+import tasks.kmp.generated.resources.constructor_pinning
+import tasks.kmp.generated.resources.constructor_pinning_summary
 import tasks.kmp.generated.resources.constructor_tags
 import tasks.kmp.generated.resources.constructor_tasks
 import tasks.kmp.generated.resources.constructor_tasks_summary
@@ -138,6 +142,21 @@ fun ConstructorScreen(
         Group(Res.string.constructor_group_content)
         Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
         Toggle(Res.string.constructor_checklist, effective.checklist) { onChange(raw.copy(checklist = it)) }
+        Toggle(
+            title = Res.string.constructor_pinning,
+            checked = effective.pinning,
+            summary = stringResource(Res.string.constructor_pinning_summary),
+            summaryWhenOff = true,
+        ) { onChange(raw.copy(pinning = it)) }
+        if (effective.pinning) {
+            Toggle(
+                title = Res.string.constructor_pin_shade,
+                checked = effective.pinShade,
+                summary = stringResource(Res.string.constructor_pin_shade_summary),
+                summaryWhenOff = true,
+                nested = true,
+            ) { onChange(raw.copy(pinShade = it)) }
+        }
         Toggle(
             title = Res.string.constructor_repeat,
             checked = effective.repeat,

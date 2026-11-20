@@ -20,6 +20,10 @@ data class Constructor(
     /** Raw: keep local lists next to synced ones. Effective: the local block is shown. */
     val localLists: Boolean = false,
     val memos: Boolean = false,
+    /** Pinned tasks and memos go first in their list and in the widget. */
+    val pinning: Boolean = false,
+    /** Under [pinning]: each pinned item also keeps a card in the notification shade. */
+    val pinShade: Boolean = false,
 ) {
     fun effective(
         sync: Boolean,
@@ -78,6 +82,7 @@ val Preset.flags: Constructor
             advance = true,
             files = true,
             memos = true,
+            pinning = true,
         )
     }
 

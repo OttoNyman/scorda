@@ -122,6 +122,7 @@ class TaskEditViewModel @Inject constructor(
     private val seriesScheduler: SeriesScheduler,
     private val taskCreator: TaskCreator,
     private val memoConverter: MemoConverter,
+    private val taskPinner: org.tasks.pins.TaskPinner? = null,
 ) : ViewModel() {
     private val resources = context.resources
     private var cleared = false
@@ -173,6 +174,7 @@ class TaskEditViewModel @Inject constructor(
             location = null,
             tags = persistentSetOf(),
             list = CaldavFilter(calendar = CaldavCalendar(), account = CaldavAccount()),
+            pinSeries = series?.let { runBlocking { taskPinner?.isSeriesPinned(it.uuid) } } == true,
         )
     )
     val originalState: StateFlow<TaskEditViewState> = _originalState
@@ -324,6 +326,7 @@ class TaskEditViewModel @Inject constructor(
             ?: task.title?.takeIf { it.isNotBlank() }
             ?: getString(Res.string.no_title)
         task.priority = viewState.task.priority
+        task.pinned = viewState.task.pinned
         task.notes = Checklist.withoutBlankItems(viewState.task.notes)
         val savingMemo = viewState.task.memo
         if (savingMemo) {
@@ -584,6 +587,39 @@ class TaskEditViewModel @Inject constructor(
 
     val memosEnabled: Boolean
         get() = featureGate.current.memos
+
+    val pinningEnabled: Boolean
+        get() = featureGate.current.pinning
+
+    /** Pinning an occurrence of a running series asks: this one or the whole series. */
+    val pinAsksSeries: Boolean
+        get() = series?.finished == 0L
+
+    /**
+     * A new task is pinned with its save. An existing one is pinned right away, both in the editor's
+     * original and current state: it is not an edit to confirm and never asks the series scope.
+     */
+    fun setPinned(pinned: Boolean, wholeSeries: Boolean = false) {
+        val value = if (pinned) currentTimeMillis() else 0L
+        val pinSeries = pinned && wholeSeries
+        if (task.isNew) {
+            _viewState.update { it.copy(task = it.task.copy(pinned = value)) }
+            return
+        }
+        task.pinned = value
+        val apply: (TaskEditViewState) -> TaskEditViewState = {
+            it.copy(task = it.task.copy(pinned = value), pinSeries = pinSeries)
+        }
+        _originalState.update(apply)
+        _viewState.update(apply)
+        viewModelScope.launch {
+            if (pinned) {
+                taskPinner?.pin(listOf(task.id), wholeSeries)
+            } else {
+                taskPinner?.unpin(listOf(task.id))
+            }
+        }
+    }
 
     private fun showsComments(memo: Boolean): Boolean =
         !memo && preferences.getBoolean(R.string.p_show_task_edit_comments, false)

@@ -88,6 +88,13 @@
     <string name="completed">Completed</string>
     <string name="trash">Trash</string>
     <string name="filter_overdue">Overdue</string>
+    <string name="pinned_header">Pinned</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="pin_this_only">This one only</string>
+    <string name="pin_whole_series">Whole series</string>
+    <string name="pin_series_pinned">Whole series pinned</string>
+    <string name="pin_channel">Pinned</string>
     <string name="no_due_date">No reminder</string>
     <string name="no_start_date">No start date</string>
     <string name="no_date">No date</string>
@@ -800,6 +807,10 @@
     <string name="inbox_list">Inbox</string>
     <string name="lists_on_message">All tasks are in “%1$s”</string>
     <string name="constructor_checklist">Checklist</string>
+    <string name="constructor_pinning">Pinning</string>
+    <string name="constructor_pinning_summary">Pinned items stay at the top of lists and the widget</string>
+    <string name="constructor_pin_shade">In the notification shade</string>
+    <string name="constructor_pin_shade_summary">Each pinned item keeps a quiet card in the shade until done or unpinned; a swiped card comes back</string>
     <string name="constructor_tags">Tags</string>
     <string name="constructor_filters">Filters</string>
     <string name="constructor_priority">Priority</string>

@@ -519,6 +519,8 @@ class Preferences @JvmOverloads constructor(
         files = getBoolean("constructor_files", false),
         localLists = getBoolean("constructor_local_lists", false),
         memos = getBoolean("constructor_memos", false),
+        pinning = getBoolean("constructor_pinning", false),
+        pinShade = getBoolean("constructor_pin_shade", false),
     )
 
     fun writeConstructor(value: org.tasks.constructor.Constructor) {
@@ -534,6 +536,8 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_files", value.files)
         setBoolean("constructor_local_lists", value.localLists)
         setBoolean("constructor_memos", value.memos)
+        setBoolean("constructor_pinning", value.pinning)
+        setBoolean("constructor_pin_shade", value.pinShade)
     }
 
     fun getInt(resourceId: Int, defValue: Int): Int =

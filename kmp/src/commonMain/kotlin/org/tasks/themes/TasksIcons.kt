@@ -2,6 +2,7 @@ package org.tasks.themes
 
 object TasksIcons {
     const val LABEL = "label"
+    const val PUSH_PIN = "push_pin"
     const val FILTER_LIST = "filter_list"
     const val CLOUD = "cloud"
     const val ALL_INBOX = "all_inbox"

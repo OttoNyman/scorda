@@ -26,4 +26,7 @@ interface Notifier {
     suspend fun cancelAll(reason: CancelReason)
 
     fun triggerNotifications()
+
+    /** Bring the shade's pinned cards in line with the database. */
+    suspend fun refreshPins() {}
 }

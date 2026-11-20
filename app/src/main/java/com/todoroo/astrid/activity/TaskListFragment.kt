@@ -202,6 +202,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     @Inject lateinit var taskMover: TaskMover
     @Inject lateinit var taskAdapterProvider: TaskAdapterProvider
     @Inject lateinit var taskDao: TaskDao
+    @Inject lateinit var taskPinner: org.tasks.pins.TaskPinner
     @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
     @Inject lateinit var taskSaver: TaskSaver
     @Inject lateinit var taskDuplicator: TaskDuplicator
@@ -992,6 +993,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             listOf(R.id.edit_priority, R.id.menu_share).forEach { menu.findItem(it).isVisible = false }
         }
         if (!featureGate.current.lists) menu.findItem(R.id.move_tasks).isVisible = false
+        menu.findItem(R.id.pin_tasks).isVisible =
+            featureGate.current.pinning && !trash && filter !is CompletedFilter
         return true
     }
 
@@ -1115,6 +1118,19 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             }
             R.id.restore -> {
                 restoreSelectedItems(selected)
+                true
+            }
+            R.id.pin_tasks -> {
+                logMultiSelect("pin", selected.size)
+                lifecycleScope.launch {
+                    // any loose one: pin them all; all pinned: unpin. Never the whole series from here.
+                    if (taskDao.fetch(selected).any { !it.isPinned }) {
+                        taskPinner.pin(selected)
+                    } else {
+                        taskPinner.unpin(selected)
+                    }
+                    finishActionMode()
+                }
                 true
             }
             R.id.finish_series -> {

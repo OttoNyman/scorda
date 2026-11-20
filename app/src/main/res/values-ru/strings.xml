@@ -421,6 +421,7 @@
     <string name="customize_drawer">Настроить панель</string>
     <string name="delete_comment">комментарий</string>
     <string name="change_priority">Изменить приоритет</string>
+    <string name="multi_select_pin">Закрепить / открепить</string>
     <string name="price_per_year_with_currency">%s/год</string>
     <string name="price_per_month_with_currency">%s/месяц</string>
     <string name="sync_warning_microsoft_title">О синхронизации с Microsoft To Do</string>
