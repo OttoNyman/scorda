@@ -290,6 +290,11 @@ File %1$s contained %2$s.\n\n
   <string name="series_edit_scope_title">Change</string>
   <string name="series_edit_occurrence">Only this occurrence</string>
   <string name="series_edit_schedule">Schedule</string>
+  <string name="reopen_completed_title">Make it active again?</string>
+  <string name="reopen_series_body">On save, the series starts again and the time moves to the next one.</string>
+  <string name="reopen_occurrence_body">This occurrence becomes open again. The next one stays.</string>
+  <string name="reopen_completed_confirm">Make active</string>
+  <string name="reopen_completed_keep">Leave completed</string>
   <string name="copy_selected_tasks">Copy selected tasks?</string>
   <string name="user">User</string>
   <string name="password">Password</string>

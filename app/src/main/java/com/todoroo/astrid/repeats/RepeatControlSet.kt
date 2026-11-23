@@ -40,7 +40,7 @@ class RepeatControlSet : TaskEditControlFragment() {
         viewModel.viewState.value.task.recurrence?.takeIf { it.isNotBlank() }?.let { recurrence ->
             val anchored = recurrence.anchoredToDueDate(viewModel.dueDate.value)
             if (anchored != recurrence) {
-                viewModel.setRecurrence(anchored)
+                viewModel.setRecurrence(anchored, fromUser = false)
             }
         }
     }

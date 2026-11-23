@@ -152,6 +152,13 @@ class TaskEditViewModel @Inject constructor(
     /** Occurrence of a running series: it can't be deleted (spec point 12). */
     val isLiveOccurrence: Boolean = series?.finished == 0L
 
+    /** Finished series: saying yes restarts it and moves the time to the next slot. */
+    val reopenRestartsSeries: Boolean = (series?.finished ?: 0L) != 0L
+
+    private val _reopenSeries = MutableStateFlow(false)
+    val reopenSeries: StateFlow<Boolean> = _reopenSeries
+    private var reopenDeclined = false
+
     private val _originalState = MutableStateFlow(
         TaskEditViewState(
             task = series?.let { task.copy(recurrence = it.recurrence, repeatFrom = it.repeatFrom) } ?: task,
@@ -194,9 +201,10 @@ class TaskEditViewModel @Inject constructor(
 
     val dueDate = MutableStateFlow(task.dueDate)
 
-    fun setDueDate(value: Long) {
-        val hadDueDate = dueDate.value > 0
-        val hadDueTime = hasDueTime(dueDate.value)
+    fun setDueDate(value: Long, fromUser: Boolean = true) {
+        val previous = dueDate.value
+        val hadDueDate = previous > 0
+        val hadDueTime = hasDueTime(previous)
         dueDate.value = when {
             value == 0L -> 0
             hasDueTime(value) -> createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, value)
@@ -221,13 +229,15 @@ class TaskEditViewModel @Inject constructor(
                     }
                 }
         }
+        if (fromUser && dueDate.value != previous) markEdited()
     }
 
     val startDate = MutableStateFlow(task.hideUntil)
 
     fun setStartDate(value: Long) {
-        val hadStartDate = startDate.value > 0
-        val hadStartTime = hasDueTime(startDate.value)
+        val previous = startDate.value
+        val hadStartDate = previous > 0
+        val hadStartTime = hasDueTime(previous)
         startDate.value = when {
             value == 0L -> 0
             hasDueTime(value) ->
@@ -252,6 +262,7 @@ class TaskEditViewModel @Inject constructor(
                     }
                 }
         }
+        if (startDate.value != previous) markEdited()
     }
 
     fun hasChanges(): Boolean = hasChanges(_viewState.value)
@@ -481,20 +492,20 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun removeAlarm(alarm: Alarm) {
-        _viewState.update { state ->
+        updateState { state ->
             state.copy(alarms = state.alarms.minus(alarm).toPersistentSet())
         }
     }
 
     /** The "In advance" row: replaces the one early ring, null removes it. */
     fun setAdvance(offset: Long?) {
-        _viewState.update { state ->
+        updateState { state ->
             state.copy(alarms = state.alarms.withAdvance(offset).toPersistentSet())
         }
     }
 
     fun addAlarm(alarm: Alarm) {
-        _viewState.update { state ->
+        updateState { state ->
             state.copy(alarms = state.alarms.plusAlarm(alarm))
         }
     }
@@ -527,15 +538,15 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setPriority(priority: Int) {
-        _viewState.update { state -> state.copy(task = state.task.copy(priority = priority)) }
+        updateState { state -> state.copy(task = state.task.copy(priority = priority)) }
     }
 
     fun setTitle(title: String) {
-        _viewState.update { state -> state.copy(task = state.task.copy(title = title)) }
+        updateState { state -> state.copy(task = state.task.copy(title = title)) }
     }
 
-    fun setRecurrence(recurrence: String?) {
-        _viewState.update { state -> state.copy(task = state.task.copy(recurrence = recurrence)) }
+    fun setRecurrence(recurrence: String?, fromUser: Boolean = true) {
+        updateState(fromUser) { state -> state.copy(task = state.task.copy(recurrence = recurrence)) }
         if (recurrence.isNullOrBlank() || hasDueTime(dueDate.value)) {
             return
         }
@@ -545,9 +556,9 @@ class TaskEditViewModel @Inject constructor(
         val period = subDayPeriod(recurrence)
         when {
             period != null ->
-                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, currentTimeMillis() + period))
+                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, currentTimeMillis() + period), fromUser)
             dueDate.value == 0L ->
-                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY, currentTimeMillis()))
+                setDueDate(createDueDate(Task.URGENCY_SPECIFIC_DAY, currentTimeMillis()), fromUser)
         }
     }
 
@@ -567,19 +578,19 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setDescription(description: String) {
-        _viewState.update { state -> state.copy(task = state.task.copy(notes = description)) }
+        updateState { state -> state.copy(task = state.task.copy(notes = description)) }
     }
 
     /** The description field without the checklist block that rides at the end of the notes. */
     fun setDescriptionText(text: String) {
-        _viewState.update { state ->
+        updateState { state ->
             val items = Checklist.parse(state.task.notes).items
             state.copy(task = state.task.copy(notes = Checklist.join(text, items)))
         }
     }
 
     fun setChecklist(items: List<Checklist.Item>) {
-        _viewState.update { state ->
+        updateState { state ->
             val text = Checklist.parse(state.task.notes).text
             state.copy(task = state.task.copy(notes = Checklist.join(text, items)))
         }
@@ -786,21 +797,50 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setList(list: CaldavFilter) {
-        _viewState.update { it.copy(list = list) }
+        updateState { it.copy(list = list) }
     }
 
     fun setTags(tags: Set<TagData>) {
-        _viewState.update { it.copy(tags = tags.toPersistentSet()) }
+        updateState { it.copy(tags = tags.toPersistentSet()) }
     }
 
     fun setLocation(location: Location?) {
-        _viewState.update { it.copy(location = location) }
+        updateState { it.copy(location = location) }
     }
 
     fun setAttachments(attachments: Set<TaskAttachment>) {
-        _viewState.update { it.copy(attachments = attachments.toPersistentSet()) }
+        updateState { it.copy(attachments = attachments.toPersistentSet()) }
     }
 
+    fun answerReopen(reopen: Boolean) {
+        _reopenSeries.value = false
+        if (reopen) setComplete(false) else reopenDeclined = true
+    }
+
+    private fun markEdited() {
+        when (reopenOnEdit(
+            completed = _viewState.value.isCompleted,
+            series = series != null,
+            declined = reopenDeclined,
+            readOnly = _viewState.value.isReadOnly,
+            memo = _viewState.value.task.memo,
+        )) {
+            Reopen.None -> Unit
+            Reopen.Clear -> setComplete(false)
+            Reopen.Ask -> _reopenSeries.value = true
+        }
+    }
+
+    private fun updateState(
+        fromUser: Boolean = true,
+        block: (TaskEditViewState) -> TaskEditViewState,
+    ) {
+        val before = _viewState.value
+        val after = block(before)
+        if (after == before) return
+        _viewState.value = after
+        if (fromUser) markEdited()
+    }
 
     fun setComplete(completed: Boolean) {
         _viewState.update { state ->
@@ -817,7 +857,7 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setRepeatFrom(repeatFrom: @Task.RepeatFrom Int) {
-        _viewState.update { state ->
+        updateState { state ->
             state.copy(task = state.task.copy(repeatFrom = repeatFrom))
         }
     }
@@ -830,7 +870,7 @@ class TaskEditViewModel @Inject constructor(
         _viewState.value.task.recurrence?.takeIf { it.isNotBlank() }?.let { recurrence ->
             val anchored = recurrence.anchoredToDueDate(dueDate.value)
             if (anchored != recurrence) {
-                setRecurrence(anchored)
+                setRecurrence(anchored, fromUser = false)
             }
         }
     }
@@ -874,8 +914,22 @@ class TaskEditViewModel @Inject constructor(
         }
     }
 
+    enum class Reopen { None, Clear, Ask }
+
     companion object {
         private const val EXTRA_WAS_INIT = "extra_was_init"
+
+        fun reopenOnEdit(
+            completed: Boolean,
+            series: Boolean,
+            declined: Boolean,
+            readOnly: Boolean = false,
+            memo: Boolean = false,
+        ): Reopen = when {
+            !completed || declined || readOnly || memo -> Reopen.None
+            series -> Reopen.Ask
+            else -> Reopen.Clear
+        }
 
         // one spark tasks for windows adds these
         fun String?.stripCarriageReturns(): String? = this?.replace("\\r\\n?".toRegex(), "\n")

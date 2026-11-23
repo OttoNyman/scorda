@@ -244,6 +244,11 @@
     <string name="series_edit_scope_title">Изменить</string>
     <string name="series_edit_occurrence">Только это выполнение</string>
     <string name="series_edit_schedule">Расписание</string>
+    <string name="reopen_completed_title">Снова сделать активной?</string>
+    <string name="reopen_series_body">При сохранении серия снова пойдёт, срок встанет на следующее время.</string>
+    <string name="reopen_occurrence_body">Это выполнение снова станет открытым. Следующее останется.</string>
+    <string name="reopen_completed_confirm">Сделать активной</string>
+    <string name="reopen_completed_keep">Оставить выполненной</string>
     <string name="copy_selected_tasks">Скопировать выбранные задачи?</string>
     <string name="user">Пользователь</string>
     <string name="password">Пароль</string>

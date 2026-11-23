@@ -1,12 +1,14 @@
 package org.tasks.ui
 
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.constructor.Constructor
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DESCRIPTION
+import org.tasks.ui.TaskEditViewModel.Companion.reopenOnEdit
+import org.tasks.ui.TaskEditViewModel.Reopen
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DUE_DATE
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_LIST
 import org.tasks.ui.TaskEditViewModel.Companion.stripCarriageReturns
@@ -44,6 +46,28 @@ class TaskEditViewModelTest {
         val order = TaskEditViewModel.displayOrder(Constructor(notes = false), memo = false, hasNotes = false)
 
         assertFalse(order.contains(TAG_DESCRIPTION))
+    }
+
+    @Test
+    fun editingACompletedTaskClearsIt() {
+        assertEquals(Reopen.Clear, reopenOnEdit(completed = true, series = false, declined = false))
+    }
+
+    @Test
+    fun editingACompletedSeriesAsks() {
+        assertEquals(Reopen.Ask, reopenOnEdit(completed = true, series = true, declined = false))
+    }
+
+    @Test
+    fun aDeclinedSeriesStaysCompleted() {
+        assertEquals(Reopen.None, reopenOnEdit(completed = true, series = true, declined = true))
+    }
+
+    @Test
+    fun anOpenTaskAndAMemoStayAsTheyAre() {
+        assertEquals(Reopen.None, reopenOnEdit(completed = false, series = false, declined = false))
+        assertEquals(Reopen.None, reopenOnEdit(completed = true, series = false, declined = false, memo = true))
+        assertEquals(Reopen.None, reopenOnEdit(completed = true, series = true, declined = false, readOnly = true))
     }
 
     @Test

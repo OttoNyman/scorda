@@ -179,7 +179,9 @@ fun TaskEditScreen(
     }
     // an occurrence asks once per save whether the edit is for it or for its schedule
     val requestSave = {
-        if (editViewModel.asksSeriesScope()) {
+        if (editViewModel.reopenSeries.value) {
+            Unit
+        } else if (editViewModel.asksSeriesScope()) {
             val prompt = { showSeriesScope = true }
             context.findActivity()?.hideKeyboardThen(prompt) ?: prompt()
         } else {
@@ -583,6 +585,33 @@ fun TaskEditScreen(
                     discard()
                 },
                 onDismiss = { showDiscardConfirmation = false },
+            )
+        }
+        if (editViewModel.reopenSeries.collectAsStateWithLifecycle().value) {
+            AlertDialog(
+                onDismissRequest = { editViewModel.answerReopen(false) },
+                title = { Text(stringResource(R.string.reopen_completed_title)) },
+                text = {
+                    Text(
+                        stringResource(
+                            if (editViewModel.reopenRestartsSeries) {
+                                R.string.reopen_series_body
+                            } else {
+                                R.string.reopen_occurrence_body
+                            }
+                        )
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = { editViewModel.answerReopen(true) }) {
+                        Text(stringResource(R.string.reopen_completed_confirm))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { editViewModel.answerReopen(false) }) {
+                        Text(stringResource(R.string.reopen_completed_keep))
+                    }
+                },
             )
         }
         if (showSeriesScope) {
