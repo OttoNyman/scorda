@@ -691,6 +691,10 @@
     <string name="constructor_pinning">Закрепление</string>
     <string name="constructor_pinning_summary">Закреплённое стоит первым в списках и в виджете</string>
     <string name="constructor_pin_shade">В шторке</string>
+    <string name="notes_off_title">Выключить «Описание»?</string>
+    <string name="notes_off_message">Описание есть у задач: %1$d.\n\nОставить как есть: их видно и можно править, у новых задач поля не будет.\n\nУдалить: описания сотрутся вместе с чек-листами в них. Заметки не трогаются.</string>
+    <string name="notes_off_delete">Удалить</string>
+    <string name="notes_off_keep">Оставить как есть</string>
     <string name="constructor_pin_shade_summary">Каждое закреплённое висит тихой карточкой в шторке, пока не выполнишь или не открепишь; смахнутая возвращается</string>
     <string name="constructor_tags">Теги</string>
     <string name="constructor_filters">Фильтры</string>

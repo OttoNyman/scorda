@@ -220,7 +220,15 @@
     <string name="trash">Корзина</string>
     <string name="trash_moved">Перемещено в корзину: %s</string>
     <string name="trash_restore">Восстановить</string>
-    <string name="trash_retention">Удаляются навсегда через %d дней после удаления</string>
+    <string name="trash_retention">Удаляются через %d дней</string>
+    <string name="task_info">О задаче</string>
+    <string name="task_info_created">Создана</string>
+    <string name="task_info_modified">Последнее изменение</string>
+    <string name="task_info_completed">Выполнена</string>
+    <string name="task_info_deleted">В корзине с</string>
+    <string name="task_info_pinned">Закреплена</string>
+    <string name="task_info_reminded">Последнее напоминание</string>
+    <string name="task_info_series">Серия с</string>
     <string name="trash_deleted_at">Удалено: %s</string>
     <string name="trash_restored">Восстановлено: %s</string>
     <string name="trash_delete_forever">Удалить навсегда</string>

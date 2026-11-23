@@ -266,7 +266,15 @@ File %1$s contained %2$s.\n\n
   <string name="trash">Trash</string>
   <string name="trash_moved">Moved to trash: %s</string>
   <string name="trash_restore">Restore</string>
-  <string name="trash_retention">Deleted for good %d days after deletion</string>
+  <string name="trash_retention">Deleted after %d days</string>
+  <string name="task_info">About this task</string>
+  <string name="task_info_created">Created</string>
+  <string name="task_info_modified">Last changed</string>
+  <string name="task_info_completed">Completed</string>
+  <string name="task_info_deleted">In the trash since</string>
+  <string name="task_info_pinned">Pinned</string>
+  <string name="task_info_reminded">Last reminder</string>
+  <string name="task_info_series">Series since</string>
   <string name="trash_deleted_at">Deleted: %s</string>
   <string name="trash_restored">Restored: %s</string>
   <string name="trash_delete_forever">Delete forever</string>

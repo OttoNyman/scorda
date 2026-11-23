@@ -142,6 +142,7 @@ fun TaskEditScreen(
     var showDeleteConfirmation by rememberSaveable { mutableStateOf(false) }
     var showSeriesScope by rememberSaveable { mutableStateOf(false) }
     var showPinScope by rememberSaveable { mutableStateOf(false) }
+    var showTaskInfo by rememberSaveable { mutableStateOf(false) }
     var showConvertToMemo by rememberSaveable { mutableStateOf(false) }
     var showConvertToTask by rememberSaveable { mutableStateOf(false) }
     var convertMenuExpanded by remember { mutableStateOf(false) }
@@ -242,6 +243,14 @@ fun TaskEditScreen(
                     }
                 },
                 actions = {
+                    if (!viewState.isNew) {
+                        IconButton(onClick = { showTaskInfo = true }) {
+                            SymbolIcon(
+                                name = TasksIcons.INFO,
+                                contentDescription = stringResource(R.string.task_info),
+                            )
+                        }
+                    }
                     if (viewState.isReadOnly) {
                         return@TopAppBar
                     }
@@ -583,6 +592,13 @@ fun TaskEditScreen(
                     save(it)
                 },
                 onDismiss = { showSeriesScope = false },
+            )
+        }
+        if (showTaskInfo) {
+            TaskInfoDialog(
+                task = viewState.task,
+                seriesCreated = editViewModel.seriesCreated,
+                onDismiss = { showTaskInfo = false },
             )
         }
         if (showPinScope) {

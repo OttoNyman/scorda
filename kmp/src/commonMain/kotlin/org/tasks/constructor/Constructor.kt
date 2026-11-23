@@ -62,6 +62,8 @@ data class ConstructorCounts(
     val startDate: Int = 0,
     /** Local lists that would move to Google. */
     val localLists: Int = 0,
+    /** Tasks (not memos) with a description: asked about when «Описание» goes off. */
+    val notes: Int = 0,
 )
 
 enum class Preset { Simple, Full }

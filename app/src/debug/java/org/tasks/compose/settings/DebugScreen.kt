@@ -71,13 +71,7 @@ fun DebugScreen(
                     onCheckedChange = onCrashOnViolation,
                 )
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.debug_pro),
-                    checked = unlockProEnabled,
-                    onCheckedChange = onUnlockPro,
-                )
-            }
+            // hidden, code kept: «Unlock pro» does nothing in the generic build (always pro)
             SettingsItemCard(position = CardPosition.Last) {
                 SwitchPreferenceRow(
                     title = stringResource(R.string.debug_show_filters),
@@ -106,22 +100,12 @@ fun DebugScreen(
                     onClick = onRestartApp,
                 )
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = iapTitle,
-                    onClick = onIap,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
+            // hidden, code kept: «Purchase themes» (generic billing is empty) and «Create tasks»
+            // (5000 tasks into the real list)
+            SettingsItemCard(position = CardPosition.Last) {
                 PreferenceRow(
                     title = stringResource(R.string.debug_clear_hints),
                     onClick = onClearHints,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.debug_create_tasks),
-                    onClick = onCreateTasks,
                 )
             }
         }

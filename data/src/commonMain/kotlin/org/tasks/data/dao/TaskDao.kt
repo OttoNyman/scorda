@@ -225,6 +225,14 @@ FROM recursive_tasks
     @Query("SELECT * FROM tasks WHERE pinned > 0 AND completed = 0 AND deleted = 0 ORDER BY pinned DESC")
     abstract suspend fun getPinned(): List<Task>
 
+    /** Tasks (not memos, not in the trash) with a description: what «Описание» off with «Удалить» clears. */
+    @Query("SELECT * FROM tasks WHERE deleted = 0 AND memo = 0 AND notes IS NOT NULL AND TRIM(notes) != ''")
+    abstract suspend fun getWithDescriptions(): List<Task>
+
+    /** Open tasks with a reminder time: each one rings at it, stored reminder or not. */
+    @Query("SELECT * FROM tasks WHERE dueDate > 0 AND completed = 0 AND deleted = 0 AND memo = 0")
+    abstract suspend fun getActiveWithDueDate(): List<Task>
+
     @Transaction
     open suspend fun <T> inTransaction(block: suspend () -> T): T = block()
 

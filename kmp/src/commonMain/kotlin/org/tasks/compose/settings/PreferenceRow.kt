@@ -40,7 +40,8 @@ fun PreferenceRow(
     leading: (@Composable () -> Unit)? = null,
     summary: String? = null,
     titleMaxLines: Int = 1,
-    summaryMaxLines: Int = 2,
+    // an explanation is read whole: no cut-off after two lines
+    summaryMaxLines: Int = Int.MAX_VALUE,
     showWarning: Boolean = false,
     showError: Boolean = false,
     showChevron: Boolean = false,

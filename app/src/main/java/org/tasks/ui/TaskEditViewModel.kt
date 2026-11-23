@@ -164,7 +164,7 @@ class TaskEditViewModel @Inject constructor(
             alwaysDisplayFullDate = preferences.alwaysDisplayFullDate,
             showEditScreenWithoutUnlock = preferences.showEditScreenWithoutUnlock,
             calendar = null,
-            displayOrder = displayOrder(featureGate.current, task.memo),
+            displayOrder = displayOrder(featureGate.current, task.memo, !task.notes.isNullOrBlank()),
             alarms = if (task.isNew && !task.memo) {
                 task.getDefaultAlarms(runBlocking { preferences.isDefaultDueTimeEnabled() })
                     .filter { featureGate.current.schedules(it) }
@@ -591,6 +591,10 @@ class TaskEditViewModel @Inject constructor(
     val pinningEnabled: Boolean
         get() = featureGate.current.pinning
 
+    /** For «О задаче»: when the repeating schedule of this occurrence began. */
+    val seriesCreated: Long?
+        get() = series?.created
+
     /** Pinning an occurrence of a running series asks: this one or the whole series. */
     val pinAsksSeries: Boolean
         get() = series?.finished == 0L
@@ -643,7 +647,7 @@ class TaskEditViewModel @Inject constructor(
         savedStateHandle[TaskEditFragment.EXTRA_TASK] = fresh
         dueDate.value = fresh.dueDate
         startDate.value = fresh.hideUntil
-        val order = displayOrder(features, memo)
+        val order = displayOrder(features, memo, !fresh.notes.isNullOrBlank())
         val alarms = if (memo) {
             persistentSetOf()
         } else {
@@ -770,7 +774,7 @@ class TaskEditViewModel @Inject constructor(
             alwaysDisplayFullDate = _viewState.value.alwaysDisplayFullDate,
             showEditScreenWithoutUnlock = _viewState.value.showEditScreenWithoutUnlock,
             calendar = _viewState.value.calendar,
-            displayOrder = displayOrder(features, fresh.memo),
+            displayOrder = displayOrder(features, fresh.memo, !fresh.notes.isNullOrBlank()),
             alarms = alarms,
             location = location,
             tags = tags,
@@ -888,7 +892,12 @@ class TaskEditViewModel @Inject constructor(
         val TAG_ADVANCE = R.string.TEA_ctrl_advance_pref
         val TAG_CHECKLIST = R.string.checklist
 
-        fun displayOrder(features: org.tasks.constructor.Constructor, memo: Boolean) = if (memo) {
+        fun displayOrder(
+            features: org.tasks.constructor.Constructor,
+            memo: Boolean,
+            /** Notes off: a description the task already has stays visible and editable. */
+            hasNotes: Boolean = false,
+        ) = if (memo) {
             listOf(
                 TAG_TITLE to true,
                 TAG_DESCRIPTION to true,
@@ -903,7 +912,7 @@ class TaskEditViewModel @Inject constructor(
                 TAG_DUE_DATE to true,
                 TAG_ADVANCE to features.advance,
                 com.todoroo.astrid.repeats.RepeatControlSet.TAG to features.repeat,
-                TAG_DESCRIPTION to features.notes,
+                TAG_DESCRIPTION to (features.notes || hasNotes),
                 TAG_CHECKLIST to features.checklist,
                 TAG_LIST to features.lists,
                 com.todoroo.astrid.tags.TagsControlSet.TAG to features.tags,

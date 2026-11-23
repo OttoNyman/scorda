@@ -72,8 +72,7 @@ fun EditTextView(
                     )
                     imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI
                 } else {
-                    isSingleLine = true
-                    maxLines = 1
+                    // one line to type (Enter is «Done»), but a long title wraps instead of being cut
                     setRawInputType(
                         InputType.TYPE_CLASS_TEXT or
                                 InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or

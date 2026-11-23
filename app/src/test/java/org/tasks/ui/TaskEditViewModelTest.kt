@@ -33,6 +33,20 @@ class TaskEditViewModelTest {
     }
 
     @Test
+    fun aTaskKeepsItsExistingDescriptionWhenNotesAreOff() {
+        val order = TaskEditViewModel.displayOrder(Constructor(notes = false), memo = false, hasNotes = true)
+
+        assertTrue(order.contains(TAG_DESCRIPTION))
+    }
+
+    @Test
+    fun aTaskWithoutADescriptionGetsNoFieldWhenNotesAreOff() {
+        val order = TaskEditViewModel.displayOrder(Constructor(notes = false), memo = false, hasNotes = false)
+
+        assertFalse(order.contains(TAG_DESCRIPTION))
+    }
+
+    @Test
     fun memoDisplayOrderShowsDescriptionWhenConstructorNotesOff() {
         val order = TaskEditViewModel.displayOrder(
             Constructor(notes = false, tags = true, priority = true, files = true),

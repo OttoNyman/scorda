@@ -35,6 +35,7 @@ class ConstructorRepository @Inject constructor(
     private val locationService: Lazy<LocationService>,
     private val localBroadcastManager: Lazy<LocalBroadcastManager>,
     private val pinNotifier: Lazy<org.tasks.notifications.PinNotifier>,
+    private val taskSaver: Lazy<org.tasks.data.TaskSaver>,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val rawFlow = MutableStateFlow(preferences.readConstructor())
@@ -70,6 +71,18 @@ class ConstructorRepository @Inject constructor(
      * The next Google sync moves every local list to Google: into [target] when it is one of
      * [googleLists], otherwise each list under its own name.
      */
+    /**
+     * «Описание» off with «Удалить»: every task's description goes (checklists live in it too);
+     * memos keep their text. Saved one by one so sync sees each change; not tied to the screen.
+     */
+    fun clearDescriptions() {
+        scope.launch {
+            taskDao.getWithDescriptions().forEach { task ->
+                taskSaver.get().save(task.copy(notes = null), task)
+            }
+        }
+    }
+
     fun moveLocalListsToGoogle(target: String? = null) {
         preferences.setBoolean(R.string.p_google_tasks_move_local, true)
         preferences.setString(R.string.p_google_tasks_move_target, target)
@@ -123,6 +136,7 @@ class ConstructorRepository @Inject constructor(
                 """.trimIndent()
             ),
             startDate = taskDao.count(open("hideUntil > $now")),
+            notes = taskDao.getWithDescriptions().size,
             localLists = taskDao.count(
                 """
                 SELECT COUNT(1) FROM caldav_lists

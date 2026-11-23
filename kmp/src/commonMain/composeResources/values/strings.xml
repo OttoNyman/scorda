@@ -810,6 +810,10 @@
     <string name="constructor_pinning">Pinning</string>
     <string name="constructor_pinning_summary">Pinned items stay at the top of lists and the widget</string>
     <string name="constructor_pin_shade">In the notification shade</string>
+    <string name="notes_off_title">Turn off «Description»?</string>
+    <string name="notes_off_message">%1$d tasks have a description.\n\nKeep as is: they stay shown and editable; new tasks get no description field.\n\nDelete: the descriptions are erased, checklists inside them too. Notes keep their text.</string>
+    <string name="notes_off_delete">Delete</string>
+    <string name="notes_off_keep">Keep as is</string>
     <string name="constructor_pin_shade_summary">Each pinned item keeps a quiet card in the shade until done or unpinned; a swiped card comes back</string>
     <string name="constructor_tags">Tags</string>
     <string name="constructor_filters">Filters</string>

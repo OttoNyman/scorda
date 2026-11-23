@@ -20,6 +20,10 @@ import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.PlatformConfiguration
 import org.tasks.R
@@ -48,6 +52,10 @@ import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import tasks.kmp.generated.resources.EPr_default_location_reminder_title
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.location_update_interval_title
+import tasks.kmp.generated.resources.notes_off_delete
+import tasks.kmp.generated.resources.notes_off_keep
+import tasks.kmp.generated.resources.notes_off_message
+import tasks.kmp.generated.resources.notes_off_title
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -84,6 +92,10 @@ class ConstructorPreferences : Fragment() {
         val effective by repository.effective.collectAsState()
         var counts by remember { mutableStateOf(ConstructorCounts()) }
         var pending by remember { mutableStateOf<Constructor?>(null) }
+        // «Описание» going off while tasks have one: delete them, or keep them shown with no new ones
+        var notesOff by remember { mutableStateOf<Constructor?>(null) }
+        // a preset's comments value, held while a dialog decides whether the preset is written at all
+        var deferredComments by remember { mutableStateOf<Boolean?>(null) }
         var targets by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
         var comments by remember {
             mutableStateOf(preferences.getBoolean(R.string.p_show_task_edit_comments, false))
@@ -114,7 +126,16 @@ class ConstructorPreferences : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            val change = { next: Constructor ->
+            // comments live in their own preference, not in Constructor: a preset sets them, but only
+            // when the preset itself is written (a dialog in between may still be cancelled)
+            val writeWith = { next: Constructor, presetComments: Boolean? ->
+                repository.write(next)
+                presetComments?.let {
+                    preferences.setBoolean(R.string.p_show_task_edit_comments, it)
+                    comments = it
+                }
+            }
+            val apply: (Constructor, Boolean?) -> Unit = { next, presetComments ->
                 if (raw.advance != next.advance) {
                     scope.launch {
                         preferences.defaultAlarms().forAdvanceToggle(raw.advance, next.advance)?.let {
@@ -128,9 +149,18 @@ class ConstructorPreferences : Fragment() {
                     scope.launch {
                         targets = repository.googleLists()
                         pending = next
+                        deferredComments = presetComments
                     }
                 } else {
-                    repository.write(next)
+                    writeWith(next, presetComments)
+                }
+            }
+            val change: (Constructor, Boolean?) -> Unit = { next, presetComments ->
+                if (raw.notes && !next.notes && counts.notes > 0) {
+                    notesOff = next
+                    deferredComments = presetComments
+                } else {
+                    apply(next, presetComments)
                 }
             }
             ConstructorScreen(
@@ -139,8 +169,10 @@ class ConstructorPreferences : Fragment() {
                 geofences = configuration.supportsGeofences,
                 counts = counts,
                 comments = comments,
-                onPreset = { change(raw.withPreset(it)) },
-                onChange = { change(it) },
+                onPreset = { preset ->
+                    change(raw.withPreset(preset), preset == org.tasks.constructor.Preset.Full)
+                },
+                onChange = { change(it, null) },
                 onComments = {
                     preferences.setBoolean(R.string.p_show_task_edit_comments, it)
                     comments = it
@@ -188,16 +220,54 @@ class ConstructorPreferences : Fragment() {
                     onDismiss = { picker = null },
                 )
             }
+            notesOff?.let { next ->
+                val decide = { clear: Boolean ->
+                    val presetComments = deferredComments
+                    notesOff = null
+                    deferredComments = null
+                    apply(next, presetComments)
+                    if (clear) repository.clearDescriptions()
+                }
+                val cancel = {
+                    notesOff = null
+                    deferredComments = null
+                }
+                AlertDialog(
+                    onDismissRequest = cancel,
+                    title = { Text(stringResource(Res.string.notes_off_title)) },
+                    text = { Text(stringResource(Res.string.notes_off_message, counts.notes)) },
+                    confirmButton = {
+                        Row {
+                            TextButton(onClick = { decide(true) }) {
+                                Text(stringResource(Res.string.notes_off_delete))
+                            }
+                            TextButton(onClick = { decide(false) }) {
+                                Text(stringResource(Res.string.notes_off_keep))
+                            }
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = cancel) {
+                            Text(getString(android.R.string.cancel))
+                        }
+                    },
+                )
+            }
             pending?.let { next ->
                 MoveTargetDialog(
                     lists = counts.localLists,
                     targets = targets,
                     onPick = { target ->
+                        val presetComments = deferredComments
                         pending = null
-                        repository.write(next.copy(localLists = false))
+                        deferredComments = null
+                        writeWith(next.copy(localLists = false), presetComments)
                         repository.moveLocalListsToGoogle(target)
                     },
-                    onDismiss = { pending = null },
+                    onDismiss = {
+                        pending = null
+                        deferredComments = null
+                    },
                     dismissText = getString(android.R.string.cancel),
                 )
             }

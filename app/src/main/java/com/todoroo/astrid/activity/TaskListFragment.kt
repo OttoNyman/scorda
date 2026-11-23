@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LAYOUT_DIRECTION_LTR
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -167,6 +166,8 @@ import org.tasks.tasklist.DragAndDropRecyclerAdapter
 import org.tasks.tasklist.SectionedDataSource
 import org.tasks.tasklist.TaskViewHolder
 import org.tasks.tasklist.TasksResults
+import org.tasks.tasklist.UiItem
+import org.tasks.tasklist.selectionHasOpenSeries
 import org.tasks.tasklist.ViewHolderFactory
 import org.tasks.themes.ColorProvider
 import org.tasks.themes.TasksTheme
@@ -318,6 +319,11 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                // an open search box closes first (its BackHandler lived in the banner, gone without one)
+                if (search.isActionViewExpanded && mainViewModel.state.value.task == null) {
+                    search.collapseActionView()
+                    return
+                }
                 val current = mainViewModel.state.value.filter
                 // search and the trash are side trips: back returns to the list they were opened from
                 if ((current as? SearchFilter)?.query?.isNotBlank() == true || current is TrashFilter) {
@@ -329,8 +335,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     }
                     Timber.d("Filtro resettato")
                 } else {
-                    isEnabled = false // Disabilita il callback per consentire il comportamento predefinito
+                    // pass this one back on, then listen again: a later back may be a search to close
+                    isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
                 }
             }
         })
@@ -505,15 +513,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         setupBottomAppBarMenu()
         bannerAdapter.content = {
             val context = LocalContext.current
-            val mainActivityState = mainViewModel.state.collectAsStateWithLifecycle().value
-            val state = listViewModel.state.collectAsStateWithLifecycle().value
             val banner = listViewModel.banner.collectAsStateWithLifecycle().value
-            BackHandler(enabled = state.searchQuery != null && mainActivityState.task == null) {
-                Timber.d("onBackPressed")
-                if (search.isActionViewExpanded) {
-                    search.collapseActionView()
-                }
-            }
             TasksTheme(
                 theme = theme.themeBase.index,
                 primary = theme.themeColor.primaryColor,
@@ -998,8 +998,17 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         return true
     }
 
+    /** Runs again on every selection change ([updateModeTitle]): «Завершить серию» only with a series picked. */
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-        return false
+        val rows = (listViewModel.state.value.tasks as? TasksResults.Results)
+            ?.tasks
+            ?.filterIsInstance<UiItem.Task>()
+            ?.map { it.task }
+            .orEmpty()
+        menu.findItem(R.id.finish_series).isVisible =
+            filter.isWritable && featureGate.current.repeat && filter !is MemosFilter &&
+                selectionHasOpenSeries(rows, taskAdapter.getSelected().toSet())
+        return true
     }
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
@@ -1235,6 +1244,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         if (mode != null) {
             val count = max(1, taskAdapter.numSelected)
             mode!!.title = count.toString()
+            mode!!.invalidate()
         }
     }
 

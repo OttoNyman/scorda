@@ -43,6 +43,7 @@ class AlarmServiceTest : DatabaseTest() {
     private val testDispatcher = UnconfinedTestDispatcher()
     private val preferences: AppPreferences = mock {
         onBlocking { defaultDueTime() } doReturn 0
+        onBlocking { isDefaultDueTimeEnabled() } doReturn true
     }
 
     private val alarmService = AlarmService(

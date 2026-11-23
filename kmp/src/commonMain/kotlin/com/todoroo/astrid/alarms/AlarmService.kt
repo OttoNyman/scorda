@@ -133,8 +133,21 @@ class AlarmService(
         val overdue = ArrayList<Notification>()
         val future = ArrayList<Notification>()
         val defaultDueTime = preferences.defaultDueTime()
-        val byTask = alarmDao.getActiveAlarms().groupBy { it.task }
-        val tasks = taskDao.fetch(byTask.keys.toList()).associateBy { it.id }
+        val stored = alarmDao.getActiveAlarms().groupBy { it.task }
+        val tasks = (taskDao.fetch(stored.keys.toList()) + taskDao.getActiveWithDueDate()).associateBy { it.id }
+        // a task's time is its reminder: «в срок» rings even when no such reminder is stored (lost
+        // from the defaults, or never added); «Заранее» and «О просрочке» stay extra, as stored.
+        // A date without a time rings at the default time only with «напоминания для задач на весь день».
+        val allDay = preferences.isDefaultDueTimeEnabled()
+        val byTask = tasks.mapValues { (id, task) ->
+            val alarms = stored[id].orEmpty()
+            val implicit = task.dueDate > 0 && !task.memo && (task.hasDueTime() || allDay)
+            if (implicit && alarms.none { it.type == Alarm.TYPE_REL_END && it.time == 0L && it.repeat == 0 }) {
+                alarms + Alarm.whenDue(id)
+            } else {
+                alarms
+            }
+        }
         byTask
             .forEach { (taskId, alarms) ->
                 val task = tasks[taskId] ?: return@forEach
