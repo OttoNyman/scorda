@@ -47,7 +47,6 @@ import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.min
 
 @Singleton
 class NotificationManager @Inject constructor(
@@ -179,19 +178,13 @@ class NotificationManager @Inject constructor(
             }
         }
         if (preferences.bundleNotifications() && notifications.size > 1) {
-            updateSummary(
-                    notify = false,
-                    newNotifications = emptyList(),
-                )
+            updateSummary(emptyList())
             val posted = createNotifications(
                     notifications = notifications,
                     alert = false,
             )
             if (posted.size != notifications.size) {
-                updateSummary(
-                        notify = false,
-                        newNotifications = emptyList(),
-                    )
+                updateSummary(emptyList())
             }
         } else {
             createNotifications(
@@ -222,10 +215,7 @@ class NotificationManager @Inject constructor(
                 emptyList()
             }
             preferences.bundleNotifications() -> {
-                updateSummary(
-                        notify = false,
-                        newNotifications = emptyList(),
-                )
+                updateSummary(emptyList())
                 if (existingNotifications.size == 1) {
                     createNotifications(
                             notifications = existingNotifications,
@@ -261,12 +251,9 @@ class NotificationManager @Inject constructor(
             notificationDao.deleteAll(discarded)
         }
         if (summariseAfterCleanup && posted.isNotEmpty()) {
-            updateSummary(alert, newNotifications)
+            updateSummary(newNotifications)
         } else if (discarded.isNotEmpty() && preferences.bundleNotifications()) {
-            updateSummary(
-                notify = false,
-                newNotifications = emptyList(),
-            )
+            updateSummary(emptyList())
         }
         refreshBroadcaster.broadcastRefresh()
         return posted
@@ -295,7 +282,9 @@ class NotificationManager @Inject constructor(
             alert -> built.indexOfFirst { (_, result) ->
                 result is TaskNotification.Ready && result.level == AlertLevel.SUPER
             }.takeIf { it >= 0 }
-                ?: built.indexOfFirst { it.second is TaskNotification.Ready }
+                ?: built.indexOfFirst { (_, result) ->
+                    result is TaskNotification.Ready && result.level != AlertLevel.SILENT
+                }
             superMayAlert -> built.indexOfFirst { (_, result) ->
                 result is TaskNotification.Ready && result.level == AlertLevel.SUPER
             }
@@ -381,19 +370,15 @@ class NotificationManager @Inject constructor(
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private suspend fun updateSummary(
-            notify: Boolean,
-            newNotifications: List<Notification>,
-    ) {
+    private suspend fun updateSummary(newNotifications: List<Notification>) {
         val tasks = taskDao.activeNotifications()
         val taskCount = tasks.size
         if (taskCount == 0) {
             cancelSummaryNotification()
             return
         }
-        Timber.d("Updating summary taskCount=$taskCount notify=$notify newNotifications=$newNotifications")
+        Timber.d("Updating summary taskCount=$taskCount newNotifications=$newNotifications")
         val taskIds = tasks.map { it.id }
-        var maxPriority = 3
         val localized = localeContext
         val summaryTitle =
             localized.resources.getQuantityString(R.plurals.task_count, taskCount, taskCount)
@@ -404,7 +389,6 @@ class NotificationManager @Inject constructor(
             val title = task.title
             style.addLine(title)
             titles.add(title)
-            maxPriority = min(maxPriority, task.priority)
         }
         for (notification in newNotifications) {
             tasks.find { it.id == notification.taskId }?.let { ticker.add(it.title) }
@@ -416,8 +400,7 @@ class NotificationManager @Inject constructor(
                 .setShowWhen(true)
                 .setSmallIcon(R.drawable.ic_done_all_white_24dp)
                 .setStyle(style)
-                .setColor(colorProvider.getPriorityColor(maxPriority))
-                .setOnlyAlertOnce(false)
+                .setOnlyAlertOnce(true)
                 .setContentIntent(
                         PendingIntent.getActivity(
                                 context,
@@ -430,8 +413,7 @@ class NotificationManager @Inject constructor(
                 .setGroup(GROUP_KEY)
                 .setTicker(
                         ticker.joinToString(localized.getString(R.string.list_separator_with_space)))
-                .setGroupAlertBehavior(
-                        if (notify) NotificationCompat.GROUP_ALERT_SUMMARY else NotificationCompat.GROUP_ALERT_CHILDREN)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
         notificationDao.latestTimestamp()?.let { builder.setWhen(it) }
         val snoozeIntent = SnoozeActivity.newIntent(context, taskIds)
         builder.addAction(
@@ -444,7 +426,7 @@ class NotificationManager @Inject constructor(
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
                 )
         )
-        notify(SUMMARY_NOTIFICATION_ID.toLong(), builder, notify)
+        notify(SUMMARY_NOTIFICATION_ID.toLong(), builder, false)
     }
 
     data class ActionLabels(

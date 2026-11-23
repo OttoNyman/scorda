@@ -49,20 +49,25 @@ object SortHelper {
 
     private fun undatedValue(atBottom: Boolean): Long = if (atBottom) NO_DATE else 0L
 
-    private fun adjustedDueDate(column: String, noTimeAtEndOfDay: Boolean): String {
+    private fun adjustedDueDate(
+        column: String,
+        noTimeAtEndOfDay: Boolean,
+        importance: String,
+    ): String {
         val shift = if (noTimeAtEndOfDay) "+ $NO_TIME_TO_END_OF_DAY" else "- $NO_TIME_TO_START_OF_DAY"
-        return "(CASE WHEN ($column / 1000) % 60 > 0 THEN $column ELSE ($column $shift) END)"
+        val placed = "($column $shift) + $importance * 1000"
+        return "(CASE WHEN ($column / 1000) % 60 > 0 THEN $column ELSE $placed END)"
     }
 
     private fun groupDueDate(undatedAtBottom: Boolean): String {
         val undated = undatedValue(undatedAtBottom)
-        return "((CASE WHEN (tasks.dueDate=0) THEN $undated ELSE tasks.dueDate END)+tasks.importance * 1000)"
+        return "(CASE WHEN (tasks.dueDate=0) THEN $undated ELSE tasks.dueDate END)"
     }
 
     private fun sortDueDate(undatedAtBottom: Boolean, noTimeAtEndOfDay: Boolean): String {
         val undated = undatedValue(undatedAtBottom)
-        val adjusted = adjustedDueDate("tasks.dueDate", noTimeAtEndOfDay)
-        return "((CASE WHEN (tasks.dueDate=0) THEN $undated ELSE $adjusted END)+tasks.importance * 1000)"
+        val adjusted = adjustedDueDate("tasks.dueDate", noTimeAtEndOfDay, "tasks.importance")
+        return "(CASE WHEN (tasks.dueDate=0) THEN $undated ELSE $adjusted END)"
     }
 
     /** Takes a SQL query, and if there isn't already an order, creates an order.  */
@@ -100,11 +105,11 @@ object SortHelper {
 
     private fun orderForSortType(sortType: Int, preferences: QueryPreferences): Order {
         val undated = undatedValue(preferences.undatedAtBottom)
-        val adjusted = adjustedDueDate("dueDate", preferences.noTimeAtEndOfDay)
+        val adjusted = adjustedDueDate("dueDate", preferences.noTimeAtEndOfDay, "importance")
         val order = when (sortType) {
             SORT_ALPHA -> ORDER_TITLE
             SORT_DUE -> asc(
-                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)+importance"
+                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)"
             )
             SORT_START -> asc(
                 "(CASE WHEN (hideUntil=0) THEN (strftime('%s','now')*1000)*2 ELSE "
@@ -116,7 +121,7 @@ object SortHelper {
             SORT_CREATED -> desc(Task.CREATION_DATE)
             SORT_LIST -> ORDER_LIST
             else -> asc(
-                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)+172799999 * importance"
+                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)"
             )
         }
         if (sortType != SORT_ALPHA) {

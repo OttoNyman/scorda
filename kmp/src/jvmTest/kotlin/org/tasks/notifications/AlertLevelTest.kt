@@ -26,6 +26,19 @@ class AlertLevelTest {
     }
 
     @Test
+    fun aDayWithoutATimeIsQuietWhateverItsPriority() {
+        val day = 86_400_000L * 10
+        assertEquals(
+            AlertLevel.SILENT,
+            alertLevel(Task(dueDate = day, priority = Task.Priority.HIGH), enabledLevels()),
+        )
+        assertEquals(
+            AlertLevel.SUPER,
+            alertLevel(Task(dueDate = day + 1_000, priority = Task.Priority.HIGH), enabledLevels()),
+        )
+    }
+
+    @Test
     fun aHiddenLevelRingsAsOnce() {
         val enabled = enabledLevels(silent = false, persistent = false, alarm = true)
         assertEquals(

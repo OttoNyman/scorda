@@ -48,6 +48,8 @@ fun effectiveAlertLevel(priority: Int, enabled: Set<AlertLevel>): AlertLevel {
 
 fun alertLevel(task: Task, enabled: Set<AlertLevel>): AlertLevel? {
     if (task.memo) return null
+    // A day with no time shares one quiet reminder. Priority only orders those tasks.
+    if (task.hasDueDate() && !task.hasDueTime()) return AlertLevel.SILENT
     return effectiveAlertLevel(task.priority, enabled)
 }
 
