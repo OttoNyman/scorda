@@ -45,7 +45,8 @@ fun LocationRow(
                     name = location.displayName,
                     address = location.displayAddress,
                     openGeofenceOptions = openGeofenceOptions,
-                    geofenceOn = hasPermissions && (location.isArrival || location.isDeparture)
+                    geofenceOn = hasPermissions &&
+                        (location.geofence.isArrival || location.geofence.isDeparture)
                 )
             }
         },

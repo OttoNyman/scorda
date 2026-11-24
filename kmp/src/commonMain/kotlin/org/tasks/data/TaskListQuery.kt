@@ -27,6 +27,10 @@ object TaskListQuery {
     const val PINNED_ORDER =
         "(CASE WHEN tasks.completed = 0 AND tasks.deleted = 0 THEN tasks.pinned ELSE 0 END)"
 
+    /** Open location tasks after other open tasks, still before completed. */
+    const val LOCATION_ORDER =
+        "(CASE WHEN tasks.completed = 0 AND tasks.deleted = 0 AND geofences.geofence_id IS NOT NULL AND tasks.dueDate <= 0 THEN 1 ELSE 0 END)"
+
     private const val CALDAV_METADATA_JOIN = "for_caldav"
     private val JOIN_CALDAV = Criterion.and(
             Task.ID.eq(field("$CALDAV_METADATA_JOIN.cd_task")),
@@ -62,17 +66,17 @@ object TaskListQuery {
         val flat = features != null && filter !is MemosFilter
         val pinning = features?.pinning == true
         val sql = when {
-            flat -> getNonRecursiveQuery(filter, preferences, limit, pinning)
+            flat -> getNonRecursiveQuery(filter, preferences, limit, pinning, features?.geo == true)
             filter.supportsManualSort() && preferences.isManualSort ->
                 getRecursiveQuery(filter, preferences, limit, showCollapsed, pinning)
 
             filter is AstridOrderingFilter && preferences.isAstridSort ->
-                getNonRecursiveQuery(filter, preferences, limit, pinning)
+                getNonRecursiveQuery(filter, preferences, limit, pinning, features?.geo == true)
 
             filter.supportsSorting() ->
                 getRecursiveQuery(filter, preferences, limit, showCollapsed, pinning)
 
-            else -> getNonRecursiveQuery(filter, preferences, limit, pinning)
+            else -> getNonRecursiveQuery(filter, preferences, limit, pinning, features?.geo == true)
         }
         return sql
             .let { if (flat) it.replace("(tasks.parent=0)", "(1)") else it }

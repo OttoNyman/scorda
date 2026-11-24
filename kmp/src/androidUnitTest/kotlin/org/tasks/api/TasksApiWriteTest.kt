@@ -590,6 +590,27 @@ class TasksApiWriteTest : ApiTestCase() {
     }
 
     @Test
+    fun dueDateAndPlaceIdTogetherAreRejected() {
+        val task = newTask("t")
+        val placeId = newPlace()
+
+        val error = assertThrows<IllegalArgumentException> {
+            update(Tasks.PATH, task, Tasks.DUE_DATE to day(1), Tasks.PLACE_ID to placeId)
+        }
+        assertTrue(error.message!!.contains(Tasks.PLACE_ID))
+        assertEquals(0L, query(Tasks.PATH, "?_id=$task").long(Tasks.PLACE_ID))
+    }
+
+    @Test
+    fun unknownTaskIdWithPlaceAndDueReturnsZero() {
+        val placeId = newPlace()
+        assertEquals(
+            0,
+            update(Tasks.PATH, 999_999L, Tasks.DUE_DATE to day(1), Tasks.PLACE_ID to placeId),
+        )
+    }
+
+    @Test
     fun aLocationReminderSetsThePlaceAndAppearsAsAnAlarm() {
         val task = newTask("t")
         val placeId = newPlace()
@@ -614,7 +635,7 @@ class TasksApiWriteTest : ApiTestCase() {
     }
 
     @Test
-    fun arrivalAndDepartureAreIndependentReminders() {
+    fun departureReplacesArrivalAndLastDeleteClearsPlace() {
         val task = newTask("t")
         val placeId = newPlace()
 
@@ -632,22 +653,16 @@ class TasksApiWriteTest : ApiTestCase() {
         )
 
         assertTrue(arrival != departure)
-        assertEquals(2, query(Reminders.PATH, "?task_id=$task").rows())
-        assertEquals(
-            listOf(Reminders.TYPE_LOCATION_ARRIVAL, Reminders.TYPE_LOCATION_DEPARTURE),
-            query(Reminders.PATH, "?task_id=$task").strings(Reminders.TYPE),
-        )
-
-        assertEquals(1, delete(Reminders.PATH, arrival))
+        assertEquals(1, query(Reminders.PATH, "?task_id=$task").rows())
         assertEquals(
             listOf(Reminders.TYPE_LOCATION_DEPARTURE),
             query(Reminders.PATH, "?task_id=$task").strings(Reminders.TYPE),
         )
-        assertEquals(placeId, query(Tasks.PATH, "?_id=$task").long(Tasks.PLACE_ID))
+        assertEquals(0, delete(Reminders.PATH, arrival))
 
         assertEquals(1, delete(Reminders.PATH, departure))
         assertEquals(0, query(Reminders.PATH, "?task_id=$task").rows())
-        assertEquals(placeId, query(Tasks.PATH, "?_id=$task").long(Tasks.PLACE_ID))
+        assertEquals(0L, query(Tasks.PATH, "?_id=$task").long(Tasks.PLACE_ID))
     }
 
     @Test
@@ -805,14 +820,17 @@ class TasksApiWriteTest : ApiTestCase() {
             Reminders.TYPE to Reminders.TYPE_LOCATION_ARRIVAL,
             Reminders.PLACE_ID to placeId,
         )
+        assertEquals(0L, query(Tasks.PATH, "?_id=$task").long(Tasks.DUE_DATE))
+        assertEquals(placeId, query(Tasks.PATH, "?_id=$task").long(Tasks.PLACE_ID))
+        val dated = newTask("timed", Tasks.DUE_DATE to day(1))
         insert(
             Reminders.PATH,
-            Reminders.TASK_ID to task,
+            Reminders.TASK_ID to dated,
             Reminders.TYPE to Reminders.TYPE_RELATIVE_DUE,
             Reminders.OFFSET_MS to -TimeUnit.HOURS.toMillis(2),
         )
 
-        assertEquals(2, query(Reminders.PATH, "?task_id=$task").rows())
+        assertEquals(1, query(Reminders.PATH, "?task_id=$task").rows())
         assertEquals(
             listOf(Reminders.TYPE_LOCATION_ARRIVAL),
             query(Reminders.PATH, "?type=${Reminders.TYPE_LOCATION_ARRIVAL}").strings(Reminders.TYPE),
@@ -830,7 +848,7 @@ class TasksApiWriteTest : ApiTestCase() {
 
     @Test
     fun countingRemindersSpansTheUnion() {
-        val task = newTask("t", Tasks.DUE_DATE to day(1))
+        val task = newTask("t")
         val placeId = newPlace()
         insert(
             Reminders.PATH,
@@ -844,22 +862,24 @@ class TasksApiWriteTest : ApiTestCase() {
             Reminders.TYPE to Reminders.TYPE_LOCATION_DEPARTURE,
             Reminders.PLACE_ID to placeId,
         )
+        val dated = newTask("timed", Tasks.DUE_DATE to day(1))
         insert(
             Reminders.PATH,
-            Reminders.TASK_ID to task,
+            Reminders.TASK_ID to dated,
             Reminders.TYPE to Reminders.TYPE_RELATIVE_DUE,
             Reminders.OFFSET_MS to -TimeUnit.HOURS.toMillis(2),
         )
 
-        val counted = query(Reminders.PATH, "?task_id=$task&limit=0")
+        // One place trigger on the place task; relative due on the dated task.
+        val counted = query(Reminders.PATH, "?limit=0")
         assertEquals(0, counted.rows())
-        assertEquals(3, counted.total())
+        assertEquals(2, counted.total())
 
-        val first = query(Reminders.PATH, "?task_id=$task&limit=2").longs(TasksContract.ID)
-        val second = query(Reminders.PATH, "?task_id=$task&limit=2&offset=2").longs(TasksContract.ID)
-        assertEquals(2, first.size)
+        val first = query(Reminders.PATH, "?limit=1").longs(TasksContract.ID)
+        val second = query(Reminders.PATH, "?limit=1&offset=1").longs(TasksContract.ID)
+        assertEquals(1, first.size)
         assertEquals(1, second.size)
-        assertEquals(3, (first + second).distinct().size)
+        assertEquals(2, (first + second).distinct().size)
     }
 
     @Test

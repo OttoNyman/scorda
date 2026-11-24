@@ -58,6 +58,7 @@
     <string name="trash">Корзина</string>
     <string name="filter_overdue">Просроченное</string>
     <string name="pinned_header">Закреплено</string>
+    <string name="location_header">По месту</string>
     <string name="pin">Закрепить</string>
     <string name="unpin">Открепить</string>
     <string name="pin_this_only">Только эту</string>

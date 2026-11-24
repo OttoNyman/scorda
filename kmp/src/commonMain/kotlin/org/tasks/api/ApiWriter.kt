@@ -14,6 +14,7 @@ import org.tasks.compose.pickers.startDateFollowingDue
 import org.tasks.data.TaskSaver
 import org.tasks.data.applicableTo
 import org.tasks.data.createDueDate
+import org.tasks.data.createGeofence
 import org.tasks.data.createHideUntil
 import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.ApiDao
@@ -36,6 +37,7 @@ import org.tasks.filters.CaldavFilter
 import org.tasks.location.LocationService
 import org.tasks.repeats.anchoredToDueDate
 import org.tasks.repeats.RecurrenceUtils.newRecur
+import org.tasks.repeats.SeriesScheduler
 import org.tasks.service.TaskCompleter
 import org.tasks.service.TaskDeleter
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -59,6 +61,7 @@ class ApiWriter(
     private val locationService: LocationService,
     private val listManager: ListManager,
     private val tagMetadataEditor: TagMetadataEditor,
+    private val seriesScheduler: SeriesScheduler? = null,
 ) {
     data class Insertion(val id: Long, val created: Boolean)
 
@@ -68,6 +71,7 @@ class ApiWriter(
 
     suspend fun insertTask(values: ApiValues): Long {
         values.reject(Tasks.PATH, Tasks.INSERT_ONLY + Tasks.WRITABLE)
+        rejectScheduleWithPlace(values)
         val title = values.name(Tasks.TITLE)
             ?: throw IllegalArgumentException("${Tasks.TITLE} is required")
         val parent = values.number(Tasks.PARENT_ID) ?: 0L
@@ -101,6 +105,7 @@ class ApiWriter(
     suspend fun updateTask(id: Long, values: ApiValues): Int {
         values.reject(Tasks.PATH, Tasks.WRITABLE)
         val original = liveTask(id) ?: return 0
+        rejectScheduleWithPlace(values)
         requireWritable(listFor(id))
 
         val task = original.copy()
@@ -165,6 +170,17 @@ class ApiWriter(
         return 1
     }
 
+    private fun rejectScheduleWithPlace(values: ApiValues) {
+        if ((values.number(Tasks.PLACE_ID) ?: 0) <= 0) return
+        val due = (values.date(Tasks.DUE_DATE)?.millis ?: 0) > 0
+        val start = (values.date(Tasks.START_DATE)?.millis ?: 0) > 0
+        val recurrence = values.text(Tasks.RECURRENCE)?.isNotBlank() == true
+        if (!due && !start && !recurrence) return
+        throw IllegalArgumentException(
+            "${Tasks.PLACE_ID} cannot be set with ${Tasks.DUE_DATE}, ${Tasks.START_DATE}, or ${Tasks.RECURRENCE}; clear one first"
+        )
+    }
+
     private fun applyTaskValues(task: Task, original: Task, values: ApiValues) {
         values.name(Tasks.TITLE)?.let { task.title = it }
         values.text(Tasks.NOTES)?.let { task.notes = it }
@@ -226,22 +242,48 @@ class ApiWriter(
         if (existing?.place?.uid == placeUid && !resetTriggers) {
             return
         }
-        if (existing == null) {
-            locationDao.insert(
-                Geofence(task = task.id, place = placeUid, isArrival = false, isDeparture = false)
-            )
+        // Place wins: detach series and clear schedule so TaskSaver won't drop the geofence.
+        var row = task
+        if (row.series != null) {
+            val scheduler = seriesScheduler
+            row = if (scheduler != null) {
+                scheduler.detach(row.id)
+                taskDao.fetch(row.id) ?: row.copy(series = null, scheduled = 0, recurrence = null)
+            } else {
+                // no scheduler here (desktop/iOS): the row only leaves the series.
+                // Saved against the linked row, or TaskDao.update would re-adopt the series.
+                val unlinked = row.copy(series = null, scheduled = 0, recurrence = null)
+                taskSaver.save(unlinked, row)
+                unlinked
+            }
+        }
+        if (row.blocksPlace(true) || !row.recurrence.isNullOrBlank()) {
+            val cleared = row.copy(dueDate = 0, hideUntil = 0, recurrence = null)
+            taskSaver.save(cleared, row)
+            val snooze = alarmDao.getAlarms(cleared.id)
+                .filter { it.type == Alarm.TYPE_SNOOZE }
+                .toMutableSet()
+            alarmService.synchronizeAlarms(cleared.id, snooze)
+            markSynced(cleared, SYNC_ALARMS)
+            row = cleared
+        }
+        val geofenceRow = locationDao.getGeofencesForTask(row.id).firstOrNull()
+        // the user's default trigger, as the editor and quick add use
+        val fresh = createGeofence(placeUid, locationService.appPreferences)
+        if (geofenceRow == null) {
+            locationDao.insert(fresh.copy(task = row.id))
         } else {
             locationDao.update(
-                existing.geofence.copy(
+                geofenceRow.copy(
                     place = placeUid,
-                    isArrival = if (resetTriggers) false else existing.geofence.isArrival,
-                    isDeparture = if (resetTriggers) false else existing.geofence.isDeparture,
+                    isArrival = if (resetTriggers) fresh.isArrival else geofenceRow.isArrival,
+                    isDeparture = if (resetTriggers) fresh.isDeparture else geofenceRow.isDeparture,
                 )
             )
-            locationService.updateGeofences(existing.place.uid!!)
+            geofenceRow.place?.let { locationService.updateGeofences(it) }
         }
         locationService.updateGeofences(placeUid)
-        markSynced(task, SYNC_LOCATION)
+        markSynced(row, SYNC_LOCATION)
     }
 
     private fun Task.isDueAllDay(): Boolean = hasDueDate() && !hasDueTime()
@@ -470,38 +512,27 @@ class ApiWriter(
 
         val existing = locationDao.getGeofencesForTask(task.id).firstOrNull()
         if (existing != null && existing.place != placeUid) {
-
             throw IllegalArgumentException(
                 "Task ${task.id} is already at another place, and a task can only be at one." +
                         " Set ${Tasks.PLACE_ID} on the task first to move it."
             )
         }
 
-        val id: Long
-        if (existing == null) {
-            id = locationDao.insert(
-                Geofence(
-                    task = task.id,
-                    place = placeUid,
-                    isArrival = arrival,
-                    isDeparture = !arrival,
-                )
-            )
+        // Clears schedule/series first so a location reminder cannot leave a dated dual.
+        applyPlace(task, placeId, resetTriggers = true)
+        val row = locationDao.getGeofencesForTask(task.id).firstOrNull()
+            ?: throw IllegalStateException("Geofence missing after applyPlace")
+        val updated = if (arrival) {
+            row.copy(isArrival = true, isDeparture = false)
         } else {
-            id = existing.id
-            val updated = if (arrival) {
-                existing.copy(isArrival = true)
-            } else {
-                existing.copy(isDeparture = true)
-            }
-            if (updated == existing) {
-                return Reminders.encodeLocationId(id, arrival)
-            }
-            locationDao.update(updated)
+            row.copy(isArrival = false, isDeparture = true)
         }
-        locationService.updateGeofences(placeUid)
-        markSynced(task, SYNC_LOCATION)
-        return Reminders.encodeLocationId(id, arrival)
+        if (updated != row) {
+            locationDao.update(updated)
+            locationService.updateGeofences(placeUid)
+        }
+        // applyPlace already saved the cleared row. Saving `task` here would write the old due date back.
+        return Reminders.encodeLocationId(row.id, arrival)
     }
 
     private suspend fun deleteLocationAlarm(id: Reminders.LocationId): Int {
@@ -515,7 +546,11 @@ class ApiWriter(
         } else {
             existing.copy(isDeparture = false)
         }
-        locationDao.update(updated)
+        if (!updated.isArrival && !updated.isDeparture) {
+            locationDao.delete(existing)
+        } else {
+            locationDao.update(updated)
+        }
         existing.place?.let { locationService.updateGeofences(it) }
         markSynced(task, SYNC_LOCATION)
         return 1

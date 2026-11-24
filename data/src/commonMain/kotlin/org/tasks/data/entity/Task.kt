@@ -128,6 +128,10 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
     /** Checks whether task is done. Requires DUE_DATE  */
     fun hasDueDate() = dueDate > 0
 
+    /** Due date, or a start date while that feature is on. Recurrence is separate. */
+    fun blocksPlace(countStartDate: Boolean): Boolean =
+        hasDueDate() || (countStartDate && hasStartDate())
+
     /** Checks whether this due date has a due time or only a date  */
     fun hasDueTime(): Boolean = hasDueTime(dueDate)
 
@@ -272,6 +276,10 @@ data class Task @OptIn(ExperimentalSerializationApi::class) constructor(
 
     fun hasTransitory(key: String?): Boolean {
         return transitoryData?.containsKey(key) == true
+    }
+
+    fun clearTransitory(key: String) {
+        transitoryData?.remove(key)
     }
 
     fun <T> getTransitory(key: String?): T? = transitoryData?.get(key) as T?

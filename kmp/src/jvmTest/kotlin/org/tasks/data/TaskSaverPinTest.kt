@@ -32,6 +32,7 @@ class TaskSaverPinTest : DatabaseTest() {
         locationService = mock(),
         backgroundWork = mock(),
         caldavDao = db.caldavDao(),
+        locationDao = db.locationDao(),
     )
 
     @Test

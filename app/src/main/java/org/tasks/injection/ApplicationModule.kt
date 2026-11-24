@@ -533,7 +533,18 @@ class ApplicationModule {
         locationService: LocationService,
         backgroundWork: BackgroundWork,
         caldavDao: CaldavDao,
-    ) = TaskSaver(taskDao, refreshBroadcaster, notifier, locationService, backgroundWork, caldavDao)
+        locationDao: org.tasks.data.dao.LocationDao,
+        featureGate: org.tasks.constructor.FeatureGate,
+    ) = TaskSaver(
+        taskDao,
+        refreshBroadcaster,
+        notifier,
+        locationService,
+        backgroundWork,
+        caldavDao,
+        locationDao,
+        featureGate,
+    )
 
     @Provides
     fun providesCaldavSynchronizer(
@@ -607,9 +618,11 @@ class ApplicationModule {
         alarmService: AlarmService,
         vtodoCache: VtodoCache,
         notifier: Notifier,
+        featureGate: org.tasks.constructor.FeatureGate,
     ) = org.tasks.caldav.iCalendar(
         tagDataDao, preferences, locationDao, geocoder, locationService,
         tagDao, taskDao, dirtyDao, taskSaver, caldavDao, alarmDao, alarmService, vtodoCache, notifier,
+        featureGate,
     )
 
     @Provides
@@ -687,6 +700,7 @@ class ApplicationModule {
         locationService: LocationService,
         listManager: org.tasks.api.ApiListManager,
         tagMetadataSync: TagMetadataSync,
+        seriesScheduler: org.tasks.repeats.SeriesScheduler,
     ) = org.tasks.api.ApiWriter(
         apiDao = apiDao,
         taskDao = taskDao,
@@ -704,6 +718,7 @@ class ApplicationModule {
         locationService = locationService,
         listManager = listManager,
         tagMetadataEditor = tagMetadataSync,
+        seriesScheduler = seriesScheduler,
     )
 
     @Provides

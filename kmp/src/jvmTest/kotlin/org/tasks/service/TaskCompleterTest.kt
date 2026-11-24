@@ -23,6 +23,7 @@ class TaskCompleterTest : DatabaseTest() {
         locationService = mock(),
         backgroundWork = mock(),
         caldavDao = db.caldavDao(),
+        locationDao = db.locationDao(),
     )
 
     private val completer = TaskCompleter(
@@ -65,6 +66,7 @@ class TaskCompleterTest : DatabaseTest() {
             locationService = mock(),
             backgroundWork = mock(),
             caldavDao = db.caldavDao(),
+            locationDao = db.locationDao(),
         ),
         notifier = notifier,
         refreshBroadcaster = mock(),

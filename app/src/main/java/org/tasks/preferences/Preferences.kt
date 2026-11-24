@@ -341,7 +341,7 @@ class Preferences @JvmOverloads constructor(
         getIntegerFromString(
             R.string.p_default_location_reminder_key,
             taskSettingDefaults.defaultLocationReminder
-        )
+        ).let { if (it == 2) 2 else 1 }
 
     override suspend fun locationUpdateIntervalMinutes(): Int =
         getIntegerFromString(R.string.p_location_update_interval, DEFAULT_LOCATION_UPDATE_INTERVAL)

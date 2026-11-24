@@ -73,13 +73,14 @@ class MemoConvertTest : DatabaseTest() {
 
     private val taskSaver: TaskSaver by lazy {
         TaskSaver(
-            taskDao = taskDao,
-            refreshBroadcaster = mock(),
-            notifier = mock(),
-            locationService = locationService,
-            backgroundWork = mock(),
-            caldavDao = caldavDao,
-        )
+        taskDao = taskDao,
+        refreshBroadcaster = mock(),
+        notifier = mock(),
+        locationService = locationService,
+        backgroundWork = mock(),
+        caldavDao = caldavDao,
+        locationDao = db.locationDao(),
+    )
     }
 
     private val taskMover: TaskMover by lazy {

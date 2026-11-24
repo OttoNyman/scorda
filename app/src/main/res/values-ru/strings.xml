@@ -270,7 +270,9 @@
     <string name="linkify">Показать ссылки</string>
     <string name="linkify_description">Добавить ссылки на сайты, адреса и номера телефонов</string>
     <string name="location_remind_arrival">Напомнить по прибытии</string>
-    <string name="location_remind_departure">Напомнить покинув место</string>
+    <string name="location_remind_departure">Напоминать при уходе</string>
+    <string name="geo_trigger_arrival_short">По прибытии</string>
+    <string name="geo_trigger_departure_short">При уходе</string>
     <string name="visit_website">Посетить вебсайт</string>
     <string name="location_arrived">Прибытие в %s</string>
     <string name="location_departed">Покинули %s</string>

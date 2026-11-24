@@ -29,6 +29,7 @@ import org.tasks.data.setDefaultReminders
 import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.mapFromSerializedString
+import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
@@ -48,6 +49,7 @@ class TaskCreator @Inject constructor(
     private val locationDao: LocationDao,
     private val alarmDao: AlarmDao,
     private val featureGate: org.tasks.constructor.FeatureGate,
+    private val locationService: LocationService,
 ) {
     suspend fun basicQuickAddTask(
         title: String,
@@ -58,6 +60,20 @@ class TaskCreator @Inject constructor(
     ): Task {
         val task = createWithValues(filter, title.trim { it <= ' ' }, parseTitle, applyDefaults)
         configure(task)
+        // Tasker (and other callers) can set a due date after create(). Date wins, and the
+        // defaults create() skipped for a place task come back.
+        if (task.hasTransitory(Place.KEY) && task.blocksPlace(featureGate.current.startDate)) {
+            task.clearTransitory(Place.KEY)
+            if (applyDefaults) {
+                applyDefaultRecurrence(task)
+                if (featureGate.current.startDate && task.hideUntil <= 0) {
+                    task.hideUntil = task.createHideUntil(
+                        preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
+                        0,
+                    )
+                }
+            }
+        }
         taskDao.createNew(task)
         tagDao.insert(task, task.tags)
         val addToTop = preferences.addTasksToTop()
@@ -105,17 +121,20 @@ class TaskCreator @Inject constructor(
                 }
             }
         }
-        if (task.hasTransitory(Place.KEY)) {
-            val place = locationDao.getPlace(task.getTransitory<String>(Place.KEY)!!)
-            if (place != null) {
-                locationDao.insert(createGeofence(place.uid, preferences))
-            }
+        val place = task.getTransitory<String>(Place.KEY)
+            ?.takeIf { featureGate.current.geo }
+            ?.let { locationDao.getPlace(it) }
+        if (place != null) {
+            locationDao.insert(createGeofence(place.uid, preferences).copy(task = task.id))
+            locationService.updateGeofences(place)
         }
         taskSaver.save(task, null)
-        alarmDao.insert(
-            task.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
-                .filter { featureGate.current.schedules(it) }
-        )
+        if (place == null) {
+            alarmDao.insert(
+                task.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
+                    .filter { featureGate.current.schedules(it) }
+            )
+        }
         return task
     }
 
@@ -154,39 +173,20 @@ class TaskCreator @Inject constructor(
             remoteId = UUIDHelper.newUUID(),
             priority = if (applyDefaults) preferences.defaultPriority() else Task.Priority.LOW,
         )
-        if (applyDefaults) {
-            preferences.getStringValue(R.string.p_default_recurrence)
-                    ?.takeIf { it.isNotBlank() }
-                    ?.let {
-                        task.recurrence = it
-                        task.repeatFrom = Task.RepeatFrom.DUE_DATE
-                    }
-            preferences.getStringValue(R.string.p_default_location)
-                    ?.takeIf { it.isNotBlank() }
-                    ?.let { task.putTransitory(Place.KEY, it) }
-            task.setDefaultReminders(preferences)
-        }
         val tags = ArrayList<String>()
         values?.entries?.forEach { (key, value) ->
             when (key) {
                 Tag.KEY -> tags.add(value as String)
-                GoogleTask.KEY, CaldavTask.KEY, Place.KEY -> task.putTransitory(key, value)
+                GoogleTask.KEY, CaldavTask.KEY -> task.putTransitory(key, value)
+                Place.KEY -> if (featureGate.current.geo) {
+                    putPlaceIfExists(task, value as? String)
+                }
                 DUE_DATE.name -> value.substitute()?.toLongOrNull()?.let { task.dueDate =
                     createDueDate(Task.URGENCY_SPECIFIC_DAY, it) }
                 IMPORTANCE.name -> value.substitute()?.toIntOrNull()?.let { task.priority = it }
                 HIDE_UNTIL.name ->
                     value.substitute()?.toLongOrNull()?.let { task.hideUntil = it.startOfDay() }
             }
-        }
-        if (applyDefaults && values?.containsKey(DUE_DATE.name) != true) {
-            // No setting: a new task is due today unless it says otherwise.
-            task.dueDate = createDueDate(Task.URGENCY_TODAY, 0)
-        }
-        if (applyDefaults && featureGate.current.startDate && values?.containsKey(HIDE_UNTIL.name) != true) {
-            task.hideUntil = task.createHideUntil(
-                    preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
-                    0
-            )
         }
         if (parseTitle) {
             try {
@@ -195,8 +195,69 @@ class TaskCreator @Inject constructor(
                 Timber.e(e)
             }
         }
+        // A date, start date or repeat (explicit or typed in the title) is a schedule.
+        val scheduled = task.blocksPlace(featureGate.current.startDate) || !task.recurrence.isNullOrBlank()
+        // Default place only when nothing scheduled the task.
+        if (
+            applyDefaults &&
+            featureGate.current.geo &&
+            !scheduled &&
+            !task.hasTransitory(Place.KEY)
+        ) {
+            preferences.getStringValue(R.string.p_default_location)
+                ?.takeIf { it.isNotBlank() }
+                ?.let { uid -> putPlaceIfExists(task, uid) }
+        }
+        // Schedule wins when both ended up set (filter place + due, or a place list + typed repeat).
+        if (scheduled && task.hasTransitory(Place.KEY)) {
+            task.clearTransitory(Place.KEY)
+        }
+        val placeTask = task.hasTransitory(Place.KEY)
+        if (applyDefaults && !placeTask) {
+            applyDefaultRecurrence(task)
+        }
+        if (applyDefaults) {
+            task.setDefaultReminders(preferences)
+        }
+        if (
+            applyDefaults &&
+            task.dueDate <= 0 &&
+            values?.containsKey(DUE_DATE.name) != true &&
+            !placeTask
+        ) {
+            // No setting: a new task is due today unless it has a place or says otherwise.
+            task.dueDate = createDueDate(Task.URGENCY_TODAY, 0)
+        }
+        if (
+            applyDefaults &&
+            featureGate.current.startDate &&
+            values?.containsKey(HIDE_UNTIL.name) != true &&
+            !placeTask
+        ) {
+            task.hideUntil = task.createHideUntil(
+                    preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
+                    0
+            )
+        }
         task.putTransitory(Tag.KEY, tags)
         return task
+    }
+
+    private fun applyDefaultRecurrence(task: Task) {
+        if (!task.recurrence.isNullOrBlank()) return
+        preferences.getStringValue(R.string.p_default_recurrence)
+            ?.takeIf { it.isNotBlank() }
+            ?.let {
+                task.recurrence = it
+                task.repeatFrom = Task.RepeatFrom.DUE_DATE
+            }
+    }
+
+    private suspend fun putPlaceIfExists(task: Task, uid: String?) {
+        val placeUid = uid?.takeIf { it.isNotBlank() } ?: return
+        if (locationDao.getPlace(placeUid) != null) {
+            task.putTransitory(Place.KEY, placeUid)
+        }
     }
 
     companion object {

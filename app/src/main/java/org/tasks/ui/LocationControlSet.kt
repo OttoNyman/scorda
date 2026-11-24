@@ -134,6 +134,9 @@ class LocationControlSet : TaskEditControlFragment() {
                         )
                     }
                     viewModel.setLocation(Location(geofence, place))
+                    if (permissionChecker.canAccessBackgroundLocation()) {
+                        showGeofenceOptions()
+                    }
                 }
             }
         } else if (requestCode == REQUEST_GEOFENCE_DETAILS) {

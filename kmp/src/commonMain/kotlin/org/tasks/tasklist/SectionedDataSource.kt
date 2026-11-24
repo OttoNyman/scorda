@@ -14,6 +14,8 @@ class SectionedDataSource(
     private val completedAtBottom: Boolean = true,
     /** Constructor «Закрепление»: off, a pinned row is an ordinary row. */
     val pinning: Boolean = false,
+    /** Constructor «Места»: off, location rows stay in the main groups. */
+    val geo: Boolean = false,
 ): List<UiItem> {
     private val tasks = tasks.toMutableList()
 
@@ -107,6 +109,8 @@ class SectionedDataSource(
                 HEADER_PINNED
             } else if (completedAtBottom && task.parentComplete) {
                 HEADER_COMPLETED
+            } else if (geo && task.hasLocation() && !task.hasDueDate() && !task.parentComplete) {
+                HEADER_LOCATION
             } else if (sortGroup == null) {
                 continue
             } else if (
@@ -138,6 +142,16 @@ class SectionedDataSource(
                     pinning && previousTask.isPinned -> sections.add(AdapterSection(i, header, 0, isCollapsed))
                     completedAtBottom && task.parentComplete -> {
                         if (!previousTask.parentComplete) {
+                            sections.add(AdapterSection(i, header, 0, isCollapsed))
+                        }
+                    }
+                    geo && task.hasLocation() && !task.hasDueDate() && !task.parentComplete -> {
+                        val previousInLocation =
+                            previousTask.hasLocation() &&
+                                !previousTask.hasDueDate() &&
+                                !previousTask.parentComplete &&
+                                !(pinning && previousTask.isPinned)
+                        if (!previousInLocation) {
                             sections.add(AdapterSection(i, header, 0, isCollapsed))
                         }
                     }
@@ -222,5 +236,6 @@ class SectionedDataSource(
         const val HEADER_OVERDUE = -1L
         const val HEADER_COMPLETED = -2L
         const val HEADER_PINNED = -3L
+        const val HEADER_LOCATION = -4L
     }
 }

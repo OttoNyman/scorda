@@ -38,6 +38,7 @@ internal object TaskListQueryNonRecursive {
         preferences: QueryPreferences,
         limit: Int? = null,
         pinning: Boolean = false,
+        geo: Boolean = false,
     ): String {
         val joinedQuery = JOINS + if (filter is AstridOrderingFilter) filter.getSqlQuery() else filter.sql!!
         val sortMode = preferences.sortMode
@@ -51,7 +52,16 @@ internal object TaskListQueryNonRecursive {
                 ""
             }
         val pinOrder = if (pinning) "${TaskListQuery.PINNED_ORDER} DESC," else ""
-        val orderBy = "$pinOrder $completeAtBottom $completionSort"
+        val manual = filter.supportsManualSort() && preferences.isManualSort
+        val astridSort = filter is AstridOrderingFilter && preferences.isAstridSort
+        // only where SectionedDataSource shows a "By place" header for it
+        val geoOrder =
+            if (geo && !manual && !astridSort && groupMode != SortHelper.GROUP_NONE) {
+                "${TaskListQuery.LOCATION_ORDER} ASC,"
+            } else {
+                ""
+            }
+        val orderBy = "$pinOrder $completeAtBottom $geoOrder $completionSort"
         val groupedQuery = when {
             // these filters carry their own order; the completed-at-bottom prefix must not lead it
             filter is RecentlyModifiedFilter || filter is CompletedFilter || filter is TrashFilter ->

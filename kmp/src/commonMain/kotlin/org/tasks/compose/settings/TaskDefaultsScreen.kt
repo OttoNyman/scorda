@@ -33,18 +33,14 @@ import org.jetbrains.compose.resources.stringResource
 import org.tasks.data.entity.Task
 import org.tasks.preferences.TaskDefaultSettings
 import tasks.kmp.generated.resources.EPr_default_importance_title
-import tasks.kmp.generated.resources.EPr_default_location_reminder_title
 import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
 import tasks.kmp.generated.resources.EPr_default_reminders_title
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.TEA_control_location
 import tasks.kmp.generated.resources.TEA_control_reminders
 import tasks.kmp.generated.resources.TEA_control_repeat
 import tasks.kmp.generated.resources.day_before_due
 import tasks.kmp.generated.resources.default_list
-import tasks.kmp.generated.resources.default_location
 import tasks.kmp.generated.resources.default_location_reminder_on_arrival
-import tasks.kmp.generated.resources.default_location_reminder_on_arrival_or_departure
 import tasks.kmp.generated.resources.default_location_reminder_on_departure
 import tasks.kmp.generated.resources.default_recurrence
 import tasks.kmp.generated.resources.default_start_date
@@ -57,7 +53,6 @@ import tasks.kmp.generated.resources.location_update_interval_2_hours
 import tasks.kmp.generated.resources.location_update_interval_30_minutes
 import tasks.kmp.generated.resources.location_update_interval_disabled
 import tasks.kmp.generated.resources.location_update_interval_title
-import tasks.kmp.generated.resources.no_reminders
 import tasks.kmp.generated.resources.no_start_date
 import tasks.kmp.generated.resources.none
 import tasks.kmp.generated.resources.priority_high
@@ -88,10 +83,8 @@ val RepeatFromOptions: List<Pair<Int, StringResource>> = listOf(
 )
 
 val LocationReminderOptions: List<Pair<Int, StringResource>> = listOf(
-    0 to Res.string.no_reminders,
     1 to Res.string.default_location_reminder_on_arrival,
     2 to Res.string.default_location_reminder_on_departure,
-    3 to Res.string.default_location_reminder_on_arrival_or_departure,
 )
 
 val LocationUpdateIntervalOptions: List<Pair<Int, StringResource>> = listOf(

@@ -70,6 +70,7 @@ class SubtaskTreeWriterTest : DatabaseTest() {
         locationService = mock(),
         backgroundWork = mock(),
         caldavDao = caldavDao,
+        locationDao = db.locationDao(),
     )
 
     private val alarmService: AlarmService = mock()

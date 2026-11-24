@@ -47,6 +47,7 @@ class SyncAdaptersTest {
         locationService = mock(),
         backgroundWork = mock(),
         caldavDao = caldavDao,
+        locationDao = db.locationDao(),
     )
 
     @After

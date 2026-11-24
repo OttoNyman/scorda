@@ -15,6 +15,7 @@ import tasks.kmp.generated.resources.filter_overdue
 import tasks.kmp.generated.resources.no_date
 import tasks.kmp.generated.resources.no_due_date
 import tasks.kmp.generated.resources.no_start_date
+import tasks.kmp.generated.resources.location_header
 import tasks.kmp.generated.resources.pinned_header
 import tasks.kmp.generated.resources.sort_created_group
 import tasks.kmp.generated.resources.sort_due_group
@@ -35,6 +36,8 @@ class HeaderFormatter(
         when {
             value == SectionedDataSource.HEADER_PINNED ->
                 getString(Res.string.pinned_header)
+            value == SectionedDataSource.HEADER_LOCATION ->
+                getString(Res.string.location_header)
             value == SectionedDataSource.HEADER_COMPLETED ->
                 getString(Res.string.completed)
             groupMode == SortHelper.SORT_IMPORTANCE ->

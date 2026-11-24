@@ -57,6 +57,7 @@ import org.tasks.notifications.Notifier
 import org.tasks.preferences.AppPreferences
 import org.tasks.repeats.Recur
 import org.tasks.time.DateTime
+import org.tasks.constructor.FeatureGate
 import org.tasks.time.ONE_DAY
 import org.tasks.time.startOfDay
 import org.tasks.time.startOfMinute
@@ -79,9 +80,10 @@ class iCalendar(
     private val alarmService: AlarmService,
     private val vtodoCache: VtodoCache,
     private val notifier: Notifier,
+    private val featureGate: FeatureGate = FeatureGate(),
 ) {
 
-    suspend fun setPlace(taskId: Long, geo: Geo?) {
+    suspend fun setPlace(taskId: Long, geo: Geo?, merged: org.tasks.data.entity.Task? = null) {
         if (geo == null) {
             locationDao.getActiveGeofences(taskId).forEach {
                 locationDao.delete(it.geofence)
@@ -89,6 +91,10 @@ class iCalendar(
             }
             return
         }
+        // Prefer the in-memory row: applyRemote has not been saved yet.
+        val scheduled = (merged ?: taskDao.fetch(taskId))
+            ?.blocksPlace(featureGate.current.startDate) == true
+        if (scheduled) return
         var place: Place? = locationDao.findPlace(
                 geo.latitude.toLikeString(),
                 geo.longitude.toLikeString()
@@ -255,10 +261,10 @@ class iCalendar(
         if (local != null) {
             val place = locationDao.getPlaceForTask(task.id)
             if (place?.toGeo() == local.geoPosition) {
-                setPlace(task.id, remote.geoPosition)
+                setPlace(task.id, remote.geoPosition, task)
             }
         } else {
-            setPlace(task.id, remote.geoPosition)
+            setPlace(task.id, remote.geoPosition, task)
         }
 
         if (local != null) {

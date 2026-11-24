@@ -2,24 +2,26 @@ package org.tasks.data
 
 import co.touchlab.kermit.Logger
 import org.tasks.broadcast.RefreshBroadcaster
+import org.tasks.constructor.FeatureGate
 import org.tasks.data.dao.CaldavDao
+import org.tasks.data.dao.LocationDao
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_LOCAL
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
 import org.tasks.data.entity.SUPPRESS_SYNC
-import org.tasks.data.entity.SyncTrait
 import org.tasks.data.entity.SYNC_ALARMS
 import org.tasks.data.entity.SYNC_LOCATION
 import org.tasks.data.entity.SYNC_TAGS
+import org.tasks.data.entity.SyncTrait
 import org.tasks.data.entity.Task
 import org.tasks.filters.Filter
-import org.tasks.preferences.QueryPreferences
 import org.tasks.jobs.BackgroundWork
 import org.tasks.location.LocationService
 import org.tasks.notifications.CancelReason
 import org.tasks.notifications.Notifier
+import org.tasks.preferences.QueryPreferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 
 class TaskSaver(
@@ -29,6 +31,8 @@ class TaskSaver(
     private val locationService: LocationService,
     private val backgroundWork: BackgroundWork,
     private val caldavDao: CaldavDao,
+    private val locationDao: LocationDao,
+    private val featureGate: FeatureGate = FeatureGate(),
 ) {
     suspend fun save(
         task: Task,
@@ -36,23 +40,57 @@ class TaskSaver(
         dirty: Boolean = true,
         preserveHierarchy: Boolean = false,
     ) {
+        val normalized = enforcePlaceOrSchedule(task, original)
         val changes = if (preserveHierarchy && original != null) {
-            task.copy(parent = original.parent, order = original.order)
+            normalized.copy(parent = original.parent, order = original.order)
         } else {
-            task
+            normalized
         }
         val markDirty = dirty && needsSync(changes, original)
         if (taskDao.update(
-                task,
+                changes,
                 original,
                 updateTimestamp = dirty,
                 markDirty = markDirty,
                 preserveHierarchy = preserveHierarchy,
             )
         ) {
-            Logger.d("TaskSaver") { "Saved $task" }
-            afterSave(task, original)
+            if (changes !== task) {
+                task.modificationDate = changes.modificationDate
+                task.parent = changes.parent
+                task.order = changes.order
+                task.reminderDismissed = changes.reminderDismissed
+                task.series = changes.series
+                task.scheduled = changes.scheduled
+                task.recurrence = changes.recurrence
+            }
+            Logger.d("TaskSaver") { "Saved $changes" }
+            afterSave(changes, original)
         }
+    }
+
+    /**
+     * Place XOR schedule, date wins when this save sets/changes the schedule (including a new
+     * task with a due date). An old dual whose due/start did not change is left alone.
+     * Place wins only upstream (editor / ApiWriter clear due before save).
+     * Holds with Places off too: a hidden place must not outlive a date set while it was hidden.
+     */
+    private suspend fun enforcePlaceOrSchedule(task: Task, original: Task?): Task {
+        if (task.memo) return task
+        val startEnabled = featureGate.current.startDate
+        if (!task.blocksPlace(startEnabled)) return task
+        val scheduleChanged = original == null ||
+            task.dueDate != original.dueDate ||
+            (startEnabled && task.hideUntil != original.hideUntil)
+        if (!scheduleChanged) return task
+        val geofences = locationDao.getGeofencesForTask(task.id)
+        if (geofences.isEmpty()) return task
+        geofences.forEach { geofence ->
+            locationDao.delete(geofence)
+            geofence.place?.let { uid -> locationService.updateGeofences(uid) }
+        }
+        task.putTransitory(SYNC_LOCATION, true)
+        return task
     }
 
     private suspend fun needsSync(task: Task, original: Task?): Boolean {
@@ -95,7 +133,6 @@ class TaskSaver(
         if (!task.isSuppressRefresh()) {
             refreshBroadcaster.broadcastRefresh()
         }
-        // the row is saved: a pin made, ended, done, undone, trashed or restored shows in the shade now
         val wasPinned = (original?.pinned ?: 0L) > 0
         if ((task.pinned > 0 || wasPinned) &&
             (original == null || task.pinned != original.pinned || completionDateModified || deletionDateModified)

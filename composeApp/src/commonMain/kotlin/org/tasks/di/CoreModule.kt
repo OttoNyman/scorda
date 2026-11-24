@@ -415,6 +415,7 @@ val coreModule: Module = module {
     factory { RepeatTaskHelper(get(), get(), get()) }
     factory { TaskCompleter(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factoryOf(::TaskDeleter)
+    single { org.tasks.constructor.FeatureGate() }
     factoryOf(::TaskSaver)
     factoryOf(::TaskMover)
     factoryOf(::SubtaskTreeWriter)

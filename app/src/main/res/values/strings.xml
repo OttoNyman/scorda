@@ -323,6 +323,8 @@ File %1$s contained %2$s.\n\n
   <string name="linkify_description">Add links to websites, addresses, and phone numbers</string>
   <string name="location_remind_arrival">Remind on arrival</string>
   <string name="location_remind_departure">Remind on departure</string>
+  <string name="geo_trigger_arrival_short">On arrival</string>
+  <string name="geo_trigger_departure_short">On departure</string>
   <string name="visit_website">Visit website</string>
   <string name="location_arrived">Arrived at %s</string>
   <string name="location_departed">Departed %s</string>

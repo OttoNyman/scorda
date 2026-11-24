@@ -83,13 +83,14 @@ abstract class ApiTestCase {
 
     private val taskSaver: TaskSaver by lazy {
         TaskSaver(
-            taskDao = db.taskDao(),
-            refreshBroadcaster = mock(),
-            notifier = mock(),
-            locationService = locationService,
-            backgroundWork = mock(),
-            caldavDao = caldavDao,
-        )
+        taskDao = db.taskDao(),
+        refreshBroadcaster = mock(),
+        notifier = mock(),
+        locationService = locationService,
+        backgroundWork = mock(),
+        caldavDao = caldavDao,
+        locationDao = db.locationDao(),
+    )
     }
 
     private val alarmService: AlarmService by lazy {

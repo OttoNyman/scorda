@@ -229,6 +229,7 @@ open class TaskListViewModel(
                     collapsed = queriedState.collapsed,
                     completedAtBottom = prefs.completedTasksAtBottom,
                     pinning = features()?.pinning == true,
+                    geo = features()?.geo == true,
                 )
                 if (queriedState.filter.supportsSorting()) {
                     val dateFormatter = DateFormatter.create(is24HourFormat = false)

@@ -17,6 +17,8 @@ import com.todoroo.astrid.files.FilesControlSet
 import com.todoroo.astrid.repeats.RepeatControlSet
 import org.tasks.resources.getString
 import org.tasks.service.TaskCompleter
+import org.tasks.data.createHideUntil
+import org.tasks.data.entity.Task.Companion.HIDE_UNTIL_NONE
 import org.tasks.data.getDefaultAlarms
 import org.tasks.service.TaskDeleter
 import org.tasks.data.TaskMover
@@ -26,9 +28,11 @@ import com.todoroo.astrid.ui.StartDateControlSet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
+import org.tasks.data.normalizedPlaceTrigger
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -171,7 +175,13 @@ class TaskEditViewModel @Inject constructor(
             alwaysDisplayFullDate = preferences.alwaysDisplayFullDate,
             showEditScreenWithoutUnlock = preferences.showEditScreenWithoutUnlock,
             calendar = null,
-            displayOrder = displayOrder(featureGate.current, task.memo, !task.notes.isNullOrBlank()),
+            displayOrder = displayOrder(
+                featureGate.current,
+                task.memo,
+                !task.notes.isNullOrBlank(),
+                hasSchedule = task.dueDate > 0 ||
+                    (featureGate.current.startDate && task.hideUntil > 0),
+            ),
             alarms = if (task.isNew && !task.memo) {
                 task.getDefaultAlarms(runBlocking { preferences.isDefaultDueTimeEnabled() })
                     .filter { featureGate.current.schedules(it) }
@@ -229,7 +239,14 @@ class TaskEditViewModel @Inject constructor(
                     }
                 }
         }
-        if (fromUser && dueDate.value != previous) markEdited()
+        if (fromUser && dueDate.value != previous) {
+            if (dueDate.value > 0 && _viewState.value.location != null) {
+                _viewState.update { withDisplayOrder(it.copy(location = null)) }
+            } else {
+                _viewState.update { withDisplayOrder(it) }
+            }
+            markEdited()
+        }
     }
 
     val startDate = MutableStateFlow(task.hideUntil)
@@ -262,7 +279,14 @@ class TaskEditViewModel @Inject constructor(
                     }
                 }
         }
-        if (startDate.value != previous) markEdited()
+        if (startDate.value != previous) {
+            if (startDate.value > 0 && _viewState.value.location != null) {
+                _viewState.update { withDisplayOrder(it.copy(location = null)) }
+            } else {
+                _viewState.update { withDisplayOrder(it) }
+            }
+            markEdited()
+        }
     }
 
     fun hasChanges(): Boolean = hasChanges(_viewState.value)
@@ -340,10 +364,26 @@ class TaskEditViewModel @Inject constructor(
         task.pinned = viewState.task.pinned
         task.notes = Checklist.withoutBlankItems(viewState.task.notes)
         val savingMemo = viewState.task.memo
+        val selectedLocation = _viewState.value.location
+        val placeTask = !savingMemo && featureGate.current.geo && selectedLocation != null
+        val placeChosenThisSession =
+            placeTask && (
+                (isNew && selectedLocation != null) ||
+                    originalState.value.location?.place?.uid != selectedLocation?.place?.uid
+                )
         if (savingMemo) {
             applyMemoSaveConstraints(task)
             dueDate.value = 0
             startDate.value = 0
+        } else if (placeChosenThisSession) {
+            applyPlaceSaveConstraints(task)
+            dueDate.value = 0
+            startDate.value = 0
+            if (series != null && scope != SeriesEditScope.SCHEDULE) {
+                // "This one only": the row leaves the series, the series goes on without it
+                task.series = null
+                task.scheduled = 0
+            }
         } else {
             task.dueDate = dueDate.value
             task.hideUntil = startDate.value
@@ -359,8 +399,11 @@ class TaskEditViewModel @Inject constructor(
         if (isNew) {
             taskDao.createNew(task)
         }
-        val selectedLocation = _viewState.value.location
-        if (!savingMemo && ((isNew && selectedLocation != null) || originalState.value.location != selectedLocation)) {
+        if (
+            !savingMemo &&
+            featureGate.current.geo &&
+            ((isNew && selectedLocation != null) || originalState.value.location != selectedLocation)
+        ) {
             originalState.value.location?.let { location ->
                 if (location.geofence.id > 0) {
                     locationDao.delete(location.geofence)
@@ -369,10 +412,13 @@ class TaskEditViewModel @Inject constructor(
             }
             selectedLocation?.let { location ->
                 val place = location.place
+                val departure = location.geofence.isDeparture
                 locationDao.insert(
                     location.geofence.copy(
                         task = task.id,
                         place = place.uid,
+                        isArrival = !departure,
+                        isDeparture = departure,
                     )
                 )
                 locationService.updateGeofences(place)
@@ -402,10 +448,17 @@ class TaskEditViewModel @Inject constructor(
 
         if (
             !savingMemo &&
-            ((isNew && _viewState.value.alarms.isNotEmpty()) ||
-                originalState.value.alarms != _viewState.value.alarms)
+            (placeChosenThisSession && originalState.value.alarms.any { it.type != Alarm.TYPE_SNOOZE } ||
+                !placeChosenThisSession &&
+                    ((isNew && _viewState.value.alarms.isNotEmpty()) ||
+                        originalState.value.alarms != _viewState.value.alarms))
         ) {
-            alarmService.synchronizeAlarms(task.id, _viewState.value.alarms.toMutableSet())
+            val alarms = if (placeChosenThisSession) {
+                originalState.value.alarms.filter { it.type == Alarm.TYPE_SNOOZE }.toMutableSet()
+            } else {
+                _viewState.value.alarms.toMutableSet()
+            }
+            alarmService.synchronizeAlarms(task.id, alarms)
             task.putTransitory(SYNC_ALARMS, true)
         }
 
@@ -433,8 +486,11 @@ class TaskEditViewModel @Inject constructor(
                 .let { taskAttachmentDao.insert(it) }
         }
 
-        if (!savingMemo && series != null && rule == null) {
-            // "Don't repeat" on an occurrence: the series ends, this row stays a plain task
+        if (
+            !savingMemo && series != null &&
+            (rule == null || placeChosenThisSession && scope == SeriesEditScope.SCHEDULE)
+        ) {
+            // "Don't repeat", or a place for the whole series: it ends, this row stays a plain task
             seriesScheduler.detach(task.id)
             task.series = null
             task.scheduled = 0
@@ -658,7 +714,6 @@ class TaskEditViewModel @Inject constructor(
         savedStateHandle[TaskEditFragment.EXTRA_TASK] = fresh
         dueDate.value = fresh.dueDate
         startDate.value = fresh.hideUntil
-        val order = displayOrder(features, memo, !fresh.notes.isNullOrBlank())
         val alarms = if (memo) {
             persistentSetOf()
         } else {
@@ -673,23 +728,25 @@ class TaskEditViewModel @Inject constructor(
         }
         val tags = if (memo) persistentSetOf() else tagDataDao.getTags(fresh).toPersistentSet()
         val location = if (memo) null else locationDao.getLocation(fresh, preferences)
-        val cleared = TaskEditViewState(
-            task = fresh,
-            showBeastModeHint = state.showBeastModeHint,
-            showComments = showsComments(memo),
-            showKeyboard = state.showKeyboard,
-            backButtonSavesTask = state.backButtonSavesTask,
-            isReadOnly = state.isReadOnly,
-            linkify = state.linkify,
-            alwaysDisplayFullDate = state.alwaysDisplayFullDate,
-            showEditScreenWithoutUnlock = state.showEditScreenWithoutUnlock,
-            calendar = state.calendar,
-            displayOrder = order,
-            alarms = alarms,
-            location = location,
-            tags = tags,
-            list = list,
-            attachments = persistentSetOf(),
+        val cleared = withDisplayOrder(
+            TaskEditViewState(
+                task = fresh,
+                showBeastModeHint = state.showBeastModeHint,
+                showComments = showsComments(memo),
+                showKeyboard = state.showKeyboard,
+                backButtonSavesTask = state.backButtonSavesTask,
+                isReadOnly = state.isReadOnly,
+                linkify = state.linkify,
+                alwaysDisplayFullDate = state.alwaysDisplayFullDate,
+                showEditScreenWithoutUnlock = state.showEditScreenWithoutUnlock,
+                calendar = state.calendar,
+                displayOrder = persistentListOf(),
+                alarms = alarms,
+                location = location,
+                tags = tags,
+                list = list,
+                attachments = persistentSetOf(),
+            ),
         )
         _originalState.value = cleared
         _viewState.value = cleared
@@ -765,7 +822,6 @@ class TaskEditViewModel @Inject constructor(
         savedStateHandle[TaskEditFragment.EXTRA_TASK] = fresh
         dueDate.value = fresh.dueDate
         startDate.value = fresh.hideUntil
-        val features = featureGate.current
         val list = defaultFilterProvider.getList(fresh)
         val tags = tagDataDao.getTags(fresh).toPersistentSet()
         val alarms = alarmDao.getAlarms(fresh.id).toPersistentSet()
@@ -774,23 +830,25 @@ class TaskEditViewModel @Inject constructor(
             .getAttachments(fresh.id)
             .filter { FileHelper.fileExists(context, it.uri.toUri()) }
             .toPersistentSet()
-        val cleared = TaskEditViewState(
-            task = fresh,
-            showBeastModeHint = _viewState.value.showBeastModeHint,
-            showComments = showsComments(fresh.memo),
-            showKeyboard = false,
-            backButtonSavesTask = _viewState.value.backButtonSavesTask,
-            isReadOnly = fresh.readOnly,
-            linkify = _viewState.value.linkify,
-            alwaysDisplayFullDate = _viewState.value.alwaysDisplayFullDate,
-            showEditScreenWithoutUnlock = _viewState.value.showEditScreenWithoutUnlock,
-            calendar = _viewState.value.calendar,
-            displayOrder = displayOrder(features, fresh.memo, !fresh.notes.isNullOrBlank()),
-            alarms = alarms,
-            location = location,
-            tags = tags,
-            list = list,
-            attachments = attachments,
+        val cleared = withDisplayOrder(
+            TaskEditViewState(
+                task = fresh,
+                showBeastModeHint = _viewState.value.showBeastModeHint,
+                showComments = showsComments(fresh.memo),
+                showKeyboard = false,
+                backButtonSavesTask = _viewState.value.backButtonSavesTask,
+                isReadOnly = fresh.readOnly,
+                linkify = _viewState.value.linkify,
+                alwaysDisplayFullDate = _viewState.value.alwaysDisplayFullDate,
+                showEditScreenWithoutUnlock = _viewState.value.showEditScreenWithoutUnlock,
+                calendar = _viewState.value.calendar,
+                displayOrder = persistentListOf(),
+                alarms = alarms,
+                location = location,
+                tags = tags,
+                list = list,
+                attachments = attachments,
+            ),
         )
         _originalState.value = cleared
         _viewState.value = cleared
@@ -805,7 +863,28 @@ class TaskEditViewModel @Inject constructor(
     }
 
     fun setLocation(location: Location?) {
-        updateState { it.copy(location = location) }
+        val clearingNewPlace = location == null && task.isNew && _viewState.value.location != null
+        updateState { state ->
+            withDisplayOrder(
+                state.copy(location = location?.normalizedPlaceTrigger()),
+            )
+        }
+        // TaskCreator skipped "due today" and the default repeat for the default place: as if it never had one
+        if (clearingNewPlace && dueDate.value <= 0) {
+            setDueDate(createDueDate(Task.URGENCY_TODAY, 0))
+            if (featureGate.current.repeat && _viewState.value.task.recurrence.isNullOrBlank()) {
+                preferences.getStringValue(R.string.p_default_recurrence)
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { setRecurrence(it) }
+            }
+        }
+        if (clearingNewPlace && featureGate.current.startDate && startDate.value <= 0) {
+            val hide = task.createHideUntil(
+                preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
+                0,
+            )
+            if (hide > 0) setStartDate(hide)
+        }
     }
 
     fun setAttachments(attachments: Set<TaskAttachment>) {
@@ -815,6 +894,25 @@ class TaskEditViewModel @Inject constructor(
     fun answerReopen(reopen: Boolean) {
         _reopenSeries.value = false
         if (reopen) setComplete(false) else reopenDeclined = true
+    }
+
+    private fun scheduledInEditor(): Boolean =
+        dueDate.value > 0 || (featureGate.current.startDate && startDate.value > 0)
+
+    private fun withDisplayOrder(state: TaskEditViewState): TaskEditViewState {
+        val features = featureGate.current
+        val hasLocation = features.geo && state.location != null
+        return state.copy(
+            displayOrder = displayOrder(
+                features = features,
+                memo = state.task.memo,
+                hasNotes = !state.task.notes.isNullOrBlank() ||
+                    !_originalState.value.task.notes.isNullOrBlank(),
+                hasLocation = hasLocation,
+                // Hide schedule rows while a place is selected; values stay until save or clear.
+                hasSchedule = scheduledInEditor() && !hasLocation,
+            ),
+        )
     }
 
     private fun markEdited() {
@@ -893,24 +991,17 @@ class TaskEditViewModel @Inject constructor(
             val list = async { defaultFilterProvider.getList(task) }
             val location = async { locationDao.getLocation(task, preferences) }
             val tags = async { tagDataDao.getTags(task).toPersistentSet() }
-            _originalState.update {
-                it.copy(
+            val loaded = withDisplayOrder(
+                _originalState.value.copy(
                     attachments = attachments.await(),
                     alarms = alarms.await(),
                     list = list.await(),
                     location = location.await(),
                     tags = tags.await(),
-                )
-            }
-            _viewState.update {
-                it.copy(
-                    attachments = originalState.value.attachments,
-                    alarms = originalState.value.alarms,
-                    list = originalState.value.list,
-                    location = originalState.value.location,
-                    tags = originalState.value.tags,
-                )
-            }
+                ),
+            )
+            _originalState.value = loaded
+            _viewState.value = loaded
         }
     }
 
@@ -951,6 +1042,8 @@ class TaskEditViewModel @Inject constructor(
             memo: Boolean,
             /** Notes off: a description the task already has stays visible and editable. */
             hasNotes: Boolean = false,
+            hasLocation: Boolean = false,
+            hasSchedule: Boolean = false,
         ) = if (memo) {
             listOf(
                 TAG_TITLE to true,
@@ -961,22 +1054,31 @@ class TaskEditViewModel @Inject constructor(
                 com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
             )
         } else {
+            // Place wins when both are set (new task with default place + due today).
+            val place = hasLocation
+            val timed = hasSchedule && !hasLocation
             listOf(
                 TAG_TITLE to true,
-                TAG_DUE_DATE to true,
-                TAG_ADVANCE to features.advance,
-                com.todoroo.astrid.repeats.RepeatControlSet.TAG to features.repeat,
+                TAG_DUE_DATE to !place,
+                TAG_ADVANCE to (features.advance && !place),
+                com.todoroo.astrid.repeats.RepeatControlSet.TAG to (features.repeat && !place),
                 TAG_DESCRIPTION to (features.notes || hasNotes),
                 TAG_CHECKLIST to features.checklist,
                 TAG_LIST to features.lists,
                 com.todoroo.astrid.tags.TagsControlSet.TAG to features.tags,
                 TAG_PRIORITY to features.priority,
-                com.todoroo.astrid.ui.StartDateControlSet.TAG to features.startDate,
-                com.todoroo.astrid.ui.ReminderControlSet.TAG to features.extraReminders,
-                org.tasks.ui.LocationControlSet.TAG to features.geo,
+                com.todoroo.astrid.ui.StartDateControlSet.TAG to (features.startDate && !place),
+                com.todoroo.astrid.ui.ReminderControlSet.TAG to (features.extraReminders && !place),
+                org.tasks.ui.LocationControlSet.TAG to (features.geo && !timed),
                 com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
             )
         }.filter { it.second }.map { it.first }.toPersistentList()
+
+        private fun applyPlaceSaveConstraints(task: Task) {
+            task.dueDate = 0
+            task.hideUntil = 0
+            task.recurrence = null
+        }
 
         private fun applyMemoSaveConstraints(task: Task) {
             task.dueDate = 0

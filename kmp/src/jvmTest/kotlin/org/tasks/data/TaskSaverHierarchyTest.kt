@@ -23,6 +23,7 @@ class TaskSaverHierarchyTest : DatabaseTest() {
         locationService = mock(),
         backgroundWork = mock(),
         caldavDao = caldavDao,
+        locationDao = db.locationDao(),
     )
 
     private suspend fun newTask(title: String, parent: Long = 0, order: Long? = null): Task {

@@ -155,6 +155,29 @@ object CommonMigrations {
         }
     }
 
+    /** One trigger per geofence: neither/both/arrival become arrival; departure-only stays. */
+    val MIGRATION_101_102 = object : Migration(101, 102) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            // Explicit cases — avoid a negated WHERE that is easy to get wrong.
+            connection.execSQL(
+                "UPDATE geofences SET arrival = 1, departure = 0 " +
+                    "WHERE (arrival = 0 AND departure = 0) " +
+                    "OR (arrival = 1 AND departure = 0) " +
+                    "OR (arrival = 1 AND departure = 1)"
+            )
+        }
+    }
+
+    /** Old place+due duals: date wins, drop the place once. hideUntil alone is not a schedule. */
+    val MIGRATION_102_103 = object : Migration(102, 103) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL(
+                "DELETE FROM geofences WHERE task IN (" +
+                    "SELECT _id FROM tasks WHERE dueDate > 0)"
+            )
+        }
+    }
+
     val all: Array<Migration> = arrayOf(
         MIGRATION_92_93,
         MIGRATION_94_95,
@@ -164,5 +187,7 @@ object CommonMigrations {
         MIGRATION_98_99,
         MIGRATION_99_100,
         MIGRATION_100_101,
+        MIGRATION_101_102,
+        MIGRATION_102_103,
     )
 }

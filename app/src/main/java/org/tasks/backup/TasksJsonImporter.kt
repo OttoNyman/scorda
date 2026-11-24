@@ -57,6 +57,7 @@ import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Filter
 import org.tasks.data.entity.Geofence
 import org.tasks.data.entity.Place
+import org.tasks.data.normalizedPlaceTrigger
 import org.tasks.data.entity.Series
 import org.tasks.data.entity.Tag
 import org.tasks.data.entity.TagData
@@ -97,6 +98,7 @@ class TasksJsonImporter @Inject constructor(
     private val firebase: Firebase,
     private val upgrade_15_10: Upgrade_15_10,
     private val seriesDao: SeriesDao,
+    private val featureGate: org.tasks.constructor.FeatureGate,
 ) {
     suspend fun importTasks(
         context: Context,
@@ -539,24 +541,26 @@ class TasksJsonImporter @Inject constructor(
                 dirtyDao.setDirtyState(id, dirty, synced)
             }
         }
-        backup.locations?.forEach { location ->
-            val place = Place(
-                longitude = location.longitude,
-                latitude = location.latitude,
-                name = location.name,
-                address = location.address,
-                url = location.url,
-                phone = location.phone,
-            )
-            locationDao.insert(place)
-            locationDao.insert(
-                Geofence(
-                    task = taskId,
-                    place = place.uid,
-                    isArrival = location.arrival,
-                    isDeparture = location.departure,
+        if (!task.blocksPlace(featureGate.current.startDate)) {
+            backup.locations?.forEach { location ->
+                val place = Place(
+                    longitude = location.longitude,
+                    latitude = location.latitude,
+                    name = location.name,
+                    address = location.address,
+                    url = location.url,
+                    phone = location.phone,
                 )
-            )
+                locationDao.insert(place)
+                locationDao.insert(
+                    Geofence(
+                        task = taskId,
+                        place = place.uid,
+                        isArrival = location.arrival,
+                        isDeparture = location.departure,
+                    ).normalizedPlaceTrigger()
+                )
+            }
         }
         backup.tags?.forEach tags@ { tag ->
             val tagData = findTagData(tag) ?: return@tags

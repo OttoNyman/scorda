@@ -207,6 +207,7 @@ actual fun platformModule(): Module = module {
             locationService = get(),
             listManager = get(),
             tagMetadataEditor = get(),
+            seriesScheduler = null,
         )
     }
 }

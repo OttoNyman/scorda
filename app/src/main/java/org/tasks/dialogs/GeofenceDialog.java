@@ -21,11 +21,10 @@ import org.tasks.data.LocationExtensionsKt;
 import org.tasks.data.entity.Geofence;
 import org.tasks.data.Location;
 import org.tasks.databinding.LocationDetailsBinding;
-import org.tasks.preferences.PermissionChecker;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class GeofenceDialog extends DialogFragment {
@@ -35,10 +34,9 @@ public class GeofenceDialog extends DialogFragment {
 
   @Inject DialogBuilder dialogBuilder;
   @Inject Activity context;
-  @Inject PermissionChecker permissionChecker;
 
-  private SwitchMaterial arrivalView;
   private SwitchMaterial departureView;
+  private Geofence originalGeofence;
 
   public static GeofenceDialog newGeofenceDialog(Location location) {
     GeofenceDialog dialog = new GeofenceDialog();
@@ -52,38 +50,32 @@ public class GeofenceDialog extends DialogFragment {
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     Location original = getArguments().getParcelable(EXTRA_ORIGINAL);
+    originalGeofence = original.getGeofence();
     Geofence geofence =
         savedInstanceState == null
-            ? original.getGeofence()
+            ? originalGeofence
             : savedInstanceState.getParcelable(EXTRA_GEOFENCE);
 
     LayoutInflater layoutInflater = LayoutInflater.from(context);
     LocationDetailsBinding binding = LocationDetailsBinding.inflate(layoutInflater);
-    arrivalView = binding.locationArrival;
     departureView = binding.locationDeparture;
-    arrivalView.setChecked(geofence.isArrival());
     departureView.setChecked(geofence.isDeparture());
     return dialogBuilder
         .newDialog(LocationExtensionsKt.getDisplayName(original))
         .setView(binding.getRoot())
         .setNegativeButton(R.string.cancel, null)
-        .setOnCancelListener(this::sendResult)
         .setPositiveButton(R.string.ok, this::sendResult)
         .create();
   }
 
-  @Override
-  public void onCancel(DialogInterface dialog) {
-    sendResult(dialog);
-  }
-
   private Geofence toGeofence() {
+    boolean departure = departureView.isChecked();
     return new Geofence(
-            0L,
-            0L,
-            null,
-            arrivalView.isChecked(),
-            departureView.isChecked()
+            originalGeofence.getId(),
+            originalGeofence.getTask(),
+            originalGeofence.getPlace(),
+            !departure,
+            departure
     );
   }
 
@@ -97,16 +89,6 @@ public class GeofenceDialog extends DialogFragment {
   @Override
   public void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
-
     outState.putParcelable(EXTRA_GEOFENCE, toGeofence());
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-
-    if (!permissionChecker.canAccessBackgroundLocation()) {
-      dismiss();
-    }
   }
 }

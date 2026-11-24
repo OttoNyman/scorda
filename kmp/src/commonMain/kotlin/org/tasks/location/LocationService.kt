@@ -36,9 +36,12 @@ interface LocationService {
 
     suspend fun registerAllGeofences() {
         val places = locationDao.getPlacesWithGeofences()
+        val active = places.mapNotNull { it.uid }.toSet()
         places.forEach { place ->
             updateGeofenceForPlace(place)
         }
+        // Migration can delete geofence rows and leave the OS registration behind.
+        locationDao.getPlaces().filter { it.uid !in active }.forEach { removeGeofences(it) }
         applyBackgroundLocationUpdates(places.isNotEmpty())
     }
 

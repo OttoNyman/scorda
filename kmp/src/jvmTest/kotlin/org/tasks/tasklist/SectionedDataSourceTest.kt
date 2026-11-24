@@ -5,7 +5,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.tasks.data.TaskContainer
 import org.tasks.data.entity.Task
+import org.tasks.data.Location
+import org.tasks.data.entity.Geofence
+import org.tasks.data.entity.Place
 import org.tasks.tasklist.SectionedDataSource.Companion.HEADER_COMPLETED
+import org.tasks.tasklist.SectionedDataSource.Companion.HEADER_LOCATION
 import org.tasks.tasklist.SectionedDataSource.Companion.HEADER_PINNED
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.startOfDay
@@ -27,6 +31,7 @@ class SectionedDataSourceTest {
         collapsed: Set<Long> = emptySet(),
         groupMode: Int = SortHelper.SORT_DUE,
         pinning: Boolean = true,
+        geo: Boolean = false,
     ) = SectionedDataSource(
         tasks = tasks.toList(),
         disableHeaders = false,
@@ -34,6 +39,13 @@ class SectionedDataSourceTest {
         collapsed = collapsed,
         completedAtBottom = true,
         pinning = pinning,
+        geo = geo,
+    )
+
+    private fun atPlace(title: String) = TaskContainer(
+        task = Task(id = title.hashCode().toLong(), title = title),
+        location = Location(Geofence(place = "p"), Place(uid = "p", name = title)),
+        sortGroup = today,
     )
 
     @Test
@@ -48,6 +60,7 @@ class SectionedDataSourceTest {
             when (getHeaderValue(it)) {
                 HEADER_COMPLETED -> "completed"
                 HEADER_PINNED -> "pinned"
+                HEADER_LOCATION -> "location"
                 else -> "group"
             }
         } else {
@@ -68,6 +81,38 @@ class SectionedDataSourceTest {
             listOf("group", ACTIVE, "completed"),
             source.render(),
         )
+    }
+
+    @Test
+    fun locationTasksGetTheirOwnSectionBeforeCompleted() {
+        val source = dataSource(task(ACTIVE), atPlace("shop"), task(DONE, completed = true), geo = true)
+
+        assertEquals(listOf("group", ACTIVE, "location", "shop", "completed", DONE), source.render())
+    }
+
+    @Test
+    fun completedLocationTasksStayInCompletedNotLocation() {
+        val doneAtPlace = TaskContainer(
+            task = Task(id = 9, title = "done-place"),
+            location = Location(Geofence(place = "p"), Place(uid = "p", name = "p")),
+            parentComplete = true,
+            sortGroup = today,
+        )
+        val source = dataSource(task(ACTIVE), doneAtPlace, geo = true)
+
+        assertEquals(listOf("group", ACTIVE, "completed", "done-place"), source.render())
+    }
+
+    @Test
+    fun locationSectionIgnoresStalePinWhenPinningOff() {
+        val pinnedPlace = TaskContainer(
+            task = Task(id = 8, title = "pin-place", pinned = 1),
+            location = Location(Geofence(place = "p"), Place(uid = "p", name = "p")),
+            sortGroup = today,
+        )
+        val source = dataSource(task(ACTIVE), pinnedPlace, pinning = false, geo = true)
+
+        assertEquals(listOf("group", ACTIVE, "location", "pin-place"), source.render())
     }
 
     @Test

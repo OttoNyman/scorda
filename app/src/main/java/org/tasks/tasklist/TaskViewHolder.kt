@@ -28,6 +28,7 @@ import org.tasks.compose.StartDateChip
 import org.tasks.checklist.Checklist
 import org.tasks.data.INDENT_STEP_DP
 import org.tasks.data.TaskContainer
+import org.tasks.data.open
 import org.tasks.data.isHidden
 import org.tasks.data.isOverdue
 import org.tasks.databinding.TaskAdapterRowBinding
@@ -249,6 +250,28 @@ class TaskViewHolder internal constructor(
     }
 
     private fun setupDueDate(sortByDueDate: Boolean) {
+        val place = task.location?.takeIf { featureGate.current.geo && !task.hasDueDate() }
+        if (place != null) {
+            dueDate.setTextColor(
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurfaceVariant, 0),
+            )
+            dueDate.text = if (place.isDeparture && !place.isArrival) {
+                context.getString(R.string.geo_trigger_departure_short)
+            } else {
+                context.getString(R.string.geo_trigger_arrival_short)
+            }
+            val mark = AppCompatResources.getDrawable(context, R.drawable.ic_outline_place_24px)?.mutate()?.apply {
+                val size = dueDate.textSize.toInt()
+                setBounds(0, 0, size, size)
+                setTint(dueDate.currentTextColor)
+            }
+            dueDate.setCompoundDrawablesRelative(mark, null, null, null)
+            dueDate.setOnClickListener { place.open(context) }
+            dueDate.visibility = View.VISIBLE
+            return
+        }
+        dueDate.setOnClickListener { changeDueDate() }
+        dueDate.setCompoundDrawablesRelative(null, null, null, null)
         if (task.hasDueDate()) {
             if (task.task.isOverdue) {
                 dueDate.setTextColor(textColorOverdue)
@@ -395,7 +418,9 @@ class TaskViewHolder internal constructor(
                             dateFormatter = dateFormatter,
                         )
                     }
-                    if (features.geo && place != null && filter !is PlaceFilter && remember { preferences.showPlaceChip }) {
+                    if (features.geo && place != null && filter !is PlaceFilter &&
+                        remember { preferences.showPlaceChip }
+                    ) {
                         FilterChip(
                             filter = PlaceFilter(place),
                             defaultIcon = TasksIcons.PLACE,

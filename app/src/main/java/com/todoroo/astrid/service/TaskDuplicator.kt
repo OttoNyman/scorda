@@ -14,9 +14,9 @@ import org.tasks.data.db.DbUtils.dbchunk
 import org.tasks.data.entity.Attachment
 import org.tasks.data.entity.CaldavAccount.Companion.pushesRemoteParent
 import org.tasks.data.entity.CaldavTask
-import org.tasks.data.entity.Geofence
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.Task.Companion.NO_ID
+import org.tasks.data.normalizedPlaceTrigger
 import org.tasks.preferences.Preferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import javax.inject.Inject
@@ -91,12 +91,7 @@ class TaskDuplicator @Inject constructor(
             }
             for (g in locationDao.getGeofencesForTask(task.id)) {
                 locationDao.insert(
-                    Geofence(
-                        task = clone.id,
-                        place = g.place,
-                        isArrival = g.isArrival,
-                        isDeparture = g.isDeparture,
-                    )
+                    g.copy(id = 0, task = clone.id).normalizedPlaceTrigger()
                 )
             }
             val alarms = alarmDao.getAlarms(task.id)

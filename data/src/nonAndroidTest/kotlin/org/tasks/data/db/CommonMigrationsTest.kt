@@ -220,6 +220,50 @@ class CommonMigrationsTest {
         }
     }
 
+    @Test
+    fun normalizesGeofenceTriggersToOneFlag() = runBlocking {
+        // 101.json == 102.json: MigrationTestHelper can bump the version without applying a
+        // data-only Migration, so call migrate() on the seeded connection.
+        helper.createDatabase(101).use { db ->
+            db.execSQL("PRAGMA foreign_keys = OFF")
+            db.insertTask(1)
+            db.insertTask(2)
+            db.insertTask(3)
+            db.insertTask(4)
+            db.insertGeofence(10, task = 1, arrival = 0, departure = 0)
+            db.insertGeofence(20, task = 2, arrival = 1, departure = 0)
+            db.insertGeofence(30, task = 3, arrival = 0, departure = 1)
+            db.insertGeofence(40, task = 4, arrival = 1, departure = 1)
+            CommonMigrations.MIGRATION_101_102.migrate(db)
+            assertEquals(
+                listOf(
+                    Triple(10L, 1L, 0L), // neither → arrival
+                    Triple(20L, 1L, 0L), // arrival stays
+                    Triple(30L, 0L, 1L), // departure-only stays
+                    Triple(40L, 1L, 0L), // both → arrival
+                ),
+                db.geofenceFlags(),
+            )
+        }
+    }
+
+    @Test
+    fun dropsPlacesOnlyWhenDueDateIsSet() = runBlocking {
+        helper.createDatabase(102).use { db ->
+            db.execSQL("PRAGMA foreign_keys = OFF")
+            db.insertTask(1)
+            db.insertTask(2)
+            db.insertTask(3)
+            db.execSQL("UPDATE `tasks` SET `dueDate` = 1000 WHERE `_id` = 1")
+            db.execSQL("UPDATE `tasks` SET `hideUntil` = 2000 WHERE `_id` = 2")
+            db.insertGeofence(10, task = 1, arrival = 1, departure = 0)
+            db.insertGeofence(20, task = 2, arrival = 1, departure = 0)
+            db.insertGeofence(30, task = 3, arrival = 1, departure = 0)
+            CommonMigrations.MIGRATION_102_103.migrate(db)
+            assertEquals(listOf(2L, 3L), db.geofenceTaskIds())
+        }
+    }
+
     private fun SQLiteConnection.insertTask(id: Long, modified: Long = 0) {
         execSQL(
             "INSERT INTO `tasks` (`_id`, `importance`, `dueDate`, `hideUntil`, `created`, `modified`, `completed`, `deleted`, `estimatedSeconds`, `elapsedSeconds`, `timerStart`, `notificationFlags`, `lastNotified`, `collapsed`, `parent`) " +
@@ -304,6 +348,44 @@ class CommonMigrationsTest {
                 if (name == null) it.bindNull(4) else it.bindText(4, name)
                 it.step()
             }
+    }
+
+    private fun SQLiteConnection.insertGeofence(
+        id: Long,
+        task: Long,
+        arrival: Int,
+        departure: Int,
+        place: String = "place-$id",
+    ) {
+        prepare(
+            "INSERT INTO `geofences` (`geofence_id`, `task`, `place`, `arrival`, `departure`) " +
+                "VALUES (?, ?, ?, ?, ?)"
+        ).use {
+            it.bindLong(1, id)
+            it.bindLong(2, task)
+            it.bindText(3, place)
+            it.bindLong(4, arrival.toLong())
+            it.bindLong(5, departure.toLong())
+            it.step()
+        }
+    }
+
+    private fun SQLiteConnection.geofenceFlags(): List<Triple<Long, Long, Long>> = buildList {
+        prepare(
+            "SELECT `geofence_id`, `arrival`, `departure` FROM `geofences` ORDER BY `geofence_id`"
+        ).use {
+            while (it.step()) {
+                add(Triple(it.getLong(0), it.getLong(1), it.getLong(2)))
+            }
+        }
+    }
+
+    private fun SQLiteConnection.geofenceTaskIds(): List<Long> = buildList {
+        prepare("SELECT `task` FROM `geofences` ORDER BY `task`").use {
+            while (it.step()) {
+                add(it.getLong(0))
+            }
+        }
     }
 
     private fun SQLiteConnection.nameAndNormalized(): List<Pair<String, String>> = buildList {

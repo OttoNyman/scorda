@@ -14,19 +14,29 @@ suspend fun LocationDao.getLocation(task: Task, preferences: AppPreferences): Lo
             }
         }
     } else {
-        return getGeofences(task.id)
+        return getGeofences(task.id)?.normalizedPlaceTrigger()
     }
     return null
 }
+
+fun Geofence.normalizedPlaceTrigger(): Geofence =
+    if (isDeparture && !isArrival) {
+        copy(isArrival = false, isDeparture = true)
+    } else {
+        copy(isArrival = true, isDeparture = false)
+    }
+
+fun Location.normalizedPlaceTrigger(): Location =
+    copy(geofence = geofence.normalizedPlaceTrigger())
 
 suspend fun createGeofence(
     place: String?,
     preferences: AppPreferences,
 ): Geofence {
-    val defaultReminders = preferences.defaultLocationReminder()
+    val onDeparture = preferences.defaultLocationReminder() == 2
     return Geofence(
         place = place,
-        isArrival = defaultReminders == 1 || defaultReminders == 3,
-        isDeparture = defaultReminders == 2 || defaultReminders == 3,
+        isArrival = !onDeparture,
+        isDeparture = onDeparture,
     )
 }

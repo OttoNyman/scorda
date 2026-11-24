@@ -148,13 +148,15 @@ class SeriesTemplates(
         taskDao.createNew(task)
         addToList(task, t.list, parent)
         tagDao.insert(task, tagDataDao.getByUuid(t.tags))
-        if (t.place != null) {
+        // Series rows always have a due date; place XOR schedule → keep the schedule.
+        if (t.place != null && due <= 0) {
+            val departure = t.departure && !t.arrival
             locationDao.insert(
                 Geofence(
                     task = task.id,
                     place = t.place,
-                    isArrival = t.arrival,
-                    isDeparture = t.departure,
+                    isArrival = !departure,
+                    isDeparture = departure,
                 )
             )
         }

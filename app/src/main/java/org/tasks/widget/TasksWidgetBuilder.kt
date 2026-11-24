@@ -287,6 +287,7 @@ internal class TasksWidgetBuilder(
             collapsed,
             widgetPreferences.completedTasksAtBottom,
             features.pinning,
+            geo = features.geo,
         )
         if (filter.supportsSorting()) {
             tasks.formatHeaders {

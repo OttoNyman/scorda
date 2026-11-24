@@ -100,7 +100,7 @@ data class TaskDefaultSettings(
     val defaultAlarms: List<Alarm> = DEFAULT_ALARMS,
     val defaultRingMode: Int = 0,
     val defaultLocation: String? = null,
-    val defaultLocationReminder: Int = 0,
+    val defaultLocationReminder: Int = 1,
     val locationUpdateIntervalMinutes: Int = DEFAULT_LOCATION_UPDATE_INTERVAL,
 )
 
