@@ -256,7 +256,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             val data = result.data ?: return@registerForActivityResult
             when (data.action) {
                 ACTION_DELETED -> lifecycleScope.launch {
-                    mainViewModel.setFilter(MyTasksFilter.create())
+                    mainViewModel.setFilter(MyTasksFilter.create(), record = false)
                 }
                 ACTION_RELOAD ->
                     IntentCompat.getParcelableExtra(data, MainActivity.OPEN_FILTER, Filter::class.java)?.let {
@@ -324,16 +324,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     search.collapseActionView()
                     return
                 }
-                val current = mainViewModel.state.value.filter
-                // search and the trash are side trips: back returns to the list they were opened from
-                if ((current as? SearchFilter)?.query?.isNotBlank() == true || current is TrashFilter) {
-                    lifecycleScope.launch {
-                        mainViewModel.openLastViewedFilter()
-                    }
-                    if (search.isActionViewExpanded) {
-                        search.collapseActionView()
-                    }
-                    Timber.d("Filtro resettato")
+                if (mainViewModel.state.value.task == null && mainViewModel.popFilter()) {
+                    return
                 } else {
                     // pass this one back on, then listen again: a later back may be a search to close
                     isEnabled = false
@@ -357,6 +349,26 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
     }
 
+    private fun layoutToolbar() {
+        if (!this::binding.isInitialized) return
+        val toolbar = binding.toolbar
+        val actionBarHeight = TypedValue.complexToDimensionPixelSize(
+            getData(requireContext(), android.R.attr.actionBarSize),
+            resources.displayMetrics
+        )
+        val subtitle = if (toolbar.subtitle.isNullOrEmpty()) {
+            0
+        } else {
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20f, resources.displayMetrics).toInt()
+        }
+        val height = actionBarHeight + toolbar.paddingTop + subtitle
+        val params = toolbar.layoutParams
+        if (params.height != height) {
+            params.height = height
+            toolbar.layoutParams = params
+        }
+    }
+
     private fun applyInsetsInternal(windowInsets: PaddingValues) {
         val density = resources.displayMetrics.density
         val viewLayoutDir = view?.layoutDirection ?: resources.configuration.layoutDirection
@@ -368,16 +380,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             (windowInsets.calculateStartPadding(composeLayoutDirection).value * density).toInt().let {
             if (viewLayoutDir == LAYOUT_DIRECTION_LTR) it to 0 else 0 to it
         }
-        with(binding.toolbar) {
-            val actionBarHeight = TypedValue.complexToDimensionPixelSize(
-                getData(requireContext(), android.R.attr.actionBarSize),
-                resources.displayMetrics
-            )
-            val params = layoutParams
-            params.height = actionBarHeight + topInset
-            layoutParams = params
-            updatePadding(top = topInset)
-        }
+        binding.toolbar.updatePadding(top = topInset)
+        layoutToolbar()
         binding.taskListCoordinator.updatePadding(
             left = startInset,
             right = endInset,
@@ -486,6 +490,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         } else {
             null
         }
+        layoutToolbar()
         binding.toolbar.setTitleTextAppearance(requireContext(), com.google.android.material.R.style.TextAppearance_Material3_HeadlineSmall)
         binding.toolbar.setTitleTextColor(themeColor.primaryColor)
         binding.appbarlayout.addOnOffsetChangedListener { _, verticalOffset ->
@@ -853,7 +858,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         binding.bottomAppBar.navigationIcon =
             androidx.core.content.ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_menu_24px)
         if (!mainViewModel.state.value.filter.fits(features)) {
-            lifecycleScope.launch { mainViewModel.setFilter(MyTasksFilter.create(), remember = false) }
+            lifecycleScope.launch { mainViewModel.setFilter(MyTasksFilter.create(), remember = false, record = false) }
         }
         listViewModel.invalidate()
         localBroadcastManager.registerTaskCompletedReceiver(repeatConfirmationReceiver)

@@ -136,14 +136,14 @@ class MainActivityViewModel @Inject constructor(
         constructorRepository.effective.drop(1).collect { features ->
             if (features.lists && !listsWere) {
                 val list = inboxNamed(defaultFilterProvider.getDefaultList())
-                setFilter(list)
+                setFilter(list, record = false)
                 Toast.makeText(
                     applicationContext,
                     getString(Res.string.lists_on_message, list.title.orEmpty()),
                     Toast.LENGTH_LONG,
                 ).show()
             } else if (!_state.value.filter.fits(features)) {
-                setFilter(org.tasks.filters.MyTasksFilter.create())
+                setFilter(org.tasks.filters.MyTasksFilter.create(), record = false)
             }
             listsWere = features.lists
         }
@@ -158,17 +158,22 @@ class MainActivityViewModel @Inject constructor(
     }
 
     suspend fun resetFilter() {
-        setFilter(defaultFilterProvider.getDefaultOpenFilter())
+        setFilter(defaultFilterProvider.getDefaultOpenFilter(), record = false)
     }
+
+    private val filterBack = ArrayDeque<Filter>()
 
     fun setFilter(
         filter: Filter,
         task: Task? = null,
         remember: Boolean = true,
+        record: Boolean = true,
     ) {
-        if (filter == _state.value.filter && task == null) {
+        val current = _state.value.filter
+        if (filter == current && task == null) {
             return
         }
+        if (record && filter != current) filterBack.addLast(current)
         savedStateHandle[EXTRA_TASK] = task
         _state.update {
             it.copy(
@@ -202,6 +207,12 @@ class MainActivityViewModel @Inject constructor(
         }
 
     fun openLastViewedFilter() = viewModelScope.launch {
-        setFilter(defaultFilterProvider.getLastViewedFilter())
+        setFilter(defaultFilterProvider.getLastViewedFilter(), record = false)
+    }
+
+    fun popFilter(): Boolean {
+        val previous = filterBack.removeLastOrNull() ?: return false
+        setFilter(previous, record = false)
+        return true
     }
 }
