@@ -2,8 +2,10 @@ package org.tasks.compose.edit
 
 import org.tasks.themes.TasksIcons
 import org.tasks.compose.components.SymbolIcon
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -65,7 +67,10 @@ import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.pickers.DueDatePickerSheet
 import org.tasks.compose.pickers.dueDateFromSelection
 import org.tasks.compose.pickers.dueDateToSelection
+import org.tasks.data.Location
+import org.tasks.data.createGeofence
 import org.tasks.data.entity.Alarm
+import org.tasks.data.entity.Place
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.UserActivity
 import org.tasks.dialogs.Linkify
@@ -83,6 +88,7 @@ import org.tasks.preferences.Preferences
 import org.tasks.resources.getString
 import org.tasks.repeats.SeriesEditScope
 import org.tasks.themes.TasksTheme
+import org.tasks.location.LocationPickerActivity
 import org.tasks.ui.LocationControlSet
 import org.tasks.ui.TaskEditViewModel
 import org.tasks.ui.TaskEditViewModel.MemoConvertBlock
@@ -128,6 +134,7 @@ fun TaskEditScreen(
     dismissBeastMode: () -> Unit,
     deleteComment: (UserActivity) -> Unit,
     onClickRepeat: () -> Unit,
+    onConfigureGeofence: () -> Unit = {},
     repeatRuleToString: (String?) -> String?,
     markdownProvider: MarkdownProvider,
     linkify: Linkify?,
@@ -138,7 +145,31 @@ fun TaskEditScreen(
 ) {
     val context = LocalContext.current
     val is24Hour = remember(context) { context.is24HourFormat }
+    val scope = rememberCoroutineScope()
     var showDueDatePicker by rememberSaveable { mutableStateOf(false) }
+    val placePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        val place = result.data?.let {
+            getParcelableExtra(it, LocationPickerActivity.EXTRA_PLACE, Place::class.java)
+        } ?: return@rememberLauncherForActivityResult
+        scope.launch {
+            val existing = editViewModel.viewState.value.location
+            val geofence = if (existing == null) {
+                createGeofence(place.uid, preferences)
+            } else {
+                existing.geofence.copy(place = place.uid)
+            }
+            editViewModel.setLocation(Location(geofence, place))
+            onConfigureGeofence()
+        }
+    }
+    val pickPlace = {
+        val intent = Intent(context, LocationPickerActivity::class.java)
+        viewState.location?.let { intent.putExtra(LocationPickerActivity.EXTRA_PLACE, it.place as Parcelable) }
+        placePicker.launch(intent)
+    }
     var showDiscardConfirmation by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmation by rememberSaveable { mutableStateOf(false) }
     var showSeriesScope by rememberSaveable { mutableStateOf(false) }
@@ -151,7 +182,6 @@ fun TaskEditScreen(
     var convertHasGoogle by remember { mutableStateOf(false) }
     // The save button on a new task without a title points at the title instead of closing.
     var titleMissing by rememberSaveable { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
     LaunchedEffect(viewState.task.id, viewState.task.memo, viewState.isNew) {
         if (!viewState.isNew && editViewModel.memosEnabled) {
             convertBlock = editViewModel.memoConvertBlock()
@@ -437,18 +467,39 @@ fun TaskEditScreen(
                         )
                     }
 
-                    TAG_DUE_DATE -> DueDateRow(
-                        dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value,
-                        hasDueDateAlarm = remember (viewState.alarms) {
-                            viewState.alarms.any { it.type == Alarm.TYPE_REL_END }
-                        },
-                        is24HourFormat = is24Hour,
-                        alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
-                        onClick = {
+                    TAG_DUE_DATE -> {
+                        val due = editViewModel.dueDate.collectAsStateWithLifecycle().value
+                        val openDueDate = {
                             val showPicker = { showDueDatePicker = true }
                             context.findActivity()?.hideKeyboardThen(showPicker) ?: showPicker()
-                        },
-                    )
+                        }
+                        if (editViewModel.placesEnabled()) {
+                            WhenRow(
+                                dueDate = due,
+                                hasDueDateAlarm = remember(viewState.alarms) {
+                                    viewState.alarms.any { it.type == Alarm.TYPE_REL_END }
+                                },
+                                is24HourFormat = is24Hour,
+                                alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
+                                location = viewState.location,
+                                onSwitchToPlace = pickPlace,
+                                onSwitchToTime = { editViewModel.setLocation(null) },
+                                onEditDueDate = openDueDate,
+                                onChangePlace = pickPlace,
+                                onGeofence = onConfigureGeofence,
+                            )
+                        } else {
+                            DueDateRow(
+                                dueDate = due,
+                                hasDueDateAlarm = remember(viewState.alarms) {
+                                    viewState.alarms.any { it.type == Alarm.TYPE_REL_END }
+                                },
+                                is24HourFormat = is24Hour,
+                                alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
+                                onClick = openDueDate,
+                            )
+                        }
+                    }
                     TAG_ADVANCE -> {
                         // early ring counts from the reminder time: no time, nothing to count from
                         if (editViewModel.dueDate.collectAsStateWithLifecycle().value > 0) {
@@ -465,8 +516,7 @@ fun TaskEditScreen(
                         }
                         // edits go to editViewModel.dueDate, not viewState.task
                         val due = editViewModel.dueDate.collectAsStateWithLifecycle().value
-                        // the due row is hidden only for a place task (Places on, place set)
-                        val placeTask = viewState.location != null && TAG_DUE_DATE !in viewState.displayOrder
+                        val placeTask = viewState.location != null && editViewModel.placesEnabled()
                         PriorityRow(
                             priority = viewState.task.priority,
                             onChangePriority = { editViewModel.setPriority(it) },

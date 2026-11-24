@@ -1,5 +1,7 @@
 package com.todoroo.astrid.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.core.content.IntentCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,8 +24,13 @@ import org.tasks.compose.edit.TaskEditScreen
 import org.tasks.repeats.BasicRecurrenceDialog
 import org.tasks.repeats.RepeatRuleToString
 import org.tasks.repeats.SeriesEditScope
+import org.tasks.data.Location
 import org.tasks.data.dao.UserActivityDao
+import org.tasks.data.entity.Geofence
+import org.tasks.dialogs.GeofenceDialog
 import org.tasks.dialogs.Linkify
+import org.tasks.location.LocationPermissionDialog.Companion.newLocationPermissionDialog
+import org.tasks.preferences.PermissionChecker
 import org.tasks.extensions.hideKeyboard
 import org.tasks.markdown.MarkdownProvider
 import org.tasks.notifications.CancelReason
@@ -48,6 +56,7 @@ class TaskEditFragment : Fragment() {
     @Inject lateinit var playServices: PlayServices
     @Inject lateinit var theme: Theme
     @Inject lateinit var repeatRuleToString: RepeatRuleToString
+    @Inject lateinit var permissionChecker: PermissionChecker
 
     private val editViewModel: TaskEditViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by activityViewModels()
@@ -120,6 +129,7 @@ class TaskEditFragment : Fragment() {
                         accountType = vs.list.account.accountType,
                     ).show(parentFragmentManager, FRAG_TAG_BASIC_RECURRENCE)
                 },
+                onConfigureGeofence = { configureGeofence() },
                 repeatRuleToString = { repeatRuleToString.toStringBlocking(it) },
                 colorProvider = { chipProvider.getColor(it) },
                 locale = remember { locale },
@@ -154,6 +164,33 @@ class TaskEditFragment : Fragment() {
         activity?.let { playServices.requestReview(it) }
     }
 
+    private fun configureGeofence() {
+        val location = editViewModel.viewState.value.location ?: return
+        if (permissionChecker.canAccessBackgroundLocation()) {
+            GeofenceDialog.newGeofenceDialog(location).apply {
+                setTargetFragment(this@TaskEditFragment, REQUEST_GEOFENCE)
+            }.show(parentFragmentManager, FRAG_TAG_GEOFENCE)
+        } else {
+            newLocationPermissionDialog(this, REQUEST_LOCATION_PERMISSIONS)
+                .show(parentFragmentManager, FRAG_TAG_LOCATION_PERMISSION)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSIONS -> if (resultCode == Activity.RESULT_OK) configureGeofence()
+            REQUEST_GEOFENCE -> if (resultCode == Activity.RESULT_OK) {
+                val geofence = data?.let {
+                    IntentCompat.getParcelableExtra(it, GeofenceDialog.EXTRA_GEOFENCE, Geofence::class.java)
+                } ?: return
+                val place = editViewModel.viewState.value.location?.place ?: return
+                editViewModel.setLocation(Location(geofence, place))
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     private fun discard() = lifecycleScope.launch {
         editViewModel.discard()
         clearTask()
@@ -164,5 +201,9 @@ class TaskEditFragment : Fragment() {
 
         const val FRAG_TAG_CALENDAR_PICKER = "frag_tag_calendar_picker"
         private const val FRAG_TAG_BASIC_RECURRENCE = "frag_tag_basic_recurrence"
+        private const val FRAG_TAG_GEOFENCE = "frag_tag_geofence"
+        private const val FRAG_TAG_LOCATION_PERMISSION = "frag_tag_location_permission"
+        private const val REQUEST_GEOFENCE = 12154
+        private const val REQUEST_LOCATION_PERMISSIONS = 12155
     }
 }

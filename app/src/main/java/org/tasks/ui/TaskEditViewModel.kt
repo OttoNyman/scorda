@@ -896,6 +896,8 @@ class TaskEditViewModel @Inject constructor(
         if (reopen) setComplete(false) else reopenDeclined = true
     }
 
+    fun placesEnabled(): Boolean = featureGate.current.geo
+
     private fun scheduledInEditor(): Boolean =
         dueDate.value > 0 || (featureGate.current.startDate && startDate.value > 0)
 
@@ -1054,12 +1056,11 @@ class TaskEditViewModel @Inject constructor(
                 com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
             )
         } else {
-            // Place wins when both are set (new task with default place + due today).
+            // One row for time or place. A place hides the other schedule rows.
             val place = hasLocation
-            val timed = hasSchedule && !hasLocation
             listOf(
                 TAG_TITLE to true,
-                TAG_DUE_DATE to !place,
+                TAG_DUE_DATE to true,
                 TAG_ADVANCE to (features.advance && !place),
                 com.todoroo.astrid.repeats.RepeatControlSet.TAG to (features.repeat && !place),
                 TAG_DESCRIPTION to (features.notes || hasNotes),
@@ -1069,7 +1070,6 @@ class TaskEditViewModel @Inject constructor(
                 TAG_PRIORITY to features.priority,
                 com.todoroo.astrid.ui.StartDateControlSet.TAG to (features.startDate && !place),
                 com.todoroo.astrid.ui.ReminderControlSet.TAG to (features.extraReminders && !place),
-                org.tasks.ui.LocationControlSet.TAG to (features.geo && !timed),
                 com.todoroo.astrid.files.FilesControlSet.TAG to features.files,
             )
         }.filter { it.second }.map { it.first }.toPersistentList()

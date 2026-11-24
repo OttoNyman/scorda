@@ -35,31 +35,20 @@ class TaskEditViewModelTest {
     }
 
     @Test
-    fun placeTasksHideDueDateAndShowLocationOnlyWhenUnscheduled() {
-        val order = TaskEditViewModel.displayOrder(
-            Constructor(geo = true, advance = true, repeat = true),
-            memo = false,
-            hasLocation = true,
-        )
-        assertFalse(order.contains(TaskEditViewModel.TAG_DUE_DATE))
-        assertTrue(order.contains(org.tasks.ui.LocationControlSet.TAG))
-        val timed = TaskEditViewModel.displayOrder(Constructor(geo = true), memo = false, hasSchedule = true)
-        assertFalse(timed.contains(org.tasks.ui.LocationControlSet.TAG))
-        assertTrue(timed.contains(TaskEditViewModel.TAG_DUE_DATE))
-    }
-
-    @Test
-    fun whenBothLocationAndSchedulePlaceWinsInDisplayOrder() {
-        val order = TaskEditViewModel.displayOrder(
+    fun timeAndPlaceShareOneRow() {
+        val place = TaskEditViewModel.displayOrder(
             Constructor(geo = true, advance = true, repeat = true),
             memo = false,
             hasLocation = true,
             hasSchedule = true,
         )
-        assertTrue(order.contains(org.tasks.ui.LocationControlSet.TAG))
-        assertFalse(order.contains(TaskEditViewModel.TAG_DUE_DATE))
-        assertFalse(order.contains(TaskEditViewModel.TAG_ADVANCE))
-        assertFalse(order.contains(com.todoroo.astrid.repeats.RepeatControlSet.TAG))
+        assertTrue(place.contains(TaskEditViewModel.TAG_DUE_DATE))
+        assertFalse(place.contains(org.tasks.ui.LocationControlSet.TAG))
+        assertFalse(place.contains(TaskEditViewModel.TAG_ADVANCE))
+        assertFalse(place.contains(com.todoroo.astrid.repeats.RepeatControlSet.TAG))
+        val timed = TaskEditViewModel.displayOrder(Constructor(geo = true), memo = false, hasSchedule = true)
+        assertTrue(timed.contains(TaskEditViewModel.TAG_DUE_DATE))
+        assertFalse(timed.contains(org.tasks.ui.LocationControlSet.TAG))
     }
 
     @Test
