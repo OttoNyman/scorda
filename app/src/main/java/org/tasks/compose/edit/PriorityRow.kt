@@ -42,13 +42,15 @@ import tasks.kmp.generated.resources.alert_caption_alarm
 import tasks.kmp.generated.resources.alert_caption_once
 import tasks.kmp.generated.resources.alert_caption_persistent
 import tasks.kmp.generated.resources.alert_caption_silent
+import tasks.kmp.generated.resources.priority_sort_day
+import tasks.kmp.generated.resources.priority_sort_undated
 
 @Composable
 fun PriorityRow(
     priority: Int,
     onChangePriority: (Int) -> Unit,
     enabledPriorities: Set<Int> = allPriorities,
-    showAlertCaption: Boolean = true,
+    caption: PriorityCaption = PriorityCaption.Alert,
 ) {
     TaskEditRow(
         iconRes = R.drawable.ic_outline_flag_24px,
@@ -57,7 +59,7 @@ fun PriorityRow(
                 selected = priority,
                 onClick = { onChangePriority(it) },
                 enabledPriorities = enabledPriorities,
-                showAlertCaption = showAlertCaption,
+                caption = caption,
             )
         },
     )
@@ -87,7 +89,7 @@ fun PriorityLabeled(
     selected: Int,
     onClick: (Int) -> Unit = {},
     enabledPriorities: Set<Int> = allPriorities,
-    showAlertCaption: Boolean = false,
+    caption: PriorityCaption = PriorityCaption.None,
 ) {
     Column(
         modifier = Modifier
@@ -107,15 +109,29 @@ fun PriorityLabeled(
             Spacer(modifier = Modifier.weight(1f))
             Priority(selected = selected, onClick = onClick, enabledPriorities = enabledPriorities)
         }
-        if (showAlertCaption) {
+        if (caption != PriorityCaption.None) {
             Text(
-                text = alertCaption(selected, enabledPriorities),
+                text = priorityCaption(caption, selected, enabledPriorities),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
             )
         }
     }
+}
+
+enum class PriorityCaption { None, Day, Undated, Alert }
+
+@Composable
+private fun priorityCaption(
+    caption: PriorityCaption,
+    priority: Int,
+    enabledPriorities: Set<Int>,
+): String = when (caption) {
+    PriorityCaption.None -> ""
+    PriorityCaption.Day -> stringResource(Res.string.priority_sort_day)
+    PriorityCaption.Undated -> stringResource(Res.string.priority_sort_undated)
+    PriorityCaption.Alert -> alertCaption(priority, enabledPriorities)
 }
 
 @Composable

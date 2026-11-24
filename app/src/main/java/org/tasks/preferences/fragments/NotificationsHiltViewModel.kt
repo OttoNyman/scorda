@@ -203,9 +203,13 @@ class NotificationsHiltViewModel @Inject constructor(
     fun handleLevelSoundResult(level: AlertLevel, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && data != null) {
             val ringtone: Uri? = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-            levelRingtoneKey(level)?.let { preferences.setString(it, ringtone?.toString() ?: "") }
-            refreshLevelSoundNames()
+            setLevelRingtone(level, ringtone?.toString())
         }
+    }
+
+    fun setLevelRingtone(level: AlertLevel, uri: String?) {
+        levelRingtoneKey(level)?.let { preferences.setString(it, uri ?: "") }
+        refreshLevelSoundNames()
     }
 
     private fun levelRingtoneKey(level: AlertLevel): Int? = when (level) {

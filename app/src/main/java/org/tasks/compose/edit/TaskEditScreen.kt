@@ -66,6 +66,7 @@ import org.tasks.compose.pickers.DueDatePickerSheet
 import org.tasks.compose.pickers.dueDateFromSelection
 import org.tasks.compose.pickers.dueDateToSelection
 import org.tasks.data.entity.Alarm
+import org.tasks.data.entity.Task
 import org.tasks.data.entity.UserActivity
 import org.tasks.dialogs.Linkify
 import org.tasks.extensions.Context.findActivity
@@ -462,11 +463,20 @@ fun TaskEditScreen(
                         LaunchedEffect(Unit) {
                             enabledPriorities = org.tasks.notifications.prioritiesOf(preferences.enabledLevels())
                         }
+                        // edits go to editViewModel.dueDate, not viewState.task
+                        val due = editViewModel.dueDate.collectAsStateWithLifecycle().value
+                        // the due row is hidden only for a place task (Places on, place set)
+                        val placeTask = viewState.location != null && TAG_DUE_DATE !in viewState.displayOrder
                         PriorityRow(
                             priority = viewState.task.priority,
                             onChangePriority = { editViewModel.setPriority(it) },
                             enabledPriorities = enabledPriorities,
-                            showAlertCaption = !viewState.task.memo,
+                            caption = when {
+                                viewState.task.memo -> PriorityCaption.None
+                                placeTask || Task.hasDueTime(due) -> PriorityCaption.Alert
+                                due > 0 -> PriorityCaption.Day
+                                else -> PriorityCaption.Undated
+                            },
                         )
                     }
 

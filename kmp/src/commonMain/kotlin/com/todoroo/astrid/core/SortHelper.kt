@@ -67,7 +67,7 @@ object SortHelper {
     private fun sortDueDate(undatedAtBottom: Boolean, noTimeAtEndOfDay: Boolean): String {
         val undated = undatedValue(undatedAtBottom)
         val adjusted = adjustedDueDate("tasks.dueDate", noTimeAtEndOfDay, "tasks.importance")
-        return "(CASE WHEN (tasks.dueDate=0) THEN $undated ELSE $adjusted END)"
+        return "(CASE WHEN (tasks.dueDate=0) THEN $undated + tasks.importance * 1000 ELSE $adjusted END)"
     }
 
     /** Takes a SQL query, and if there isn't already an order, creates an order.  */
@@ -109,7 +109,7 @@ object SortHelper {
         val order = when (sortType) {
             SORT_ALPHA -> ORDER_TITLE
             SORT_DUE -> asc(
-                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)"
+                "(CASE WHEN (dueDate=0) THEN $undated + importance * 1000 ELSE $adjusted END)"
             )
             SORT_START -> asc(
                 "(CASE WHEN (hideUntil=0) THEN (strftime('%s','now')*1000)*2 ELSE "
@@ -121,7 +121,7 @@ object SortHelper {
             SORT_CREATED -> desc(Task.CREATION_DATE)
             SORT_LIST -> ORDER_LIST
             else -> asc(
-                "(CASE WHEN (dueDate=0) THEN $undated ELSE $adjusted END)"
+                "(CASE WHEN (dueDate=0) THEN $undated + importance * 1000 ELSE $adjusted END)"
             )
         }
         if (sortType != SORT_ALPHA) {

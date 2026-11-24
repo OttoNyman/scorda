@@ -29,19 +29,17 @@ import tasks.kmp.generated.resources.alarm_ring_duration_value
 import tasks.kmp.generated.resources.alert_caption_alarm
 import tasks.kmp.generated.resources.alert_caption_once
 import tasks.kmp.generated.resources.alert_caption_persistent
-import tasks.kmp.generated.resources.alert_once
-import tasks.kmp.generated.resources.alert_persistent
-import tasks.kmp.generated.resources.alert_silent
-import tasks.kmp.generated.resources.alert_super
+import tasks.kmp.generated.resources.filter_no_priority
+import tasks.kmp.generated.resources.priority_always_on
+import tasks.kmp.generated.resources.priority_high
+import tasks.kmp.generated.resources.priority_low
+import tasks.kmp.generated.resources.priority_medium
 import tasks.kmp.generated.resources.alert_super_bypass
 import tasks.kmp.generated.resources.alert_super_bypass_summary
 import tasks.kmp.generated.resources.cancel
 import tasks.kmp.generated.resources.ok
-import tasks.kmp.generated.resources.priority_level_alarm_summary
 import tasks.kmp.generated.resources.priority_level_disable_message
-import tasks.kmp.generated.resources.priority_level_ordinary_summary
-import tasks.kmp.generated.resources.priority_level_persistent_summary
-import tasks.kmp.generated.resources.priority_level_silent_summary
+import tasks.kmp.generated.resources.priority_levels_hint
 import tasks.kmp.generated.resources.priority_levels_title
 import tasks.kmp.generated.resources.sound_by_priority
 import tasks.kmp.generated.resources.alarms_can_be_late
@@ -278,41 +276,45 @@ fun NotificationsScreen(
             stringResource(Res.string.priority_levels_title),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
         )
+        Text(
+            text = stringResource(Res.string.priority_levels_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
+        Spacer(modifier = Modifier.height(SettingsSectionGap))
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             SettingsItemCard(position = CardPosition.First) {
                 SwitchPreferenceRow(
-                    title = stringResource(Res.string.alert_silent),
-                    summary = stringResource(Res.string.priority_level_silent_summary),
-                    checked = levelSilent,
-                    onCheckedChange = { onLevelChange(AlertLevel.SILENT, it) },
+                    title = stringResource(Res.string.priority_high),
+                    checked = levelAlarm,
+                    onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
                 )
             }
             SettingsItemCard(position = CardPosition.Middle) {
                 SwitchPreferenceRow(
-                    title = stringResource(Res.string.alert_once),
-                    summary = stringResource(Res.string.priority_level_ordinary_summary),
+                    title = stringResource(Res.string.priority_medium),
+                    checked = levelPersistent,
+                    onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
+                )
+            }
+            SettingsItemCard(position = CardPosition.Middle) {
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.priority_low),
+                    summary = stringResource(Res.string.priority_always_on),
                     checked = true,
                     enabled = false,
                     onCheckedChange = {},
                 )
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.alert_persistent),
-                    summary = stringResource(Res.string.priority_level_persistent_summary),
-                    checked = levelPersistent,
-                    onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
-                )
-            }
             SettingsItemCard(position = CardPosition.Last) {
                 SwitchPreferenceRow(
-                    title = stringResource(Res.string.alert_super),
-                    summary = stringResource(Res.string.priority_level_alarm_summary),
-                    checked = levelAlarm,
-                    onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
+                    title = stringResource(Res.string.filter_no_priority),
+                    checked = levelSilent,
+                    onCheckedChange = { onLevelChange(AlertLevel.SILENT, it) },
                 )
             }
         }
