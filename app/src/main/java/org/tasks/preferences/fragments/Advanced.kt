@@ -39,7 +39,6 @@ import org.tasks.themes.Theme
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.reset_trusted_certificates
 import tasks.kmp.generated.resources.reset_trusted_certificates_summary
-import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.trusted_certificates_reset
 import javax.inject.Inject
 
@@ -89,14 +88,6 @@ class Advanced : Fragment() {
                 badgesEnabled = viewModel.badgesEnabled,
                 badgeFilterName = viewModel.badgeFilterName,
                 dateFormatLabel = viewModel.dateFormatLabel,
-                onTaskDefaults = {
-                    lifecycleScope.launch {
-                        (activity as? BasePreferences)?.startPreference(
-                            TaskDefaults(),
-                            getString(Res.string.task_defaults),
-                        )
-                    }
-                },
                 onDateFormat = { pickFormat = true },
                 onAttachmentDir = {
                     filesDirLauncher.launch(
