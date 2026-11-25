@@ -211,6 +211,9 @@
     <string name="restart_now">Перезапустить сейчас</string>
     <string name="restart_later">Позже</string>
     <string name="widget_settings">Настройки виджета</string>
+    <string name="widget_pin_blocked_title">Виджет не добавился</string>
+    <string name="widget_pin_blocked_message">На этом телефоне Scorda нужно разрешение на ярлыки рабочего стола. Включите его и нажмите «Добавить» ещё раз.\n\nНастройки → Приложения → Scorda → Другие разрешения → Ярлыки на рабочем столе</string>
+    <string name="widget_pin_open_settings">Открыть настройки</string>
     <string name="widget_header_settings">Настройки заголовка</string>
     <string name="widget_row_settings">Настройки строк</string>
     <string name="clear_completed_tasks_confirmation">Очистить завершенные задачи?</string>

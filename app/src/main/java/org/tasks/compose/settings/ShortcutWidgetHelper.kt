@@ -28,6 +28,7 @@ import org.tasks.widget.RequestPinWidgetReceiver
 import org.tasks.widget.RequestPinWidgetReceiver.Companion.EXTRA_COLOR
 import org.tasks.widget.RequestPinWidgetReceiver.Companion.EXTRA_FILTER
 import org.tasks.widget.TasksWidget
+import timber.log.Timber
 
 fun AppCompatActivity.setReloadResult(filter: Filter) {
     setResult(
@@ -155,22 +156,28 @@ fun AppCompatActivity.createWidget(
     color: Int,
     defaultFilterProvider: DefaultFilterProvider,
     firebase: Firebase,
-) {
+): Boolean {
     val appWidgetManager = getSystemService(AppWidgetManager::class.java)
-    if (appWidgetManager.isRequestPinAppWidgetSupported) {
-        val provider = ComponentName(this, TasksWidget::class.java)
-        val configIntent = Intent(this, RequestPinWidgetReceiver::class.java).apply {
-            action = RequestPinWidgetReceiver.ACTION_CONFIGURE_WIDGET
-            putExtra(EXTRA_FILTER, defaultFilterProvider.getFilterPreferenceValue(filter))
-            putExtra(EXTRA_COLOR, color)
-        }
-        val successCallback = PendingIntent.getBroadcast(
-            this,
-            filter.hashCode(),
-            configIntent,
-            if (atLeastS()) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        appWidgetManager.requestPinAppWidget(provider, null, successCallback)
-        firebase.logEvent(R.string.event_create_widget, R.string.param_type to "settings_activity")
+    if (!appWidgetManager.isRequestPinAppWidgetSupported) {
+        Timber.w("requestPinAppWidget not supported")
+        return false
     }
+    val provider = ComponentName(this, TasksWidget::class.java)
+    val configIntent = Intent(this, RequestPinWidgetReceiver::class.java).apply {
+        action = RequestPinWidgetReceiver.ACTION_CONFIGURE_WIDGET
+        putExtra(EXTRA_FILTER, defaultFilterProvider.getFilterPreferenceValue(filter))
+        putExtra(EXTRA_COLOR, color)
+    }
+    val flags = PendingIntent.FLAG_UPDATE_CURRENT or
+        if (atLeastS()) PendingIntent.FLAG_MUTABLE else 0
+    val successCallback = PendingIntent.getBroadcast(
+        this,
+        filter.hashCode(),
+        configIntent,
+        flags,
+    )
+    val requested = appWidgetManager.requestPinAppWidget(provider, null, successCallback)
+    Timber.d("requestPinAppWidget=$requested provider=$provider")
+    firebase.logEvent(R.string.event_create_widget, R.string.param_type to "settings_activity")
+    return requested
 }
