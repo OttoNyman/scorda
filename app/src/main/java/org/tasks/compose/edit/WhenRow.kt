@@ -1,7 +1,11 @@
 package org.tasks.compose.edit
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -14,7 +18,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,17 +71,21 @@ fun WhenRow(
     }
     TaskEditRow(
         icon = {
-            IconButton(
-                onClick = { if (place) onSwitchToTime() else onSwitchToPlace() },
+            Row(
+                modifier = Modifier.padding(start = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painter = painterResource(
-                        if (place) R.drawable.ic_outline_place_24px else R.drawable.ic_outline_schedule_24px
-                    ),
-                    contentDescription = stringResource(
-                        if (place) R.string.when_switch_to_time else R.string.when_switch_to_place
-                    ),
-                    tint = MaterialTheme.colorScheme.primary,
+                ModeIcon(
+                    icon = R.drawable.ic_outline_schedule_24px,
+                    selected = !place,
+                    description = stringResource(R.string.when_switch_to_time),
+                    onClick = { if (place) onSwitchToTime() },
+                )
+                ModeIcon(
+                    icon = R.drawable.ic_outline_place_24px,
+                    selected = place,
+                    description = stringResource(R.string.when_switch_to_place),
+                    onClick = { if (!place) onSwitchToPlace() },
                 )
             }
         },
@@ -145,4 +155,35 @@ fun WhenRow(
             if (location == null) onEditDueDate() else menu = true
         },
     )
+}
+
+@Composable
+private fun ModeIcon(
+    icon: Int,
+    selected: Boolean,
+    description: String,
+    onClick: () -> Unit,
+) {
+    val tint = if (selected) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    }
+    val background = if (selected) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+    } else {
+        Color.Transparent
+    }
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .size(40.dp)
+            .background(background, CircleShape),
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = description,
+            tint = tint,
+        )
+    }
 }
