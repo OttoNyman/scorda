@@ -620,7 +620,7 @@
     <string name="wearable_notifications">Wearable notifications</string>
     <string name="wearable_notifications_summary">Display notifications on your wearable</string>
     <string name="bundle_notifications">Bundle notifications</string>
-    <string name="bundle_notifications_summary">Combine multiple notifications into one</string>
+    <string name="bundle_notifications_summary">Several cards stack together. Each keeps its own Done and Snooze. Swiping the summary dismisses every card at once.</string>
     <string name="EPr_voiceRemindersEnabled_title">Voice reminders</string>
     <string name="EPr_voiceRemindersEnabled_desc_enabled">Tasks will speak task names during task reminders</string>
     <string name="more_settings">More settings</string>
@@ -644,8 +644,8 @@
     <string name="reminder_check_full_screen">Full-screen alarms</string>
     <string name="reminder_check_full_screen_summary">You asked for the lock screen alarm. Android still needs its own permission.</string>
     <string name="alarm_on_lock_screen">On the lock screen</string>
-    <string name="alarm_on_lock_screen_off">Rings. Unlock the phone to snooze or complete.</string>
-    <string name="alarm_on_lock_screen_on">Opens over the lock screen, so you can respond without unlocking.</string>
+    <string name="alarm_on_lock_screen_off">Only the highest-priority reminder. It rings; unlock the phone to respond.</string>
+    <string name="alarm_on_lock_screen_on">Only the highest-priority reminder. It opens over the lock screen.</string>
     <string name="alarm_on_lock_screen_ask_title">Show the alarm on the lock screen?</string>
     <string name="alarm_on_lock_screen_ask">Android asks for a separate permission before an alarm can open over the lock screen.</string>
     <string name="alarm_on_lock_screen_allow">Allow</string>

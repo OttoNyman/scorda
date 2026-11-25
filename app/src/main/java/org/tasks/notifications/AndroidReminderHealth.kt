@@ -78,7 +78,6 @@ class AndroidReminderHealth(
             } else {
                 return
             }
-            ReminderCheckId.RECENTS_LOCK -> return
             else -> oemCandidates(id, context.packageName, appLabel()).firstOrNull { it.resolves() }
         } ?: return
         launch(intent)

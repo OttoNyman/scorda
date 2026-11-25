@@ -173,7 +173,6 @@ class TaskEditViewModel @Inject constructor(
             isReadOnly = task.readOnly,
             linkify = preferences.linkify,
             alwaysDisplayFullDate = preferences.alwaysDisplayFullDate,
-            showEditScreenWithoutUnlock = preferences.showEditScreenWithoutUnlock,
             calendar = null,
             displayOrder = displayOrder(
                 featureGate.current,
@@ -738,7 +737,6 @@ class TaskEditViewModel @Inject constructor(
                 isReadOnly = state.isReadOnly,
                 linkify = state.linkify,
                 alwaysDisplayFullDate = state.alwaysDisplayFullDate,
-                showEditScreenWithoutUnlock = state.showEditScreenWithoutUnlock,
                 calendar = state.calendar,
                 displayOrder = persistentListOf(),
                 alarms = alarms,
@@ -840,7 +838,6 @@ class TaskEditViewModel @Inject constructor(
                 isReadOnly = fresh.readOnly,
                 linkify = _viewState.value.linkify,
                 alwaysDisplayFullDate = _viewState.value.alwaysDisplayFullDate,
-                showEditScreenWithoutUnlock = _viewState.value.showEditScreenWithoutUnlock,
                 calendar = _viewState.value.calendar,
                 displayOrder = persistentListOf(),
                 alarms = alarms,

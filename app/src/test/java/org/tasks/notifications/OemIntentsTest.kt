@@ -26,11 +26,10 @@ class OemIntentsTest {
     }
 
     @Test
-    fun stockIdsAndRecentsHaveNoIntent() {
+    fun stockIdsHaveNoIntent() {
         assertTrue(oemCandidates(ReminderCheckId.NOTIFICATIONS, PKG, LABEL).isEmpty())
         assertTrue(oemCandidates(ReminderCheckId.EXACT_ALARMS, PKG, LABEL).isEmpty())
         assertTrue(oemCandidates(ReminderCheckId.BATTERY, PKG, LABEL).isEmpty())
-        assertTrue(oemCandidates(ReminderCheckId.RECENTS_LOCK, PKG, LABEL).isEmpty())
     }
 
     private companion object {

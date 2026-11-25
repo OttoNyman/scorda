@@ -109,6 +109,8 @@ class Advanced : Fragment() {
                 onResetPreferences = { viewModel.openResetDialog() },
                 onResetTrustedCertificates = { viewModel.openResetCertificatesDialog() },
                 onDeleteTaskData = { viewModel.openDeleteDataDialog() },
+                bundleNotifications = viewModel.bundleNotifications,
+                onBundleNotifications = { viewModel.updateBundleNotifications(it) },
             )
 
             if (viewModel.showRestartDialog) {

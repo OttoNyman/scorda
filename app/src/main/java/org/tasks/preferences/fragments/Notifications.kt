@@ -47,8 +47,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.stringResource as kmpStringResource
 import org.tasks.R
@@ -73,6 +77,7 @@ class Notifications : Fragment() {
     @Inject lateinit var theme: Theme
 
     private val viewModel: NotificationsHiltViewModel by viewModels()
+    private var healthRefresh: Job? = null
 
     private val ttsCheckLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         viewModel.handleTtsCheckResult(result.resultCode)
@@ -162,7 +167,14 @@ class Notifications : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.refreshState()
+        healthRefresh?.cancel()
+        healthRefresh = viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.refreshState()
+            delay(500)
+            viewModel.refreshState()
+            delay(1000)
+            viewModel.refreshState()
+        }
         val surfaceColor = theme.themeBase.getSettingsSurfaceColor(requireActivity())
         (activity as? BasePreferences)?.toolbar?.let { toolbar ->
             toolbar.setBackgroundColor(surfaceColor)

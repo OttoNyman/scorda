@@ -168,6 +168,7 @@ import org.tasks.tasklist.TaskViewHolder
 import org.tasks.tasklist.TasksResults
 import org.tasks.tasklist.UiItem
 import org.tasks.tasklist.selectionHasOpenSeries
+import org.tasks.tasklist.swipeTrashes as rowSwipeTrashes
 import org.tasks.tasklist.ViewHolderFactory
 import org.tasks.themes.ColorProvider
 import org.tasks.themes.TasksTheme
@@ -1326,8 +1327,9 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     fun canSwipe(task: TaskContainer) =
         !isActionModeActive && filter !is TrashFilter && !task.isReadOnly
 
-    /** A swipe trashes in «Завершено» and on notes, and toggles done everywhere else. */
-    fun swipeTrashes(task: TaskContainer) = filter is CompletedFilter || task.task.memo
+    /** A swipe trashes a finished task and a note, and toggles done on an open task. */
+    fun swipeTrashes(task: TaskContainer) =
+        rowSwipeTrashes(filter is CompletedFilter, task)
 
     fun onSwiped(task: TaskContainer) {
         if (swipeTrashes(task)) {

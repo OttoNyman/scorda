@@ -68,7 +68,7 @@ class Preferences @JvmOverloads constructor(
 
     override suspend fun addTasksToTop(): Boolean = getBoolean(R.string.p_add_to_top, true)
 
-    fun backButtonSavesTask(): Boolean = getBoolean(R.string.p_back_button_saves_task, false)
+    fun backButtonSavesTask(): Boolean = getBoolean(R.string.p_back_button_saves_task, true)
 
     override suspend fun isDefaultDueTimeEnabled(): Boolean =
         getBoolean(R.string.p_rmd_time_enabled, true)
@@ -266,9 +266,6 @@ class Preferences @JvmOverloads constructor(
 
     val isTrackingEnabled: Boolean
         get() = getBoolean(R.string.p_collect_statistics, true)
-
-    val showEditScreenWithoutUnlock: Boolean
-        get() = getBoolean(R.string.p_show_edit_screen_without_unlock, false)
 
     @SuppressLint("ApplySharedPref")
     fun clear() {
@@ -735,7 +732,7 @@ class Preferences @JvmOverloads constructor(
         editor.apply()
     }
 
-    fun bundleNotifications(): Boolean = getBoolean(R.string.p_bundle_notifications, true)
+    fun bundleNotifications(): Boolean = getBoolean(R.string.p_bundle_notifications, false)
 
     fun usePersistentReminders(): Boolean =
             AndroidUtilities.preUpsideDownCake() && getBoolean(R.string.p_rmd_persistent, true)

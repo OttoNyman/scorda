@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.PowerManager
 import android.speech.tts.TextToSpeech
 import androidx.core.net.toUri
@@ -34,13 +33,10 @@ import org.tasks.extensions.Context.getResourceUri
 import org.tasks.extensions.Context.canScheduleExactAlarms
 import org.tasks.notifications.AlertLevel
 import org.tasks.notifications.AndroidReminderHealth
-import org.tasks.notifications.OemFamily
 import org.tasks.notifications.ReminderCheckId
 import org.tasks.notifications.modeLine
-import org.tasks.notifications.oemFamily
 import org.tasks.notifications.priorityOf
 import org.tasks.notifications.visibleChecks
-import org.tasks.viewmodel.LockScreenAsk
 import org.tasks.preferences.Preferences
 import org.tasks.repeats.SeriesTemplates
 import org.tasks.resources.getString
@@ -91,20 +87,9 @@ class NotificationsHiltViewModel @Inject constructor(
     }
 
     private fun settleLockScreen() {
-        when (preferences.getStringValue(R.string.p_alarm_lock_pending)) {
-            "android" -> {
-                preferences.setString(R.string.p_alarm_lock_pending, null)
-                if (health.facts().canFullScreen) {
-                    if (isXiaomi()) lockScreenAsk = LockScreenAsk.XIAOMI else enableLockScreen()
-                } else {
-                    lockScreenDenied = true
-                }
-            }
-            "xiaomi" -> {
-                preferences.setString(R.string.p_alarm_lock_pending, null)
-                enableLockScreen()
-            }
-        }
+        if (preferences.getStringValue(R.string.p_alarm_lock_pending) == null) return
+        preferences.setString(R.string.p_alarm_lock_pending, null)
+        if (health.facts().canFullScreen) enableLockScreen() else lockScreenDenied = true
     }
 
     private fun settleExactAlarm() {
@@ -114,8 +99,6 @@ class NotificationsHiltViewModel @Inject constructor(
             viewModelScope.launch { applyLevelEnabled(AlertLevel.SUPER, true) }
         }
     }
-
-    private fun isXiaomi() = oemFamily(Build.MANUFACTURER) == OemFamily.XIAOMI
 
     private fun enableLockScreen() {
         preferences.setBoolean(R.string.p_alarm_on_lock_screen, true)
@@ -159,29 +142,16 @@ class NotificationsHiltViewModel @Inject constructor(
             refreshAndroidState()
             return
         }
-        lockScreenAsk = when {
-            !health.facts().canFullScreen -> LockScreenAsk.ANDROID
-            isXiaomi() -> LockScreenAsk.XIAOMI
-            else -> {
-                enableLockScreen()
-                refreshAndroidState()
-                null
-            }
+        if (health.facts().canFullScreen) {
+            enableLockScreen()
+            refreshAndroidState()
+        } else {
+            preferences.setString(R.string.p_alarm_lock_pending, "android")
+            health.open(ReminderCheckId.FULL_SCREEN)
         }
     }
 
     override fun confirmAlarmLockScreen() {
-        when (lockScreenAsk) {
-            LockScreenAsk.ANDROID -> {
-                preferences.setString(R.string.p_alarm_lock_pending, "android")
-                health.open(ReminderCheckId.FULL_SCREEN)
-            }
-            LockScreenAsk.XIAOMI -> {
-                preferences.setString(R.string.p_alarm_lock_pending, "xiaomi")
-                health.open(ReminderCheckId.LOCK_SCREEN)
-            }
-            null -> Unit
-        }
         lockScreenAsk = null
     }
 

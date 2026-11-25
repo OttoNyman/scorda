@@ -20,7 +20,6 @@ data class TaskEditViewState(
     val isReadOnly: Boolean,
     val linkify: Boolean,
     val alwaysDisplayFullDate: Boolean,
-    val showEditScreenWithoutUnlock: Boolean,
     val list: CaldavFilter,
     val location: Location?,
     val tags: ImmutableSet<TagData>,

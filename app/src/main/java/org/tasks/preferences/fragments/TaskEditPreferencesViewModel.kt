@@ -27,8 +27,6 @@ class TaskEditPreferencesViewModel @Inject constructor(
         private set
     var showComments by mutableStateOf(false)
         private set
-    var showWithoutUnlock by mutableStateOf(false)
-        private set
     var morningSummary by mutableStateOf("")
         private set
     var afternoonSummary by mutableStateOf("")
@@ -44,11 +42,8 @@ class TaskEditPreferencesViewModel @Inject constructor(
 
     fun refreshState() {
         showLinks = preferences.getBoolean(R.string.p_linkify_task_edit, false)
-        backButtonSaves = preferences.getBoolean(R.string.p_back_button_saves_task, false)
+        backButtonSaves = preferences.getBoolean(R.string.p_back_button_saves_task, true)
         showComments = preferences.getBoolean(R.string.p_show_task_edit_comments, false)
-        showWithoutUnlock = preferences.getBoolean(
-            R.string.p_show_edit_screen_without_unlock, false
-        )
         refreshMorning()
         refreshAfternoon()
         refreshEvening()
@@ -68,11 +63,6 @@ class TaskEditPreferencesViewModel @Inject constructor(
     fun updateShowComments(enabled: Boolean) {
         preferences.setBoolean(R.string.p_show_task_edit_comments, enabled)
         showComments = enabled
-    }
-
-    fun updateShowWithoutUnlock(enabled: Boolean) {
-        preferences.setBoolean(R.string.p_show_edit_screen_without_unlock, enabled)
-        showWithoutUnlock = enabled
     }
 
     fun getMillisOfDay(prefKey: Int, defaultRes: Int): Int =

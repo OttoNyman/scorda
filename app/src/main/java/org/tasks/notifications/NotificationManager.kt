@@ -97,6 +97,8 @@ class NotificationManager @Inject constructor(
     override suspend fun cancel(id: Long, reason: CancelReason) {
         if (id == SUMMARY_NOTIFICATION_ID.toLong()) {
             cancel(notificationDao.getAll() + id, reason)
+        } else if (id == DAY_SUMMARY_ID.toLong()) {
+            cancel(dayNotifications().map { it.taskId } + id, reason)
         } else {
             cancel(listOf(id), reason)
         }
@@ -177,18 +179,20 @@ class NotificationManager @Inject constructor(
                 notificationManager.cancel(notification.taskId.toInt())
             }
         }
-        if (preferences.bundleNotifications() && notifications.size > 1) {
+        val collapsed = publishDaySummary(emptyList())
+        val cards = notifications.filter { it.taskId !in collapsed }
+        if (preferences.bundleNotifications() && cards.size > 1) {
             updateSummary(emptyList())
             val posted = createNotifications(
-                    notifications = notifications,
+                    notifications = cards,
                     alert = false,
             )
-            if (posted.size != notifications.size) {
+            if (posted.size != cards.size) {
                 updateSummary(emptyList())
             }
         } else {
             createNotifications(
-                    notifications = notifications,
+                    notifications = cards,
                     alert = false,
                     useGroupKey = false,
                 )
@@ -207,7 +211,10 @@ class NotificationManager @Inject constructor(
         }
         val existingNotifications = notificationDao.getAllOrdered()
         notificationDao.insertAll(newNotifications)
-        val totalCount = existingNotifications.size + newNotifications.size
+        val collapsed = publishDaySummary(newNotifications)
+        val existingCards = existingNotifications.filter { it.taskId !in collapsed }
+        val newCards = newNotifications.filter { it.taskId !in collapsed }
+        val totalCount = existingCards.size + newCards.size
         var summariseAfterCleanup = false
         val posted = when {
             totalCount == 0 -> {
@@ -216,19 +223,19 @@ class NotificationManager @Inject constructor(
             }
             preferences.bundleNotifications() -> {
                 updateSummary(emptyList())
-                if (existingNotifications.size == 1) {
+                if (existingCards.size == 1) {
                     createNotifications(
-                            notifications = existingNotifications,
+                            notifications = existingCards,
                             alert = false,
                     )
                 }
                 when {
-                    newNotifications.size == 1 -> createNotifications(
-                        notifications = newNotifications,
+                    newCards.size == 1 -> createNotifications(
+                        notifications = newCards,
                         alert = alert,
                     )
-                    newNotifications.size > 1 -> createNotifications(
-                            notifications = newNotifications,
+                    newCards.size > 1 -> createNotifications(
+                            notifications = newCards,
                             alert = false,
                             superMayAlert = alert,
                         ).also { summariseAfterCleanup = true }
@@ -236,14 +243,15 @@ class NotificationManager @Inject constructor(
                 }
             }
             else -> createNotifications(
-                notifications = newNotifications,
+                notifications = newCards,
                 alert = alert,
                 useGroupKey = false,
             )
         }
+        val delivered = posted + newNotifications.map { it.taskId }.filter { it in collapsed }
         val discarded = undeliveredRows(
             attempted = newNotifications.map { it.taskId },
-            delivered = posted,
+            delivered = delivered,
             existing = existingNotifications.mapTo(mutableSetOf()) { it.taskId },
         )
         if (discarded.isNotEmpty()) {
@@ -256,7 +264,69 @@ class NotificationManager @Inject constructor(
             updateSummary(emptyList())
         }
         refreshBroadcaster.broadcastRefresh()
-        return posted
+        return delivered
+    }
+
+    /** Several tasks for a day share one notification. Grouping does not apply. */
+    private suspend fun publishDaySummary(fresh: List<Notification>): Set<Long> {
+        val rows = dayNotifications()
+        if (rows.size < 2) {
+            notificationManager.cancel(DAY_SUMMARY_ID)
+            if (rows.size == 1) {
+                createNotifications(rows, alert = false, useGroupKey = false)
+            }
+            return emptySet()
+        }
+        rows.forEach { notificationManager.cancel(it.taskId.toInt()) }
+        val tasks = taskDao.fetch(rows.map { it.taskId }).associateBy { it.id }
+        val titles = rows.mapNotNull { tasks[it.taskId]?.title }
+        val localized = localeContext
+        val title = localized.resources.getQuantityString(R.plurals.task_count, rows.size, rows.size)
+        val style = NotificationCompat.InboxStyle().setBigContentTitle(title)
+        titles.forEach { style.addLine(it) }
+        val taskIds = rows.map { it.taskId }
+        val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_DEFAULT)
+            .setContentTitle(title)
+            .setContentText(titles.joinToString(localized.getString(R.string.list_separator_with_space)))
+            .setShowWhen(true)
+            .setSmallIcon(R.drawable.ic_done_all_white_24dp)
+            .setStyle(style)
+            .setOnlyAlertOnce(true)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    DAY_SUMMARY_ID,
+                    TaskIntents.getTaskListIntent(context, NotificationsFilter.create()),
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
+            )
+        notificationDao.latestTimestamp()?.let { builder.setWhen(it) }
+        val snoozeIntent = SnoozeActivity.newIntent(context, taskIds)
+        builder.addAction(
+            R.drawable.ic_snooze_white_24dp,
+            localized.getString(R.string.snooze_all),
+            PendingIntent.getActivity(
+                context,
+                DAY_SUMMARY_ID,
+                snoozeIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
+            ),
+        )
+        if (!notify(DAY_SUMMARY_ID.toLong(), builder, false).posted) return emptySet()
+        val covered = rows.map { it.taskId }.toSet()
+        fresh.filter { it.taskId in covered }.forEach {
+            taskDao.setLastNotified(it.taskId, DateTime(it.timestamp).endOfMinute().millis)
+        }
+        return covered
+    }
+
+    private suspend fun dayNotifications(): List<Notification> {
+        val rows = notificationDao.getAllOrdered()
+        if (rows.isEmpty()) return emptyList()
+        val tasks = taskDao.fetch(rows.map { it.taskId }.distinct()).associateBy { it.id }
+        return rows.filter { notification ->
+            tasks[notification.taskId]?.let { it.hasDueDate() && !it.hasDueTime() } == true
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -371,7 +441,10 @@ class NotificationManager @Inject constructor(
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun updateSummary(newNotifications: List<Notification>) {
-        val tasks = taskDao.activeNotifications()
+        val tasks = taskDao.activeNotifications().let { all ->
+            val days = all.filter { it.hasDueDate() && !it.hasDueTime() }
+            if (days.size >= 2) all.filterNot { it in days } else all
+        }
         val taskCount = tasks.size
         if (taskCount == 0) {
             cancelSummaryNotification()
@@ -654,6 +727,7 @@ class NotificationManager @Inject constructor(
         const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
         const val EXTRA_NOTIFICATION_TYPE = "extra_notification_type"
         const val SUMMARY_NOTIFICATION_ID = 0
+        const val DAY_SUMMARY_ID = -3
         private const val GROUP_KEY = "tasks"
     }
 }

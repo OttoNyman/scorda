@@ -59,7 +59,7 @@ data class NotificationSettings(
     val notificationsEnabled: Boolean = true,
     val persistentNotifications: Boolean = true,
     val wearableNotifications: Boolean = true,
-    val bundleNotifications: Boolean = true,
+    val bundleNotifications: Boolean = false,
     val voiceReminders: Boolean = false,
     val swipeAction: SwipeAction = SwipeAction.SNOOZE,
     val swipeToSnoozeMinutes: Int = DEFAULT_SNOOZE_MINUTES,

@@ -25,4 +25,25 @@ class SelectionRulesTest {
     fun aDoneOccurrenceDoesNotCount() {
         assertFalse(selectionHasOpenSeries(listOf(doneOccurrence), setOf(doneOccurrence.id)))
     }
+
+    @Test
+    fun swipeOnAFinishedTaskGoesToTrash() {
+        assertTrue(swipeTrashes(onCompletedScreen = false, doneOccurrence))
+    }
+
+    @Test
+    fun swipeOnAnOpenTaskTogglesDone() {
+        assertFalse(swipeTrashes(onCompletedScreen = false, plain))
+    }
+
+    @Test
+    fun swipeOnTheCompletedScreenGoesToTrash() {
+        assertTrue(swipeTrashes(onCompletedScreen = true, plain))
+    }
+
+    @Test
+    fun swipeOnANoteGoesToTrash() {
+        val note = TaskContainer(task = Task(id = 4, memo = true))
+        assertTrue(swipeTrashes(onCompletedScreen = false, note))
+    }
 }

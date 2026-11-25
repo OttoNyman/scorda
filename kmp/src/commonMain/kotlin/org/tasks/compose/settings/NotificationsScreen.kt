@@ -58,7 +58,6 @@ import tasks.kmp.generated.resources.ok
 import tasks.kmp.generated.resources.priority_level_disable_message
 import tasks.kmp.generated.resources.priority_levels_hint
 import tasks.kmp.generated.resources.priority_levels_title
-import tasks.kmp.generated.resources.sound_by_priority
 import tasks.kmp.generated.resources.alarms_can_be_late
 import tasks.kmp.generated.resources.more_reminder_settings
 import tasks.kmp.generated.resources.reminder_check_autostart
@@ -74,8 +73,6 @@ import tasks.kmp.generated.resources.reminder_check_full_screen_summary
 import tasks.kmp.generated.resources.reminder_check_lock_screen_summary
 import tasks.kmp.generated.resources.reminder_check_ok
 import tasks.kmp.generated.resources.reminder_check_problem
-import tasks.kmp.generated.resources.reminder_check_recents
-import tasks.kmp.generated.resources.reminder_check_recents_hint
 import tasks.kmp.generated.resources.reminder_check_unknown
 import tasks.kmp.generated.resources.reminder_test_button
 import tasks.kmp.generated.resources.reminder_test_countdown
@@ -102,8 +99,6 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.EPr_voiceRemindersEnabled_desc_enabled
 import tasks.kmp.generated.resources.EPr_voiceRemindersEnabled_title
 import tasks.kmp.generated.resources.add_default_reminders
-import tasks.kmp.generated.resources.bundle_notifications
-import tasks.kmp.generated.resources.bundle_notifications_summary
 import tasks.kmp.generated.resources.completion_sound
 import tasks.kmp.generated.resources.default_reminder
 import tasks.kmp.generated.resources.disable_battery_optimizations
@@ -169,7 +164,6 @@ fun NotificationsScreen(
     showCompletionSound: Boolean,
     completionSoundName: String,
     showOngoingNotifications: Boolean,
-    showBundleNotifications: Boolean,
     showVoiceReminders: Boolean,
     showSystemNotificationSettings: Boolean,
     moreSettingsSummary: String?,
@@ -177,7 +171,6 @@ fun NotificationsScreen(
     notificationsEnabled: Boolean,
     persistentEnabled: Boolean,
     wearableEnabled: Boolean,
-    bundleEnabled: Boolean,
     voiceEnabled: Boolean,
     swipeAction: SwipeAction,
     swipeToSnoozeMinutes: Int,
@@ -189,7 +182,6 @@ fun NotificationsScreen(
     onCompletionSound: () -> Unit,
     onPersistent: (Boolean) -> Unit,
     onWearable: (Boolean) -> Unit,
-    onBundle: (Boolean) -> Unit,
     onVoice: (Boolean) -> Unit,
     onMoreSettings: () -> Unit,
     onSwipeAction: () -> Unit,
@@ -208,8 +200,6 @@ fun NotificationsScreen(
     onReminderTest: () -> Unit = {},
     moreExpanded: Boolean = false,
     onToggleMore: () -> Unit = {},
-    showPersistentSound: Boolean = false,
-    showAlarmSound: Boolean = true,
     onceSoundName: String = "",
     persistentSoundName: String = "",
     alarmSoundName: String = "",
@@ -312,34 +302,103 @@ fun NotificationsScreen(
         Spacer(modifier = Modifier.height(SettingsSectionGap))
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            verticalArrangement = Arrangement.spacedBy(SettingsContentPadding),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.priority_high),
-                    summary = stringResource(Res.string.priority_high_summary),
-                    checked = levelAlarm,
-                    onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
+            PriorityGroup(
+                listOfNotNull(
+                    PriorityRow.HIGH,
+                    PriorityRow.ALARM_SOUND.takeIf { levelAlarm },
+                    PriorityRow.DURATION.takeIf { levelAlarm },
+                    PriorityRow.BYPASS.takeIf { levelAlarm },
+                    PriorityRow.LOCK.takeIf { levelAlarm },
                 )
+            ) { row ->
+                when (row) {
+                    PriorityRow.HIGH ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.priority_high),
+                            summary = stringResource(Res.string.priority_high_summary),
+                            checked = levelAlarm,
+                            onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
+                        )
+                    PriorityRow.ALARM_SOUND ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.alert_caption_alarm),
+                            summary = alarmSoundName,
+                            onClick = { onLevelSound(AlertLevel.SUPER) },
+                        )
+                    PriorityRow.DURATION ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.alarm_ring_duration),
+                            summary = stringResource(Res.string.alarm_ring_duration_value, alarmRingSeconds),
+                            onClick = onAlarmDuration,
+                        )
+                    PriorityRow.BYPASS ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.alert_super_bypass),
+                            summary = stringResource(Res.string.alert_super_bypass_summary),
+                            checked = superBypassSilent,
+                            onCheckedChange = onSuperBypass,
+                        )
+                    PriorityRow.LOCK ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.alarm_on_lock_screen),
+                            summary = stringResource(
+                                if (alarmOnLockScreen) {
+                                    Res.string.alarm_on_lock_screen_on
+                                } else {
+                                    Res.string.alarm_on_lock_screen_off
+                                }
+                            ),
+                            checked = alarmOnLockScreen,
+                            onCheckedChange = onAlarmLockScreen,
+                        )
+                    else -> Unit
+                }
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.priority_medium),
-                    summary = stringResource(Res.string.priority_medium_summary),
-                    checked = levelPersistent,
-                    onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
+            PriorityGroup(
+                listOfNotNull(
+                    PriorityRow.MEDIUM,
+                    PriorityRow.PERSISTENT_SOUND.takeIf { levelPersistent },
                 )
+            ) { row ->
+                when (row) {
+                    PriorityRow.MEDIUM ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.priority_medium),
+                            summary = stringResource(Res.string.priority_medium_summary),
+                            checked = levelPersistent,
+                            onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
+                        )
+                    PriorityRow.PERSISTENT_SOUND ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.alert_caption_persistent),
+                            summary = persistentSoundName,
+                            onClick = { onLevelSound(AlertLevel.PERSISTENT) },
+                        )
+                    else -> Unit
+                }
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.priority_low),
-                    summary = stringResource(Res.string.priority_always_on),
-                    checked = true,
-                    enabled = false,
-                    onCheckedChange = {},
-                )
+            PriorityGroup(listOf(PriorityRow.LOW, PriorityRow.ONCE_SOUND)) { row ->
+                when (row) {
+                    PriorityRow.LOW ->
+                        SwitchPreferenceRow(
+                            title = stringResource(Res.string.priority_low),
+                            summary = stringResource(Res.string.priority_always_on),
+                            checked = true,
+                            enabled = false,
+                            onCheckedChange = {},
+                        )
+                    PriorityRow.ONCE_SOUND ->
+                        PreferenceRow(
+                            title = stringResource(Res.string.alert_caption_once),
+                            summary = onceSoundName,
+                            onClick = { onLevelSound(AlertLevel.ONCE) },
+                        )
+                    else -> Unit
+                }
             }
-            SettingsItemCard(position = CardPosition.Last) {
+            PriorityGroup(listOf(PriorityRow.SILENT)) {
                 SwitchPreferenceRow(
                     title = stringResource(Res.string.filter_no_priority),
                     summary = stringResource(Res.string.priority_none_summary),
@@ -350,77 +409,10 @@ fun NotificationsScreen(
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
-        SectionHeader(
-            stringResource(Res.string.sound_by_priority),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        CardGroup(
-            listOfNotNull(
-                SoundRow.ONCE,
-                SoundRow.PERSISTENT.takeIf { showPersistentSound },
-                SoundRow.ALARM.takeIf { showAlarmSound },
-                SoundRow.DURATION.takeIf { showAlarmSound },
-                SoundRow.BYPASS.takeIf { showAlarmSound },
-                SoundRow.LOCK.takeIf { showAlarmSound },
-            )
-        ) { row ->
-            when (row) {
-                SoundRow.ONCE ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.alert_caption_once),
-                        summary = onceSoundName,
-                        onClick = { onLevelSound(AlertLevel.ONCE) },
-                    )
-                SoundRow.PERSISTENT ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.alert_caption_persistent),
-                        summary = persistentSoundName,
-                        onClick = { onLevelSound(AlertLevel.PERSISTENT) },
-                    )
-                SoundRow.ALARM ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.alert_caption_alarm),
-                        summary = buildString {
-                            append(alarmSoundName)
-                            if (alarmSoundName.isNotBlank()) append(" · ")
-                            append(stringResource(Res.string.alarm_ring_duration_value, alarmRingSeconds))
-                        },
-                        onClick = { onLevelSound(AlertLevel.SUPER) },
-                    )
-                SoundRow.DURATION ->
-                    PreferenceRow(
-                        title = stringResource(Res.string.alarm_ring_duration),
-                        summary = stringResource(Res.string.alarm_ring_duration_value, alarmRingSeconds),
-                        onClick = onAlarmDuration,
-                    )
-                SoundRow.BYPASS ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.alert_super_bypass),
-                        summary = stringResource(Res.string.alert_super_bypass_summary),
-                        checked = superBypassSilent,
-                        onCheckedChange = onSuperBypass,
-                    )
-                SoundRow.LOCK ->
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.alarm_on_lock_screen),
-                        summary = stringResource(
-                            if (alarmOnLockScreen) {
-                                Res.string.alarm_on_lock_screen_on
-                            } else {
-                                Res.string.alarm_on_lock_screen_off
-                            }
-                        ),
-                        checked = alarmOnLockScreen,
-                        onCheckedChange = onAlarmLockScreen,
-                    )
-            }
-        }
-
         val moreRows = listOfNotNull(
             NotificationRow.ENABLED.takeIf { showNotificationsEnabled },
             NotificationRow.PERSISTENT.takeIf { showOngoingNotifications },
             NotificationRow.WEARABLE.takeIf { showOngoingNotifications },
-            NotificationRow.BUNDLE.takeIf { showBundleNotifications },
             NotificationRow.VOICE.takeIf { showVoiceReminders },
         )
         if (moreRows.isNotEmpty()) {
@@ -447,13 +439,6 @@ fun NotificationsScreen(
                             summary = stringResource(Res.string.wearable_notifications_summary),
                             checked = wearableEnabled,
                             onCheckedChange = onWearable,
-                        )
-                    NotificationRow.BUNDLE ->
-                        SwitchPreferenceRow(
-                            title = stringResource(Res.string.bundle_notifications),
-                            summary = stringResource(Res.string.bundle_notifications_summary),
-                            checked = bundleEnabled,
-                            onCheckedChange = onBundle,
                         )
                     NotificationRow.VOICE ->
                         SwitchPreferenceRow(
@@ -568,17 +553,27 @@ private enum class NotificationRow {
     ENABLED,
     PERSISTENT,
     WEARABLE,
-    BUNDLE,
     VOICE,
 }
 
-private enum class SoundRow {
-    ONCE,
-    PERSISTENT,
-    ALARM,
-    DURATION,
-    BYPASS,
-    LOCK,
+private enum class PriorityRow {
+    HIGH, ALARM_SOUND, DURATION, BYPASS, LOCK,
+    MEDIUM, PERSISTENT_SOUND,
+    LOW, ONCE_SOUND,
+    SILENT,
+}
+
+@Composable
+private fun <T : Any> PriorityGroup(rows: List<T>, row: @Composable (T) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(SettingsCardGap)) {
+        rows.forEachIndexed { index, item ->
+            key(item) {
+                SettingsItemCard(position = CardPosition.forIndex(index, rows.size)) {
+                    row(item)
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -806,7 +801,7 @@ private fun ReminderHealthCard(
                     PreferenceRow(
                         title = stringResource(checkTitle(check.id)),
                         summary = checkSummary(check),
-                        onClick = if (check.state == CheckState.MANUAL) null else ({ onCheck(check.id) }),
+                        onClick = { onCheck(check.id) },
                     )
                 }
             }
@@ -817,7 +812,6 @@ private fun ReminderHealthCard(
 
 @Composable
 private fun checkSummary(check: ReminderCheck): String = when (check.id) {
-    ReminderCheckId.RECENTS_LOCK -> stringResource(Res.string.reminder_check_recents_hint)
     ReminderCheckId.FULL_SCREEN -> when (check.state) {
         CheckState.OK -> stringResource(Res.string.reminder_check_ok)
         else -> stringResource(Res.string.reminder_check_full_screen_summary)
@@ -827,7 +821,6 @@ private fun checkSummary(check: ReminderCheck): String = when (check.id) {
         CheckState.OK -> stringResource(Res.string.reminder_check_ok)
         CheckState.PROBLEM -> stringResource(Res.string.reminder_check_problem)
         CheckState.UNKNOWN -> stringResource(Res.string.reminder_check_unknown)
-        CheckState.MANUAL -> stringResource(Res.string.reminder_check_unknown)
     }
 }
 
@@ -846,7 +839,6 @@ private fun checkTitle(id: ReminderCheckId) = when (id) {
     ReminderCheckId.AUTOSTART -> Res.string.reminder_check_autostart
     ReminderCheckId.BACKGROUND -> Res.string.reminder_check_background
     ReminderCheckId.POPUPS -> Res.string.reminder_check_popups
-    ReminderCheckId.RECENTS_LOCK -> Res.string.reminder_check_recents
     ReminderCheckId.FULL_SCREEN -> Res.string.reminder_check_full_screen
     ReminderCheckId.LOCK_SCREEN -> Res.string.reminder_check_lock_screen
 }

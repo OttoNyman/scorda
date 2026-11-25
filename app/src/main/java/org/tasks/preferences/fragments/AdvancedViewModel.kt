@@ -56,6 +56,8 @@ class AdvancedViewModel @Inject constructor(
         private set
     var dateFormat by mutableStateOf(DateFormats.AUTO)
         private set
+    var bundleNotifications by mutableStateOf(false)
+        private set
 
     val dateFormatOptions: List<Pair<String, String>>
         get() {
@@ -79,6 +81,7 @@ class AdvancedViewModel @Inject constructor(
         refreshAttachmentDirectory()
         dateFormat = preferences.dateFormat
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
+        bundleNotifications = preferences.bundleNotifications()
         viewModelScope.launch {
             val filter = defaultFilterProvider.getBadgeFilter()
             badgeFilterName = filter.title ?: ""
@@ -92,6 +95,11 @@ class AdvancedViewModel @Inject constructor(
 
     val attachmentsDirectory: Uri?
         get() = preferences.attachmentsDirectory
+
+    fun updateBundleNotifications(enabled: Boolean) {
+        preferences.setBoolean(R.string.p_bundle_notifications, enabled)
+        bundleNotifications = enabled
+    }
 
     fun updateBadges(enabled: Boolean) {
         preferences.setBoolean(R.string.p_badges_enabled, enabled)

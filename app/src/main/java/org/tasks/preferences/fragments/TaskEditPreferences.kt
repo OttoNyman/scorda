@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
-import com.todoroo.andlib.utility.AndroidUtilities.atLeastOreoMR1
 import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
 import org.tasks.compose.settings.TaskEditScreen
@@ -70,12 +69,10 @@ class TaskEditPreferences : Fragment() {
             primary = theme.themeColor.primaryColor,
         ) {
             TaskEditScreen(
-                showWithoutUnlockVisible = atLeastOreoMR1(),
                 showLinks = viewModel.showLinks,
                 backButtonSaves = viewModel.backButtonSaves,
                 showComments = viewModel.showComments,
                 showCommentsRow = false,
-                showWithoutUnlock = viewModel.showWithoutUnlock,
                 morningSummary = viewModel.morningSummary,
                 afternoonSummary = viewModel.afternoonSummary,
                 eveningSummary = viewModel.eveningSummary,
@@ -83,7 +80,6 @@ class TaskEditPreferences : Fragment() {
                 onShowLinks = { viewModel.updateShowLinks(it) },
                 onBackButtonSaves = { viewModel.updateBackButtonSaves(it) },
                 onShowComments = { viewModel.updateShowComments(it) },
-                onShowWithoutUnlock = { viewModel.updateShowWithoutUnlock(it) },
                 onMorning = {
                     showTimePicker(
                         R.string.p_date_shortcut_morning,

@@ -61,7 +61,6 @@ class ReminderHealthTest {
         assertTrue(ReminderCheckId.AUTOSTART in ids)
         assertTrue(ReminderCheckId.BACKGROUND in ids)
         assertTrue(ReminderCheckId.POPUPS in ids)
-        assertTrue(ReminderCheckId.RECENTS_LOCK in ids)
         assertTrue(schedulePlan(facts).safetyPoll)
         assertEquals(ModeLine.OEM_SAFETY, modeLine(facts))
     }
@@ -130,14 +129,9 @@ class ReminderHealthTest {
     }
 
     @Test
-    fun xiaomiLockScreenAppearsAfterAsking() {
-        assertTrue(
-            ReminderCheckId.LOCK_SCREEN in visibleChecks(
-                facts(oem = OemFamily.XIAOMI, wantsLockScreen = true),
-            ).map { it.id }
-        )
+    fun lockScreenCheckIsNotInTheList() {
         assertFalse(
-            visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = false, wantsLockScreen = true))
+            visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = true, wantsLockScreen = true))
                 .any { it.id == ReminderCheckId.LOCK_SCREEN }
         )
     }

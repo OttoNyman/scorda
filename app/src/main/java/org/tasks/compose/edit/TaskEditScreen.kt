@@ -34,7 +34,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,7 +50,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.IntentCompat.getParcelableExtra
 import androidx.fragment.compose.AndroidFragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.todoroo.andlib.utility.AndroidUtilities.atLeastOreoMR1
 import com.todoroo.astrid.activity.BeastModePreferences
 import com.todoroo.astrid.activity.MainActivity
 import com.todoroo.astrid.files.FilesControlSet
@@ -186,18 +184,6 @@ fun TaskEditScreen(
         if (!viewState.isNew && editViewModel.memosEnabled) {
             convertBlock = editViewModel.memoConvertBlock()
             convertHasGoogle = !viewState.task.memo && editViewModel.hasRemoteListForConvert()
-        }
-    }
-    DisposableEffect(Unit) {
-        val activity = context.findActivity()
-        if (atLeastOreoMR1() && viewState.showEditScreenWithoutUnlock) {
-            activity?.setShowWhenLocked(true)
-        }
-
-        onDispose {
-            if (atLeastOreoMR1()) {
-                activity?.setShowWhenLocked(false)
-            }
         }
     }
     val requestDiscard = {

@@ -121,7 +121,6 @@ class Firebase @Inject constructor(
         R.string.p_linkify_task_edit,
         R.string.p_back_button_saves_task,
         R.string.p_show_task_edit_comments,
-        R.string.p_show_edit_screen_without_unlock,
         // Date and time
         R.string.p_always_display_full_date,
         R.string.p_date_shortcut_morning,

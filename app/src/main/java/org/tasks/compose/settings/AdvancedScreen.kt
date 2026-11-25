@@ -20,6 +20,8 @@ import org.jetbrains.compose.resources.stringResource as kmpStringResource
 import org.tasks.R
 import org.tasks.themes.TasksIcons
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.bundle_notifications
+import tasks.kmp.generated.resources.bundle_notifications_summary
 import tasks.kmp.generated.resources.reset_trusted_certificates
 import tasks.kmp.generated.resources.reset_trusted_certificates_summary
 
@@ -36,6 +38,8 @@ fun AdvancedScreen(
     onResetPreferences: () -> Unit,
     onResetTrustedCertificates: () -> Unit,
     onDeleteTaskData: () -> Unit,
+    bundleNotifications: Boolean,
+    onBundleNotifications: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -61,6 +65,17 @@ fun AdvancedScreen(
                 icon = TasksIcons.ATTACHMENT,
                 summary = attachmentDirSummary,
                 onClick = onAttachmentDir,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            SwitchPreferenceRow(
+                title = kmpStringResource(Res.string.bundle_notifications),
+                summary = kmpStringResource(Res.string.bundle_notifications_summary),
+                checked = bundleNotifications,
+                onCheckedChange = onBundleNotifications,
             )
         }
 
