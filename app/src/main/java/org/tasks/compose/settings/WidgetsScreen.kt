@@ -23,7 +23,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource as kmpStringResource
 import org.tasks.R
+import org.tasks.themes.TasksIcons
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.add_widget_to_home_screen
 
 data class WidgetItem(
     val widgetId: Int,
@@ -35,6 +39,7 @@ data class WidgetItem(
 fun WidgetsScreen(
     widgets: List<WidgetItem>,
     onWidgetClick: (Int) -> Unit,
+    onAddWidget: (() -> Unit)? = null,
 ) {
     Column(
         modifier = Modifier
@@ -44,11 +49,21 @@ fun WidgetsScreen(
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        if (widgets.isNotEmpty()) {
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
+        Column(
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+        ) {
+            if (onAddWidget != null) {
+                SettingsItemCard {
+                    PreferenceRow(
+                        title = kmpStringResource(Res.string.add_widget_to_home_screen),
+                        icon = TasksIcons.WIDGETS,
+                        onClick = onAddWidget,
+                    )
+                }
+            }
+
+            if (widgets.isNotEmpty()) {
                 widgets.forEachIndexed { index, widget ->
                     SettingsItemCard(position = CardPosition.forIndex(index, widgets.size)) {
                         val borderColor = MaterialTheme.colorScheme.outline

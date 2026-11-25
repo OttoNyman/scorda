@@ -22,6 +22,8 @@ import org.tasks.themes.TasksIcons
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.bundle_notifications
 import tasks.kmp.generated.resources.bundle_notifications_summary
+import tasks.kmp.generated.resources.share_entry
+import tasks.kmp.generated.resources.share_entry_summary
 import tasks.kmp.generated.resources.reset_trusted_certificates
 import tasks.kmp.generated.resources.reset_trusted_certificates_summary
 
@@ -40,6 +42,8 @@ fun AdvancedScreen(
     onDeleteTaskData: () -> Unit,
     bundleNotifications: Boolean,
     onBundleNotifications: (Boolean) -> Unit,
+    shareEntry: Boolean,
+    onShareEntry: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -76,6 +80,17 @@ fun AdvancedScreen(
                 summary = kmpStringResource(Res.string.bundle_notifications_summary),
                 checked = bundleNotifications,
                 onCheckedChange = onBundleNotifications,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            SwitchPreferenceRow(
+                title = kmpStringResource(Res.string.share_entry),
+                summary = kmpStringResource(Res.string.share_entry_summary),
+                checked = shareEntry,
+                onCheckedChange = onShareEntry,
             )
         }
 

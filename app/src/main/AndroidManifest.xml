@@ -271,7 +271,7 @@
     <!-- TODO: clearTaskOnLaunch probable cause of #275 -->
     <activity
       android:icon="@mipmap/ic_launcher_blue"
-      android:label="@string/action_create_new_task"
+      android:label="@string/process_text_label"
       android:name="com.todoroo.astrid.activity.ShareLinkActivity"
       android:taskAffinity=":share"
       android:excludeFromRecents="true"

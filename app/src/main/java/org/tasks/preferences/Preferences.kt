@@ -15,6 +15,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
 import com.todoroo.andlib.utility.AndroidUtilities
 import com.todoroo.astrid.activity.BeastModePreferences
+import com.todoroo.astrid.activity.applyShareEntry
 import com.todoroo.astrid.core.SortHelper
 import org.tasks.BuildConfig
 import org.tasks.R
@@ -733,6 +734,17 @@ class Preferences @JvmOverloads constructor(
     }
 
     fun bundleNotifications(): Boolean = getBoolean(R.string.p_bundle_notifications, false)
+
+    fun shareEntryEnabled(): Boolean = getBoolean(R.string.p_share_entry, true)
+
+    fun setShareEntryEnabled(enabled: Boolean) {
+        setBoolean(R.string.p_share_entry, enabled)
+        context.applyShareEntry(enabled)
+    }
+
+    fun applyShareEntry() {
+        context.applyShareEntry(shareEntryEnabled())
+    }
 
     fun usePersistentReminders(): Boolean =
             AndroidUtilities.preUpsideDownCake() && getBoolean(R.string.p_rmd_persistent, true)

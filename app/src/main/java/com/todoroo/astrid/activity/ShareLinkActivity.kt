@@ -1,7 +1,10 @@
 package com.todoroo.astrid.activity
 
+import android.content.ComponentName
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +40,7 @@ class ShareLinkActivity : AppCompatActivity() {
             Intent.ACTION_PROCESS_TEXT -> lifecycleScope.launch {
                 val text = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
                 if (text != null) {
-                    val task = taskCreator.createWithValues(text.toString())
+                    val task = taskCreator.createWithValues(text.toString(), stampDueToday = false)
                     editTask(task)
                     firebase.addTask("clipboard")
                 }
@@ -123,4 +126,16 @@ class ShareLinkActivity : AppCompatActivity() {
             return task
         }
     }
+}
+
+fun Context.applyShareEntry(enabled: Boolean) {
+    packageManager.setComponentEnabledSetting(
+        ComponentName(this, ShareLinkActivity::class.java),
+        if (enabled) {
+            PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
+        } else {
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        },
+        PackageManager.DONT_KILL_APP,
+    )
 }

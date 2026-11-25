@@ -414,6 +414,8 @@
     <string name="wearable_notifications_summary">Отображать уведомления на Вашем носимом устройстве</string>
     <string name="bundle_notifications">Группировать уведомления</string>
     <string name="bundle_notifications_summary">Несколько карточек складываются в стопку. У каждой свои «Готово» и «Отложить». Смах сводки убирает все карточки сразу.</string>
+    <string name="share_entry">Scorda - memo</string>
+    <string name="share_entry_summary">Пункт «Scorda - memo» в меню выделения текста и в меню «Поделиться». Открывает редактор с этим текстом: можно поставить время или сделать заметкой. Дата «сегодня» сама не ставится.</string>
     <string name="EPr_voiceRemindersEnabled_title">Голосовые напоминания</string>
     <string name="EPr_voiceRemindersEnabled_desc_enabled">Tasks будет произносить название задач во время напоминаний</string>
     <string name="more_settings">Прочие настройки</string>

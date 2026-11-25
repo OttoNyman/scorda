@@ -58,6 +58,8 @@ class AdvancedViewModel @Inject constructor(
         private set
     var bundleNotifications by mutableStateOf(false)
         private set
+    var shareEntry by mutableStateOf(true)
+        private set
 
     val dateFormatOptions: List<Pair<String, String>>
         get() {
@@ -82,6 +84,7 @@ class AdvancedViewModel @Inject constructor(
         dateFormat = preferences.dateFormat
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
         bundleNotifications = preferences.bundleNotifications()
+        shareEntry = preferences.shareEntryEnabled()
         viewModelScope.launch {
             val filter = defaultFilterProvider.getBadgeFilter()
             badgeFilterName = filter.title ?: ""
@@ -99,6 +102,11 @@ class AdvancedViewModel @Inject constructor(
     fun updateBundleNotifications(enabled: Boolean) {
         preferences.setBoolean(R.string.p_bundle_notifications, enabled)
         bundleNotifications = enabled
+    }
+
+    fun updateShareEntry(enabled: Boolean) {
+        preferences.setShareEntryEnabled(enabled)
+        shareEntry = enabled
     }
 
     fun updateBadges(enabled: Boolean) {

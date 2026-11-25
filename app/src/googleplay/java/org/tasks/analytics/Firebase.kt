@@ -84,6 +84,7 @@ class Firebase @Inject constructor(
         R.string.p_rmd_persistent,
         R.string.p_wearable_notifications,
         R.string.p_bundle_notifications,
+        R.string.p_share_entry,
         R.string.p_voiceRemindersEnabled,
         R.string.p_rmd_swipe_action,
         R.string.p_rmd_swipe_to_snooze_time_minutes,

@@ -5,14 +5,22 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.tasks.R
+import org.tasks.analytics.Firebase
 import org.tasks.compose.settings.WidgetsScreen
+import org.tasks.compose.settings.canPinWidget
+import org.tasks.compose.settings.createWidget
+import org.tasks.filters.MyTasksFilter
 import org.tasks.preferences.BasePreferences
+import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
 import org.tasks.widget.WidgetConfigActivity
@@ -22,6 +30,8 @@ import javax.inject.Inject
 class Widgets : Fragment() {
 
     @Inject lateinit var theme: Theme
+    @Inject lateinit var defaultFilterProvider: DefaultFilterProvider
+    @Inject lateinit var firebase: Firebase
 
     private val viewModel: WidgetsViewModel by viewModels()
 
@@ -35,6 +45,8 @@ class Widgets : Fragment() {
             primary = theme.themeColor.primaryColor,
         ) {
             val context = requireContext()
+            val activity = requireActivity() as AppCompatActivity
+            val canPin = activity.canPinWidget()
             WidgetsScreen(
                 widgets = viewModel.widgets,
                 onWidgetClick = { widgetId ->
@@ -45,6 +57,20 @@ class Widgets : Fragment() {
                     )
                     intent.action = "widget_settings"
                     startActivity(intent)
+                },
+                onAddWidget = if (canPin) {
+                    {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            activity.createWidget(
+                                filter = MyTasksFilter.create(),
+                                color = 0,
+                                defaultFilterProvider = defaultFilterProvider,
+                                firebase = firebase,
+                            )
+                        }
+                    }
+                } else {
+                    null
                 },
             )
         }

@@ -144,8 +144,8 @@ class TaskCreator @Inject constructor(
             parent = 0
         }
 
-    suspend fun createWithValues(title: String?): Task {
-        return create(null, title)
+    suspend fun createWithValues(title: String?, stampDueToday: Boolean = true): Task {
+        return create(null, title, stampDueToday = stampDueToday)
     }
 
     suspend fun createWithValues(
@@ -165,6 +165,7 @@ class TaskCreator @Inject constructor(
         title: String?,
         parseTitle: Boolean = true,
         applyDefaults: Boolean = true,
+        stampDueToday: Boolean = true,
     ): Task {
         val task = Task(
             title = title?.trim { it <= ' ' },
@@ -221,6 +222,7 @@ class TaskCreator @Inject constructor(
         }
         if (
             applyDefaults &&
+            stampDueToday &&
             task.dueDate <= 0 &&
             values?.containsKey(DUE_DATE.name) != true &&
             !placeTask

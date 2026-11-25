@@ -111,6 +111,8 @@ class Advanced : Fragment() {
                 onDeleteTaskData = { viewModel.openDeleteDataDialog() },
                 bundleNotifications = viewModel.bundleNotifications,
                 onBundleNotifications = { viewModel.updateBundleNotifications(it) },
+                shareEntry = viewModel.shareEntry,
+                onShareEntry = { viewModel.updateShareEntry(it) },
             )
 
             if (viewModel.showRestartDialog) {
