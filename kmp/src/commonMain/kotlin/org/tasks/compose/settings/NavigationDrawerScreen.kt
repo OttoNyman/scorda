@@ -20,9 +20,9 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.customize_drawer
 import tasks.kmp.generated.resources.customize_drawer_summary
 import tasks.kmp.generated.resources.drawer_filters
+import tasks.kmp.generated.resources.show_in_panel
 import tasks.kmp.generated.resources.drawer_places
 import tasks.kmp.generated.resources.drawer_tags
-import tasks.kmp.generated.resources.enabled
 import tasks.kmp.generated.resources.filter_recently_modified
 import tasks.kmp.generated.resources.hide_unused_places
 import tasks.kmp.generated.resources.hide_unused_tags
@@ -80,7 +80,7 @@ fun NavigationDrawerScreen(
             ) {
                 SettingsItemCard(position = CardPosition.First) {
                     SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
+                        title = stringResource(Res.string.show_in_panel),
                         checked = filtersEnabled,
                         onCheckedChange = onFiltersEnabled,
                     )
@@ -115,7 +115,7 @@ fun NavigationDrawerScreen(
             ) {
                 SettingsItemCard(position = CardPosition.First) {
                     SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
+                        title = stringResource(Res.string.show_in_panel),
                         checked = tagsEnabled,
                         onCheckedChange = onTagsEnabled,
                     )
@@ -142,7 +142,7 @@ fun NavigationDrawerScreen(
             ) {
                 SettingsItemCard(position = CardPosition.First) {
                     SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
+                        title = stringResource(Res.string.show_in_panel),
                         checked = placesEnabled,
                         onCheckedChange = onPlacesEnabled,
                     )

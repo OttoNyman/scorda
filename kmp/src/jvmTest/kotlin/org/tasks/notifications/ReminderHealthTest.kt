@@ -95,21 +95,49 @@ class ReminderHealthTest {
     }
 
     @Test
-    fun fullScreenAppearsWhenAlarmIsOn() {
-        val ok = visibleChecks(facts(alarmEnabled = true, canFullScreen = true))
-        assertEquals(CheckState.OK, ok.state(ReminderCheckId.FULL_SCREEN))
-        val problem = visibleChecks(facts(alarmEnabled = true, canFullScreen = false))
-        assertEquals(CheckState.PROBLEM, problem.state(ReminderCheckId.FULL_SCREEN))
-        assertFalse(visibleChecks(facts(alarmEnabled = false)).any { it.id == ReminderCheckId.FULL_SCREEN })
-        assertFalse(visibleChecks(facts(sdk = 33, alarmEnabled = true)).any { it.id == ReminderCheckId.FULL_SCREEN })
+    fun lockScreenAlarmStaysQuietUntilAsked() {
+        assertFalse(
+            visibleChecks(facts(alarmEnabled = true, canFullScreen = false))
+                .any { it.id == ReminderCheckId.FULL_SCREEN }
+        )
+        assertFalse(
+            visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = true))
+                .any { it.id == ReminderCheckId.LOCK_SCREEN }
+        )
+        assertFalse(alarmOpensOnLockScreen(optedIn = false, systemAllows = true))
     }
 
     @Test
-    fun xiaomiAlarmAddsLockScreen() {
-        val ids = visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = true)).map { it.id }
-        assertTrue(ReminderCheckId.LOCK_SCREEN in ids)
+    fun askedLockScreenIsAProblemOnlyWhenAndroidBlocksIt() {
+        val blocked = visibleChecks(
+            facts(alarmEnabled = true, canFullScreen = false, wantsLockScreen = true),
+        )
+        assertEquals(CheckState.PROBLEM, blocked.state(ReminderCheckId.FULL_SCREEN))
         assertFalse(
-            visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = false))
+            visibleChecks(facts(alarmEnabled = true, canFullScreen = true, wantsLockScreen = true))
+                .any { it.id == ReminderCheckId.FULL_SCREEN }
+        )
+        assertFalse(
+            visibleChecks(facts(sdk = 33, wantsLockScreen = true, canFullScreen = false))
+                .any { it.id == ReminderCheckId.FULL_SCREEN }
+        )
+        assertFalse(
+            visibleChecks(facts(alarmEnabled = false, canFullScreen = false, wantsLockScreen = true))
+                .any { it.id == ReminderCheckId.FULL_SCREEN }
+        )
+        assertTrue(alarmOpensOnLockScreen(optedIn = true, systemAllows = true))
+        assertFalse(alarmOpensOnLockScreen(optedIn = true, systemAllows = false))
+    }
+
+    @Test
+    fun xiaomiLockScreenAppearsAfterAsking() {
+        assertTrue(
+            ReminderCheckId.LOCK_SCREEN in visibleChecks(
+                facts(oem = OemFamily.XIAOMI, wantsLockScreen = true),
+            ).map { it.id }
+        )
+        assertFalse(
+            visibleChecks(facts(oem = OemFamily.XIAOMI, alarmEnabled = false, wantsLockScreen = true))
                 .any { it.id == ReminderCheckId.LOCK_SCREEN }
         )
     }
@@ -124,6 +152,7 @@ class ReminderHealthTest {
         powerSaveOn: Boolean = false,
         alarmEnabled: Boolean = true,
         canFullScreen: Boolean = true,
+        wantsLockScreen: Boolean = false,
     ) = ReminderFacts(
         sdk = sdk,
         oem = oem,
@@ -134,6 +163,7 @@ class ReminderHealthTest {
         powerSaveOn = powerSaveOn,
         alarmEnabled = alarmEnabled,
         canFullScreen = canFullScreen,
+        wantsLockScreen = wantsLockScreen,
     )
 
     private fun List<ReminderCheck>.state(id: ReminderCheckId) = first { it.id == id }.state

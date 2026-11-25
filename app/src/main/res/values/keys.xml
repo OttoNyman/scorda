@@ -72,6 +72,10 @@
   <string name="p_level_persistent_enabled">level_persistent_enabled</string>
   <string name="p_level_alarm_enabled">level_alarm_enabled</string>
   <string name="p_alarm_ring_seconds">alarm_ring_seconds</string>
+  <string name="p_alarm_on_lock_screen">alarm_on_lock_screen</string>
+  <string name="p_alarm_lock_pending">alarm_lock_pending</string>
+  <string name="p_exact_alarm_pending">exact_alarm_pending</string>
+  <string name="p_capability_gate">capability_gate</string>
 
   <!-- filters to show -->
   <string name="p_filters_enabled">drawer_filters_enabled</string>

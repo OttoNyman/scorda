@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.app.NotificationManagerCompat
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import org.jetbrains.compose.resources.stringResource
+import org.tasks.extensions.Context.openAppNotificationSettings
 import org.tasks.PlatformConfiguration
 import org.tasks.R
 import org.tasks.compose.settings.ConstructorScreen
@@ -40,6 +42,9 @@ import org.tasks.data.entity.Place
 import org.tasks.location.LocationPickerActivity
 import org.tasks.location.LocationPickerActivity.Companion.EXTRA_PLACE
 import org.tasks.preferences.BasePreferences
+import org.tasks.preferences.FragmentPermissionRequestor
+import org.tasks.preferences.PermissionChecker
+import org.tasks.preferences.PermissionRequestor
 import org.tasks.preferences.Preferences
 import org.tasks.reminders.advance
 import org.tasks.repeats.BasicRecurrenceDialog
@@ -56,6 +61,13 @@ import tasks.kmp.generated.resources.notes_off_delete
 import tasks.kmp.generated.resources.notes_off_keep
 import tasks.kmp.generated.resources.notes_off_message
 import tasks.kmp.generated.resources.notes_off_title
+import tasks.kmp.generated.resources.alarm_on_lock_screen_allow
+import tasks.kmp.generated.resources.alarm_on_lock_screen_decline
+import tasks.kmp.generated.resources.geo_need
+import tasks.kmp.generated.resources.geo_need_title
+import tasks.kmp.generated.resources.need_open
+import tasks.kmp.generated.resources.pin_shade_need
+import tasks.kmp.generated.resources.pin_shade_need_title
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -65,12 +77,42 @@ class ConstructorPreferences : Fragment() {
     @Inject lateinit var repository: ConstructorRepository
     @Inject lateinit var configuration: PlatformConfiguration
     @Inject lateinit var preferences: Preferences
+    @Inject lateinit var permissionChecker: PermissionChecker
+    @Inject lateinit var permissionRequestor: FragmentPermissionRequestor
 
     private val defaults: TaskDefaultsHiltViewModel by viewModels()
+
+    private var awaitingPlace = false
 
     private val locationLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             defaults.setDefaultLocation(result.data?.getParcelableExtra<Place>(EXTRA_PLACE))
+        }
+    }
+
+    private fun grantPin() {
+        preferences.setString(R.string.p_capability_gate, "")
+        repository.write(repository.raw.value.copy(pinShade = true))
+    }
+
+    private fun grantGeo() {
+        preferences.setString(R.string.p_capability_gate, "")
+        repository.write(repository.raw.value.copy(geo = true))
+    }
+
+    private fun notificationsOn() =
+        NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+
+    private fun settleCapabilityGate() {
+        when (preferences.getStringValue(R.string.p_capability_gate)) {
+            "pin" -> {
+                preferences.setString(R.string.p_capability_gate, "")
+                if (notificationsOn()) grantPin()
+            }
+            "geo" -> {
+                preferences.setString(R.string.p_capability_gate, "")
+                if (permissionChecker.canAccessBackgroundLocation()) grantGeo()
+            }
         }
     }
 
@@ -102,6 +144,7 @@ class ConstructorPreferences : Fragment() {
         }
         var advanceDefault by remember { mutableStateOf<Long?>(null) }
         var picker by remember { mutableStateOf<ListPickerTarget?>(null) }
+        var gate by remember { mutableStateOf<String?>(null) }
         val scope = rememberCoroutineScope()
         val settings = defaults.settings
         val reminderSummary = stringResource(
@@ -163,6 +206,17 @@ class ConstructorPreferences : Fragment() {
                     apply(next, presetComments)
                 }
             }
+            val openChange: (Constructor, Boolean?) -> Unit = { next, presetComments ->
+                when {
+                    !raw.pinShade && next.pinShade && !notificationsOn() -> gate = "pin"
+                    !raw.geo && next.geo && !permissionChecker.canAccessBackgroundLocation() -> {
+                        val rest = next.copy(geo = false)
+                        if (rest != raw) change(rest, presetComments)
+                        gate = "geo"
+                    }
+                    else -> change(next, presetComments)
+                }
+            }
             ConstructorScreen(
                 raw = raw,
                 effective = effective,
@@ -170,9 +224,9 @@ class ConstructorPreferences : Fragment() {
                 counts = counts,
                 comments = comments,
                 onPreset = { preset ->
-                    change(raw.withPreset(preset), preset == org.tasks.constructor.Preset.Full)
+                    openChange(raw.withPreset(preset), preset == org.tasks.constructor.Preset.Full)
                 },
-                onChange = { change(it, null) },
+                onChange = { openChange(it, null) },
                 onComments = {
                     preferences.setBoolean(R.string.p_show_task_edit_comments, it)
                     comments = it
@@ -253,6 +307,41 @@ class ConstructorPreferences : Fragment() {
                     },
                 )
             }
+            gate?.let { which ->
+                val place = which == "geo"
+                AlertDialog(
+                    onDismissRequest = { gate = null },
+                    title = {
+                        Text(stringResource(if (place) Res.string.geo_need_title else Res.string.pin_shade_need_title))
+                    },
+                    text = {
+                        Text(stringResource(if (place) Res.string.geo_need else Res.string.pin_shade_need))
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            gate = null
+                            if (place) {
+                                awaitingPlace = true
+                                preferences.setString(R.string.p_capability_gate, "geo")
+                                if (permissionRequestor.requestBackgroundLocation()) {
+                                    awaitingPlace = false
+                                    grantGeo()
+                                }
+                            } else {
+                                preferences.setString(R.string.p_capability_gate, "pin")
+                                requireContext().openAppNotificationSettings()
+                            }
+                        }) {
+                            Text(stringResource(if (place) Res.string.need_open else Res.string.alarm_on_lock_screen_allow))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { gate = null }) {
+                            Text(stringResource(Res.string.alarm_on_lock_screen_decline))
+                        }
+                    },
+                )
+            }
             pending?.let { next ->
                 MoveTargetDialog(
                     lists = counts.localLists,
@@ -274,8 +363,33 @@ class ConstructorPreferences : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (!awaitingPlace) return
+        if (permissionChecker.canAccessBackgroundLocation()) {
+            awaitingPlace = false
+            grantGeo()
+        } else if (
+            requestCode == PermissionRequestor.REQUEST_FOREGROUND_LOCATION &&
+            permissionChecker.canAccessForegroundLocation()
+        ) {
+            permissionRequestor.requestBackgroundLocation()
+        } else {
+            awaitingPlace = false
+            if (preferences.getStringValue(R.string.p_capability_gate) == "geo") {
+                preferences.setString(R.string.p_capability_gate, "")
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
+        settleCapabilityGate()
         defaults.refreshState()
         val surfaceColor = theme.themeBase.getSettingsSurfaceColor(requireActivity())
         (activity as? BasePreferences)?.toolbar?.let { toolbar ->

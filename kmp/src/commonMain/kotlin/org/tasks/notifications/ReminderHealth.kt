@@ -24,6 +24,7 @@ data class ReminderFacts(
     val powerSaveOn: Boolean,
     val alarmEnabled: Boolean = true,
     val canFullScreen: Boolean = true,
+    val wantsLockScreen: Boolean = false,
 )
 
 enum class ScheduleMode { EXACT, INEXACT }
@@ -73,21 +74,19 @@ fun visibleChecks(facts: ReminderFacts): List<ReminderCheck> = buildList {
     if (facts.oem == OemFamily.XIAOMI) {
         add(ReminderCheck(ReminderCheckId.POPUPS, CheckState.UNKNOWN))
     }
-    if (facts.sdk >= 34 && facts.alarmEnabled) {
-        add(
-            ReminderCheck(
-                ReminderCheckId.FULL_SCREEN,
-                if (facts.canFullScreen) CheckState.OK else CheckState.PROBLEM,
-            )
-        )
+    if (facts.sdk >= 34 && facts.alarmEnabled && facts.wantsLockScreen && !facts.canFullScreen) {
+        add(ReminderCheck(ReminderCheckId.FULL_SCREEN, CheckState.PROBLEM))
     }
-    if (facts.oem == OemFamily.XIAOMI && facts.alarmEnabled) {
+    if (facts.oem == OemFamily.XIAOMI && facts.alarmEnabled && facts.wantsLockScreen) {
         add(ReminderCheck(ReminderCheckId.LOCK_SCREEN, CheckState.UNKNOWN))
     }
     if (facts.oem in aggressive) {
         add(ReminderCheck(ReminderCheckId.RECENTS_LOCK, CheckState.MANUAL))
     }
 }
+
+fun alarmOpensOnLockScreen(optedIn: Boolean, systemAllows: Boolean): Boolean =
+    optedIn && systemAllows
 
 fun schedulePlan(facts: ReminderFacts): SchedulePlan {
     val mode = if (facts.sdk < 31 || facts.canExact) ScheduleMode.EXACT else ScheduleMode.INEXACT

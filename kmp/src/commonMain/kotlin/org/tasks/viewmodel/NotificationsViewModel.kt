@@ -115,6 +115,18 @@ open class NotificationsViewModel(
     var superBypassSilent by mutableStateOf(false)
         protected set
 
+    var alarmOnLockScreen by mutableStateOf(false)
+        protected set
+
+    var lockScreenAsk by mutableStateOf<LockScreenAsk?>(null)
+        protected set
+
+    var lockScreenDenied by mutableStateOf(false)
+        protected set
+
+    var askExactAlarms by mutableStateOf(false)
+        protected set
+
     var onceSoundName by mutableStateOf("")
         protected set
 
@@ -323,6 +335,32 @@ open class NotificationsViewModel(
     open fun updateSuperBypass(enabled: Boolean) {
         superBypassSilent = enabled
     }
+
+    open fun updateAlarmOnLockScreen(enabled: Boolean) {
+        alarmOnLockScreen = enabled
+    }
+
+    open fun confirmAlarmLockScreen() {
+        lockScreenAsk = null
+    }
+
+    open fun dismissAlarmLockScreen() {
+        lockScreenAsk = null
+    }
+
+    fun dismissLockScreenDenied() {
+        lockScreenDenied = false
+    }
+
+    open fun confirmExactAlarms() {
+        askExactAlarms = false
+    }
+
+    open fun dismissExactAlarms() {
+        askExactAlarms = false
+    }
 }
+
+enum class LockScreenAsk { ANDROID, XIAOMI }
 
 private const val TAG = "NotificationsViewModel"

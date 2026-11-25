@@ -450,8 +450,8 @@
     <string name="cost_money">Цена: $</string>
     <string name="cost_more_money">Цена: $$$</string>
     <string name="theme_dynamic">Динамическая</string>
-    <string name="show_edit_screen_without_unlock">Показывать панель редактирования на заблокированном экране</string>
-    <string name="show_edit_screen_without_unlock_summary">Разрешает использовать панель Быстрых Настроек без разблокирования устройства</string>
+    <string name="show_edit_screen_without_unlock">Плитка «Новая задача» на заблокированном экране</string>
+    <string name="show_edit_screen_without_unlock_summary">Если плитка закреплена в шторке, по ней можно создать задачу, не разблокируя телефон.</string>
     <string name="app_settings">Настройки приложения</string>
     <string name="banner_app_updated_description">Tasks обновились до версии %s. Показать что изменилось?</string>
     <string name="banner_app_updated_title">Приложение обновлено</string>

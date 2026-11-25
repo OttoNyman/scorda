@@ -50,7 +50,11 @@ class ReminderTestReceiver : BroadcastReceiver() {
                         else NotificationCompat.CATEGORY_REMINDER
                     )
                     .setAutoCancel(true)
-                if (level == AlertLevel.SUPER && canUseFullScreenIntent(context)) {
+                if (level == AlertLevel.SUPER && alarmOpensOnLockScreen(
+                        preferences.getBoolean(R.string.p_alarm_on_lock_screen, false),
+                        canUseFullScreenIntent(context),
+                    )
+                ) {
                     builder.setFullScreenIntent(
                         PendingIntent.getActivity(
                             context,
@@ -60,6 +64,16 @@ class ReminderTestReceiver : BroadcastReceiver() {
                         ),
                         true,
                     )
+                } else if (level == AlertLevel.SUPER) {
+                    builder
+                        .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                        .setPublicVersion(
+                            NotificationCompat.Builder(context, channel)
+                                .setSmallIcon(R.drawable.ic_check_white_24dp)
+                                .setContentTitle(title)
+                                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                                .build(),
+                        )
                 }
                 val notification = builder.build()
                 notification.deleteIntent = PendingIntent.getBroadcast(

@@ -522,7 +522,7 @@ class NotificationManager @Inject constructor(
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
         )
-        if (level == AlertLevel.SUPER && canUseFullScreenIntent()) {
+        if (level == AlertLevel.SUPER && opensOnLockScreen()) {
             val fullScreen = PendingIntent.getActivity(
                 context,
                 id.toInt(),
@@ -535,6 +535,10 @@ class NotificationManager @Inject constructor(
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
             builder.setFullScreenIntent(fullScreen, true)
+        } else if (level == AlertLevel.SUPER) {
+            builder
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(lockedShade(channel, taskTitle))
         }
         when {
             type == Alarm.TYPE_GEO_ENTER || type == Alarm.TYPE_GEO_EXIT -> {
@@ -609,6 +613,18 @@ class NotificationManager @Inject constructor(
                 level = level,
         )
     }
+
+    private fun opensOnLockScreen(): Boolean = alarmOpensOnLockScreen(
+        preferences.getBoolean(R.string.p_alarm_on_lock_screen, false),
+        canUseFullScreenIntent(),
+    )
+
+    private fun lockedShade(channel: String, title: CharSequence?): android.app.Notification =
+        NotificationCompat.Builder(context, channel)
+            .setSmallIcon(R.drawable.ic_check_white_24dp)
+            .setContentTitle(title)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .build()
 
     private fun canUseFullScreenIntent(): Boolean {
         if (Build.VERSION.SDK_INT < 34) return true

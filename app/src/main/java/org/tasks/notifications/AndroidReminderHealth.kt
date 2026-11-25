@@ -22,6 +22,7 @@ class AndroidReminderHealth(
 ) {
     fun facts(
         alarmEnabled: Boolean = true,
+        wantsLockScreen: Boolean = false,
     ): ReminderFacts {
         val systemNotifications = context.getSystemService(NotificationManager::class.java)
         val channel = systemNotifications.getNotificationChannel(
@@ -43,6 +44,7 @@ class AndroidReminderHealth(
             powerSaveOn = power.isPowerSaveMode,
             alarmEnabled = alarmEnabled,
             canFullScreen = canFullScreen,
+            wantsLockScreen = wantsLockScreen,
         )
     }
 

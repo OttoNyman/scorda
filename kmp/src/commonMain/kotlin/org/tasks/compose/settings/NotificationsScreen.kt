@@ -24,6 +24,23 @@ import org.tasks.notifications.ModeLine
 import org.tasks.notifications.ReminderCheck
 import org.tasks.notifications.ReminderCheckId
 import org.tasks.notifications.AlertLevel
+import org.tasks.viewmodel.LockScreenAsk
+import tasks.kmp.generated.resources.alarm_on_lock_screen
+import tasks.kmp.generated.resources.alarm_on_lock_screen_allow
+import tasks.kmp.generated.resources.alarm_on_lock_screen_ask
+import tasks.kmp.generated.resources.alarm_on_lock_screen_ask_title
+import tasks.kmp.generated.resources.alarm_on_lock_screen_decline
+import tasks.kmp.generated.resources.alarm_on_lock_screen_off
+import tasks.kmp.generated.resources.alarm_on_lock_screen_denied
+import tasks.kmp.generated.resources.alarm_on_lock_screen_on
+import tasks.kmp.generated.resources.alarm_on_lock_screen_xiaomi
+import tasks.kmp.generated.resources.alarm_on_lock_screen_xiaomi_title
+import tasks.kmp.generated.resources.alarm_need_exact
+import tasks.kmp.generated.resources.alarm_need_exact_title
+import tasks.kmp.generated.resources.notifications_master_summary
+import tasks.kmp.generated.resources.priority_high_summary
+import tasks.kmp.generated.resources.priority_medium_summary
+import tasks.kmp.generated.resources.priority_none_summary
 import tasks.kmp.generated.resources.alarm_ring_duration
 import tasks.kmp.generated.resources.alarm_ring_duration_value
 import tasks.kmp.generated.resources.alert_caption_alarm
@@ -201,6 +218,16 @@ fun NotificationsScreen(
     onAlarmDuration: () -> Unit = {},
     superBypassSilent: Boolean = false,
     onSuperBypass: (Boolean) -> Unit = {},
+    alarmOnLockScreen: Boolean = false,
+    onAlarmLockScreen: (Boolean) -> Unit = {},
+    lockScreenAsk: LockScreenAsk? = null,
+    onConfirmAlarmLockScreen: () -> Unit = {},
+    onDismissAlarmLockScreen: () -> Unit = {},
+    lockScreenDenied: Boolean = false,
+    onDismissLockScreenDenied: () -> Unit = {},
+    askExactAlarms: Boolean = false,
+    onConfirmExactAlarms: () -> Unit = {},
+    onDismissExactAlarms: () -> Unit = {},
     levelSilent: Boolean = false,
     levelPersistent: Boolean = false,
     levelAlarm: Boolean = true,
@@ -290,6 +317,7 @@ fun NotificationsScreen(
             SettingsItemCard(position = CardPosition.First) {
                 SwitchPreferenceRow(
                     title = stringResource(Res.string.priority_high),
+                    summary = stringResource(Res.string.priority_high_summary),
                     checked = levelAlarm,
                     onCheckedChange = { onLevelChange(AlertLevel.SUPER, it) },
                 )
@@ -297,6 +325,7 @@ fun NotificationsScreen(
             SettingsItemCard(position = CardPosition.Middle) {
                 SwitchPreferenceRow(
                     title = stringResource(Res.string.priority_medium),
+                    summary = stringResource(Res.string.priority_medium_summary),
                     checked = levelPersistent,
                     onCheckedChange = { onLevelChange(AlertLevel.PERSISTENT, it) },
                 )
@@ -313,6 +342,7 @@ fun NotificationsScreen(
             SettingsItemCard(position = CardPosition.Last) {
                 SwitchPreferenceRow(
                     title = stringResource(Res.string.filter_no_priority),
+                    summary = stringResource(Res.string.priority_none_summary),
                     checked = levelSilent,
                     onCheckedChange = { onLevelChange(AlertLevel.SILENT, it) },
                 )
@@ -331,6 +361,7 @@ fun NotificationsScreen(
                 SoundRow.ALARM.takeIf { showAlarmSound },
                 SoundRow.DURATION.takeIf { showAlarmSound },
                 SoundRow.BYPASS.takeIf { showAlarmSound },
+                SoundRow.LOCK.takeIf { showAlarmSound },
             )
         ) { row ->
             when (row) {
@@ -369,6 +400,19 @@ fun NotificationsScreen(
                         checked = superBypassSilent,
                         onCheckedChange = onSuperBypass,
                     )
+                SoundRow.LOCK ->
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.alarm_on_lock_screen),
+                        summary = stringResource(
+                            if (alarmOnLockScreen) {
+                                Res.string.alarm_on_lock_screen_on
+                            } else {
+                                Res.string.alarm_on_lock_screen_off
+                            }
+                        ),
+                        checked = alarmOnLockScreen,
+                        onCheckedChange = onAlarmLockScreen,
+                    )
             }
         }
 
@@ -386,6 +430,7 @@ fun NotificationsScreen(
                     NotificationRow.ENABLED ->
                         SwitchPreferenceRow(
                             title = stringResource(Res.string.notifications),
+                            summary = stringResource(Res.string.notifications_master_summary),
                             checked = notificationsEnabled,
                             onCheckedChange = onNotificationsEnabled,
                         )
@@ -450,6 +495,68 @@ fun NotificationsScreen(
             },
         )
     }
+
+    lockScreenAsk?.let { ask ->
+        val xiaomi = ask == LockScreenAsk.XIAOMI
+        WhyDialog(
+            title = stringResource(
+                if (xiaomi) Res.string.alarm_on_lock_screen_xiaomi_title
+                else Res.string.alarm_on_lock_screen_ask_title
+            ),
+            body = stringResource(
+                if (xiaomi) Res.string.alarm_on_lock_screen_xiaomi
+                else Res.string.alarm_on_lock_screen_ask
+            ),
+            confirm = stringResource(Res.string.alarm_on_lock_screen_allow),
+            onConfirm = onConfirmAlarmLockScreen,
+            onDismiss = onDismissAlarmLockScreen,
+        )
+    }
+
+    if (lockScreenDenied) {
+        AlertDialog(
+            onDismissRequest = onDismissLockScreenDenied,
+            text = { Text(stringResource(Res.string.alarm_on_lock_screen_denied)) },
+            confirmButton = {
+                TextButton(onClick = onDismissLockScreenDenied) {
+                    Text(stringResource(Res.string.ok))
+                }
+            },
+        )
+    }
+
+    if (askExactAlarms) {
+        WhyDialog(
+            title = stringResource(Res.string.alarm_need_exact_title),
+            body = stringResource(Res.string.alarm_need_exact),
+            confirm = stringResource(Res.string.alarm_on_lock_screen_allow),
+            onConfirm = onConfirmExactAlarms,
+            onDismiss = onDismissExactAlarms,
+        )
+    }
+}
+
+@Composable
+private fun WhyDialog(
+    title: String,
+    body: String,
+    confirm: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = { Text(body) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text(confirm) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(Res.string.alarm_on_lock_screen_decline))
+            }
+        },
+    )
 }
 
 private enum class TroubleshootingRow {
@@ -471,6 +578,7 @@ private enum class SoundRow {
     ALARM,
     DURATION,
     BYPASS,
+    LOCK,
 }
 
 @Composable
