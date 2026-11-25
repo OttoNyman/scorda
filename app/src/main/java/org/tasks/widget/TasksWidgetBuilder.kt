@@ -17,6 +17,7 @@ import org.tasks.checklist.Checklist
 import org.tasks.data.TaskContainer
 import org.tasks.data.TaskListQuery.getQuery
 import org.tasks.data.dao.TaskDao
+import org.tasks.data.entity.Task
 import org.tasks.data.isHidden
 import org.tasks.data.isOverdue
 import org.tasks.extensions.Context.is24HourFormat
@@ -56,7 +57,16 @@ internal class TasksWidgetBuilder(
     private val features: Constructor,
 ) {
     private val indentPadding = (20 * context.resources.displayMetrics.density).toInt()
-    private val settings = widgetPreferences.getWidgetListSettings()
+    private val settings = widgetPreferences.getWidgetListSettings().let { row ->
+        row.copy(
+            showDescription = row.showDescription && features.notes,
+            showFullDescription = row.showFullDescription && features.notes,
+            showPlaceChips = row.showPlaceChips && features.geo,
+            showListChips = row.showListChips && features.lists,
+            showTagChips = row.showTagChips && features.tags,
+            showStartChips = row.showStartChips && features.startDate,
+        )
+    }
     private val hPad = context.resources.getDimension(R.dimen.widget_padding).toInt()
     private val disableGroups = !filter.supportsSorting()
             || (filter.supportsManualSort() && widgetPreferences.isManualSort)
@@ -175,7 +185,12 @@ internal class TasksWidgetBuilder(
                         settings.vPad
                     )
                     setImageViewResource(R.id.widget_complete_box, task.getCheckboxRes())
-                    setColorFilter(R.id.widget_complete_box, priorityColor(task.priority))
+                    setColorFilter(
+                        R.id.widget_complete_box,
+                        priorityColor(
+                            if (features.priority) task.priority else Task.Priority.NONE
+                        ),
+                    )
                     setOnClickFillInIntent(
                         R.id.widget_complete_box,
                         Intent(WidgetClickActivity.COMPLETE_TASK)

@@ -49,6 +49,7 @@ class WidgetSettings : InjectingPreferenceFragment() {
     @Inject lateinit var defaultFilterProvider: DefaultFilterProvider
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var localBroadcastManager: LocalBroadcastManager
+    @Inject lateinit var featureGate: org.tasks.constructor.FeatureGate
 
     private lateinit var widgetPreferences: WidgetPreferences
     private var appWidgetId = 0
@@ -100,11 +101,18 @@ class WidgetSettings : InjectingPreferenceFragment() {
         setupSlider(R.string.p_widget_font_size, 16)
         setupCheckbox(R.string.p_widget_show_checkboxes)
         setupCheckbox(R.string.p_widget_show_dividers)
-        setupCheckbox(R.string.p_widget_show_places)
-        setupCheckbox(R.string.p_widget_show_tags)
+        val features = featureGate.current
+        val showPlaces = setupCheckbox(R.string.p_widget_show_places)
+        showPlaces.isVisible = features.geo
+        val showTags = setupCheckbox(R.string.p_widget_show_tags)
+        showTags.isVisible = features.tags
+        findPreference(R.string.chips).isVisible = features.geo || features.tags
         setupCheckbox(R.string.p_widget_show_full_task_title, false)
         val showDescription = setupCheckbox(R.string.p_widget_show_description, true)
-        setupCheckbox(R.string.p_widget_show_full_description, false).dependency = showDescription.key
+        showDescription.isVisible = features.notes
+        val showFullDescription = setupCheckbox(R.string.p_widget_show_full_description, false)
+        showFullDescription.isVisible = features.notes
+        showFullDescription.dependency = showDescription.key
         setupList(R.string.p_widget_spacing)
         setupList(R.string.p_widget_header_spacing)
         setupList(R.string.p_widget_due_date_position, widgetPreferences.dueDatePosition.toString())
