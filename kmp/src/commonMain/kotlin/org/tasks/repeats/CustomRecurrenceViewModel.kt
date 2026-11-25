@@ -71,7 +71,13 @@ open class CustomRecurrenceViewModel(
         val daysOfWeek = localeDaysOfWeek()
         val recur = rrule
             ?.takeIf { it.isNotBlank() }
-            ?.let { Recur.parse(it) }
+            ?.let {
+                try {
+                    Recur.parse(it)
+                } catch (_: Exception) {
+                    null
+                }
+            }
         val resolvedDueDate = dueDate
             .takeIf { it > 0 }
             ?: currentTimeMillis().startOfDay()
@@ -97,7 +103,8 @@ open class CustomRecurrenceViewModel(
                     recur.count != null -> 2
                     else -> 0
                 },
-                endDate = DateTime(resolvedDueDate).plusMonths(1).startOfDay().millis,
+                endDate = recur?.until?.toLocalCalendarDateMillis()
+                    ?: DateTime(resolvedDueDate).plusMonths(1).startOfDay().millis,
                 endCount = recur?.count ?: 1,
                 daysOfWeek = daysOfWeek,
                 selectedDays = recur
@@ -131,6 +138,11 @@ open class CustomRecurrenceViewModel(
         _state.update {
             it.copy(endDate = endDate)
         }
+    }
+
+    fun updateDueDate(dueDate: Long) {
+        val resolved = dueDate.takeIf { it > 0 } ?: currentTimeMillis().startOfDay()
+        _state.update { it.copy(dueDate = resolved) }
     }
 
     fun setInterval(interval: Int) {
@@ -204,5 +216,11 @@ open class CustomRecurrenceViewModel(
 
         private fun List<DayOfWeek>.toByDay(): List<ByDay> =
             sortedBy { it.isoDayNumber }.map { ByDay(it.toWeekday()) }
+
+        /** Y/M/D from the until's own zone (UTC for …Z), as a local calendar midnight. */
+        internal fun Until.toLocalCalendarDateMillis(): Long {
+            val dt = toDateTime()
+            return DateTime(dt.year, dt.monthOfYear, dt.dayOfMonth).millis
+        }
     }
 }

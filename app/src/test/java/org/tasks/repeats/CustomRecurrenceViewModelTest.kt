@@ -56,6 +56,28 @@ class CustomRecurrenceViewModelTest {
     }
 
     @Test
+    fun opensWithUntilFromRule() {
+        val vm = newVM("FREQ=WEEKLY;UNTIL=20271231")
+        assertEquals(1, vm.state.value.endSelection)
+        assertEquals(DateTime(2027, 12, 31).millis, vm.state.value.endDate)
+        assertEquals("FREQ=WEEKLY;UNTIL=20271231", vm.getRecur())
+    }
+
+    @Test
+    fun opensWithUtcUntilKeepsCalendarDay() {
+        val vm = newVM("FREQ=WEEKLY;UNTIL=20271231T235959Z")
+        assertEquals(1, vm.state.value.endSelection)
+        assertEquals(DateTime(2027, 12, 31).millis, vm.state.value.endDate)
+        assertEquals("FREQ=WEEKLY;UNTIL=20271231", vm.getRecur())
+    }
+
+    @Test
+    fun badRuleDoesNotThrow() {
+        val vm = newVM("FREQ=FOO")
+        assertEquals("FREQ=WEEKLY", vm.getRecur())
+    }
+
+    @Test
     fun ignoreEndDateWhenChangingToNever() {
         assertEquals(
             "FREQ=WEEKLY",

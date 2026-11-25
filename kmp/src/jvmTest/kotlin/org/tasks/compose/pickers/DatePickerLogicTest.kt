@@ -155,6 +155,43 @@ class DatePickerLogicTest {
         assertEquals(base, dayForAppliedTime(base, base, MULTIPLE_TIMES))
     }
 
+    @Test
+    fun inlinePastTimeRollsOnlyWhenPristineDefaultToday() {
+        val nowAfternoon = base + 14 * HOUR
+        assertEquals(
+            base.plusDays(1),
+            dayForInlineTimeChange(base, base, nineAm, dayPristineDefaultToday = true, nowMillis = nowAfternoon),
+        )
+        assertEquals(
+            base,
+            dayForInlineTimeChange(base, base, nineAm, dayPristineDefaultToday = false, nowMillis = nowAfternoon),
+        )
+        assertEquals(
+            base.plusDays(2),
+            dayForInlineTimeChange(
+                base.plusDays(2),
+                base,
+                nineAm,
+                dayPristineDefaultToday = true,
+                nowMillis = nowAfternoon,
+            ),
+        )
+        assertEquals(
+            base,
+            dayForInlineTimeChange(base, base, nineAm, dayPristineDefaultToday = true, nowMillis = base + 8 * HOUR),
+        )
+        assertEquals(
+            base,
+            dayForInlineTimeChange(
+                base.plusDays(1),
+                base,
+                fivePm,
+                dayPristineDefaultToday = true,
+                nowMillis = nowAfternoon,
+            ),
+        )
+    }
+
     // endregion
 
     // region default quick-pick times

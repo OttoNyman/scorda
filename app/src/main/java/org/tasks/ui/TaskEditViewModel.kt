@@ -210,15 +210,33 @@ class TaskEditViewModel @Inject constructor(
 
     val dueDate = MutableStateFlow(task.dueDate)
 
+    private val _dueDayPristineDefaultToday = MutableStateFlow(
+        initialDueDayPristine(task.isNew, task.dueDate),
+    )
+    val dueDayPristineDefaultToday: StateFlow<Boolean> = _dueDayPristineDefaultToday
+
+    fun markDueDayTouched() {
+        _dueDayPristineDefaultToday.value = false
+    }
+
+    fun restoreDueDateToday() {
+        val today = currentTimeMillis().startOfDay()
+        _dueDayPristineDefaultToday.value = true
+        setDueDate(today)
+    }
+
     fun setDueDate(value: Long, fromUser: Boolean = true) {
         val previous = dueDate.value
-        val hadDueDate = previous > 0
-        val hadDueTime = hasDueTime(previous)
-        dueDate.value = when {
+        val next = when {
             value == 0L -> 0
             hasDueTime(value) -> createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, value)
             else -> createDueDate(Task.URGENCY_SPECIFIC_DAY, value)
         }
+        // DatePicker sync / dial echo often re-posts the same day; skip before runBlocking.
+        if (next == previous) return
+        val hadDueDate = previous > 0
+        val hadDueTime = hasDueTime(previous)
+        dueDate.value = next
         val hasDueTimeNow = hasDueTime(dueDate.value)
         val addedDueDate = !hadDueDate && dueDate.value > 0
         val addedDueTime = hadDueDate && !hadDueTime && hasDueTimeNow
@@ -1020,6 +1038,12 @@ class TaskEditViewModel @Inject constructor(
             series -> Reopen.Ask
             else -> Reopen.Clear
         }
+
+        fun initialDueDayPristine(
+            isNew: Boolean,
+            dueDate: Long,
+            today: Long = currentTimeMillis().startOfDay(),
+        ): Boolean = isNew && dueDate > 0 && dueDate.startOfDay() == today
 
         // one spark tasks for windows adds these
         fun String?.stripCarriageReturns(): String? = this?.replace("\\r\\n?".toRegex(), "\n")

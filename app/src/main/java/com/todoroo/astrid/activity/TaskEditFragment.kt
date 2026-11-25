@@ -21,7 +21,6 @@ import com.todoroo.astrid.activity.MainActivity.Companion.removeTask
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.tasks.compose.edit.TaskEditScreen
-import org.tasks.repeats.BasicRecurrenceDialog
 import org.tasks.repeats.RepeatRuleToString
 import org.tasks.repeats.SeriesEditScope
 import org.tasks.data.Location
@@ -60,16 +59,6 @@ class TaskEditFragment : Fragment() {
 
     private val editViewModel: TaskEditViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        parentFragmentManager.setFragmentResultListener(
-            BasicRecurrenceDialog.REQUEST_KEY, this
-        ) { _, bundle ->
-            editViewModel.setRecurrence(bundle.getString(BasicRecurrenceDialog.EXTRA_RRULE))
-        }
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -121,14 +110,6 @@ class TaskEditFragment : Fragment() {
                 markdownProvider = remember { MarkdownProvider(context, preferences) },
                 linkify = if (viewState.linkify) linkify else null,
                 preferences = preferences,
-                onClickRepeat = {
-                    val vs = editViewModel.viewState.value
-                    BasicRecurrenceDialog.newBasicRecurrenceDialog(
-                        rrule = vs.task.recurrence,
-                        dueDate = editViewModel.dueDate.value,
-                        accountType = vs.list.account.accountType,
-                    ).show(parentFragmentManager, FRAG_TAG_BASIC_RECURRENCE)
-                },
                 onConfigureGeofence = { configureGeofence() },
                 repeatRuleToString = { repeatRuleToString.toStringBlocking(it) },
                 colorProvider = { chipProvider.getColor(it) },
@@ -200,7 +181,6 @@ class TaskEditFragment : Fragment() {
         const val EXTRA_TASK = "extra_task"
 
         const val FRAG_TAG_CALENDAR_PICKER = "frag_tag_calendar_picker"
-        private const val FRAG_TAG_BASIC_RECURRENCE = "frag_tag_basic_recurrence"
         private const val FRAG_TAG_GEOFENCE = "frag_tag_geofence"
         private const val FRAG_TAG_LOCATION_PERMISSION = "frag_tag_location_permission"
         private const val REQUEST_GEOFENCE = 12154

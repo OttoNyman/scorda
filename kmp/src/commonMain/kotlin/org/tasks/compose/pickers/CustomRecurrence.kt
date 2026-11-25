@@ -94,6 +94,82 @@ private val RadioContentInset =
 private val ButtonRowPadding = DialogHorizontalPadding - TextButtonVisualInset
 private val ContentBottomGap = 8.dp
 
+@Composable
+fun CustomRecurrenceContent(
+    state: CustomRecurrenceViewModel.ViewState,
+    setInterval: (Int) -> Unit,
+    setSelectedFrequency: (Frequency) -> Unit,
+    setEndDate: (Long) -> Unit,
+    setSelectedEndType: (Int) -> Unit,
+    setOccurrences: (Int) -> Unit,
+    toggleDay: (DayOfWeek) -> Unit,
+    setMonthSelection: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Header(Res.string.repeats_every)
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(horizontal = DialogHorizontalPadding),
+        ) {
+            OutlinedNumberInput(
+                number = state.interval,
+                onTextChanged = setInterval,
+            )
+            val options = state.frequencyOptions.map {
+                pluralStringResource(
+                    it.plural,
+                    state.interval,
+                    state.interval,
+                )
+            }
+            OutlinedSpinner(
+                text = pluralStringResource(
+                    state.frequency.plural,
+                    state.interval
+                ),
+                options = options,
+                onSelected = { setSelectedFrequency(state.frequencyOptions[it]) },
+            )
+        }
+        if (state.frequency == Frequency.WEEKLY) {
+            WeekdayPicker(
+                daysOfWeek = state.daysOfWeek,
+                selected = state.selectedDays,
+                toggle = toggleDay,
+            )
+        } else if (state.frequency == Frequency.MONTHLY && !state.isMicrosoftTask) {
+            MonthlyPicker(
+                monthDay = state.monthDay,
+                lastDayOfMonth = state.lastDayOfMonth,
+                dayNumber = state.dueDayOfMonth,
+                dayOfWeek = state.dueDayOfWeek,
+                nthWeek = state.nthWeek,
+                isLastWeek = state.showLastWeekOfMonth,
+                isLastDay = state.showLastDayOfMonth,
+                onSelected = setMonthSelection,
+            )
+        }
+        if (!state.isMicrosoftTask) {
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = if (state.frequency == Frequency.WEEKLY) 11.dp else 16.dp),
+                color = border()
+            )
+            EndsPicker(
+                selection = state.endSelection,
+                endDate = state.endDate,
+                endOccurrences = state.endCount,
+                setEndDate = setEndDate,
+                setSelection = setSelectedEndType,
+                setOccurrences = setOccurrences,
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomRecurrence(
@@ -135,72 +211,19 @@ fun CustomRecurrence(
                 .fillMaxSize()
                 .padding(padding),
         ) {
-            Column(
+            CustomRecurrenceContent(
+                state = state,
+                setInterval = setInterval,
+                setSelectedFrequency = setSelectedFrequency,
+                setEndDate = setEndDate,
+                setSelectedEndType = setSelectedEndType,
+                setOccurrences = setOccurrences,
+                toggleDay = toggleDay,
+                setMonthSelection = setMonthSelection,
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Header(Res.string.repeats_every)
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(horizontal = DialogHorizontalPadding),
-                ) {
-                    OutlinedNumberInput(
-                        number = state.interval,
-                        onTextChanged = setInterval,
-                    )
-                    val options = state.frequencyOptions.map {
-                        pluralStringResource(
-                            it.plural,
-                            state.interval,
-                            state.interval,
-                        )
-                    }
-                    OutlinedSpinner(
-                        text = pluralStringResource(
-                            state.frequency.plural,
-                            state.interval
-                        ),
-                        options = options,
-                        onSelected = { setSelectedFrequency(state.frequencyOptions[it]) },
-                    )
-                }
-                if (state.frequency == Frequency.WEEKLY) {
-                    WeekdayPicker(
-                        daysOfWeek = state.daysOfWeek,
-                        selected = state.selectedDays,
-                        toggle = toggleDay,
-                    )
-                } else if (state.frequency == Frequency.MONTHLY && !state.isMicrosoftTask) {
-                    MonthlyPicker(
-                        monthDay = state.monthDay,
-                        lastDayOfMonth = state.lastDayOfMonth,
-                        dayNumber = state.dueDayOfMonth,
-                        dayOfWeek = state.dueDayOfWeek,
-                        nthWeek = state.nthWeek,
-                        isLastWeek = state.showLastWeekOfMonth,
-                        isLastDay = state.showLastDayOfMonth,
-                        onSelected = setMonthSelection,
-                    )
-                }
-                if (!state.isMicrosoftTask) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = if (state.frequency == Frequency.WEEKLY) 11.dp else 16.dp),
-                        color = border()
-                    )
-                    EndsPicker(
-                        selection = state.endSelection,
-                        endDate = state.endDate,
-                        endOccurrences = state.endCount,
-                        setEndDate = setEndDate,
-                        setSelection = setSelectedEndType,
-                        setOccurrences = setOccurrences,
-                    )
-                }
-            }
+            )
             Spacer(modifier = Modifier.height(ContentBottomGap))
             Row(
                 horizontalArrangement = Arrangement.End,

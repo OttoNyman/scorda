@@ -62,9 +62,6 @@ import org.tasks.R
 import org.tasks.compose.BeastModeBanner
 import org.tasks.compose.FilterSelectionActivity.Companion.EXTRA_FILTER
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
-import org.tasks.compose.pickers.DueDatePickerSheet
-import org.tasks.compose.pickers.dueDateFromSelection
-import org.tasks.compose.pickers.dueDateToSelection
 import org.tasks.data.Location
 import org.tasks.data.createGeofence
 import org.tasks.data.entity.Alarm
@@ -87,17 +84,26 @@ import org.tasks.resources.getString
 import org.tasks.repeats.SeriesEditScope
 import org.tasks.themes.TasksTheme
 import org.tasks.location.LocationPickerActivity
+import org.tasks.checklist.Checklist
+import org.tasks.compose.pickers.CustomRecurrenceContent
+import org.tasks.compose.pickers.isCustomRecurrence
+import org.tasks.repeats.CustomRecurrenceViewModel
+import org.tasks.repeats.Frequency
+import org.tasks.repeats.Recur
+import org.tasks.repeats.RecurrenceUtils.newRecur
+import org.tasks.time.startOfDay
 import org.tasks.ui.LocationControlSet
 import org.tasks.ui.TaskEditViewModel
-import org.tasks.ui.TaskEditViewModel.MemoConvertBlock
-import org.tasks.ui.TaskEditViewModel.Companion.TAG_CREATION
-import org.tasks.checklist.Checklist
+import org.tasks.ui.TaskEditViewModel.Companion.TAG_ADVANCE
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_CHECKLIST
+import org.tasks.ui.TaskEditViewModel.Companion.TAG_CREATION
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DESCRIPTION
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DUE_DATE
-import org.tasks.ui.TaskEditViewModel.Companion.TAG_ADVANCE
-import org.tasks.reminders.advance
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_LIST
+import org.tasks.ui.TaskEditViewModel.MemoConvertBlock
+import androidx.compose.runtime.key
+import org.jetbrains.compose.resources.stringResource as kmpStringResource
+import org.tasks.reminders.advance
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_PRIORITY
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_TITLE
 import org.tasks.utility.copyToClipboard
@@ -107,6 +113,12 @@ import tasks.kmp.generated.resources.pin
 import tasks.kmp.generated.resources.pin_series_pinned
 import tasks.kmp.generated.resources.pin_this_only
 import tasks.kmp.generated.resources.pin_whole_series
+import tasks.kmp.generated.resources.repeat_option_custom
+import tasks.kmp.generated.resources.repeat_option_does_not_repeat
+import tasks.kmp.generated.resources.repeat_option_every_day
+import tasks.kmp.generated.resources.repeat_option_every_month
+import tasks.kmp.generated.resources.repeat_option_every_week
+import tasks.kmp.generated.resources.repeat_option_every_year
 import tasks.kmp.generated.resources.unpin
 import org.tasks.compose.edit.ConvertToMemoDialog
 import org.tasks.compose.edit.ConvertToTaskDialog
@@ -131,7 +143,6 @@ fun TaskEditScreen(
     delete: () -> Unit,
     dismissBeastMode: () -> Unit,
     deleteComment: (UserActivity) -> Unit,
-    onClickRepeat: () -> Unit,
     onConfigureGeofence: () -> Unit = {},
     repeatRuleToString: (String?) -> String?,
     markdownProvider: MarkdownProvider,
@@ -144,7 +155,10 @@ fun TaskEditScreen(
     val context = LocalContext.current
     val is24Hour = remember(context) { context.is24HourFormat }
     val scope = rememberCoroutineScope()
-    var showDueDatePicker by rememberSaveable { mutableStateOf(false) }
+    var defaultDueTime by remember { mutableStateOf<Int?>(null) }
+    LaunchedEffect(Unit) {
+        defaultDueTime = preferences.defaultDueTime()
+    }
     val placePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -455,9 +469,14 @@ fun TaskEditScreen(
 
                     TAG_DUE_DATE -> {
                         val due = editViewModel.dueDate.collectAsStateWithLifecycle().value
-                        val openDueDate = {
-                            val showPicker = { showDueDatePicker = true }
-                            context.findActivity()?.hideKeyboardThen(showPicker) ?: showPicker()
+                        val pristine =
+                            editViewModel.dueDayPristineDefaultToday.collectAsStateWithLifecycle().value
+                        val placeMode =
+                            editViewModel.placesEnabled() && viewState.location != null
+                        val onEditDue = {
+                            if (due == 0L && !placeMode) {
+                                editViewModel.restoreDueDateToday()
+                            }
                         }
                         if (editViewModel.placesEnabled()) {
                             WhenRow(
@@ -470,7 +489,7 @@ fun TaskEditScreen(
                                 location = viewState.location,
                                 onSwitchToPlace = pickPlace,
                                 onSwitchToTime = { editViewModel.setLocation(null) },
-                                onEditDueDate = openDueDate,
+                                onEditDueDate = onEditDue,
                                 onChangePlace = pickPlace,
                                 onGeofence = onConfigureGeofence,
                             )
@@ -482,7 +501,18 @@ fun TaskEditScreen(
                                 },
                                 is24HourFormat = is24Hour,
                                 alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
-                                onClick = openDueDate,
+                                onClick = onEditDue,
+                            )
+                        }
+                        if (!placeMode && due > 0 && defaultDueTime != null) {
+                            DueScheduleBlock(
+                                dueDate = due,
+                                isRecurring = viewState.task.isRecurring,
+                                is24Hour = is24Hour,
+                                dayPristineDefaultToday = pristine,
+                                defaultDueTimeMillisOfDay = defaultDueTime!!,
+                                onDueDateChange = { editViewModel.setDueDate(it) },
+                                onDayTouched = { editViewModel.markDueDayTouched() },
                             )
                         }
                     }
@@ -575,12 +605,163 @@ fun TaskEditScreen(
                         LaunchedEffect(dueDate) {
                             editViewModel.onDueDateChanged()
                         }
-                        RepeatRow(
-                            recurrence = repeatRuleToString(viewState.task.recurrence),
-                            repeatFrom = viewState.task.repeatFrom,
-                            onClick = onClickRepeat,
-                            onRepeatFromChanged = { editViewModel.setRepeatFrom(it) },
-                        )
+                        val recurrence = viewState.task.recurrence
+                        fun parseCustom(rrule: String?): Boolean =
+                            rrule?.takeIf { it.isNotBlank() }?.let {
+                                try {
+                                    newRecur(it).isCustomRecurrence()
+                                } catch (_: Exception) {
+                                    false
+                                }
+                            } == true
+                        var menu by rememberSaveable { mutableStateOf(false) }
+                        var customExpanded by rememberSaveable {
+                            mutableStateOf(parseCustom(recurrence))
+                        }
+                        var lastWritten by remember { mutableStateOf(recurrence) }
+                        var vmKey by remember { mutableStateOf(recurrence) }
+                        var seedCustom by remember { mutableStateOf(false) }
+                        LaunchedEffect(recurrence) {
+                            if (recurrence != lastWritten) {
+                                lastWritten = recurrence
+                                vmKey = recurrence
+                            }
+                        }
+                        Box {
+                            RepeatRow(
+                                recurrence = repeatRuleToString(recurrence),
+                                repeatFrom = viewState.task.repeatFrom,
+                                onClick = { menu = true },
+                                onRepeatFromChanged = { editViewModel.setRepeatFrom(it) },
+                            )
+                            DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                                val customLabel =
+                                    if (parseCustom(recurrence)) repeatRuleToString(recurrence) else null
+                                if (customLabel != null) {
+                                    DropdownMenuItem(
+                                        text = { Text(customLabel) },
+                                        onClick = {
+                                            menu = false
+                                            vmKey = recurrence
+                                            seedCustom = false
+                                            customExpanded = true
+                                        },
+                                    )
+                                }
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(kmpStringResource(Res.string.repeat_option_does_not_repeat))
+                                    },
+                                    onClick = {
+                                        menu = false
+                                        customExpanded = false
+                                        lastWritten = null
+                                        editViewModel.setRecurrence(null)
+                                    },
+                                )
+                                val presetFrequency = recurrence
+                                    ?.takeIf { it.isNotBlank() && !parseCustom(it) }
+                                    ?.let {
+                                        try {
+                                            newRecur(it).frequency
+                                        } catch (_: Exception) {
+                                            null
+                                        }
+                                    }
+                                listOf(
+                                    Frequency.DAILY to Res.string.repeat_option_every_day,
+                                    Frequency.WEEKLY to Res.string.repeat_option_every_week,
+                                    Frequency.MONTHLY to Res.string.repeat_option_every_month,
+                                    Frequency.YEARLY to Res.string.repeat_option_every_year,
+                                ).forEach { (freq, label) ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                buildString {
+                                                    if (presetFrequency == freq) append("✓ ")
+                                                    append(kmpStringResource(label))
+                                                },
+                                            )
+                                        },
+                                        onClick = {
+                                            menu = false
+                                            customExpanded = false
+                                            val rule = Recur(frequency = freq, interval = 1).toString()
+                                            lastWritten = rule
+                                            editViewModel.setRecurrence(rule)
+                                        },
+                                    )
+                                }
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(kmpStringResource(Res.string.repeat_option_custom))
+                                    },
+                                    onClick = {
+                                        menu = false
+                                        vmKey = viewState.task.recurrence
+                                        seedCustom = !parseCustom(viewState.task.recurrence)
+                                        customExpanded = true
+                                    },
+                                )
+                            }
+                        }
+                        if (customExpanded) {
+                            key(vmKey) {
+                                val vm = remember(vmKey) {
+                                    CustomRecurrenceViewModel(
+                                        rrule = vmKey,
+                                        dueDate = dueDate,
+                                        accountType = viewState.list.account.accountType,
+                                    )
+                                }
+                                LaunchedEffect(dueDate.startOfDay()) {
+                                    vm.updateDueDate(dueDate)
+                                }
+                                val state by vm.state.collectAsStateWithLifecycle()
+                                fun writeLive() {
+                                    val s = vm.getRecur()
+                                    lastWritten = s
+                                    editViewModel.setRecurrence(s)
+                                }
+                                LaunchedEffect(seedCustom) {
+                                    if (seedCustom) {
+                                        writeLive()
+                                        seedCustom = false
+                                    }
+                                }
+                                CustomRecurrenceContent(
+                                    state = state,
+                                    setInterval = {
+                                        vm.setInterval(it)
+                                        writeLive()
+                                    },
+                                    setSelectedFrequency = {
+                                        vm.setFrequency(it)
+                                        writeLive()
+                                    },
+                                    setEndDate = {
+                                        vm.setEndDate(it)
+                                        writeLive()
+                                    },
+                                    setSelectedEndType = {
+                                        vm.setEndType(it)
+                                        writeLive()
+                                    },
+                                    setOccurrences = {
+                                        vm.setOccurrences(it)
+                                        writeLive()
+                                    },
+                                    toggleDay = {
+                                        vm.toggleDay(it)
+                                        writeLive()
+                                    },
+                                    setMonthSelection = {
+                                        vm.setMonthSelection(it)
+                                        writeLive()
+                                    },
+                                )
+                            }
+                        }
                     }
                     else -> throw IllegalArgumentException("Unknown row: $tag")
                 }
@@ -606,22 +787,6 @@ fun TaskEditScreen(
                     beastMode.launch(Intent(context, BeastModePreferences::class.java))
                 },
                 dismiss = dismissBeastMode,
-            )
-        }
-        if (showDueDatePicker) {
-            val dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value
-            val (initialDay, initialTime) = dueDateToSelection(dueDate)
-            DueDatePickerSheet(
-                initialDay = initialDay,
-                initialTime = initialTime,
-                is24Hour = is24Hour,
-                showNoDate = !viewState.task.isRecurring,
-                times = remember { preferences.quickPickTimes },
-                onSelected = { day, time ->
-                    editViewModel.setDueDate(dueDateFromSelection(day, time))
-                    showDueDatePicker = false
-                },
-                onDismiss = { showDueDatePicker = false },
             )
         }
         if (showDiscardConfirmation) {

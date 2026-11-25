@@ -161,7 +161,8 @@ File %1$s contained %2$s.\n\n
   <string name="today">Today</string>
   <string name="tomorrow">Tomorrow</string>
   <string name="yesterday">Yesterday</string>
-  <string name="widget_show_checkboxes">Show checkboxes</string>
+  <string name="widget_show_checkboxes">Show checkbox</string>
+  <string name="widget_show_checkboxes_summary">Circle on the left of each row. Tap it to mark the task done from the widget. Without it you can still open the task.</string>
   <string name="widget_show_header">Show header</string>
   <string name="widget_show_settings">Show settings</string>
   <string name="widget_show_title">Show title</string>
@@ -367,6 +368,7 @@ File %1$s contained %2$s.\n\n
   <string name="chip_appearance_text_only">Text only</string>
   <string name="chip_appearance_icon_only">Icon only</string>
   <string name="no_date">No date</string>
+  <string name="add_due_time">+ time</string>
   <string name="auto_dismiss_datetime">Autoclose date time picker</string>
   <string name="auto_dismiss_datetime_list">Task list</string>
   <string name="auto_dismiss_datetime_list_summary">Autoclose when picking from task list</string>

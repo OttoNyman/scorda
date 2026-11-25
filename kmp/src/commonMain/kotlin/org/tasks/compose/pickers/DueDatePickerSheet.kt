@@ -32,6 +32,7 @@ import org.tasks.data.entity.Task
 import org.tasks.kmp.formatTime
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.millisOfDay
+import org.tasks.time.plusDays
 import org.tasks.time.startOfDay
 import org.tasks.time.startOfMinute
 import org.tasks.time.withMillisOfDay
@@ -209,6 +210,22 @@ internal fun initialDueTime(time: Int): Int =
 
 internal fun dayForAppliedTime(selectedDay: Long, today: Long, millisOfDay: Int): Long =
     if (selectedDay == NO_DAY && millisOfDay > NO_TIME) dayForNewTime(today, millisOfDay) else selectedDay
+
+fun dayForInlineTimeChange(
+    selectedDay: Long,
+    today: Long,
+    millisOfDay: Int,
+    dayPristineDefaultToday: Boolean,
+    nowMillis: Long = currentTimeMillis(),
+): Long {
+    if (millisOfDay <= NO_TIME) return selectedDay
+    if (!dayPristineDefaultToday) return selectedDay
+    // Pristine default-today, or tomorrow after an auto-roll: re-evaluate against today so
+    // dragging through a past hour and back to a future one returns to today.
+    val tomorrow = today.plusDays(1)
+    if (selectedDay != today && selectedDay != tomorrow) return selectedDay
+    return if (today.withMillisOfDay(millisOfDay) <= nowMillis) tomorrow else today
+}
 
 fun dueDateFromSelection(day: Long, time: Int): Long = when {
     day == NO_DAY -> 0L

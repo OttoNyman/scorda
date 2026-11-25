@@ -36,7 +36,7 @@ private const val MINUTE = 60_000
 private const val HOUR = 60 * MINUTE
 
 /** Hour and minute the clock dial shows for [selectedTime]; noon when there is no time. */
-internal fun dialTime(selectedTime: Int): Pair<Int, Int> =
+fun dialTime(selectedTime: Int): Pair<Int, Int> =
     if (Task.hasDueTime(selectedTime.toLong())) {
         selectedTime / HOUR to selectedTime / MINUTE % 60
     } else {
@@ -44,7 +44,7 @@ internal fun dialTime(selectedTime: Int): Pair<Int, Int> =
     }
 
 /** Selection value for a time picked on the dial, carrying the [TIME_MARKER]. */
-internal fun dialSelection(hour: Int, minute: Int): Int = hour * HOUR + minute * MINUTE + TIME_MARKER
+fun dialSelection(hour: Int, minute: Int): Int = hour * HOUR + minute * MINUTE + TIME_MARKER
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -203,25 +203,38 @@ internal fun SheetTimeShortcuts(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun rememberSyncedDatePickerState(
+fun rememberSyncedDatePickerState(
     selectedDay: Long,
     moveDisplayedMonth: Boolean,
     onDaySelected: (Long) -> Unit,
 ): DatePickerState {
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDay.takeIf { it > 0 }?.toUtcDateMillis(),
+    )
+    val onDaySelectedState by rememberUpdatedState(onDaySelected)
+    // Ref, not state: flipping a MutableState here re-entered composition and fought the picker.
+    val suppressOut = remember { booleanArrayOf(false) }
     LaunchedEffect(selectedDay) {
         if (selectedDay > 0) {
             val utc = selectedDay.toUtcDateMillis()
-            if (moveDisplayedMonth) datePickerState.displayedMonthMillis = utc
-            datePickerState.selectedDateMillis = utc
-        } else {
+            if (datePickerState.selectedDateMillis != utc) {
+                suppressOut[0] = true
+                if (moveDisplayedMonth) datePickerState.displayedMonthMillis = utc
+                datePickerState.selectedDateMillis = utc
+            }
+        } else if (datePickerState.selectedDateMillis != null) {
+            suppressOut[0] = true
             datePickerState.selectedDateMillis = null
         }
     }
     LaunchedEffect(datePickerState.selectedDateMillis) {
+        if (suppressOut[0]) {
+            suppressOut[0] = false
+            return@LaunchedEffect
+        }
         val utc = datePickerState.selectedDateMillis
         if (selectedDay > 0 && utc == selectedDay.toUtcDateMillis()) return@LaunchedEffect
-        utc?.let { onDaySelected(it.toLocalDateMillis()) }
+        utc?.let { onDaySelectedState(it.toLocalDateMillis()) }
     }
     return datePickerState
 }

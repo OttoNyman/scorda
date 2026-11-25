@@ -127,7 +127,9 @@
 
     <SwitchPreferenceCompat
       android:key="@string/p_widget_show_checkboxes"
-      android:title="@string/widget_show_checkboxes" />
+      android:title="@string/widget_show_checkboxes"
+      android:summary="@string/widget_show_checkboxes_summary"
+      app:singleLineTitle="false" />
 
     <SwitchPreferenceCompat
       android:defaultValue="false"

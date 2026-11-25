@@ -6,7 +6,10 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.constructor.Constructor
+import org.tasks.time.plusDays
+import org.tasks.time.startOfDay
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DESCRIPTION
+import org.tasks.ui.TaskEditViewModel.Companion.initialDueDayPristine
 import org.tasks.ui.TaskEditViewModel.Companion.reopenOnEdit
 import org.tasks.ui.TaskEditViewModel.Reopen
 import org.tasks.ui.TaskEditViewModel.Companion.TAG_DUE_DATE
@@ -96,5 +99,14 @@ class TaskEditViewModelTest {
         assertTrue(order.contains(TAG_DESCRIPTION))
         assertFalse(order.contains(TAG_DUE_DATE))
         assertFalse(order.contains(TAG_LIST))
+    }
+
+    @Test
+    fun newTaskDueTodayStartsPristine() {
+        val today = 1_800_000_000_000L.startOfDay()
+        assertTrue(initialDueDayPristine(isNew = true, dueDate = today, today = today))
+        assertFalse(initialDueDayPristine(isNew = false, dueDate = today, today = today))
+        assertFalse(initialDueDayPristine(isNew = true, dueDate = 0L, today = today))
+        assertFalse(initialDueDayPristine(isNew = true, dueDate = today.plusDays(1), today = today))
     }
 }
