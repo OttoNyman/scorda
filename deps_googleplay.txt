@@ -766,8 +766,8 @@
 +|    |    +--- androidx.datastore:datastore-preferences:1.1.7 -> 1.2.1 (*)
 +|    |    +--- androidx.datastore:datastore-preferences-proto:1.1.7 -> 1.2.1 (*)
 +|    |    +--- androidx.datastore:datastore:1.1.7 -> 1.2.1 (*)
-+|    |    +--- com.google.protobuf:protobuf-kotlin-lite:4.26.1 -> 4.33.2
-+|    |    |    +--- com.google.protobuf:protobuf-javalite:4.33.2
++|    |    +--- com.google.protobuf:protobuf-kotlin-lite:4.26.1
++|    |    |    +--- com.google.protobuf:protobuf-javalite:4.26.1
 +|    |    |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.6.0 -> 2.4.20 (*)
 +|    |    \--- androidx.wear:wear-remote-interactions:1.1.0 (*)
 +|    \--- com.google.android.gms:play-services-wearable:19.0.0 (*)
@@ -785,16 +785,15 @@
 +|    |    |    \--- com.google.guava:guava:33.3.1-android -> 33.4.0-android
 +|    |    |         +--- com.google.guava:failureaccess:1.0.2
 +|    |    |         \--- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
-+|    |    +--- com.google.protobuf:protobuf-javalite:3.25.5 -> 4.33.2
++|    |    +--- com.google.protobuf:protobuf-javalite:3.25.5 -> 4.26.1
 +|    |    \--- com.google.guava:guava:33.3.1-android -> 33.4.0-android (*)
-+|    +--- io.grpc:grpc-kotlin-stub:1.4.3 -> 1.5.0
-+|    |    +--- org.jetbrains.kotlin:kotlin-stdlib -> 2.4.20 (*)
-+|    |    +--- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2 -> 1.11.0 (*)
++|    +--- io.grpc:grpc-kotlin-stub:1.4.3
++|    |    +--- org.jetbrains.kotlin:kotlin-stdlib:1.8.0 -> 2.4.20 (*)
++|    |    +--- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.8.0 -> 1.11.0 (*)
 +|    |    +--- io.grpc:grpc-stub:1.62.2
 +|    |    |    +--- io.grpc:grpc-api:1.62.2 -> 1.73.0 (*)
 +|    |    |    \--- com.google.guava:guava:32.1.3-android -> 33.4.0-android (*)
-+|    |    +--- javax.annotation:javax.annotation-api:1.3.2
-+|    |    \--- org.jetbrains.kotlin:kotlin-stdlib:2.2.20 -> 2.4.20 (c)
++|    |    \--- javax.annotation:javax.annotation-api:1.3.2
 +|    \--- com.google.android.gms:play-services-wearable:19.0.0 (*)
 ++--- com.google.android.horologist:horologist-datalayer:0.7.15 (*)
 ++--- com.google.android.gms:play-services-wearable:19.0.0 (*)
@@ -934,32 +933,6 @@
 +|    +--- androidx.constraintlayout:constraintlayout:1.1.3 -> 2.2.2 (*)
 +|    +--- org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4 -> 1.11.0 (*)
 +|    \--- io.opentelemetry:opentelemetry-api:1.18.0 -> 1.62.0 (*)
-++--- project ':wear-datalayer'
-+|    +--- io.grpc:grpc-kotlin-stub:1.5.0 (*)
-+|    +--- io.grpc:grpc-protobuf-lite:1.73.0 (*)
-+|    +--- io.grpc:grpc-android:1.73.0
-+|    |    +--- io.grpc:grpc-api:1.73.0 (*)
-+|    |    +--- io.grpc:grpc-core:1.73.0
-+|    |    |    +--- io.grpc:grpc-api:1.73.0 (*)
-+|    |    |    +--- com.google.code.gson:gson:2.11.0 -> 2.12.1
-+|    |    |    +--- com.google.android:annotations:4.1.1.4
-+|    |    |    +--- org.codehaus.mojo:animal-sniffer-annotations:1.24
-+|    |    |    +--- com.google.guava:guava:33.3.1-android -> 33.4.0-android (*)
-+|    |    |    +--- io.perfmark:perfmark-api:0.27.0
-+|    |    |    \--- io.grpc:grpc-context:1.73.0
-+|    |    |         \--- io.grpc:grpc-api:1.73.0 (*)
-+|    |    \--- com.google.guava:guava:33.3.1-android -> 33.4.0-android (*)
-+|    +--- io.grpc:grpc-binder:1.73.0
-+|    |    +--- io.grpc:grpc-api:1.73.0 (*)
-+|    |    +--- io.grpc:grpc-core:1.73.0 (*)
-+|    |    +--- androidx.annotation:annotation:1.9.0 -> 1.10.0 (*)
-+|    |    +--- androidx.core:core:1.13.1 -> 1.18.0 (*)
-+|    |    +--- androidx.lifecycle:lifecycle-common:2.8.7 -> 2.11.0 (*)
-+|    |    \--- com.google.guava:guava:33.3.1-android -> 33.4.0-android (*)
-+|    +--- org.jetbrains.kotlin:kotlin-stdlib:2.4.10 -> 2.4.20 (*)
-+|    +--- com.google.android.horologist:horologist-datalayer:0.7.15 (*)
-+|    +--- androidx.datastore:datastore-preferences:1.2.1 (*)
-+|    \--- com.google.protobuf:protobuf-kotlin-lite:4.33.2 (*)
 ++--- org.jetbrains.kotlin:kotlin-parcelize-runtime:2.4.10
 +|    \--- org.jetbrains.kotlin:kotlin-stdlib:2.4.10 -> 2.4.20 (*)
 ++--- project ':data'
@@ -1837,9 +1810,10 @@
 +|    |         +--- com.google.oauth-client:google-oauth-client:1.36.0
 +|    |         |    +--- com.google.http-client:google-http-client:1.43.3 -> 1.47.0
 +|    |         |    |    +--- com.google.guava:guava:30.1.1-android -> 33.4.0-android (*)
-+|    |         |    |    +--- io.grpc:grpc-context:1.70.0 -> 1.73.0 (*)
++|    |         |    |    +--- io.grpc:grpc-context:1.70.0
++|    |         |    |    |    \--- io.grpc:grpc-api:1.70.0 -> 1.73.0 (*)
 +|    |         |    |    +--- io.opencensus:opencensus-api:0.31.1
-+|    |         |    |    |    \--- io.grpc:grpc-context:1.27.2 -> 1.73.0 (*)
++|    |         |    |    |    \--- io.grpc:grpc-context:1.27.2 -> 1.70.0 (*)
 +|    |         |    |    \--- io.opencensus:opencensus-contrib-http-util:0.31.1
 +|    |         |    |         +--- io.opencensus:opencensus-api:0.31.1 (*)
 +|    |         |    |         \--- com.google.guava:guava:29.0-android -> 33.4.0-android (*)
