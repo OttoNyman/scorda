@@ -73,6 +73,13 @@ class PreferencesViewModel @Inject constructor(
             return if (enabled) account else null
         }
 
+    fun driveGranted(): Boolean =
+        preferences.getBoolean(R.string.p_google_drive_granted, false) ||
+                preferences.getBoolean(R.string.p_google_drive_backup, false)
+
+    fun driveAccountName(): String? =
+        preferences.getStringValue(R.string.p_google_drive_backup_account)?.takeIf { it.isNotBlank() }
+
     suspend fun tasksAccount(): CaldavAccount? =
         caldavDao.getAccounts(CaldavAccount.TYPE_TASKS).firstOrNull()
 

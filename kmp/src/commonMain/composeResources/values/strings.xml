@@ -58,7 +58,8 @@
     <string name="add_account">Add account</string>
     <string name="add_platform_account">Add %1$s account</string>
     <string name="continue_without_sync">Continue without sync</string>
-    <string name="returning_user_import_backup">Import Scorda backup</string>
+    <string name="returning_user_import_backup">Import backup from file</string>
+    <string name="returning_user_restore_drive">Restore from Google Drive</string>
     <string name="legal_disclosure">%1$s, you agree to the %2$s and %3$s. Tasks is open source software provided under the %4$s.</string>
     <string name="legal_disclosure_prefix_continuing">By continuing with any button below</string>
     <string name="terms_of_service_proper">Terms of Service</string>
@@ -819,6 +820,8 @@
     <string name="constructor_repeat_summary">A schedule: the next occurrence appears on time whether or not you finished the previous one.</string>
     <string name="constructor_overdue">When overdue</string>
     <string name="constructor_overdue_summary">If you don't check a task off, it reminds you again the next day at the same time, every day for a week.</string>
+    <string name="constructor_quick_alarm">Quick alarm</string>
+    <string name="constructor_quick_alarm_summary">Set a relative alarm from the widget or a long-press on +</string>
     <string name="constructor_notes">Description</string>
     <string name="constructor_markdown">Formatting</string>
     <string name="constructor_markdown_summary">Checkboxes, lists and links in the description (Markdown)</string>

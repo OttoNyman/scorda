@@ -10,15 +10,11 @@ const val WEEK_BEFORE_DUE = -3L
 const val DUE_TIME = -4L
 
 internal const val DEFAULT_MORNING = 9 * 60 * 60 * 1000
-internal const val DEFAULT_AFTERNOON = 13 * 60 * 60 * 1000
-internal const val DEFAULT_EVENING = 17 * 60 * 60 * 1000
-internal const val DEFAULT_NIGHT = 20 * 60 * 60 * 1000
+internal const val DEFAULT_EVENING = 21 * 60 * 60 * 1000
 
 const val TIME_MARKER = 1000
 
 data class QuickPickTimes(
     val morning: Int = DEFAULT_MORNING,
-    val afternoon: Int = DEFAULT_AFTERNOON,
     val evening: Int = DEFAULT_EVENING,
-    val night: Int = DEFAULT_NIGHT,
 )

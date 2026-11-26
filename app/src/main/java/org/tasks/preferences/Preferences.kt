@@ -206,9 +206,6 @@ class Preferences @JvmOverloads constructor(
     val dateShortcutMorning: Int
         get() = getMillisPerDayPref(R.string.p_date_shortcut_morning, R.integer.default_morning)
 
-    val dateShortcutAfternoon: Int
-        get() = getMillisPerDayPref(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)
-
     val dateShortcutEvening: Int
         get() = getMillisPerDayPref(R.string.p_date_shortcut_evening, R.integer.default_evening)
 
@@ -232,16 +229,8 @@ class Preferences @JvmOverloads constructor(
         }
     }
 
-    val dateShortcutNight: Int
-        get() = getMillisPerDayPref(R.string.p_date_shortcut_night, R.integer.default_night)
-
     val quickPickTimes: QuickPickTimes
-        get() = QuickPickTimes(
-            dateShortcutMorning,
-            dateShortcutAfternoon,
-            dateShortcutEvening,
-            dateShortcutNight,
-        )
+        get() = QuickPickTimes(dateShortcutMorning, dateShortcutEvening)
 
     private fun getMillisPerDayPref(resId: Int, defResId: Int): Int =
         getMillisOfDayPref(resId, context.resources.getInteger(defResId))
@@ -519,6 +508,7 @@ class Preferences @JvmOverloads constructor(
         memos = getBoolean("constructor_memos", false),
         pinning = getBoolean("constructor_pinning", false),
         pinShade = getBoolean("constructor_pin_shade", false),
+        quickAlarm = getBoolean("constructor_quick_alarm", false),
     )
 
     fun writeConstructor(value: org.tasks.constructor.Constructor) {
@@ -536,6 +526,7 @@ class Preferences @JvmOverloads constructor(
         setBoolean("constructor_memos", value.memos)
         setBoolean("constructor_pinning", value.pinning)
         setBoolean("constructor_pin_shade", value.pinShade)
+        setBoolean("constructor_quick_alarm", value.quickAlarm)
     }
 
     fun getInt(resourceId: Int, defValue: Int): Int =
@@ -888,9 +879,7 @@ class Preferences @JvmOverloads constructor(
     @OptIn(ExperimentalMaterial3Api::class)
     override suspend fun datePickerPreferences() = DatePickerPreferences(
         shortcutMorning = dateShortcutMorning,
-        shortcutAfternoon = dateShortcutAfternoon,
         shortcutEvening = dateShortcutEvening,
-        shortcutNight = dateShortcutNight,
         alwaysDisplayFullDate = alwaysDisplayFullDate,
         datePickerInputMode = calendarDisplayMode == DisplayMode.Input,
         timePickerInputMode = timeDisplayMode == DisplayMode.Input,

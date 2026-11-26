@@ -16,6 +16,7 @@ import org.tasks.data.dao.LocationDao
 import org.tasks.data.dao.TagDao
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskDao
+import org.tasks.data.entity.Alarm
 import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Place
 import org.tasks.data.entity.Tag
@@ -24,16 +25,20 @@ import org.tasks.data.entity.Task.Companion.DUE_DATE
 import org.tasks.data.entity.Task.Companion.HIDE_UNTIL
 import org.tasks.data.entity.Task.Companion.HIDE_UNTIL_NONE
 import org.tasks.data.entity.Task.Companion.IMPORTANCE
+import org.tasks.data.entity.Task.Companion.URGENCY_SPECIFIC_DAY_TIME
 import org.tasks.data.getDefaultAlarms
 import org.tasks.data.setDefaultReminders
 import org.tasks.filters.CaldavFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.mapFromSerializedString
+import org.tasks.jobs.WorkManager
 import org.tasks.location.LocationService
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
 import org.tasks.time.startOfDay
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -50,7 +55,32 @@ class TaskCreator @Inject constructor(
     private val alarmDao: AlarmDao,
     private val featureGate: org.tasks.constructor.FeatureGate,
     private val locationService: LocationService,
+    private val workManager: WorkManager,
 ) {
+    suspend fun createQuickAlarm(
+        title: String?,
+        dueAtMillis: Long,
+        defaultTitle: String,
+    ): Task = withContext(NonCancellable) {
+        val resolved = title?.trim().orEmpty().ifEmpty { defaultTitle }
+        val task = createWithValues(null, resolved, parseTitle = false, applyDefaults = false)
+        task.priority = Task.Priority.HIGH
+        task.dueDate = createDueDate(URGENCY_SPECIFIC_DAY_TIME, dueAtMillis)
+        clearPlaceForSchedule(task, applyDefaults = false)
+        taskDao.createNew(task)
+        // Ring first: later follow-up failures must not leave a silent task that looks like success.
+        try {
+            alarmDao.insert(
+                listOf(Alarm(type = Alarm.TYPE_REL_END, time = 0, task = task.id)),
+            )
+            persistAfterCreate(task, insertAlarms = false)
+            workManager.triggerNotifications(expedited = true)
+        } catch (e: Exception) {
+            Timber.e(e, "quick alarm follow-up failed for taskId=${task.id}")
+        }
+        task
+    }
+
     suspend fun basicQuickAddTask(
         title: String,
         filter: Filter? = null,
@@ -62,19 +92,13 @@ class TaskCreator @Inject constructor(
         configure(task)
         // Tasker (and other callers) can set a due date after create(). Date wins, and the
         // defaults create() skipped for a place task come back.
-        if (task.hasTransitory(Place.KEY) && task.blocksPlace(featureGate.current.startDate)) {
-            task.clearTransitory(Place.KEY)
-            if (applyDefaults) {
-                applyDefaultRecurrence(task)
-                if (featureGate.current.startDate && task.hideUntil <= 0) {
-                    task.hideUntil = task.createHideUntil(
-                        preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
-                        0,
-                    )
-                }
-            }
-        }
+        clearPlaceForSchedule(task, applyDefaults)
         taskDao.createNew(task)
+        persistAfterCreate(task, insertAlarms = true)
+        return task
+    }
+
+    private suspend fun persistAfterCreate(task: Task, insertAlarms: Boolean) {
         tagDao.insert(task, task.tags)
         val addToTop = preferences.addTasksToTop()
         if (task.hasTransitory(GoogleTask.KEY)) {
@@ -129,13 +153,12 @@ class TaskCreator @Inject constructor(
             locationService.updateGeofences(place)
         }
         taskSaver.save(task, null)
-        if (place == null) {
+        if (insertAlarms && place == null) {
             alarmDao.insert(
                 task.getDefaultAlarms(preferences.isDefaultDueTimeEnabled())
-                    .filter { featureGate.current.schedules(it) }
+                    .filter { featureGate.current.schedules(it) },
             )
         }
-        return task
     }
 
     suspend fun createMemo(title: String?): Task =
@@ -191,7 +214,14 @@ class TaskCreator @Inject constructor(
         }
         if (parseTitle) {
             try {
-                parse(tagDataDao, task, tags, featureGate.current)
+                parse(
+                    tagDataDao,
+                    task,
+                    tags,
+                    featureGate.current,
+                    preferences.dateShortcutMorning,
+                    preferences.dateShortcutEvening,
+                )
             } catch (e: Throwable) {
                 Timber.e(e)
             }
@@ -243,6 +273,25 @@ class TaskCreator @Inject constructor(
         }
         task.putTransitory(Tag.KEY, tags)
         return task
+    }
+
+    /**
+     * Due/start/repeat win over a transitory place. Restores default recurrence and hideUntil
+     * that create() skipped while the task looked like a place task.
+     */
+    fun clearPlaceForSchedule(task: Task, applyDefaults: Boolean = true) {
+        if (!task.hasTransitory(Place.KEY) || !task.blocksPlace(featureGate.current.startDate)) {
+            return
+        }
+        task.clearTransitory(Place.KEY)
+        if (!applyDefaults) return
+        applyDefaultRecurrence(task)
+        if (featureGate.current.startDate && task.hideUntil <= 0) {
+            task.hideUntil = task.createHideUntil(
+                preferences.getIntegerFromString(R.string.p_default_hideUntil_key, HIDE_UNTIL_NONE),
+                0,
+            )
+        }
     }
 
     private fun applyDefaultRecurrence(task: Task) {

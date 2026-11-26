@@ -45,11 +45,7 @@ class DateAndTimeViewModel @Inject constructor(
         get() = dateFormatOptions.firstOrNull { it.first == dateFormat }?.second.orEmpty()
     var morningSummary by mutableStateOf("")
         private set
-    var afternoonSummary by mutableStateOf("")
-        private set
     var eveningSummary by mutableStateOf("")
-        private set
-    var nightSummary by mutableStateOf("")
         private set
 
     init {
@@ -59,9 +55,7 @@ class DateAndTimeViewModel @Inject constructor(
     fun refreshState() {
         dateFormat = preferences.dateFormat
         refreshMorning()
-        refreshAfternoon()
         refreshEvening()
-        refreshNight()
     }
 
     fun updateDateFormat(value: String) {
@@ -82,44 +76,28 @@ class DateAndTimeViewModel @Inject constructor(
     }
 
     fun handleMorningResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_before, R.string.date_shortcut_morning, R.string.date_shortcut_afternoon)
+        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
+            return TimePickerResult.Error(
+                R.string.date_shortcut_must_come_before,
+                R.string.date_shortcut_morning,
+                R.string.date_shortcut_evening,
+            )
         }
         setTimePreference(R.string.p_date_shortcut_morning, millisOfDay)
         refreshMorning()
         return TimePickerResult.Success
     }
 
-    fun handleAfternoonResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_morning, R.integer.default_morning)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_after, R.string.date_shortcut_afternoon, R.string.date_shortcut_morning)
-        }
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_before, R.string.date_shortcut_afternoon, R.string.date_shortcut_evening)
-        }
-        setTimePreference(R.string.p_date_shortcut_afternoon, millisOfDay)
-        refreshAfternoon()
-        return TimePickerResult.Success
-    }
-
     fun handleEveningResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_after, R.string.date_shortcut_evening, R.string.date_shortcut_afternoon)
-        }
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_night, R.integer.default_night)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_before, R.string.date_shortcut_evening, R.string.date_shortcut_night)
+        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_morning, R.integer.default_morning)) {
+            return TimePickerResult.Error(
+                R.string.date_shortcut_must_come_after,
+                R.string.date_shortcut_evening,
+                R.string.date_shortcut_morning,
+            )
         }
         setTimePreference(R.string.p_date_shortcut_evening, millisOfDay)
         refreshEvening()
-        return TimePickerResult.Success
-    }
-
-    fun handleNightResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
-            return TimePickerResult.Error(R.string.date_shortcut_must_come_after, R.string.date_shortcut_night, R.string.date_shortcut_evening)
-        }
-        setTimePreference(R.string.p_date_shortcut_night, millisOfDay)
-        refreshNight()
         return TimePickerResult.Success
     }
 
@@ -135,21 +113,9 @@ class DateAndTimeViewModel @Inject constructor(
         )
     }
 
-    private fun refreshAfternoon() {
-        afternoonSummary = formatTime(
-            getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)
-        )
-    }
-
     private fun refreshEvening() {
         eveningSummary = formatTime(
             getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)
-        )
-    }
-
-    private fun refreshNight() {
-        nightSummary = formatTime(
-            getMillisOfDay(R.string.p_date_shortcut_night, R.integer.default_night)
         )
     }
 }

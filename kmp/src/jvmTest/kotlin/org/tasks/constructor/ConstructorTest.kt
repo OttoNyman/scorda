@@ -119,6 +119,13 @@ class ConstructorTest {
     }
 
     @Test
+    fun fullPresetTurnsQuickAlarmOn() {
+        assertFalse(Constructor().quickAlarm)
+        assertTrue(Constructor().withPreset(Preset.Full).quickAlarm)
+        assertFalse(Constructor(quickAlarm = true).withPreset(Preset.Simple).quickAlarm)
+    }
+
+    @Test
     fun repeatingAtTheDueTimeIsAnExtraReminder() {
         val alarm = Alarm(type = Alarm.TYPE_REL_END, time = 0, repeat = 3, interval = 60_000)
         assertFalse(Constructor(overdue = true).schedules(alarm))

@@ -39,11 +39,13 @@ import com.google.api.services.drive.DriveScopes
 import com.todoroo.astrid.gtasks.auth.GtasksLoginActivity
 import kotlinx.coroutines.launch
 import org.tasks.compose.settings.BackupsScreen
+import org.tasks.compose.settings.RegularBackupDest
 import org.jetbrains.compose.resources.stringResource as composeStringResource
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.drive_logout_warning
 import org.tasks.dialogs.ExportTasksDialog
 import org.tasks.dialogs.ImportTasksDialog
+import org.tasks.extensions.Context.takePersistableUriPermission
 import org.tasks.extensions.Context.toast
 import org.tasks.files.FileHelper
 import org.tasks.preferences.BasePreferences
@@ -64,7 +66,6 @@ class Backups : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val viewModel: BackupsViewModel by viewModels()
 
-    // A manual export just finished: offer to send the file.
     private var shareFile by mutableStateOf<Uri?>(null)
 
     private val importPickerLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -77,6 +78,15 @@ class Backups : Fragment() {
                     ImportTasksDialog.newImportTasksDialog(uri)
                         .show(parentFragmentManager, FRAG_TAG_IMPORT_TASKS)
                 }
+            }
+        }
+    }
+
+    private val backupFolderLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.data?.let { uri ->
+                requireContext().takePersistableUriPermission(uri)
+                viewModel.setBackupFolder(uri, preferencesViewModel)
             }
         }
     }
@@ -134,6 +144,22 @@ class Backups : Fragment() {
                 lastBackupSummary = viewModel.lastBackupSummary,
                 lastDriveBackupSummary = viewModel.lastDriveBackupSummary,
                 lastAndroidBackupSummary = viewModel.lastAndroidBackupSummary,
+                regularDest = viewModel.regularDest,
+                fileFolderSummary = viewModel.fileFolderSummary,
+                fileFolderPrivate = viewModel.fileFolderPrivate,
+                onRegularDest = { dest ->
+                    when (dest) {
+                        RegularBackupDest.DRIVE ->
+                            signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = true)
+                        RegularBackupDest.FILE -> {
+                            viewModel.setDriveDaily(false)
+                            if (viewModel.needsExternalBackupFolder(preferencesViewModel)) {
+                                pickBackupFolder()
+                            }
+                        }
+                    }
+                },
+                onPickBackupFolder = { pickBackupFolder() },
                 onSaveFile = {
                     viewModel.logEvent("backup_now")
                     ExportTasksDialog.newExportTasksDialog()
@@ -146,18 +172,10 @@ class Backups : Fragment() {
                     )
                 },
                 onBackupHelp = { showBackupHelp = true },
-                accountEmail = preferencesViewModel.driveAccount?.takeIf { it.isNotBlank() },
+                accountEmail = preferencesViewModel.driveAccountName(),
                 onLogout = { confirmLogout = true },
-                driveDailyEnabled = viewModel.driveBackupEnabled,
-                onDriveDaily = { enabled ->
-                    if (enabled) {
-                        signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = true)
-                    } else {
-                        viewModel.setDriveDaily(false)
-                    }
-                },
                 onSaveDriveNow = {
-                    if (viewModel.driveGranted()) {
+                    if (preferencesViewModel.driveGranted()) {
                         ExportTasksDialog.newExportTasksDialog(uploadToDrive = true)
                             .show(parentFragmentManager, FRAG_TAG_EXPORT_TASKS)
                     } else {
@@ -180,7 +198,7 @@ class Backups : Fragment() {
                             }
                         }
                     }
-                    if (viewModel.driveGranted()) open() else {
+                    if (preferencesViewModel.driveGranted()) open() else {
                         signIn(arrayListOf(DriveScopes.DRIVE_FILE), daily = false) { open() }
                     }
                 },
@@ -190,6 +208,7 @@ class Backups : Fragment() {
                 ModalBottomSheet(onDismissRequest = { showHelp = false }) {
                     Column(modifier = Modifier.padding(24.dp)) {
                         Text(text = stringResource(R.string.sync_help_title))
+                        Text(text = stringResource(R.string.regular_backup_help), modifier = Modifier.padding(top = 12.dp))
                         Text(text = stringResource(R.string.sync_help_drive), modifier = Modifier.padding(top = 12.dp))
                         Text(text = stringResource(R.string.sync_help_file), modifier = Modifier.padding(top = 12.dp))
                     }
@@ -291,6 +310,12 @@ class Backups : Fragment() {
         }
     }
 
+    private fun pickBackupFolder() {
+        backupFolderLauncher.launch(
+            FileHelper.newDirectoryPickerIntent(context, viewModel.backupDirectory),
+        )
+    }
+
     private fun share(file: Uri) {
         val content = if (file.scheme == ContentResolver.SCHEME_FILE) {
             FileProvider.getUriForFile(requireContext(), Constants.FILE_PROVIDER_AUTHORITY, File(file.path!!))
@@ -312,7 +337,7 @@ class Backups : Fragment() {
                 .putExtra(GtasksLoginActivity.EXTRA_DAILY_DRIVE, daily)
                 .putExtra(
                     GtasksLoginActivity.EXTRA_ACCOUNT,
-                    preferencesViewModel.driveAccount,
+                    preferencesViewModel.driveAccountName(),
                 )
         )
     }

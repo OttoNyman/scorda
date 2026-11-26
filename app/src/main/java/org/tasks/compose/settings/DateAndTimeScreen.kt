@@ -33,14 +33,10 @@ import org.tasks.R
 fun DateAndTimeScreen(
     dateFormatLabel: String,
     morningSummary: String,
-    afternoonSummary: String,
     eveningSummary: String,
-    nightSummary: String,
     onDateFormat: () -> Unit,
     onMorning: () -> Unit,
-    onAfternoon: () -> Unit,
     onEvening: () -> Unit,
-    onNight: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -60,7 +56,6 @@ fun DateAndTimeScreen(
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        // Time shortcuts island
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -72,25 +67,11 @@ fun DateAndTimeScreen(
                     onClick = onMorning,
                 )
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.date_shortcut_afternoon),
-                    summary = afternoonSummary,
-                    onClick = onAfternoon,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
+            SettingsItemCard(position = CardPosition.Last) {
                 PreferenceRow(
                     title = stringResource(R.string.date_shortcut_evening),
                     summary = eveningSummary,
                     onClick = onEvening,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.date_shortcut_night),
-                    summary = nightSummary,
-                    onClick = onNight,
                 )
             }
         }

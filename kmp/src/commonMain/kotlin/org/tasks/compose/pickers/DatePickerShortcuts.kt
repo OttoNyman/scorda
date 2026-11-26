@@ -154,9 +154,7 @@ fun TimeShortcuts(
     day: Long,
     selected: Int,
     morning: Int,
-    afternoon: Int,
     evening: Int,
-    night: Int,
     is24HourFormat: Boolean,
     selectedMillisOfDay: (Int) -> Unit,
     pickTime: () -> Unit,
@@ -165,7 +163,7 @@ fun TimeShortcuts(
 ) {
     var custom by remember { mutableIntStateOf(0) }
     LaunchedEffect(selected) {
-        custom = if (selected == MULTIPLE_TIMES || selected !in listOf(morning, afternoon, evening, night, NO_TIME)) {
+        custom = if (selected == MULTIPLE_TIMES || selected !in listOf(morning, evening, NO_TIME)) {
             selected
         } else {
             custom
@@ -196,28 +194,12 @@ fun TimeShortcuts(
         onClick = { selectedMillisOfDay(morning) },
     )
     ShortcutButton(
-        icon = TasksIcons.WB_SUNNY,
-        text = remember {
-            formatTime(now.withMillisOfDay(afternoon), is24HourFormat)
-        },
-        selected = selected == afternoon,
-        onClick = { selectedMillisOfDay(afternoon) },
-    )
-    ShortcutButton(
         icon = TasksIcons.WB_TWILIGHT,
         text = remember {
             formatTime(now.withMillisOfDay(evening), is24HourFormat)
         },
         selected = selected == evening,
         onClick = { selectedMillisOfDay(evening) },
-    )
-    ShortcutButton(
-        icon = TasksIcons.NIGHTS_STAY,
-        text = remember {
-            formatTime(now.withMillisOfDay(night), is24HourFormat)
-        },
-        selected = selected == night,
-        onClick = { selectedMillisOfDay(night) },
     )
     ShortcutButton(
         icon = TasksIcons.SCHEDULE,

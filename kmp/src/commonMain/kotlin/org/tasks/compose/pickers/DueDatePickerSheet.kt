@@ -177,7 +177,7 @@ internal fun DueTimePicker(
                     onClick = { pick(MULTIPLE_TIMES) },
                 )
             }
-            listOf(times.morning, times.afternoon, times.evening, times.night).forEach {
+            listOf(times.morning, times.evening).forEach {
                 val time = it + TIME_MARKER
                 TimeChip(
                     text = remember(time, is24Hour) { formatTime(now.withMillisOfDay(time), is24Hour) },

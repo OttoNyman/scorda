@@ -11,22 +11,16 @@ import org.tasks.time.startOfDay
 import org.tasks.time.startOfMinute
 import org.tasks.time.withMillisOfDay
 import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.date_shortcut_afternoon
 import tasks.kmp.generated.resources.date_shortcut_evening
 import tasks.kmp.generated.resources.date_shortcut_hour
 import tasks.kmp.generated.resources.date_shortcut_morning
-import tasks.kmp.generated.resources.date_shortcut_night
-import tasks.kmp.generated.resources.date_shortcut_tomorrow_afternoon
 import tasks.kmp.generated.resources.date_shortcut_tomorrow_evening
 import tasks.kmp.generated.resources.date_shortcut_tomorrow_morning
-import tasks.kmp.generated.resources.date_shortcut_tomorrow_night
 
 class SnoozeOptionsTest {
     private val times = QuickPickTimes(
         morning = hours(9),
-        afternoon = hours(13),
-        evening = hours(17),
-        night = hours(20),
+        evening = hours(21),
     )
 
     @Test
@@ -56,9 +50,7 @@ class SnoozeOptionsTest {
             listOf(
                 Res.string.date_shortcut_hour,
                 Res.string.date_shortcut_morning,
-                Res.string.date_shortcut_afternoon,
                 Res.string.date_shortcut_evening,
-                Res.string.date_shortcut_night,
             ),
             options.map { it.label },
         )
@@ -71,9 +63,7 @@ class SnoozeOptionsTest {
         assertEquals(
             listOf(
                 Res.string.date_shortcut_hour,
-                Res.string.date_shortcut_afternoon,
                 Res.string.date_shortcut_evening,
-                Res.string.date_shortcut_night,
                 Res.string.date_shortcut_tomorrow_morning,
             ),
             options.map { it.label },
@@ -90,9 +80,7 @@ class SnoozeOptionsTest {
             listOf(
                 Res.string.date_shortcut_hour,
                 Res.string.date_shortcut_tomorrow_morning,
-                Res.string.date_shortcut_tomorrow_afternoon,
                 Res.string.date_shortcut_tomorrow_evening,
-                Res.string.date_shortcut_tomorrow_night,
             ),
             options.map { it.label },
         )
@@ -112,9 +100,9 @@ class SnoozeOptionsTest {
     }
 
     @Test
-    fun alwaysOffersFiveTimes() {
+    fun alwaysOffersThreeTimes() {
         (0..23).forEach { hour ->
-            assertEquals(5, snoozeOptions(times, today(hours(hour))).size)
+            assertEquals(3, snoozeOptions(times, today(hours(hour))).size)
         }
     }
 

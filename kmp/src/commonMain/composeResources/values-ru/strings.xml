@@ -166,7 +166,8 @@
     <string name="sort_created">По созданию</string>
     <string name="sort_modified">По изменению</string>
     <string name="all_done">Всё готово!</string>
-    <string name="returning_user_import_backup">Импорт резервной копии Scorda</string>
+    <string name="returning_user_import_backup">Импорт резервной копии из файла</string>
+    <string name="returning_user_restore_drive">Восстановить с Google Drive</string>
     <string name="legal_disclosure">%1$s, вы соглашаетесь с %2$s и %3$s. Tasks — это программное обеспечение с открытым исходным кодом, предоставляемое на условиях %4$s.</string>
     <string name="caldav_server_other">Другой</string>
     <string name="caldav_server_type">Тип сервера</string>
@@ -700,6 +701,8 @@
     <string name="constructor_repeat_summary">Расписание: следующее выполнение появляется вовремя, даже если прошлое не отметили.</string>
     <string name="constructor_overdue">О просрочке</string>
     <string name="constructor_overdue_summary">Если не отметить задачу, она напомнит снова на следующий день в то же время — и так каждый день неделю.</string>
+    <string name="constructor_quick_alarm">Быстрый будильник</string>
+    <string name="constructor_quick_alarm_summary">Относительный звонок с виджета или долгим нажатием на +</string>
     <string name="constructor_notes">Описание</string>
     <string name="constructor_markdown">Форматирование</string>
     <string name="constructor_markdown_summary">Чекбоксы, списки и ссылки в описании (Markdown)</string>

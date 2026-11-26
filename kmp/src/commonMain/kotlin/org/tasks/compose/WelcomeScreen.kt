@@ -55,6 +55,7 @@ import tasks.kmp.generated.resources.legal_disclosure
 import tasks.kmp.generated.resources.legal_disclosure_prefix_continuing
 import tasks.kmp.generated.resources.privacy_policy_proper
 import tasks.kmp.generated.resources.returning_user_import_backup
+import tasks.kmp.generated.resources.returning_user_restore_drive
 import tasks.kmp.generated.resources.tasks_org
 import tasks.kmp.generated.resources.terms_of_service_proper
 import org.tasks.TasksUrls
@@ -64,9 +65,11 @@ import org.tasks.auth.TasksServerEnvironment
 fun WelcomeScreenLayout(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean = true,
+    showRestoreDrive: Boolean = false,
     onSignIn: (() -> Unit)?,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit = {},
+    onRestoreDrive: () -> Unit = {},
     openLegalUrl: (String) -> Unit,
     environments: List<TasksServerEnvironment.Environment> = emptyList(),
     currentEnvironment: String = TasksServerEnvironment.ENV_PRODUCTION,
@@ -129,9 +132,11 @@ fun WelcomeScreenLayout(
                         WelcomeContent(
                             showLegalDisclosure = showLegalDisclosure,
                             showImportBackup = showImportBackup,
+                            showRestoreDrive = showRestoreDrive,
                             onSignIn = onSignIn,
                             onContinueWithoutSync = onContinueWithoutSync,
                             onImportBackup = onImportBackup,
+                            onRestoreDrive = onRestoreDrive,
                             openLegalUrl = openLegalUrl,
                             modifier = Modifier
                                 .weight(1f)
@@ -157,9 +162,11 @@ fun WelcomeScreenLayout(
                         WelcomeContent(
                             showLegalDisclosure = showLegalDisclosure,
                             showImportBackup = showImportBackup,
+                            showRestoreDrive = showRestoreDrive,
                             onSignIn = onSignIn,
                             onContinueWithoutSync = onContinueWithoutSync,
                             onImportBackup = onImportBackup,
+                            onRestoreDrive = onRestoreDrive,
                             openLegalUrl = openLegalUrl,
                             modifier = Modifier.fillMaxWidth(),
                         )
@@ -238,9 +245,11 @@ private fun EnvironmentSelectorDialog(
 private fun WelcomeContent(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean,
+    showRestoreDrive: Boolean,
     onSignIn: (() -> Unit)?,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit,
+    onRestoreDrive: () -> Unit,
     openLegalUrl: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -286,6 +295,21 @@ private fun WelcomeContent(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
+        }
+
+        if (showRestoreDrive) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = onRestoreDrive,
+                modifier = buttonModifier
+            ) {
+                Text(
+                    text = stringResource(Res.string.returning_user_restore_drive),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
 
         if (showImportBackup) {

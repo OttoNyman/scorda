@@ -16,9 +16,11 @@ import org.junit.Test
 import org.tasks.R
 import org.tasks.SuspendFreeze.Companion.freezeAt
 import org.tasks.data.createDueDate
+import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.entity.Alarm
+import org.tasks.data.entity.Task.Companion.URGENCY_SPECIFIC_DAY_TIME
 import org.tasks.data.getDefaultAlarms
 import org.tasks.injection.InjectingTestCase
 import org.tasks.preferences.Preferences
@@ -31,6 +33,7 @@ class TaskCreatorTest : InjectingTestCase() {
     @Inject lateinit var taskCreator: TaskCreator
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var caldavDao: CaldavDao
+    @Inject lateinit var alarmDao: AlarmDao
 
     @Test
     fun setStartAndDueFromFilter() = runBlocking {
@@ -168,5 +171,24 @@ class TaskCreatorTest : InjectingTestCase() {
         assertTrue(task.memo)
         taskDao.createNew(task)
         assertNull(caldavDao.getTask(task.id))
+    }
+
+    @Test
+    fun createQuickAlarmUsesOnlyDueAlarmAndHighPriority() = runBlocking {
+        preferences.setDefaultAlarms(listOf(Alarm.whenDue(0), Alarm.whenOverdue(0)))
+        val dueAt = DateTime(2026, 11, 26, 14, 35, 0, 0).millis
+        val task = taskCreator.createQuickAlarm(
+            title = null,
+            dueAtMillis = dueAt,
+            defaultTitle = "Будильник 14:35",
+        )
+        assertEquals("Будильник 14:35", task.title)
+        assertEquals(Task.Priority.HIGH, task.priority)
+        assertTrue(task.hasDueTime())
+        assertEquals(createDueDate(URGENCY_SPECIFIC_DAY_TIME, dueAt), task.dueDate)
+        val alarms = alarmDao.getAlarms(task.id)
+        assertEquals(1, alarms.size)
+        assertEquals(Alarm.TYPE_REL_END, alarms[0].type)
+        assertEquals(0L, alarms[0].time)
     }
 }

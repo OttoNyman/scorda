@@ -41,19 +41,9 @@ class DateAndTime : Fragment() {
             handleTimePickerResult(bundle) { viewModel.handleMorningResult(it) }
         }
         parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_AFTERNOON, this
-        ) { _, bundle ->
-            handleTimePickerResult(bundle) { viewModel.handleAfternoonResult(it) }
-        }
-        parentFragmentManager.setFragmentResultListener(
             REQUEST_KEY_EVENING, this
         ) { _, bundle ->
             handleTimePickerResult(bundle) { viewModel.handleEveningResult(it) }
-        }
-        parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_NIGHT, this
-        ) { _, bundle ->
-            handleTimePickerResult(bundle) { viewModel.handleNightResult(it) }
         }
     }
 
@@ -97,9 +87,7 @@ class DateAndTime : Fragment() {
             DateAndTimeScreen(
                 dateFormatLabel = viewModel.dateFormatLabel,
                 morningSummary = viewModel.morningSummary,
-                afternoonSummary = viewModel.afternoonSummary,
                 eveningSummary = viewModel.eveningSummary,
-                nightSummary = viewModel.nightSummary,
                 onDateFormat = { pickFormat = true },
                 onMorning = {
                     showTimePicker(
@@ -108,25 +96,11 @@ class DateAndTime : Fragment() {
                         REQUEST_KEY_MORNING,
                     )
                 },
-                onAfternoon = {
-                    showTimePicker(
-                        R.string.p_date_shortcut_afternoon,
-                        R.integer.default_afternoon,
-                        REQUEST_KEY_AFTERNOON,
-                    )
-                },
                 onEvening = {
                     showTimePicker(
                         R.string.p_date_shortcut_evening,
                         R.integer.default_evening,
                         REQUEST_KEY_EVENING,
-                    )
-                },
-                onNight = {
-                    showTimePicker(
-                        R.string.p_date_shortcut_night,
-                        R.integer.default_night,
-                        REQUEST_KEY_NIGHT,
                     )
                 },
             )
@@ -162,8 +136,6 @@ class DateAndTime : Fragment() {
     companion object {
         private const val FRAG_TAG_TIME_PICKER = "frag_tag_time_picker"
         private const val REQUEST_KEY_MORNING = "time_picker_morning"
-        private const val REQUEST_KEY_AFTERNOON = "time_picker_afternoon"
         private const val REQUEST_KEY_EVENING = "time_picker_evening"
-        private const val REQUEST_KEY_NIGHT = "time_picker_night"
     }
 }

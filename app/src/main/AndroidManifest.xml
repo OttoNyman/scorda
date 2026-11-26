@@ -666,6 +666,14 @@
       android:taskAffinity=""
       android:theme="@style/TranslucentDialog"/>
 
+    <activity
+      android:name=".quickalarm.QuickAlarmActivity"
+      android:excludeFromRecents="true"
+      android:exported="false"
+      android:launchMode="singleTask"
+      android:taskAffinity=""
+      android:theme="@style/TranslucentDialog"/>
+
     <activity android:name=".tags.TagPickerActivity" />
 
     <activity

@@ -24,6 +24,8 @@ data class Constructor(
     val pinning: Boolean = false,
     /** Under [pinning]: each pinned item also keeps a card in the notification shade. */
     val pinShade: Boolean = false,
+    /** Relative “in N minutes” alarm from the widget / FAB long-press. */
+    val quickAlarm: Boolean = false,
 ) {
     fun effective(
         sync: Boolean,
@@ -85,6 +87,7 @@ val Preset.flags: Constructor
             files = true,
             memos = true,
             pinning = true,
+            quickAlarm = true,
         )
     }
 

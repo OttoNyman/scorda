@@ -22,6 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LAYOUT_DIRECTION_LTR
+import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -114,6 +115,9 @@ import org.tasks.data.dao.TagDataDao
 import org.tasks.data.dao.TaskDao
 import org.tasks.data.db.Database
 import org.tasks.data.db.SuspendDbUtils.chunkedMap
+import org.tasks.compose.pickers.dayForNewTime
+import org.tasks.constructor.fits
+import org.tasks.data.createDueDate
 import org.tasks.data.entity.Task
 import org.tasks.data.fetchTasks
 import org.tasks.data.getAccountForNewList
@@ -138,17 +142,19 @@ import org.tasks.filters.CompletedFilter
 import org.tasks.filters.CustomFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterImpl
-import org.tasks.constructor.fits
 import org.tasks.filters.MemosFilter
 import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.PlaceFilter
 import org.tasks.filters.SearchFilter
 import org.tasks.filters.TrashFilter
 import org.tasks.filters.key
-import org.tasks.kmp.org.tasks.time.DateStyle
 import org.tasks.kmp.org.tasks.time.DateFormatter
+import org.tasks.kmp.org.tasks.time.DateStyle
 import org.tasks.markdown.MarkdownProvider
+import org.tasks.quickalarm.QuickAlarmDialogFragment
 import org.tasks.TasksBuildConfig
+import org.tasks.time.startOfDay
+import org.tasks.time.withMillisOfDay
 import org.tasks.preferences.Device
 import org.tasks.preferences.MainPreferences
 import org.tasks.preferences.Preferences
@@ -407,6 +413,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             emptyRefreshLayout = bodyEmpty.swipeLayoutEmpty
             recyclerView = bodyStandard.recyclerView
             fab.setOnClickListener { createNewTask() }
+            fab.setOnLongClickListener {
+                showCreateMenu(it)
+                true
+            }
             fab.isVisible = filter.isWritable
         }
         themeColor = if (filter.tint != 0) colorProvider.getThemeColor(filter.tint, true) else defaultThemeColor
@@ -819,26 +829,98 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     }
 
     private fun createNewTask() = lifecycleScope.launch {
-        if (hasWritableList) {
-            shortcutManager.reportShortcutUsed(ShortcutManager.SHORTCUT_NEW_TASK)
-            onTaskListItemClicked(addTask(""))
-            firebase.addTask("fab")
-        } else {
-            Timber.e("createNewTask(): No writable list")
-            val account = caldavDao.getAccountForNewList(tasksAccountDataRepository)
-            if (account != null) {
-                listSettingsRequest.launch(
-                    Intent(activity, account.listSettingsClass())
-                        .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_ACCOUNT, account)
-                )
-            } else {
-                val localAccount = caldavDao.getOrCreateLocalAccount()
-                listSettingsRequest.launch(
-                    Intent(activity, LocalListSettingsActivity::class.java)
-                        .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_ACCOUNT, localAccount)
-                )
-            }
+        if (!ensureWritableListForCreate()) return@launch
+        shortcutManager.reportShortcutUsed(ShortcutManager.SHORTCUT_NEW_TASK)
+        onTaskListItemClicked(addTask(""))
+        firebase.addTask("fab")
+    }
+
+    private fun showCreateMenu(anchor: View) {
+        val features = featureGate.current
+        val menu = PopupMenu(requireContext(), anchor)
+        menu.menu.add(0, 1, 0, R.string.create_with_time)
+        menu.menu.add(0, 2, 1, R.string.create_date_only)
+        if (features.memos) {
+            menu.menu.add(0, 3, 2, R.string.create_memo)
         }
+        if (features.quickAlarm) {
+            menu.menu.add(0, 4, 3, R.string.create_quick_alarm)
+        }
+        menu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> lifecycleScope.launch { openNewTimedTask() }
+                2 -> lifecycleScope.launch { openNewDateOnlyTask() }
+                3 -> lifecycleScope.launch {
+                    if (!ensureWritableListForCreate()) return@launch
+                    onTaskListItemClicked(taskCreator.createMemo(null))
+                    firebase.addTask("fab_memo")
+                }
+                4 -> QuickAlarmDialogFragment.newInstance()
+                    .show(parentFragmentManager, QuickAlarmDialogFragment.TAG)
+            }
+            true
+        }
+        menu.show()
+    }
+
+    private suspend fun openNewTimedTask() {
+        if (!ensureWritableListForCreate()) return
+        val task = createTaskForFabMenu()
+        val defaultTime = preferences.defaultDueTime()
+        val baseDay =
+            if (task.hasDueDate()) task.dueDate.startOfDay() else currentTimeMillis().startOfDay()
+        val day = dayForNewTime(baseDay, defaultTime)
+        task.setDueDateAdjustingHideUntil(
+            createDueDate(Task.URGENCY_SPECIFIC_DAY_TIME, day.withMillisOfDay(defaultTime)),
+        )
+        taskCreator.clearPlaceForSchedule(task)
+        onTaskListItemClicked(task)
+        firebase.addTask("fab_with_time")
+    }
+
+    private suspend fun openNewDateOnlyTask() {
+        if (!ensureWritableListForCreate()) return
+        val task = createTaskForFabMenu()
+        when {
+            !task.hasDueDate() ->
+                task.setDueDateAdjustingHideUntil(
+                    createDueDate(Task.URGENCY_SPECIFIC_DAY, currentTimeMillis()),
+                )
+            task.hasDueTime() ->
+                task.setDueDateAdjustingHideUntil(
+                    createDueDate(Task.URGENCY_SPECIFIC_DAY, task.dueDate),
+                )
+        }
+        taskCreator.clearPlaceForSchedule(task)
+        onTaskListItemClicked(task)
+        firebase.addTask("fab_date_only")
+    }
+
+    /** Current list/tag like short-press +, except on Notes → default list (not a memo). */
+    private suspend fun createTaskForFabMenu(): Task =
+        if (filter is MemosFilter) {
+            taskCreator.createWithValues(title = null)
+        } else {
+            taskCreator.createWithValues(filter, null)
+        }
+
+    private suspend fun ensureWritableListForCreate(): Boolean {
+        if (hasWritableList) return true
+        Timber.e("createNewTask(): No writable list")
+        val account = caldavDao.getAccountForNewList(tasksAccountDataRepository)
+        if (account != null) {
+            listSettingsRequest.launch(
+                Intent(activity, account.listSettingsClass())
+                    .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_ACCOUNT, account)
+            )
+        } else {
+            val localAccount = caldavDao.getOrCreateLocalAccount()
+            listSettingsRequest.launch(
+                Intent(activity, LocalListSettingsActivity::class.java)
+                    .putExtra(BaseCaldavCalendarSettingsActivity.EXTRA_CALDAV_ACCOUNT, localAccount)
+            )
+        }
+        return false
     }
 
     private suspend fun addTask(title: String): Task =

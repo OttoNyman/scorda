@@ -26,6 +26,8 @@ object TitleParser {
         task: Task,
         tags: ArrayList<String>,
         features: org.tasks.constructor.Constructor = org.tasks.constructor.Preset.Full.flags,
+        morningMillisOfDay: Int = 9 * 60 * 60 * 1000,
+        eveningMillisOfDay: Int = 21 * 60 * 60 * 1000,
     ) {
         if (features.repeat) {
             repeatHelper(task)
@@ -33,7 +35,7 @@ object TitleParser {
         if (features.tags) {
             listHelper(tagDataDao, task, tags)
         }
-        dayHelper(task)
+        dayHelper(task, morningMillisOfDay, eveningMillisOfDay)
         if (features.priority) {
             priorityHelper(task)
         }
@@ -166,7 +168,7 @@ object TitleParser {
     // Handles setting the task's date.
     // Day of week (e.g. Monday, Tuesday,..) is overridden by a set date (e.g. October 23 2013).
     // Vague times (e.g. breakfast, night) are overridden by a set time (9 am, at 10, 17:00)
-    private fun dayHelper(task: Task) {
+    private fun dayHelper(task: Task, morningMillisOfDay: Int, eveningMillisOfDay: Int) {
         var inputText = task.title
         var cal: Calendar? = null
         var containsSpecificTime = false
@@ -259,33 +261,34 @@ object TitleParser {
             }
             inputText = removeIfParenthetical(match, inputText)
         }
+        // Values are millis-of-day; morning/evening(/night) follow the user's shortcuts.
         val dayTimes = HashMap<String, Int>()
-        dayTimes["(?i)\\bbreakfast\\b"] = 8
-        dayTimes["(?i)\\blunch\\b"] = 12
-        dayTimes["(?i)\\bsupper\\b"] = 18
-        dayTimes["(?i)\\bdinner\\b"] = 18
-        dayTimes["(?i)\\bbrunch\\b"] = 10
-        dayTimes["(?i)\\bmorning\\b"] = 8
-        dayTimes["(?i)\\bafternoon\\b"] = 15
-        dayTimes["(?i)\\bevening\\b"] = 19
-        dayTimes["(?i)\\bnight\\b"] = 19
+        dayTimes["(?i)\\bbreakfast\\b"] = morningMillisOfDay
+        dayTimes["(?i)\\blunch\\b"] = 12 * 60 * 60 * 1000
+        dayTimes["(?i)\\bsupper\\b"] = eveningMillisOfDay
+        dayTimes["(?i)\\bdinner\\b"] = eveningMillisOfDay
+        dayTimes["(?i)\\bbrunch\\b"] = 10 * 60 * 60 * 1000
+        dayTimes["(?i)\\bmorning\\b"] = morningMillisOfDay
+        dayTimes["(?i)\\bafternoon\\b"] = 13 * 60 * 60 * 1000
+        dayTimes["(?i)\\bevening\\b"] = eveningMillisOfDay
+        dayTimes["(?i)\\bnight\\b"] = eveningMillisOfDay
         dayTimes["(?i)\\bmidnight\\b"] = 0
-        dayTimes["(?i)\\bnoon\\b"] = 12
+        dayTimes["(?i)\\bnoon\\b"] = 12 * 60 * 60 * 1000
         val keys: Set<String> = dayTimes.keys
         for (dayTime in keys) {
             val pattern = Pattern.compile(dayTime)
             val m = pattern.matcher(inputText)
             if (m.find()) {
                 containsSpecificTime = true
-                val timeHour = dayTimes[dayTime]!!
+                val millisOfDay = dayTimes[dayTime]!!
                 val dayTimesCal = Calendar.getInstance()
                 setCalendarToDefaultTime(dayTimesCal)
-                dayTimesCal[Calendar.HOUR] = timeHour
+                applyMillisOfDay(dayTimesCal, millisOfDay)
                 if (cal == null) {
                     cal = dayTimesCal
                 } else {
                     setCalendarToDefaultTime(cal)
-                    cal[Calendar.HOUR] = timeHour
+                    applyMillisOfDay(cal, millisOfDay)
                 }
             }
         }
@@ -436,5 +439,12 @@ object TitleParser {
         cal[Calendar.MINUTE] = 0
         cal[Calendar.SECOND] = 0
         cal[Calendar.AM_PM] = Calendar.AM
+    }
+
+    private fun applyMillisOfDay(cal: Calendar, millisOfDay: Int) {
+        val clamped = millisOfDay.coerceIn(0, 24 * 60 * 60 * 1000 - 1)
+        cal[Calendar.HOUR_OF_DAY] = clamped / (60 * 60 * 1000)
+        cal[Calendar.MINUTE] = (clamped % (60 * 60 * 1000)) / (60 * 1000)
+        cal[Calendar.SECOND] = 0
     }
 }

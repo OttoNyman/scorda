@@ -92,6 +92,7 @@ import org.tasks.filters.Filter
 import org.tasks.jobs.WorkManager
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
+import org.tasks.preferences.PreferencesViewModel
 import org.tasks.preferences.TasksPreferences
 import org.tasks.sync.SyncSource
 import org.tasks.themes.ColorProvider
@@ -174,6 +175,7 @@ class MainActivity : AppCompatActivity() {
                 val needsCloudOnboarding by viewModel.needsCloudOnboarding
                     .collectAsStateWithLifecycle(null)
                 val importViewModel: ImportTasksViewModel = hiltViewModel()
+                val preferencesViewModel: PreferencesViewModel = hiltViewModel()
                 val importState by importViewModel.state.collectAsStateWithLifecycle()
                 val isImporting = importState !is ImportTasksViewModel.ImportState.Idle
                 LaunchedEffect(needsCloudOnboarding, hasAccount, isImporting) {
@@ -203,6 +205,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         WelcomeScreen(
                             importViewModel = importViewModel,
+                            preferencesViewModel = preferencesViewModel,
                             filePickerIntent = FileHelper.newFilePickerIntent(
                                 this@MainActivity,
                                 preferences.backupDirectory
@@ -230,6 +233,19 @@ class MainActivity : AppCompatActivity() {
                                         R.string.event_add_account,
                                         R.string.param_source to "onboarding",
                                         R.string.param_selection to "import_backup"
+                                    )
+                                }
+                            },
+                            onRestoreDrive = {
+                                lifecycleScope.launch {
+                                    if (IS_GOOGLE_PLAY) {
+                                        firebase.logEvent(R.string.event_accept_tos)
+                                        setAcceptedTosVersion(currentTosVersion)
+                                    }
+                                    firebase.logEvent(
+                                        R.string.event_add_account,
+                                        R.string.param_source to "onboarding",
+                                        R.string.param_selection to "restore_drive"
                                     )
                                 }
                             },

@@ -199,9 +199,7 @@ class DatePickerLogicTest {
     @Test
     fun defaultQuickPickTimesMatchLegacyHoursAndCarryMarker() {
         assertEquals(9 * HOUR, DEFAULT_MORNING)
-        assertEquals(13 * HOUR, DEFAULT_AFTERNOON)
-        assertEquals(17 * HOUR, DEFAULT_EVENING)
-        assertEquals(20 * HOUR, DEFAULT_NIGHT)
+        assertEquals(21 * HOUR, DEFAULT_EVENING)
         assertFalse(Task.hasDueTime(DEFAULT_MORNING.toLong()))
         assertTrue(Task.hasDueTime((DEFAULT_MORNING + TIME_MARKER).toLong()))
     }

@@ -12,10 +12,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
 import org.tasks.analytics.Firebase
+import org.tasks.compose.settings.RegularBackupDest
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.extensions.Context.is24HourFormat
+import org.tasks.files.FileHelper
 import org.tasks.kmp.org.tasks.time.DateFormatter
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.PreferencesViewModel
@@ -34,6 +36,12 @@ class BackupsViewModel @Inject constructor(
     var lastBackupSummary by mutableStateOf("")
         private set
     var driveBackupEnabled by mutableStateOf(false)
+        private set
+    var regularDest by mutableStateOf(RegularBackupDest.FILE)
+        private set
+    var fileFolderSummary by mutableStateOf("")
+        private set
+    var fileFolderPrivate by mutableStateOf(true)
         private set
     var tasksSyncEnabled by mutableStateOf(false)
         private set
@@ -152,7 +160,21 @@ class BackupsViewModel @Inject constructor(
     fun setDriveDaily(enabled: Boolean) {
         preferences.setBoolean(R.string.p_google_drive_backup, enabled)
         driveBackupEnabled = enabled
+        regularDest = if (enabled) RegularBackupDest.DRIVE else RegularBackupDest.FILE
+        refreshFileFolderSummary(null)
     }
+
+    fun setBackupFolder(uri: Uri, preferencesViewModel: PreferencesViewModel) {
+        preferences.setUri(R.string.p_backup_dir, uri)
+        preferences.setBoolean(R.string.p_google_drive_backup, false)
+        driveBackupEnabled = false
+        regularDest = RegularBackupDest.FILE
+        refreshFileFolderSummary(preferencesViewModel)
+        preferencesViewModel.updateLocalBackup()
+    }
+
+    fun needsExternalBackupFolder(preferencesViewModel: PreferencesViewModel): Boolean =
+        preferencesViewModel.usingPrivateStorage
 
     fun driveGranted(): Boolean =
         preferences.getBoolean(R.string.p_google_drive_granted, false) ||
@@ -160,6 +182,17 @@ class BackupsViewModel @Inject constructor(
 
     fun refreshDriveState(preferencesViewModel: PreferencesViewModel) {
         driveBackupEnabled = preferencesViewModel.driveAccount != null
+        regularDest = if (driveBackupEnabled) RegularBackupDest.DRIVE else RegularBackupDest.FILE
+        refreshFileFolderSummary(preferencesViewModel)
+    }
+
+    private fun refreshFileFolderSummary(preferencesViewModel: PreferencesViewModel?) {
+        val private = preferencesViewModel?.usingPrivateStorage != false
+        fileFolderPrivate = private
+        fileFolderSummary = when {
+            private -> context.getString(R.string.regular_backup_pick_folder)
+            else -> FileHelper.uri2String(preferences.backupDirectory)
+        }
     }
 
     fun refreshLocalBackupSummary(timestamp: Long?) {

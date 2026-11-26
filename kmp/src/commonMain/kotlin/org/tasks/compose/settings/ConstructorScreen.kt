@@ -63,6 +63,8 @@ import tasks.kmp.generated.resources.constructor_pin_shade
 import tasks.kmp.generated.resources.constructor_pin_shade_summary
 import tasks.kmp.generated.resources.constructor_pinning
 import tasks.kmp.generated.resources.constructor_pinning_summary
+import tasks.kmp.generated.resources.constructor_quick_alarm
+import tasks.kmp.generated.resources.constructor_quick_alarm_summary
 import tasks.kmp.generated.resources.constructor_tags
 import tasks.kmp.generated.resources.constructor_tasks
 import tasks.kmp.generated.resources.constructor_tasks_summary
@@ -231,6 +233,12 @@ fun ConstructorScreen(
                 )
             }
         }
+        Toggle(
+            title = Res.string.constructor_quick_alarm,
+            checked = effective.quickAlarm,
+            summary = stringResource(Res.string.constructor_quick_alarm_summary),
+            summaryWhenOff = true,
+        ) { onChange(raw.copy(quickAlarm = it)) }
         // «Фильтры» moved to Screens → Navigation drawer: one switch sets this flag and the drawer's
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }

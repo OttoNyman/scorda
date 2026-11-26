@@ -131,9 +131,7 @@ fun DatePickerBottomSheet(
 }
 
 private const val MORNING = DEFAULT_MORNING
-private const val AFTERNOON = DEFAULT_AFTERNOON
 private const val EVENING = DEFAULT_EVENING
-private const val NIGHT = DEFAULT_NIGHT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(name = "Due date picker - Light")
@@ -196,9 +194,7 @@ private fun StartDatePickerPreview() {
                             day = DUE_DATE,
                             selected = NO_TIME,
                             morning = MORNING,
-                            afternoon = AFTERNOON,
                             evening = EVENING,
-                            night = NIGHT,
                             is24HourFormat = true,
                             selectedMillisOfDay = {},
                             pickTime = {},

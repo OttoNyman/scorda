@@ -10,19 +10,9 @@
         app:allowDividerAbove="true" />
 
     <org.tasks.ui.TimePreference
-      android:defaultValue="@integer/default_afternoon"
-      android:key="@string/p_date_shortcut_afternoon"
-      android:title="@string/date_shortcut_afternoon" />
-
-    <org.tasks.ui.TimePreference
       android:defaultValue="@integer/default_evening"
       android:key="@string/p_date_shortcut_evening"
       android:title="@string/date_shortcut_evening" />
-
-    <org.tasks.ui.TimePreference
-      android:defaultValue="@integer/default_night"
-      android:key="@string/p_date_shortcut_night"
-      android:title="@string/date_shortcut_night" />
 
     <PreferenceCategory android:title="@string/auto_dismiss_datetime">
 

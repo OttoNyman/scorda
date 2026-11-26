@@ -29,11 +29,7 @@ class TaskEditPreferencesViewModel @Inject constructor(
         private set
     var morningSummary by mutableStateOf("")
         private set
-    var afternoonSummary by mutableStateOf("")
-        private set
     var eveningSummary by mutableStateOf("")
-        private set
-    var nightSummary by mutableStateOf("")
         private set
 
     init {
@@ -45,9 +41,7 @@ class TaskEditPreferencesViewModel @Inject constructor(
         backButtonSaves = preferences.getBoolean(R.string.p_back_button_saves_task, true)
         showComments = preferences.getBoolean(R.string.p_show_task_edit_comments, false)
         refreshMorning()
-        refreshAfternoon()
         refreshEvening()
-        refreshNight()
     }
 
     fun updateShowLinks(enabled: Boolean) {
@@ -74,11 +68,11 @@ class TaskEditPreferencesViewModel @Inject constructor(
     }
 
     fun handleMorningResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)) {
+        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
             return TimePickerResult.Error(
                 R.string.date_shortcut_must_come_before,
                 R.string.date_shortcut_morning,
-                R.string.date_shortcut_afternoon,
+                R.string.date_shortcut_evening,
             )
         }
         preferences.setInt(R.string.p_date_shortcut_morning, millisOfDay)
@@ -86,56 +80,16 @@ class TaskEditPreferencesViewModel @Inject constructor(
         return TimePickerResult.Success
     }
 
-    fun handleAfternoonResult(millisOfDay: Int): TimePickerResult {
+    fun handleEveningResult(millisOfDay: Int): TimePickerResult {
         if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_morning, R.integer.default_morning)) {
             return TimePickerResult.Error(
                 R.string.date_shortcut_must_come_after,
-                R.string.date_shortcut_afternoon,
+                R.string.date_shortcut_evening,
                 R.string.date_shortcut_morning,
-            )
-        }
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
-            return TimePickerResult.Error(
-                R.string.date_shortcut_must_come_before,
-                R.string.date_shortcut_afternoon,
-                R.string.date_shortcut_evening,
-            )
-        }
-        preferences.setInt(R.string.p_date_shortcut_afternoon, millisOfDay)
-        refreshAfternoon()
-        return TimePickerResult.Success
-    }
-
-    fun handleEveningResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)) {
-            return TimePickerResult.Error(
-                R.string.date_shortcut_must_come_after,
-                R.string.date_shortcut_evening,
-                R.string.date_shortcut_afternoon,
-            )
-        }
-        if (millisOfDay >= getMillisOfDay(R.string.p_date_shortcut_night, R.integer.default_night)) {
-            return TimePickerResult.Error(
-                R.string.date_shortcut_must_come_before,
-                R.string.date_shortcut_evening,
-                R.string.date_shortcut_night,
             )
         }
         preferences.setInt(R.string.p_date_shortcut_evening, millisOfDay)
         refreshEvening()
-        return TimePickerResult.Success
-    }
-
-    fun handleNightResult(millisOfDay: Int): TimePickerResult {
-        if (millisOfDay <= getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)) {
-            return TimePickerResult.Error(
-                R.string.date_shortcut_must_come_after,
-                R.string.date_shortcut_night,
-                R.string.date_shortcut_evening,
-            )
-        }
-        preferences.setInt(R.string.p_date_shortcut_night, millisOfDay)
-        refreshNight()
         return TimePickerResult.Success
     }
 
@@ -151,21 +105,9 @@ class TaskEditPreferencesViewModel @Inject constructor(
         )
     }
 
-    private fun refreshAfternoon() {
-        afternoonSummary = formatTime(
-            getMillisOfDay(R.string.p_date_shortcut_afternoon, R.integer.default_afternoon)
-        )
-    }
-
     private fun refreshEvening() {
         eveningSummary = formatTime(
             getMillisOfDay(R.string.p_date_shortcut_evening, R.integer.default_evening)
-        )
-    }
-
-    private fun refreshNight() {
-        nightSummary = formatTime(
-            getMillisOfDay(R.string.p_date_shortcut_night, R.integer.default_night)
         )
     }
 }

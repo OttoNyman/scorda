@@ -2,10 +2,8 @@ package org.tasks.preferences
 
 import co.touchlab.kermit.Logger
 import kotlinx.serialization.json.Json
-import org.tasks.compose.pickers.DEFAULT_AFTERNOON
 import org.tasks.compose.pickers.DEFAULT_EVENING
 import org.tasks.compose.pickers.DEFAULT_MORNING
-import org.tasks.compose.pickers.DEFAULT_NIGHT
 import org.tasks.compose.pickers.QuickPickTimes
 import org.tasks.kmp.org.tasks.themes.ColorProvider
 import org.tasks.themes.BaseTheme
@@ -44,15 +42,13 @@ fun Set<String>.toAlarms(): List<Alarm> =
 
 data class DatePickerPreferences(
     val shortcutMorning: Int = DEFAULT_MORNING,
-    val shortcutAfternoon: Int = DEFAULT_AFTERNOON,
     val shortcutEvening: Int = DEFAULT_EVENING,
-    val shortcutNight: Int = DEFAULT_NIGHT,
     val alwaysDisplayFullDate: Boolean = false,
     val datePickerInputMode: Boolean = false,
     val timePickerInputMode: Boolean = false,
 ) {
     val quickPickTimes: QuickPickTimes
-        get() = QuickPickTimes(shortcutMorning, shortcutAfternoon, shortcutEvening, shortcutNight)
+        get() = QuickPickTimes(shortcutMorning, shortcutEvening)
 }
 
 data class NotificationSettings(

@@ -25,16 +25,12 @@ fun TaskEditScreen(
     showComments: Boolean,
     showCommentsRow: Boolean,
     morningSummary: String,
-    afternoonSummary: String,
     eveningSummary: String,
-    nightSummary: String,
     onShowLinks: (Boolean) -> Unit,
     onBackButtonSaves: (Boolean) -> Unit,
     onShowComments: (Boolean) -> Unit,
     onMorning: () -> Unit,
-    onAfternoon: () -> Unit,
     onEvening: () -> Unit,
-    onNight: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -90,25 +86,11 @@ fun TaskEditScreen(
                     onClick = onMorning,
                 )
             }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.date_shortcut_afternoon),
-                    summary = afternoonSummary,
-                    onClick = onAfternoon,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
+            SettingsItemCard(position = CardPosition.Last) {
                 PreferenceRow(
                     title = stringResource(R.string.date_shortcut_evening),
                     summary = eveningSummary,
                     onClick = onEvening,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.date_shortcut_night),
-                    summary = nightSummary,
-                    onClick = onNight,
                 )
             }
         }

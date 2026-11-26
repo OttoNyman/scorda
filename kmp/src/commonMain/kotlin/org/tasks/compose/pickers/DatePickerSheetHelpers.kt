@@ -27,7 +27,7 @@ import org.tasks.time.toLocalDateMillis
 import org.tasks.time.toUtcDateMillis
 import org.tasks.time.withMillisOfDay
 
-internal fun dayForNewTime(today: Long, millisOfDay: Int): Long =
+fun dayForNewTime(today: Long, millisOfDay: Int): Long =
     if (today.withMillisOfDay(millisOfDay) > currentTimeMillis()) today else today.plusDays(1)
 
 internal fun demoteDueTime(day: Long): Long = if (day == DUE_TIME) DUE_DATE else day
@@ -190,9 +190,7 @@ internal fun SheetTimeShortcuts(
         day = day,
         selected = selectedTime,
         morning = times.morning + TIME_MARKER,
-        afternoon = times.afternoon + TIME_MARKER,
         evening = times.evening + TIME_MARKER,
-        night = times.night + TIME_MARKER,
         is24HourFormat = is24Hour,
         selectedMillisOfDay = { applyTime(it) },
         pickTime = { showTimePicker = true },

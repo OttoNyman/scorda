@@ -165,6 +165,14 @@ class TasksWidget : AppWidgetProvider() {
             onClick = getWidgetConfigIntent(context, id),
         )
         setupButton(
+            viewId = R.id.widget_quick_alarm,
+            enabled = featureGate.current.quickAlarm,
+            color = color,
+            vPad = vPad,
+            hPad = hPad,
+            onClick = getQuickAlarmIntent(context, id),
+        )
+        setupButton(
             viewId = R.id.widget_button,
             enabled = filter.isWritable,
             color = color,
@@ -233,6 +241,17 @@ class TasksWidget : AppWidgetProvider() {
         return PendingIntent.getActivity(
             context,
             widgetId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+    }
+
+    private fun getQuickAlarmIntent(context: Context, widgetId: Int): PendingIntent {
+        val intent = Intent(context, org.tasks.quickalarm.QuickAlarmActivity::class.java)
+            .setAction("quick_alarm")
+        return PendingIntent.getActivity(
+            context,
+            widgetId + 10_000,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
