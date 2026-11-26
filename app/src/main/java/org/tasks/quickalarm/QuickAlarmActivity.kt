@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import org.tasks.constructor.FeatureGate
 import org.tasks.compose.QuickAlarmScreen
 import org.tasks.notifications.AndroidReminderHealth
 import org.tasks.preferences.Preferences
@@ -16,12 +17,18 @@ import javax.inject.Inject
 class QuickAlarmActivity : AppCompatActivity() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var theme: Theme
+    @Inject lateinit var featureGate: FeatureGate
 
     private val viewModel: QuickAlarmViewModel by viewModels()
     private val reminderHealth by lazy { AndroidReminderHealth(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // a widget not yet redrawn after the switch went off still holds this intent
+        if (!featureGate.current.quickAlarm) {
+            finish()
+            return
+        }
         setContent {
             TasksTheme(
                 theme = theme.themeBase.index,

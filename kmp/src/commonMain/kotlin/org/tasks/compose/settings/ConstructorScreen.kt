@@ -139,6 +139,12 @@ fun ConstructorScreen(
             summaryWhenOff = true,
         ) { }
         Toggle(Res.string.constructor_memos, effective.memos) { onChange(raw.copy(memos = it)) }
+        Toggle(
+            title = Res.string.constructor_quick_alarm,
+            checked = effective.quickAlarm,
+            summary = stringResource(Res.string.constructor_quick_alarm_summary),
+            summaryWhenOff = true,
+        ) { onChange(raw.copy(quickAlarm = it)) }
         Group(Res.string.constructor_group_content)
         Toggle(Res.string.constructor_notes, effective.notes) { onChange(raw.copy(notes = it)) }
         Toggle(Res.string.constructor_checklist, effective.checklist) { onChange(raw.copy(checklist = it)) }
@@ -233,12 +239,6 @@ fun ConstructorScreen(
                 )
             }
         }
-        Toggle(
-            title = Res.string.constructor_quick_alarm,
-            checked = effective.quickAlarm,
-            summary = stringResource(Res.string.constructor_quick_alarm_summary),
-            summaryWhenOff = true,
-        ) { onChange(raw.copy(quickAlarm = it)) }
         // «Фильтры» moved to Screens → Navigation drawer: one switch sets this flag and the drawer's
         Spacer(modifier = Modifier.height(SettingsContentPadding))
     }

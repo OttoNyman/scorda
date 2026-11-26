@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status *)",
+      "Bash(xargs wc -l)",
+      "PowerShell(.\\\\gradlew :app:compileGenericDebugKotlin -q 2>&1)"
+    ]
+  }
+}
